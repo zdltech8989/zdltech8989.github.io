@@ -1,0 +1,780 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Java + 腾讯企业邮箱 + javamail发送邮件 | ZDL Tech Blog</title>
+<meta name=keywords content="java,web开发"><meta name=description content="搞了一上午终于搞定了腾讯云企业邮箱的发送，话说腾讯云的东西就是繁琐，但是好用，还是得认真看文档啊，不然真的摸不着北。 腾讯企业邮箱官网：http://exmail.qq.com ![](http://img.blog.csdn.net/20171011143839038?watermark/2/te..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/java-%E8%85%BE%E8%AE%AF%E4%BC%81%E4%B8%9A%E9%82%AE%E7%AE%B1-javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/java-%E8%85%BE%E8%AE%AF%E4%BC%81%E4%B8%9A%E9%82%AE%E7%AE%B1-javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/java-%E8%85%BE%E8%AE%AF%E4%BC%81%E4%B8%9A%E9%82%AE%E7%AE%B1-javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Java + 腾讯企业邮箱 + javamail发送邮件"><meta property="og:description" content="搞了一上午终于搞定了腾讯云企业邮箱的发送，话说腾讯云的东西就是繁琐，但是好用，还是得认真看文档啊，不然真的摸不着北。 腾讯企业邮箱官网：http://exmail.qq.com ![](http://img.blog.csdn.net/20171011143839038?watermark/2/te..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-12-05T02:22:05+00:00"><meta property="article:modified_time" content="2017-12-05T02:22:05+00:00"><meta property="article:tag" content="Java"><meta property="article:tag" content="Web开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Java + 腾讯企业邮箱 + javamail发送邮件"><meta name=twitter:description content="搞了一上午终于搞定了腾讯云企业邮箱的发送，话说腾讯云的东西就是繁琐，但是好用，还是得认真看文档啊，不然真的摸不着北。 腾讯企业邮箱官网：http://exmail.qq.com ![](http://img.blog.csdn.net/20171011143839038?watermark/2/te..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Java + 腾讯企业邮箱 + javamail发送邮件","item":"https://blog.zdltech.com/posts/java-%E8%85%BE%E8%AE%AF%E4%BC%81%E4%B8%9A%E9%82%AE%E7%AE%B1-javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Java + 腾讯企业邮箱 + javamail发送邮件","name":"Java \u002b 腾讯企业邮箱 \u002b javamail发送邮件","description":"搞了一上午终于搞定了腾讯云企业邮箱的发送，话说腾讯云的东西就是繁琐，但是好用，还是得认真看文档啊，不然真的摸不着北。 腾讯企业邮箱官网：http://exmail.qq.com ![](http://img.blog.csdn.net/20171011143839038?watermark/2/te...","keywords":["java","web开发"],"articleBody":"搞了一上午终于搞定了腾讯云企业邮箱的发送，话说腾讯云的东西就是繁琐，但是好用，还是得认真看文档啊，不然真的摸不着北。\n腾讯企业邮箱官网：http://exmail.qq.com\n点击开通\n你跟着步骤走就行了，没啥难的，如果你没有域名，你就去买一个呗，也花不了多少钱的。\n注册成功后，是这个页面，并且会有一个弹窗告诉你一些信息\n现在你点击添加成员，因为你不添加成员的话你是无法发送邮件的。\n完成后是这样\n然后你打开腾讯企业邮箱登录界面，输入你刚才增加的成员邮箱的：登录名 + 密码，进去后是一个类似于普通QQ邮箱的界面\n第一次进去会要求重新设置密码，设置一下就好了。默认的已经开通了SSL协议；\n如何设置IMAP、POP3/SMTP及其SSL加密方式？ 如果您的电子邮件客户端支持SSL，可以在设置中选择使用SSL。 **通用配置参数：** **（我们已经默认都支持这些协议，用户无需自己手动开启这些服务器与端口）** **POP3/SMTP协议** 接收邮件服务器：pop.exmail.qq.com ，使用SSL，端口号995 发送邮件服务器：smtp.exmail.qq.com ，使用SSL，端口号465 海外用户可使用以下服务器 接收邮件服务器：hwpop.exmail.qq.com ，使用SSL，端口号995 发送邮件服务器：hwsmtp.exmail.qq.com ，使用SSL，端口号465 **IMAP协议** 接收邮件服务器：imap.exmail.qq.com ，使用SSL，端口号993 发送邮件服务器：smtp.exmail.qq.com ，使用SSL，端口号465 海外用户可使用以下服务器 接收邮件服务器：hwimap.exmail.qq.com ，使用SSL，端口号993 发送邮件服务器：hwsmtp.exmail.qq.com ，使用SSL，端口号465 **账户名：**您的企业邮箱账户名，账户名需要填写完整的邮件地址 **密码：**您的企业邮箱密码 **电子邮件地址：**您的企业邮箱的完整邮件地址 使用SSL协议之前，请您先参考[常用客户端的一般配置方式](http://service.exmail.qq.com/cgi-bin/help?subtype=1\u0026\u0026id=28\u0026\u0026no=1000585)： 使用java代码发送邮箱\n","wordCount":"112","inLanguage":"zh","datePublished":"2017-12-05T02:22:05Z","dateModified":"2017-12-05T02:22:05Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/java-%E8%85%BE%E8%AE%AF%E4%BC%81%E4%B8%9A%E9%82%AE%E7%AE%B1-javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Java + 腾讯企业邮箱 + javamail发送邮件</h1><div class=post-description>搞了一上午终于搞定了腾讯云企业邮箱的发送，话说腾讯云的东西就是繁琐，但是好用，还是得认真看文档啊，不然真的摸不着北。 腾讯企业邮箱官网：http://exmail.qq.com ![](http://img.blog.csdn.net/20171011143839038?watermark/2/te...</div><div class=post-meta><span title='2017-12-05 02:22:05 +0000 UTC'>2017年12月5日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e5%a6%82%e4%bd%95%e8%ae%be%e7%bd%aeimappop3smtp%e5%8f%8a%e5%85%b6ssl%e5%8a%a0%e5%af%86%e6%96%b9%e5%bc%8f aria-label=如何设置IMAP、POP3/SMTP及其SSL加密方式？>如何设置IMAP、POP3/SMTP及其SSL加密方式？</a></li></ul></div></details><div class="post-content md-content"><p>搞了一上午终于搞定了腾讯云企业邮箱的发送，话说腾讯云的东西就是繁琐，但是好用，还是得认真看文档啊，不然真的摸不着北。</p><p>腾讯企业邮箱官网：http://exmail.qq.com</p><p><img loading=lazy src="http://img.blog.csdn.net/20171011143839038?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGlhb2RlaG9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p><p>点击开通</p><p><img loading=lazy src="http://img.blog.csdn.net/20171011143956303?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGlhb2RlaG9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p><p> </p><p>你跟着步骤走就行了，没啥难的，如果你没有域名，你就去买一个呗，也花不了多少钱的。</p><p>注册成功后，是这个页面，并且会有一个弹窗告诉你一些信息</p><p><img loading=lazy src="http://img.blog.csdn.net/20171011145245058?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGlhb2RlaG9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p><p>现在你点击添加成员，因为你不添加成员的话你是无法发送邮件的。</p><p><img loading=lazy src="http://img.blog.csdn.net/20171011145428805?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGlhb2RlaG9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p><p>完成后是这样</p><p><img loading=lazy src="http://img.blog.csdn.net/20171011145549564?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGlhb2RlaG9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p><p>然后你打开腾讯企业邮箱登录界面，输入你刚才增加的成员邮箱的：登录名 + 密码，进去后是一个类似于普通QQ邮箱的界面</p><p><img loading=lazy src="http://img.blog.csdn.net/20171011145620389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGlhb2RlaG9uZw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center"></p><p>第一次进去会要求重新设置密码，设置一下就好了。默认的已经开通了SSL协议；</p><h2 id=如何设置imappop3smtp及其ssl加密方式>如何设置IMAP、POP3/SMTP及其SSL加密方式？<a hidden class=anchor aria-hidden=true href=#如何设置imappop3smtp及其ssl加密方式>#</a></h2><div class=answer><div><div>如果您的电子邮件客户端支持SSL，可以在设置中选择使用SSL。</div><pre><code>&lt;div&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;div&gt;
+        **通用配置参数：**
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        **（我们已经默认都支持这些协议，用户无需自己手动开启这些服务器与端口）**
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        **POP3/SMTP协议**
+
+        
+        &lt;div&gt;
+          &lt;div&gt;
+            接收邮件服务器：pop.exmail.qq.com ，使用SSL，端口号995
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+            发送邮件服务器：smtp.exmail.qq.com ，使用SSL，端口号465
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+            海外用户可使用以下服务器
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+            &lt;div&gt;
+              接收邮件服务器：hwpop.exmail.qq.com ，使用SSL，端口号995
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              发送邮件服务器：hwsmtp.exmail.qq.com ，使用SSL，端口号465
+            &lt;/div&gt;
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+            &lt;div&gt;
+              **IMAP协议**
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;div&gt;
+                接收邮件服务器：imap.exmail.qq.com  ，使用SSL，端口号993
+              &lt;/div&gt;
+              
+              &lt;div&gt;
+                &lt;div&gt;
+                  发送邮件服务器：smtp.exmail.qq.com ，使用SSL，端口号465
+                &lt;/div&gt;
+                
+                &lt;div&gt;
+                  海外用户可使用以下服务器
+                &lt;/div&gt;
+                
+                &lt;div&gt;
+                  &lt;div&gt;
+                    接收邮件服务器：hwimap.exmail.qq.com ，使用SSL，端口号993
+                  &lt;/div&gt;
+                  
+                  &lt;div&gt;
+                    &lt;div&gt;
+                      发送邮件服务器：hwsmtp.exmail.qq.com ，使用SSL，端口号465
+                    &lt;/div&gt;
+                    
+                    &lt;div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+      &lt;div&gt;
+        &lt;div&gt;
+          &lt;div&gt;
+            **账户名：**您的企业邮箱账户名，账户名需要填写完整的邮件地址
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+            **密码：**您的企业邮箱密码
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+            **电子邮件地址：**您的企业邮箱的完整邮件地址
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+          &lt;/div&gt;
+          
+          &lt;div&gt;
+            使用SSL协议之前，请您先参考[常用客户端的一般配置方式](http://service.exmail.qq.com/cgi-bin/help?subtype=1&amp;&amp;id=28&amp;&amp;no=1000585)：
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div></div><p>使用java代码发送邮箱</p><div class="top-box hide"><div class=alert-info></div></div><div class="top-box hide"><div class=alert-info></div></div><div class="dp-highlighter bg_java" data-original-code='[java] view plain copy print?package com.xiets.javamaildemo;  
+<p>import javax.mail.Session;<br>
+import javax.mail.Transport;<br>
+import javax.mail.internet.InternetAddress;<br>
+import javax.mail.internet.MimeMessage;<br>
+import java.util.Date;<br>
+import java.util.Properties;</p>
+<p>/**</p>
+<ul>
+<li>
+<p>JavaMail 版本: 1.6.0</p>
+</li>
+<li>
+<p>JDK 版本: JDK 1.7 以上（必须）
+*/<br>
+public class Main {</p>
+<p>// 发件人的 邮箱 和 密码（替换为自己的邮箱和密码）<br>
+// PS: 某些邮箱服务器为了增加邮箱本身密码的安全性，给 SMTP 客户端设置了独立密码（有的邮箱称为“授权码”）,<br>
+//     对于开启了独立密码的邮箱, 这里的邮箱密码必需使用这个独立密码（授权码）。<br>
+public static String myEmailAccount = "xxxxxxxxx@163.com";<br>
+public static String myEmailPassword = "xxxxxxxxx";</p>
+<p>// 发件人邮箱的 SMTP 服务器地址, 必须准确, 不同邮件服务器地址不同, 一般(只是一般, 绝非绝对)格式为: smtp.xxx.com<br>
+// 网易163邮箱的 SMTP 服务器地址为: smtp.163.com<br>
+public static String myEmailSMTPHost = "smtp.163.com";</p>
+<p>// 收件人邮箱（替换为自己知道的有效邮箱）<br>
+public static String receiveMailAccount = "xxxxxxxxx@qq.com";</p>
+<p>public static void main(String[] args) throws Exception {<br>
+// 1. 创建参数配置, 用于连接邮件服务器的参数配置<br>
+Properties props = new Properties();                    // 参数配置<br>
+props.setProperty("mail.transport.protocol", "smtp");   // 使用的协议（JavaMail规范要求）<br>
+props.setProperty("mail.smtp.host", myEmailSMTPHost);   // 发件人的邮箱的 SMTP 服务器地址<br>
+props.setProperty("mail.smtp.auth", "true");            // 需要请求认证</p>
+<pre><code> // PS: 某些邮箱服务器要求 SMTP 连接需要使用 SSL 安全认证 (为了提高安全性, 邮箱支持SSL连接, 也可以自己开启),  
+ //     如果无法连接邮件服务器, 仔细查看控制台打印的 log, 如果有有类似 “连接失败, 要求 SSL 安全连接” 等错误,  
+ //     打开下面 /* ... */ 之间的注释代码, 开启 SSL 安全连接。  
+ /* 
+ // SMTP 服务器的端口 (非 SSL 连接的端口一般默认为 25, 可以不添加, 如果开启了 SSL 连接, 
+ //                  需要改为对应邮箱的 SMTP 服务器的端口, 具体可查看对应邮箱服务的帮助, 
+ //                  QQ邮箱的SMTP(SLL)端口为465或587, 其他邮箱自行去查看) 
+ final String smtpPort = &amp;quot;465&amp;quot;; 
+ props.setProperty(&amp;quot;mail.smtp.port&amp;quot;, smtpPort); 
+ props.setProperty(&amp;quot;mail.smtp.socketFactory.class&amp;quot;, &amp;quot;javax.net.ssl.SSLSocketFactory&amp;quot;); 
+ props.setProperty(&amp;quot;mail.smtp.socketFactory.fallback&amp;quot;, &amp;quot;false&amp;quot;); 
+ props.setProperty(&amp;quot;mail.smtp.socketFactory.port&amp;quot;, smtpPort); 
+ */  
+
+ // 2. 根据配置创建会话对象, 用于和邮件服务器交互  
+ Session session = Session.getDefaultInstance(props);  
+ session.setDebug(true);                                 // 设置为debug模式, 可以查看详细的发送 log  
+
+ // 3. 创建一封邮件  
+ MimeMessage message = createMimeMessage(session, myEmailAccount, receiveMailAccount);  
+
+ // 4. 根据 Session 获取邮件传输对象  
+ Transport transport = session.getTransport();  
+
+ // 5. 使用 邮箱账号 和 密码 连接邮件服务器, 这里认证的邮箱必须与 message 中的发件人邮箱一致, 否则报错  
+ //   
+ //    PS_01: 成败的判断关键在此一句, 如果连接服务器失败, 都会在控制台输出相应失败原因的 log,  
+ //           仔细查看失败原因, 有些邮箱服务器会返回错误码或查看错误类型的链接, 根据给出的错误  
+ //           类型到对应邮件服务器的帮助网站上查看具体失败原因。  
+ //  
+ //    PS_02: 连接失败的原因通常为以下几点, 仔细检查代码:  
+ //           (1) 邮箱没有开启 SMTP 服务;  
+ //           (2) 邮箱密码错误, 例如某些邮箱开启了独立密码;  
+ //           (3) 邮箱服务器要求必须要使用 SSL 安全连接;  
+ //           (4) 请求过于频繁或其他原因, 被邮件服务器拒绝服务;  
+ //           (5) 如果以上几点都确定无误, 到邮件服务器网站查找帮助。  
+ //  
+ //    PS_03: 仔细看log, 认真看log, 看懂log, 错误原因都在log已说明。  
+ transport.connect(myEmailAccount, myEmailPassword);  
+
+ // 6. 发送邮件, 发到所有的收件地址, message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人  
+ transport.sendMessage(message, message.getAllRecipients());  
+
+ // 7. 关闭连接  
+ transport.close();  
+</code></pre>
+<p>}</p>
+<p>/**</p>
+<ul>
+<li>
+<p>创建一封只包含文本的简单邮件</p>
+</li>
+<li></li>
+<li>
+<p>@param session 和服务器交互的会话</p>
+</li>
+<li>
+<p>@param sendMail 发件人邮箱</p>
+</li>
+<li>
+<p>@param receiveMail 收件人邮箱</p>
+</li>
+<li>
+<p>@return</p>
+</li>
+<li>
+<p>@throws Exception
+*/<br>
+public static MimeMessage createMimeMessage(Session session, String sendMail, String receiveMail) throws Exception {<br>
+// 1. 创建一封邮件<br>
+MimeMessage message = new MimeMessage(session);</p>
+<p>// 2. From: 发件人（昵称有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改昵称）<br>
+message.setFrom(new InternetAddress(sendMail, "某宝网", "UTF-8"));</p>
+<p>// 3. To: 收件人（可以增加多个收件人、抄送、密送）<br>
+message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, "XX用户", "UTF-8"));</p>
+<p>// 4. Subject: 邮件主题（标题有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改标题）<br>
+message.setSubject("打折钜惠", "UTF-8");</p>
+<p>// 5. Content: 邮件正文（可以使用html标签）（内容有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改发送内容）<br>
+message.setContent("XX用户你好, 今天全场5折, 快来抢购, 错过今天再等一年。。。", "text/html;charset=UTF-8");</p>
+<p>// 6. 设置发件时间<br>
+message.setSentDate(new Date());</p>
+<p>// 7. 保存设置<br>
+message.saveChanges();</p>
+<p>return message;<br>
+}</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>}<br>
+" data-snippet-id=&ldquo;ext.7fd2780a5225afaa0228f82ab825c76b&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;></p>
+  <div class=' bar"><div class=tools>**[java]** [view plain](http://blog.csdn.net/liaodehong/article/details/78203372#)<span data-mod=popu_168> [copy](http://blog.csdn.net/liaodehong/article/details/78203372#)</span><pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;28&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+  
+  
+
+    &lt;span data-mod=&quot;popu_169&quot;&gt; [print](http://blog.csdn.net/liaodehong/article/details/78203372#)&lt;/span&gt;[?](http://blog.csdn.net/liaodehong/article/details/78203372#)&lt;/div&gt; &lt;/div&gt; 
+    
+    
+      - &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.xiets.javamaildemo;
+      
+      - 
+      - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.Session;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.Transport;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.internet.InternetAddress;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.internet.MimeMessage;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Date;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Properties;
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt; * JavaMail 版本: 1.6.0&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt; * JDK 版本: JDK 1.7 以上（必须）&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; Main {
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 发件人的 邮箱 和 密码（替换为自己的邮箱和密码）&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;// PS: 某些邮箱服务器为了增加邮箱本身密码的安全性，给 SMTP 客户端设置了独立密码（有的邮箱称为“授权码”）, &lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//     对于开启了独立密码的邮箱, 这里的邮箱密码必需使用这个独立密码（授权码）。&lt;/span&gt;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String myEmailAccount = &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxxxxxxxx@163.com&amp;#8221;&lt;/span&gt;;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String myEmailPassword = &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxxxxxxxx&amp;#8221;&lt;/span&gt;;
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 发件人邮箱的 SMTP 服务器地址, 必须准确, 不同邮件服务器地址不同, 一般(只是一般, 绝非绝对)格式为: smtp.xxx.com&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;// 网易163邮箱的 SMTP 服务器地址为: smtp.163.com&lt;/span&gt;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String myEmailSMTPHost = &lt;span class=&quot;string&quot;&gt;&amp;#8220;smtp.163.com&amp;#8221;&lt;/span&gt;;
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 收件人邮箱（替换为自己知道的有效邮箱）&lt;/span&gt;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String receiveMailAccount = &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxxxxxxxx@qq.com&amp;#8221;&lt;/span&gt;;
+      
+      - 
+      - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; main(String[] args) &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; Exception {
+      
+      - &lt;span class=&quot;comment&quot;&gt;// 1. 创建参数配置, 用于连接邮件服务器的参数配置&lt;/span&gt;
+      
+      - Properties props = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Properties();                    &lt;span class=&quot;comment&quot;&gt;// 参数配置&lt;/span&gt;
+      
+      - props.setProperty(&lt;span class=&quot;string&quot;&gt;&amp;#8220;mail.transport.protocol&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;smtp&amp;#8221;&lt;/span&gt;);   &lt;span class=&quot;comment&quot;&gt;// 使用的协议（JavaMail规范要求）&lt;/span&gt;
+      
+      - props.setProperty(&lt;span class=&quot;string&quot;&gt;&amp;#8220;mail.smtp.host&amp;#8221;&lt;/span&gt;, myEmailSMTPHost);   &lt;span class=&quot;comment&quot;&gt;// 发件人的邮箱的 SMTP 服务器地址&lt;/span&gt;
+      
+      - props.setProperty(&lt;span class=&quot;string&quot;&gt;&amp;#8220;mail.smtp.auth&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;);            &lt;span class=&quot;comment&quot;&gt;// 需要请求认证&lt;/span&gt;
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// PS: 某些邮箱服务器要求 SMTP 连接需要使用 SSL 安全认证 (为了提高安全性, 邮箱支持SSL连接, 也可以自己开启),&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//     如果无法连接邮件服务器, 仔细查看控制台打印的 log, 如果有有类似 “连接失败, 要求 SSL 安全连接” 等错误,&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//     打开下面 /* &amp;#8230; */ 之间的注释代码, 开启 SSL 安全连接。&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        // SMTP 服务器的端口 (非 SSL 连接的端口一般默认为 25, 可以不添加, 如果开启了 SSL 连接,&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        //                  需要改为对应邮箱的 SMTP 服务器的端口, 具体可查看对应邮箱服务的帮助,&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        //                  QQ邮箱的SMTP(SLL)端口为465或587, 其他邮箱自行去查看)&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        final String smtpPort = &amp;#8220;465&amp;#8221;;&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        props.setProperty(&amp;#8220;mail.smtp.port&amp;#8221;, smtpPort);&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        props.setProperty(&amp;#8220;mail.smtp.socketFactory.class&amp;#8221;, &amp;#8220;javax.net.ssl.SSLSocketFactory&amp;#8221;);&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        props.setProperty(&amp;#8220;mail.smtp.socketFactory.fallback&amp;#8221;, &amp;#8220;false&amp;#8221;);&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        props.setProperty(&amp;#8220;mail.smtp.socketFactory.port&amp;#8221;, smtpPort);&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;        */&lt;/span&gt;
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 2. 根据配置创建会话对象, 用于和邮件服务器交互&lt;/span&gt;
+      
+      - Session session = Session.getDefaultInstance(props);
+      
+      - session.setDebug(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);                                 &lt;span class=&quot;comment&quot;&gt;// 设置为debug模式, 可以查看详细的发送 log&lt;/span&gt;
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 3. 创建一封邮件&lt;/span&gt;
+      
+      - MimeMessage message = createMimeMessage(session, myEmailAccount, receiveMailAccount);
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 4. 根据 Session 获取邮件传输对象&lt;/span&gt;
+      
+      - Transport transport = session.getTransport();
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 5. 使用 邮箱账号 和 密码 连接邮件服务器, 这里认证的邮箱必须与 message 中的发件人邮箱一致, 否则报错&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;// &lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//    PS_01: 成败的判断关键在此一句, 如果连接服务器失败, 都会在控制台输出相应失败原因的 log,&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//           仔细查看失败原因, 有些邮箱服务器会返回错误码或查看错误类型的链接, 根据给出的错误&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//           类型到对应邮件服务器的帮助网站上查看具体失败原因。&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//    PS_02: 连接失败的原因通常为以下几点, 仔细检查代码:&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//           (1) 邮箱没有开启 SMTP 服务;&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//           (2) 邮箱密码错误, 例如某些邮箱开启了独立密码;&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//           (3) 邮箱服务器要求必须要使用 SSL 安全连接;&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//           (4) 请求过于频繁或其他原因, 被邮件服务器拒绝服务;&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//           (5) 如果以上几点都确定无误, 到邮件服务器网站查找帮助。&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;//    PS_03: 仔细看log, 认真看log, 看懂log, 错误原因都在log已说明。&lt;/span&gt;
+      
+      - transport.connect(myEmailAccount, myEmailPassword);
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 6. 发送邮件, 发到所有的收件地址, message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人&lt;/span&gt;
+      
+      - transport.sendMessage(message, message.getAllRecipients());
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 7. 关闭连接&lt;/span&gt;
+      
+      - transport.close();
+      
+      - }
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     * 创建一封只包含文本的简单邮件&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     *&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     * @param session 和服务器交互的会话&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     * @param sendMail 发件人邮箱&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     * @param receiveMail 收件人邮箱&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     * @throws Exception&lt;/span&gt;
+      
+      - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+      
+      - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; MimeMessage createMimeMessage(Session session, String sendMail, String receiveMail) &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; Exception {
+      
+      - &lt;span class=&quot;comment&quot;&gt;// 1. 创建一封邮件&lt;/span&gt;
+      
+      - MimeMessage message = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeMessage(session);
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 2. From: 发件人（昵称有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改昵称）&lt;/span&gt;
+      
+      - message.setFrom(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; InternetAddress(sendMail, &lt;span class=&quot;string&quot;&gt;&amp;#8220;某宝网&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;));
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 3. To: 收件人（可以增加多个收件人、抄送、密送）&lt;/span&gt;
+      
+      - message.setRecipient(MimeMessage.RecipientType.TO, &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; InternetAddress(receiveMail, &lt;span class=&quot;string&quot;&gt;&amp;#8220;XX用户&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;));
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 4. Subject: 邮件主题（标题有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改标题）&lt;/span&gt;
+      
+      - message.setSubject(&lt;span class=&quot;string&quot;&gt;&amp;#8220;打折钜惠&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;);
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 5. Content: 邮件正文（可以使用html标签）（内容有广告嫌疑，避免被邮件服务器误认为是滥发广告以至返回失败，请修改发送内容）&lt;/span&gt;
+      
+      - message.setContent(&lt;span class=&quot;string&quot;&gt;&amp;#8220;XX用户你好, 今天全场5折, 快来抢购, 错过今天再等一年。。。&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;text/html;charset=UTF-8&amp;#8221;&lt;/span&gt;);
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 6. 设置发件时间&lt;/span&gt;
+      
+      - message.setSentDate(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Date());
+      
+      - 
+      - &lt;span class=&quot;comment&quot;&gt;// 7. 保存设置&lt;/span&gt;
+      
+      - message.saveChanges();
+      
+      - 
+      - &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; message;
+      
+      - }
+      
+      - 
+      - }
+      
+    &lt;/div&gt; 
+    
+    
+
+      一封复杂的邮件内容可以看做是由很多节点（或者可以说是“片段”/“部分”/“零件”）组成，文本、图片、附件等都可以看成是邮件内容中的一个节点。这些节点之间又可以相互关联组合成一个节点。最终组合成一个大节点就是邮件的正文内容。
+    
+
+    
+    &lt;div class=&quot;top-box hide&quot;&gt;
+      &lt;div class=&quot;alert-info&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;top-box hide&quot;&gt;
+      &lt;div class=&quot;alert-info&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;dp-highlighter bg_java&quot; style=&quot;font-family: Consolas, 'Courier New', Courier, mono, serif; font-size: 12px; background-color: #e7e5dc; width: 882.516px; overflow: hidden; padding-top: 1px; text-align: left; margin: 18px 0px !important; position: relative; border-color: #cccccc; color: #555555; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;&quot; data-original-code=&quot;[java] view plain copy print?package com.xiets.javamaildemo;  
+</code></pre><p>import java.util.Date;<br>import java.util.Properties;</p><p>import javax.activation.DataHandler;<br>import javax.activation.FileDataSource;<br>import javax.mail.Message.RecipientType;<br>import javax.mail.Session;<br>import javax.mail.Transport;<br>import javax.mail.internet.InternetAddress;<br>import javax.mail.internet.MimeBodyPart;<br>import javax.mail.internet.MimeMessage;<br>import javax.mail.internet.MimeMultipart;<br>import javax.mail.internet.MimeUtility;</p><p>/**</p><ul><li><p>创建并发送一封包含文本、图片、附件的复杂邮件</p></li><li></li><li><p>JavaMail 版本: 1.6.0</p></li><li><p>JDK 版本: JDK 1.7 以上（必须）</p></li><li></li><li><p>@author xietansheng
+*/<br>public class Main {</p><p>// 发件人的 邮箱 和 密码（替换为自己的邮箱和密码）<br>public static String myEmailAccount = "xxxxxxxx@163.com";<br>public static String myEmailPassword = "xxxxxxxx";</p><p>// 发件人邮箱的 SMTP 服务器地址, 必须准确, 不同邮件服务器地址不同, 一般格式为: smtp.xxx.com<br>// 网易163邮箱的 SMTP 服务器地址为: smtp.163.com<br>public static String myEmailSMTPHost = "smtp.163.com";</p><p>// 收件人邮箱（替换为自己知道的有效邮箱）<br>public static String receiveMailAccount = "xxxxxxxxx@qq.com";</p><p>public static void main(String[] args) throws Exception {<br>// 1. 创建参数配置, 用于连接邮件服务器的参数配置<br>Properties props = new Properties(); // 参数配置<br>props.setProperty("mail.transport.protocol", "smtp"); // 使用的协议（JavaMail规范要求）<br>props.setProperty("mail.smtp.host", myEmailSMTPHost); // 发件人的邮箱的 SMTP 服务器地址<br>props.setProperty("mail.smtp.auth", "true"); // 需要请求认证</p><pre><code> // 开启 SSL 连接, 以及更详细的发送步骤请看上一篇: 基于 JavaMail 的 Java 邮件发送：简单邮件发送  
+
+ // 2. 根据配置创建会话对象, 用于和邮件服务器交互  
+ Session session = Session.getDefaultInstance(props);  
+ session.setDebug(true);                                 // 设置为debug模式, 可以查看详细的发送 log  
+
+ // 3. 创建一封邮件  
+ MimeMessage message = createMimeMessage(session, myEmailAccount, receiveMailAccount);  
+
+ // 也可以保持到本地查看  
+ // message.writeTo(file_out_put_stream);  
+
+ // 4. 根据 Session 获取邮件传输对象  
+ Transport transport = session.getTransport();  
+
+ // 5. 使用 邮箱账号 和 密码 连接邮件服务器  
+ //    这里认证的邮箱必须与 message 中的发件人邮箱一致，否则报错  
+ transport.connect(myEmailAccount, myEmailPassword);  
+
+ // 6. 发送邮件, 发到所有的收件地址, message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人  
+ transport.sendMessage(message, message.getAllRecipients());  
+
+ // 7. 关闭连接  
+ transport.close();  
+</code></pre><p>}</p><p>/**</p><ul><li><p>创建一封复杂邮件（文本+图片+附件）
+*/<br>public static MimeMessage createMimeMessage(Session session, String sendMail, String receiveMail) throws Exception {<br>// 1. 创建邮件对象<br>MimeMessage message = new MimeMessage(session);</p><p>// 2. From: 发件人<br>message.setFrom(new InternetAddress(sendMail, "我的测试邮件_发件人昵称", "UTF-8"));</p><p>// 3. To: 收件人（可以增加多个收件人、抄送、密送）<br>message.addRecipient(RecipientType.TO, new InternetAddress(receiveMail, "我的测试邮件_收件人昵称", "UTF-8"));</p><p>// 4. Subject: 邮件主题<br>message.setSubject("TEST邮件主题（文本+图片+附件）", "UTF-8");</p><p>/*</p><ul><li>下面是邮件内容的创建:
+*/</li></ul><p>// 5. 创建图片“节点”<br>MimeBodyPart image = new MimeBodyPart();<br>DataHandler dh = new DataHandler(new FileDataSource("FairyTail.jpg")); // 读取本地文件<br>image.setDataHandler(dh); // 将图片数据添加到“节点”<br>image.setContentID("image_fairy_tail"); // 为“节点”设置一个唯一编号（在文本“节点”将引用该ID）</p><p>// 6. 创建文本“节点”<br>MimeBodyPart text = new MimeBodyPart();<br>// 这里添加图片的方式是将整个图片包含到邮件内容中, 实际上也可以以 http 链接的形式添加网络图片<br>text.setContent("这是一张图片
+<img loading=lazy src=cid:image_fairy_tail>", "text/html;charset=UTF-8");</p><p>// 7. （文本+图片）设置 文本 和 图片 “节点”的关系（将 文本 和 图片 “节点”合成一个混合“节点”）<br>MimeMultipart mm_text_image = new MimeMultipart();<br>mm_text_image.addBodyPart(text);<br>mm_text_image.addBodyPart(image);<br>mm_text_image.setSubType("related"); // 关联关系</p><p>// 8. 将 文本+图片 的混合“节点”封装成一个普通“节点”<br>// 最终添加到邮件的 Content 是由多个 BodyPart 组成的 Multipart, 所以我们需要的是 BodyPart,<br>// 上面的 mm_text_image 并非 BodyPart, 所有要把 mm_text_image 封装成一个 BodyPart<br>MimeBodyPart text_image = new MimeBodyPart();<br>text_image.setContent(mm_text_image);</p><p>// 9. 创建附件“节点”<br>MimeBodyPart attachment = new MimeBodyPart();<br>DataHandler dh2 = new DataHandler(new FileDataSource("妖精的尾巴目录.doc")); // 读取本地文件<br>attachment.setDataHandler(dh2); // 将附件数据添加到“节点”<br>attachment.setFileName(MimeUtility.encodeText(dh2.getName())); // 设置附件的文件名（需要编码）</p><p>// 10. 设置（文本+图片）和 附件 的关系（合成一个大的混合“节点” / Multipart ）<br>MimeMultipart mm = new MimeMultipart();<br>mm.addBodyPart(text_image);<br>mm.addBodyPart(attachment); // 如果有多个附件，可以创建多个多次添加<br>mm.setSubType("mixed"); // 混合关系</p><p>// 11. 设置整个邮件的关系（将最终的混合“节点”作为邮件的内容添加到邮件对象）<br>message.setContent(mm);</p><p>// 12. 设置发件时间<br>message.setSentDate(new Date());</p><p>// 13. 保存上面的所有设置<br>message.saveChanges();</p><p>return message;<br>}</p></li></ul></li></ul><p>}<br>" data-snippet-id=&ldquo;ext.719818f353021ff717eb45377a1a108d&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;></p><pre><code>      &lt;div class=&quot;bar&quot;&gt;
+        &lt;div class=&quot;tools&quot;&gt;
+          **[java]** [view plain](http://blog.csdn.net/liaodehong/article/details/78203372#)&lt;span data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/liaodehong/article/details/78203372#)&lt;/span&gt;
+
+          
+          &lt;div&gt;
+            &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;28&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot; data-mce-fragment=&quot;1&quot;&gt;
+            &lt;/embed&gt;
+          &lt;/div&gt;
+          
+          
+
+            &lt;span data-mod=&quot;popu_169&quot;&gt; [print](http://blog.csdn.net/liaodehong/article/details/78203372#)&lt;/span&gt;[?](http://blog.csdn.net/liaodehong/article/details/78203372#)&lt;/div&gt; &lt;/div&gt; 
+            
+            
+              - &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.xiets.javamaildemo;
+              
+              - 
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Date;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Properties;
+              
+              - 
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.activation.DataHandler;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.activation.FileDataSource;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.Message.RecipientType;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.Session;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.Transport;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.internet.InternetAddress;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.internet.MimeBodyPart;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.internet.MimeMessage;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.internet.MimeMultipart;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; javax.mail.internet.MimeUtility;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt; * 创建并发送一封包含文本、图片、附件的复杂邮件&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt; * JavaMail 版本: 1.6.0&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt; * JDK 版本: JDK 1.7 以上（必须）&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt; * @author xietansheng&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; Main {
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 发件人的 邮箱 和 密码（替换为自己的邮箱和密码）&lt;/span&gt;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String myEmailAccount = &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxxxxxxx@163.com&amp;#8221;&lt;/span&gt;;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String myEmailPassword = &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxxxxxxx&amp;#8221;&lt;/span&gt;;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 发件人邮箱的 SMTP 服务器地址, 必须准确, 不同邮件服务器地址不同, 一般格式为: smtp.xxx.com&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;// 网易163邮箱的 SMTP 服务器地址为: smtp.163.com&lt;/span&gt;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String myEmailSMTPHost = &lt;span class=&quot;string&quot;&gt;&amp;#8220;smtp.163.com&amp;#8221;&lt;/span&gt;;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 收件人邮箱（替换为自己知道的有效邮箱）&lt;/span&gt;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String receiveMailAccount = &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxxxxxxxx@qq.com&amp;#8221;&lt;/span&gt;;
+              
+              - 
+              - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; main(String[] args) &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; Exception {
+              
+              - &lt;span class=&quot;comment&quot;&gt;// 1. 创建参数配置, 用于连接邮件服务器的参数配置&lt;/span&gt;
+              
+              - Properties props = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Properties();                    &lt;span class=&quot;comment&quot;&gt;// 参数配置&lt;/span&gt;
+              
+              - props.setProperty(&lt;span class=&quot;string&quot;&gt;&amp;#8220;mail.transport.protocol&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;smtp&amp;#8221;&lt;/span&gt;);   &lt;span class=&quot;comment&quot;&gt;// 使用的协议（JavaMail规范要求）&lt;/span&gt;
+              
+              - props.setProperty(&lt;span class=&quot;string&quot;&gt;&amp;#8220;mail.smtp.host&amp;#8221;&lt;/span&gt;, myEmailSMTPHost);   &lt;span class=&quot;comment&quot;&gt;// 发件人的邮箱的 SMTP 服务器地址&lt;/span&gt;
+              
+              - props.setProperty(&lt;span class=&quot;string&quot;&gt;&amp;#8220;mail.smtp.auth&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;);            &lt;span class=&quot;comment&quot;&gt;// 需要请求认证&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 开启 SSL 连接, 以及更详细的发送步骤请看上一篇: 基于 JavaMail 的 Java 邮件发送：简单邮件发送&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 2. 根据配置创建会话对象, 用于和邮件服务器交互&lt;/span&gt;
+              
+              - Session session = Session.getDefaultInstance(props);
+              
+              - session.setDebug(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);                                 &lt;span class=&quot;comment&quot;&gt;// 设置为debug模式, 可以查看详细的发送 log&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 3. 创建一封邮件&lt;/span&gt;
+              
+              - MimeMessage message = createMimeMessage(session, myEmailAccount, receiveMailAccount);
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 也可以保持到本地查看&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;// message.writeTo(file_out_put_stream);&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 4. 根据 Session 获取邮件传输对象&lt;/span&gt;
+              
+              - Transport transport = session.getTransport();
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 5. 使用 邮箱账号 和 密码 连接邮件服务器&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;//    这里认证的邮箱必须与 message 中的发件人邮箱一致，否则报错&lt;/span&gt;
+              
+              - transport.connect(myEmailAccount, myEmailPassword);
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 6. 发送邮件, 发到所有的收件地址, message.getAllRecipients() 获取到的是在创建邮件对象时添加的所有收件人, 抄送人, 密送人&lt;/span&gt;
+              
+              - transport.sendMessage(message, message.getAllRecipients());
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 7. 关闭连接&lt;/span&gt;
+              
+              - transport.close();
+              
+              - }
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;     * 创建一封复杂邮件（文本+图片+附件）&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+              
+              - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; MimeMessage createMimeMessage(Session session, String sendMail, String receiveMail) &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; Exception {
+              
+              - &lt;span class=&quot;comment&quot;&gt;// 1. 创建邮件对象&lt;/span&gt;
+              
+              - MimeMessage message = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeMessage(session);
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 2. From: 发件人&lt;/span&gt;
+              
+              - message.setFrom(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; InternetAddress(sendMail, &lt;span class=&quot;string&quot;&gt;&amp;#8220;我的测试邮件_发件人昵称&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;));
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 3. To: 收件人（可以增加多个收件人、抄送、密送）&lt;/span&gt;
+              
+              - message.addRecipient(RecipientType.TO, &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; InternetAddress(receiveMail, &lt;span class=&quot;string&quot;&gt;&amp;#8220;我的测试邮件_收件人昵称&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;));
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 4. Subject: 邮件主题&lt;/span&gt;
+              
+              - message.setSubject(&lt;span class=&quot;string&quot;&gt;&amp;#8220;TEST邮件主题（文本+图片+附件）&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;);
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;         * 下面是邮件内容的创建:&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;         */&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 5. 创建图片“节点”&lt;/span&gt;
+              
+              - MimeBodyPart image = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeBodyPart();
+              
+              - DataHandler dh = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; DataHandler(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; FileDataSource(&lt;span class=&quot;string&quot;&gt;&amp;#8220;FairyTail.jpg&amp;#8221;&lt;/span&gt;)); &lt;span class=&quot;comment&quot;&gt;// 读取本地文件&lt;/span&gt;
+              
+              - image.setDataHandler(dh);                   &lt;span class=&quot;comment&quot;&gt;// 将图片数据添加到“节点”&lt;/span&gt;
+              
+              - image.setContentID(&lt;span class=&quot;string&quot;&gt;&amp;#8220;image_fairy_tail&amp;#8221;&lt;/span&gt;);     &lt;span class=&quot;comment&quot;&gt;// 为“节点”设置一个唯一编号（在文本“节点”将引用该ID）&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 6. 创建文本“节点”&lt;/span&gt;
+              
+              - MimeBodyPart text = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeBodyPart();
+              
+              - &lt;span class=&quot;comment&quot;&gt;//    这里添加图片的方式是将整个图片包含到邮件内容中, 实际上也可以以 http 链接的形式添加网络图片&lt;/span&gt;
+              
+              - text.setContent(&lt;span class=&quot;string&quot;&gt;&amp;#8220;这是一张图片
+</code></pre><p>&lt;img src=’cid:image_fairy_tail’/>”</span>, <span class=string>“text/html;charset=UTF-8”</span>);</p><pre><code>              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 7. （文本+图片）设置 文本 和 图片 “节点”的关系（将 文本 和 图片 “节点”合成一个混合“节点”）&lt;/span&gt;
+              
+              - MimeMultipart mm_text_image = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeMultipart();
+              
+              - mm_text_image.addBodyPart(text);
+              
+              - mm_text_image.addBodyPart(image);
+              
+              - mm_text_image.setSubType(&lt;span class=&quot;string&quot;&gt;&amp;#8220;related&amp;#8221;&lt;/span&gt;);    &lt;span class=&quot;comment&quot;&gt;// 关联关系&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 8. 将 文本+图片 的混合“节点”封装成一个普通“节点”&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;//    最终添加到邮件的 Content 是由多个 BodyPart 组成的 Multipart, 所以我们需要的是 BodyPart,&lt;/span&gt;
+              
+              - &lt;span class=&quot;comment&quot;&gt;//    上面的 mm_text_image 并非 BodyPart, 所有要把 mm_text_image 封装成一个 BodyPart&lt;/span&gt;
+              
+              - MimeBodyPart text_image = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeBodyPart();
+              
+              - text_image.setContent(mm_text_image);
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 9. 创建附件“节点”&lt;/span&gt;
+              
+              - MimeBodyPart attachment = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeBodyPart();
+              
+              - DataHandler dh2 = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; DataHandler(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; FileDataSource(&lt;span class=&quot;string&quot;&gt;&amp;#8220;妖精的尾巴目录.doc&amp;#8221;&lt;/span&gt;));  &lt;span class=&quot;comment&quot;&gt;// 读取本地文件&lt;/span&gt;
+              
+              - attachment.setDataHandler(dh2);                                             &lt;span class=&quot;comment&quot;&gt;// 将附件数据添加到“节点”&lt;/span&gt;
+              
+              - attachment.setFileName(MimeUtility.encodeText(dh2.getName()));              &lt;span class=&quot;comment&quot;&gt;// 设置附件的文件名（需要编码）&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 10. 设置（文本+图片）和 附件 的关系（合成一个大的混合“节点” / Multipart ）&lt;/span&gt;
+              
+              - MimeMultipart mm = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MimeMultipart();
+              
+              - mm.addBodyPart(text_image);
+              
+              - mm.addBodyPart(attachment);     &lt;span class=&quot;comment&quot;&gt;// 如果有多个附件，可以创建多个多次添加&lt;/span&gt;
+              
+              - mm.setSubType(&lt;span class=&quot;string&quot;&gt;&amp;#8220;mixed&amp;#8221;&lt;/span&gt;);         &lt;span class=&quot;comment&quot;&gt;// 混合关系&lt;/span&gt;
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 11. 设置整个邮件的关系（将最终的混合“节点”作为邮件的内容添加到邮件对象）&lt;/span&gt;
+              
+              - message.setContent(mm);
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 12. 设置发件时间&lt;/span&gt;
+              
+              - message.setSentDate(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Date());
+              
+              - 
+              - &lt;span class=&quot;comment&quot;&gt;// 13. 保存上面的所有设置&lt;/span&gt;
+              
+              - message.saveChanges();
+              
+              - 
+              - &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; message;
+              
+              - }
+              
+              - 
+              - }
+              
+            &lt;/div&gt; 
+            
+            
+
+              转载：http://blog.csdn.net/liaodehong/article/details/78203372
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/java/>Java</a></li><li><a href=https://blog.zdltech.com/tags/web%E5%BC%80%E5%8F%91/>Web开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/mac-%E4%B8%8B%E5%88%B6%E4%BD%9Cicns-%E5%9B%BE%E6%A0%87/><span class=title>« 上一页</span>
+<span>Mac 下制作icns 图标</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E5%B1%8F%E5%B9%95%E6%8A%95%E5%BD%B1%E5%8F%8A%E5%8F%8D%E5%90%91%E6%8E%A7%E5%88%B6%E5%8E%9F%E7%90%86/><span class=title>下一页 »</span>
+<span>Android屏幕投影及反向控制原理</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

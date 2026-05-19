@@ -1,0 +1,414 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>纯代码实现CSS圆角 | ZDL Tech Blog</title>
+<meta name=keywords content="互联网"><meta name=description content="[![QQ截图20140911163418](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)效果图..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E7%BA%AF%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0css%E5%9C%86%E8%A7%92/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E7%BA%AF%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0css%E5%9C%86%E8%A7%92/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E7%BA%AF%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0css%E5%9C%86%E8%A7%92/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="纯代码实现CSS圆角"><meta property="og:description" content="[![QQ截图20140911163418](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)效果图..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-09-11T08:34:51+00:00"><meta property="article:modified_time" content="2014-09-11T08:34:51+00:00"><meta property="article:tag" content="互联网"><meta name=twitter:card content="summary"><meta name=twitter:title content="纯代码实现CSS圆角"><meta name=twitter:description content="[![QQ截图20140911163418](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)效果图..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"纯代码实现CSS圆角","item":"https://blog.zdltech.com/posts/%E7%BA%AF%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0css%E5%9C%86%E8%A7%92/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"纯代码实现CSS圆角","name":"纯代码实现CSS圆角","description":"[![QQ截图20140911163418](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)效果图...","keywords":["互联网"],"articleBody":"效果图\n我这里说的是纯代码，是指的不使用图片实现圆角，图片实现圆角，这里就不说了。\n纯代码实现圆角主要有3种方法：\n第一种：CSS3圆角\n`#chaomao{` ` ``border-radius:2px 2px 2px 2px;` `}` 上面代码的意思是左上、右上、右下、右下分别2px的圆角 当然也可以简写：border-radius:2px\n方向是从左上到左下逆时针\n也可以分别指定\n`#chaomao{` ` ``border-top-left-radius:4px 2px;` ` ``border-top-right-radius:3px 4px;` ` ``border-bottom-right-radius:6px 2px;` ` ``border-bottom-left-radius:3px 4px;` `}` 意思很简明 火狐等浏览器也支持自己的私有圆角属性\nFirefox支持border-radius(圆角)：-moz-border-radius:2px\nwebkit内核的Safari和Chrome支持border-radius(圆角)：-webkit-border-radius:2px\nOpera支持border-radius(圆角)：border-radius:2px\nCSS3实现圆角最简单了，可惜IE6-8不支持\n第二种：用CSS+html代码\n百度知道的首页圆角就是用这种方法实现的\n有点：兼容所有浏览器，\n缺点：需要添加额外的HTML标签，维护比较麻烦\n实现原理是利用多个空层，上面一层比下面少1px，从而使边角看起来是一个圆弧状\nHTML代码：\n`` ` ``\u0026lt;strong ``class``=``\"b1\"``\u0026gt;\u0026lt;/strong\u0026gt;` ` ``\u0026lt;strong ``class``=``\"b2\"``\u0026gt;\u0026lt;/strong\u0026gt;` ` ``\u0026lt;strong ``class``=``\"b3\"``\u0026gt;\u0026lt;/strong\u0026gt;` ` ``\u0026lt;strong ``class``=``\"b4\"``\u0026gt;\u0026lt;/strong\u0026gt;` ` ``\u0026lt;div ``class``=``\"content\"``\u0026gt;文字内容\u0026lt;/div\u0026gt;` `\u0026lt;/div\u0026gt;` CSS代码 `b``1``,.b``2``,.b``3``,.b``4``,.b``5``,.b``6``,.b``7``,.b``8``{` ` ``height``:``1px``;` ` ``font-size``:``1px``;` ` ``overflow``:``hidden``;` ` ``display``:``block``;` `}` `.b``1``,.b``8``{` ` ``margin``:``` `5px``;` `}` `.b``2``,.b``7``{` ` ``margin``:``` `3px``;` ` ``border-right``:``2px` `solid``;` ` ``border-left``:``2px` `solid``;` `}` `.b``3``,.b``6``{` ` ``margin``:``` `2px``;` ` ``border-right``:``1px` `solid``;` ` ``border-left``:``1px` `solid``;` `}` `.b``4``,.b``5``{` ` ``margin``:``` `1px``;` ` ``border-right``:``1px` `solid``;` ` ``border-left``:``1px` `solid``;` ` ``height``:``2px``;` `}` **第三种：利用jQuery圆角插件代码实现圆角** 优点：兼容所有浏览器 缺点：需要使用jQuery插件 这是一个jQuery插件，使用的时候，需要jQuery文件一起，使用方法很简单 ``` $(\"#chaomao\").corner(\"5px\") ``` 它就实现了id值问哦chaomao的元素，5px的圆角 jQuery圆角插件\n\u0026nbsp; jQuery.js内容 ``` /*!\njQuery corner plugin: simple corner rounding Examples and documentation at: http://jquery.malsup.com/corner/ version 2.12 (23-MAY-2011) Requires jQuery v1.3.2 or later Dual licensed under the MIT and GPL licenses: http://www.opensource.org/licenses/mit-license.php http://www.gnu.org/licenses/gpl.html Authors: Dave Methvin and Mike Alsup */ /**\ncorner() takes a single string argument: (’#myDiv’).corner(“effect corners width”) effect: name of the effect to apply, such as round, bevel, notch, bite, etc (default is round). corners: one or more of: top, bottom, tr, tl, br, or bl. (default is all corners) width: width of the effect; in the case of rounded corners this is the radius. specify this value using the px suffix such as 10px (yes, it must be pixels). */ ;(function() {\nvar style = document.createElement(‘div’).style, moz = style[‘MozBorderRadius’] !== undefined, webkit = style[‘WebkitBorderRadius’] !== undefined, radius = style[‘borderRadius’] !== undefined || style[‘BorderRadius’] !== undefined, mode = document.documentMode || 0, noBottomFold = .browser.msie \u0026\u0026 ((.browser.version \u003c 8 \u0026\u0026 !mode) || mode \u003c 8),\nexpr = .browser.msie \u0026\u0026 (function() { var div = document.createElement('div'); try { div.style.setExpression('width','0+0'); div.style.removeExpression('width'); } catch(e) { return false; } return true; })();.support = .support || {};.support.borderRadius = moz || webkit || radius; // so you can do: if (!.support.borderRadius)('#myDiv').corner(); function sz(el, p) { return parseInt(.css(el,p))||0; }; function hex2(s) { s = parseInt(s).toString(16); return ( s.length\u003c2 ) ? ‘0’+s : s; }; function gpc(node) { while(node) { var v =.css(node,‘backgroundColor’), rgb; if (v \u0026\u0026 v != ’transparent’ \u0026\u0026 v != ‘rgba(0, 0, 0, 0)’) { if (v.indexOf(‘rgb’) \u003e= 0) { rgb = v.match(/\\d+/g); return ‘#’+ hex2(rgb[0]) + hex2(rgb[1]) + hex2(rgb[2]); } return v; } if (node.nodeName.toLowerCase() == ‘html’) break; node = node.parentNode; // keep walking if transparent } return ‘#ffffff’; };\nfunction getWidth(fx, i, width) { switch(fx) { case ‘round’: return Math.round(width*(1-Math.cos(Math.asin(i/width)))); case ‘cool’: return Math.round(width*(1+Math.cos(Math.asin(i/width)))); case ‘sharp’: return width-i; case ‘bite’: return Math.round(width*(Math.cos(Math.asin((width-i-1)/width)))); case ‘slide’: return Math.round(width*(Math.atan2(i,width/i))); case ‘jut’: return Math.round(width*(Math.atan2(width,(width-i-1)))); case ‘curl’: return Math.round(width*(Math.atan(i))); case ’tear’: return Math.round(width*(Math.cos(i))); case ‘wicked’: return Math.round(width*(Math.tan(i))); case ’long’: return Math.round(width*(Math.sqrt(i))); case ‘sculpt’: return Math.round(width*(Math.log((width-i-1),width))); case ‘dogfold’: case ‘dog’: return (i\u00261) ? (i+1) : width; case ‘dog2’: return (i\u00262) ? (i+1) : width; case ‘dog3’: return (i\u00263) ? (i+1) : width; case ‘fray’: return (i%2)*width; case ’notch’: return width; case ‘bevelfold’: case ‘bevel’: return i+1; case ‘steep’: return i/2 + 1; case ‘invsteep’:return (width-i)/2+1; } };\n.fn.corner = function(options) { // in 1.3+ we can fix mistakes with the ready state if (this.length == 0) { if (!.isReady \u0026\u0026 this.selector) { var s = this.selector, c = this.context; (function() {(s,c).corner(options); }); } return this; }\nreturn this.each(function(index){ var this =(this), // meta values override options o = [this.attr(.fn.corner.defaults.metaAttr) || '', options || ''].join(' ').toLowerCase(), keep = /keep/.test(o), // keep borders? cc = ((o.match(/cc:(#[0-9a-f]+)/)||[])[1]), // corner color sc = ((o.match(/sc:(#[0-9a-f]+)/)||[])[1]), // strip color width = parseInt((o.match(/(\\d+)px/)||[])[1]) || 10, // corner width re = /round|bevelfold|bevel|notch|bite|cool|sharp|slide|jut|curl|tear|fray|wicked|sculpt|long|dog3|dog2|dogfold|dog|invsteep|steep/, fx = ((o.match(re)||['round'])[0]), fold = /dogfold|bevelfold/.test(o), edges = { T:0, B:1 }, opts = { TL: /top|tl|left/.test(o), TR: /top|tr|right/.test(o), BL: /bottom|bl|left/.test(o), BR: /bottom|br|right/.test(o) }, // vars used in func later strip, pad, cssHeight, j, bot, d, ds, bw, i, w, e, c, common, horz; if ( !opts.TL \u0026\u0026 !opts.TR \u0026\u0026 !opts.BL \u0026\u0026 !opts.BR ) opts = { TL:1, TR:1, BL:1, BR:1 }; // support native rounding if (.fn.corner.defaults.useNative \u0026\u0026 fx == 'round' \u0026\u0026 (radius || moz || webkit) \u0026\u0026 !cc \u0026\u0026 !sc) { if (opts.TL) this.css(radius ? 'border-top-left-radius' : moz ? '-moz-border-radius-topleft' : '-webkit-border-top-left-radius', width + 'px'); if (opts.TR)this.css(radius ? 'border-top-right-radius' : moz ? '-moz-border-radius-topright' : '-webkit-border-top-right-radius', width + 'px'); if (opts.BL) this.css(radius ? 'border-bottom-left-radius' : moz ? '-moz-border-radius-bottomleft' : '-webkit-border-bottom-left-radius', width + 'px'); if (opts.BR)this.css(radius ? 'border-bottom-right-radius' : moz ? '-moz-border-radius-bottomright' : '-webkit-border-bottom-right-radius', width + 'px'); return; } strip = document.createElement('div'); (strip).css({ overflow: 'hidden', height: '1px', minHeight: '1px', fontSize: '1px', backgroundColor: sc || 'transparent', borderStyle: 'solid' }); pad = { T: parseInt(.css(this,'paddingTop'))||0, R: parseInt(.css(this,'paddingRight'))||0, B: parseInt(.css(this,'paddingBottom'))||0, L: parseInt(.css(this,'paddingLeft'))||0 }; if (typeof this.style.zoom != undefined) this.style.zoom = 1; // force 'hasLayout' in IE if (!keep) this.style.border = 'none'; strip.style.borderColor = cc || gpc(this.parentNode); cssHeight =(this).outerHeight(); for (j in edges) { bot = edges[j]; // only add stips if needed if ((bot \u0026\u0026 (opts.BL || opts.BR)) || (!bot \u0026\u0026 (opts.TL || opts.TR))) { strip.style.borderStyle = 'none '+(opts[j+'R']?'solid':'none')+' none '+(opts[j+'L']?'solid':'none'); d = document.createElement('div'); (d).addClass('jquery-corner'); ds = d.style; bot ? this.appendChild(d) : this.insertBefore(d, this.firstChild); if (bot \u0026\u0026 cssHeight != 'auto') { if (.css(this,'position') == 'static') this.style.position = 'relative'; ds.position = 'absolute'; ds.bottom = ds.left = ds.padding = ds.margin = '0'; if (expr) ds.setExpression('width', 'this.parentNode.offsetWidth'); else ds.width = '100%'; } else if (!bot \u0026\u0026 .browser.msie) { if (.css(this,'position') == 'static') this.style.position = 'relative'; ds.position = 'absolute'; ds.top = ds.left = ds.right = ds.padding = ds.margin = '0'; // fix ie6 problem when blocked element has a border width if (expr) { bw = sz(this,'borderLeftWidth') + sz(this,'borderRightWidth'); ds.setExpression('width', 'this.parentNode.offsetWidth - '+bw+'+ \"px\"'); } else ds.width = '100%'; } else { ds.position = 'relative'; ds.margin = !bot ? '-'+pad.T+'px -'+pad.R+'px '+(pad.T-width)+'px -'+pad.L+'px' : (pad.B-width)+'px -'+pad.R+'px -'+pad.B+'px -'+pad.L+'px'; } for (i=0; i \u0026lt; width; i++) { w = Math.max(0,getWidth(fx,i, width)); e = strip.cloneNode(false); e.style.borderWidth = '0 '+(opts[j+'R']?w:0)+'px 0 '+(opts[j+'L']?w:0)+'px'; bot ? d.appendChild(e) : d.insertBefore(e, d.firstChild); } if (fold \u0026\u0026 .support.boxModel) { if (bot \u0026\u0026 noBottomFold) continue; for (c in opts) { if (!opts[c]) continue; if (bot \u0026\u0026 (c == 'TL' || c == 'TR')) continue; if (!bot \u0026\u0026 (c == 'BL' || c == 'BR')) continue; common = { position: 'absolute', border: 'none', margin: 0, padding: 0, overflow: 'hidden', backgroundColor: strip.style.borderColor };horz = ('\u0026lt;div/\u0026gt;').css(common).css({ width: width + 'px', height: '1px' }); switch(c) { case 'TL':horz.css({ bottom: 0, left: 0 }); break; case 'TR': horz.css({ bottom: 0, right: 0 }); break; case 'BL':horz.css({ top: 0, left: 0 }); break; case 'BR': horz.css({ top: 0, right: 0 }); break; } d.appendChild(horz[0]); var vert =('\u0026lt;div/\u0026gt;').css(common).css({ top: 0, bottom: 0, width: '1px', height: width + 'px' }); switch(c) { case 'TL': vert.css({ left: width }); break; case 'TR':vert.css({ right: width }); break; case 'BL': vert.css({ left: width }); break; case 'BR':vert.css({ right: width }); break; } d.appendChild(vert[0]); } } } } }); };.fn.uncorner = function() { if (radius || moz || webkit) this.css(radius ? ‘border-radius’ : moz ? ‘-moz-border-radius’ : ‘-webkit-border-radius’, 0); (‘div.jquery-corner’, this).remove(); return this; };\n// expose options.fn.corner.defaults = { useNative: true, // true if plugin should attempt to use native browser support for border radius rounding metaAttr: ‘data-corner’ // name of meta attribute to use for options };\n})(jQuery);\n","wordCount":"1484","inLanguage":"zh","datePublished":"2014-09-11T08:34:51Z","dateModified":"2014-09-11T08:34:51Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E7%BA%AF%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0css%E5%9C%86%E8%A7%92/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">纯代码实现CSS圆角</h1><div class=post-description>[![QQ截图20140911163418](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)](http://www.etongwl.com/images/2014/09/QQ截图20140911163418.png)效果图...</div><div class=post-meta><span title='2014-09-11 08:34:51 +0000 UTC'>2014年9月11日</span>&nbsp;·&nbsp;<span>7 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p><a href=http://www.etongwl.com/images/2014/09/QQ%E6%88%AA%E5%9B%BE20140911163418.png><img alt=QQ截图20140911163418 loading=lazy src=http://www.etongwl.com/images/2014/09/QQ%E6%88%AA%E5%9B%BE20140911163418.png></a>效果图</p><p>我这里说的是纯代码，是指的不使用图片实现圆角，图片实现圆角，这里就不说了。</p><p>纯代码实现圆角主要有3种方法：</p><p><strong><span style=color:red>第一种：CSS3圆角</span></strong></p><div class=snippet-container style=color:#000><div class="sh_ide-codewarrior snippet-wrap"></div><div class=cnblogs_Highlighter><div id=highlighter_950895 class="syntaxhighlighter nogutter csharp"><table border=0 cellspacing=0 cellpadding=0><tr><td class=code><div class=container><div class="line number1 index0 alt2">`#chaomao{`</div><pre><code>          &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+            `    ``border-radius:2px 2px 2px 2px;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+            `}`
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>上面代码的意思是左上、右上、右下、右下分别2px的圆角
+</code></pre></div><p>当然也可以简写：border-radius:2px</p><p>方向是从左上到左下逆时针</p><p>也可以分别指定</p><div class=snippet-container style=color:#000><div class="sh_ide-codewarrior snippet-wrap"></div><div class=cnblogs_Highlighter><div id=highlighter_635576 class="syntaxhighlighter nogutter csharp"><table border=0 cellspacing=0 cellpadding=0><tr><td class=code><div class=container><div class="line number1 index0 alt2">`#chaomao{`</div><pre><code>          &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+            `    ``border-top-left-radius:4px 2px;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+            `    ``border-top-right-radius:3px 4px;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number4 index3 alt1&quot;&gt;
+            `    ``border-bottom-right-radius:6px 2px;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number5 index4 alt2&quot;&gt;
+            `    ``border-bottom-left-radius:3px 4px;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number6 index5 alt1&quot;&gt;
+            `}`
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>意思很简明
+</code></pre></div><p>火狐等浏览器也支持自己的私有圆角属性</p><p>Firefox支持border-radius(圆角)：-moz-border-radius:2px</p><p>webkit内核的Safari和Chrome支持border-radius(圆角)：-webkit-border-radius:2px</p><p>Opera支持border-radius(圆角)：border-radius:2px</p><p>CSS3实现圆角最简单了，可惜IE6-8不支持</p><p><strong><span style=color:red>第二种：用CSS+html代码</span></strong></p><p>百度知道的首页圆角就是用这种方法实现的</p><p>有点：兼容所有浏览器，</p><p>缺点：需要添加额外的HTML标签，维护比较麻烦</p><p> 实现原理是利用多个空层，上面一层比下面少1px，从而使边角看起来是一个圆弧状</p><p>HTML代码：</p><div class=snippet-container style=color:#000><div class="sh_ide-codewarrior snippet-wrap"></div><div class=cnblogs_Highlighter><div id=highlighter_115057 class="syntaxhighlighter nogutter csharp"><table border=0 cellspacing=0 cellpadding=0><tr><td class=code><div class=container><div class="line number1 index0 alt2">`&lt;div>`</div><pre><code>          &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+            `    ``&amp;lt;strong ``class``=``&quot;b1&quot;``&amp;gt;&amp;lt;/strong&amp;gt;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+            `    ``&amp;lt;strong ``class``=``&quot;b2&quot;``&amp;gt;&amp;lt;/strong&amp;gt;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number4 index3 alt1&quot;&gt;
+            `    ``&amp;lt;strong ``class``=``&quot;b3&quot;``&amp;gt;&amp;lt;/strong&amp;gt;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number5 index4 alt2&quot;&gt;
+            `    ``&amp;lt;strong ``class``=``&quot;b4&quot;``&amp;gt;&amp;lt;/strong&amp;gt;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number6 index5 alt1&quot;&gt;
+            `    ``&amp;lt;div ``class``=``&quot;content&quot;``&amp;gt;文字内容&amp;lt;/div&amp;gt;`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number7 index6 alt2&quot;&gt;
+            `&amp;lt;/div&amp;gt;`
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>CSS代码
+</code></pre></div><div class=cnblogs_Highlighter style=color:#000><div id=highlighter_509067 class="syntaxhighlighter nogutter css"><table border=0 cellspacing=0 cellpadding=0><tr><td class=code><div class=container><div class="line number1 index0 alt2">`b``1``,.b``2``,.b``3``,.b``4``,.b``5``,.b``6``,.b``7``,.b``8``{`</div><pre><code>        &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+          `    ``height``:``1px``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+          `    ``font-size``:``1px``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number4 index3 alt1&quot;&gt;
+          `    ``overflow``:``hidden``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number5 index4 alt2&quot;&gt;
+          `    ``display``:``block``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number6 index5 alt1&quot;&gt;
+          `}`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number7 index6 alt2&quot;&gt;
+          `.b``1``,.b``8``{`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number8 index7 alt1&quot;&gt;
+          `    ``margin``:``` `5px``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number9 index8 alt2&quot;&gt;
+          `}`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number10 index9 alt1&quot;&gt;
+          `.b``2``,.b``7``{`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number11 index10 alt2&quot;&gt;
+          `    ``margin``:``` `3px``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number12 index11 alt1&quot;&gt;
+          `    ``border-right``:``2px` `solid``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number13 index12 alt2&quot;&gt;
+          `    ``border-left``:``2px` `solid``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number14 index13 alt1&quot;&gt;
+          `}`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number15 index14 alt2&quot;&gt;
+          `.b``3``,.b``6``{`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number16 index15 alt1&quot;&gt;
+          `    ``margin``:``` `2px``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number17 index16 alt2&quot;&gt;
+          `    ``border-right``:``1px` `solid``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number18 index17 alt1&quot;&gt;
+          `    ``border-left``:``1px` `solid``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number19 index18 alt2&quot;&gt;
+          `}`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number20 index19 alt1&quot;&gt;
+          `.b``4``,.b``5``{`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number21 index20 alt2&quot;&gt;
+          `    ``margin``:``` `1px``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number22 index21 alt1&quot;&gt;
+          `    ``border-right``:``1px` `solid``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number23 index22 alt2&quot;&gt;
+          `    ``border-left``:``1px` `solid``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number24 index23 alt1&quot;&gt;
+          `    ``height``:``2px``;`
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number25 index24 alt2&quot;&gt;
+          `}`
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre></div></div><div class=snippet-container style=color:#000><pre><code>  **&lt;span style=&quot;color: #ff0000;&quot;&gt;第三种：利用jQuery圆角插件代码实现圆角&lt;/span&gt;**
+</code></pre></div><pre><code>优点：兼容所有浏览器
+
+
+
+
+
+缺点：需要使用jQuery插件
+
+
+
+
+
+这是一个jQuery插件，使用的时候，需要jQuery文件一起，使用方法很简单
+</code></pre><div class=snippet-container style=color:#000><div class="sh_ide-codewarrior snippet-wrap"><div class=cnblogs_code>```
+<span style=color:maroon>$("#chaomao").corner("5px")</span>
+```</div><pre><code>    它就实现了id值问哦chaomao的元素，5px的圆角
+</code></pre><p><a href=http://www.javascript100.com/plug/jquery.corner.js>jQuery圆角插件</a></p><pre><code>    &amp;nbsp;
+  
+
+  
+  
+
+    jQuery.js内容
+  
+
+  
+  ```
+</code></pre><p>/*!</p><ul><li>jQuery corner plugin: simple corner rounding</li><li>Examples and documentation at: <a href=http://jquery.malsup.com/corner/>http://jquery.malsup.com/corner/</a></li><li>version 2.12 (23-MAY-2011)</li><li>Requires jQuery v1.3.2 or later</li><li>Dual licensed under the MIT and GPL licenses:</li><li><a href=http://www.opensource.org/licenses/mit-license.php>http://www.opensource.org/licenses/mit-license.php</a></li><li><a href=http://www.gnu.org/licenses/gpl.html>http://www.gnu.org/licenses/gpl.html</a></li><li>Authors: Dave Methvin and Mike Alsup
+*/</li></ul><p>/**</p><ul><li>corner() takes a single string argument: <span class="katex math inline">(&rsquo;#myDiv&rsquo;).corner(&ldquo;effect corners width&rdquo;)</li><li></li><li>effect: name of the effect to apply, such as round, bevel, notch, bite, etc (default is round).</li><li>corners: one or more of: top, bottom, tr, tl, br, or bl. (default is all corners)</li><li>width: width of the effect; in the case of rounded corners this is the radius.</li><li><pre><code>      specify this value using the px suffix such as 10px (yes, it must be pixels).
+</code></pre></li></ul><p>*/
+;(function(</span>) {</p><p>var style = document.createElement(&lsquo;div&rsquo;).style,
+moz = style[&lsquo;MozBorderRadius&rsquo;] !== undefined,
+webkit = style[&lsquo;WebkitBorderRadius&rsquo;] !== undefined,
+radius = style[&lsquo;borderRadius&rsquo;] !== undefined || style[&lsquo;BorderRadius&rsquo;] !== undefined,
+mode = document.documentMode || 0,
+noBottomFold = <span class="katex math inline">.browser.msie && ((</span>.browser.version &lt; 8 && !mode) || mode &lt; 8),</p><pre><code>expr = &lt;span class=&quot;katex math inline&quot;&gt;.browser.msie &amp;&amp; (function() {
+    var div = document.createElement('div');
+    try { div.style.setExpression('width','0+0'); div.style.removeExpression('width'); }
+    catch(e) { return false; }
+    return true;
+})();&lt;/span&gt;.support = &lt;span class=&quot;katex math inline&quot;&gt;.support || {};&lt;/span&gt;.support.borderRadius = moz || webkit || radius; // so you can do:  if (!&lt;span class=&quot;katex math inline&quot;&gt;.support.borderRadius)&lt;/span&gt;('#myDiv').corner();
+</code></pre><p>function sz(el, p) {
+return parseInt(<span class="katex math inline">.css(el,p))||0;
+};
+function hex2(s) {
+s = parseInt(s).toString(16);
+return ( s.length&lt;2 ) ? &lsquo;0&rsquo;+s : s;
+};
+function gpc(node) {
+while(node) {
+var v =</span>.css(node,&lsquo;backgroundColor&rsquo;), rgb;
+if (v && v != &rsquo;transparent&rsquo; && v != &lsquo;rgba(0, 0, 0, 0)&rsquo;) {
+if (v.indexOf(&lsquo;rgb&rsquo;) >= 0) {
+rgb = v.match(/\d+/g);
+return &lsquo;#&rsquo;+ hex2(rgb[0]) + hex2(rgb[1]) + hex2(rgb[2]);
+}
+return v;
+}
+if (node.nodeName.toLowerCase() == &lsquo;html&rsquo;)
+break;
+node = node.parentNode; // keep walking if transparent
+}
+return &lsquo;#ffffff&rsquo;;
+};</p><p>function getWidth(fx, i, width) {
+switch(fx) {
+case &lsquo;round&rsquo;: return Math.round(width*(1-Math.cos(Math.asin(i/width))));
+case &lsquo;cool&rsquo;: return Math.round(width*(1+Math.cos(Math.asin(i/width))));
+case &lsquo;sharp&rsquo;: return width-i;
+case &lsquo;bite&rsquo;: return Math.round(width*(Math.cos(Math.asin((width-i-1)/width))));
+case &lsquo;slide&rsquo;: return Math.round(width*(Math.atan2(i,width/i)));
+case &lsquo;jut&rsquo;: return Math.round(width*(Math.atan2(width,(width-i-1))));
+case &lsquo;curl&rsquo;: return Math.round(width*(Math.atan(i)));
+case &rsquo;tear&rsquo;: return Math.round(width*(Math.cos(i)));
+case &lsquo;wicked&rsquo;: return Math.round(width*(Math.tan(i)));
+case &rsquo;long&rsquo;: return Math.round(width*(Math.sqrt(i)));
+case &lsquo;sculpt&rsquo;: return Math.round(width*(Math.log((width-i-1),width)));
+case &lsquo;dogfold&rsquo;:
+case &lsquo;dog&rsquo;: return (i&amp;1) ? (i+1) : width;
+case &lsquo;dog2&rsquo;: return (i&amp;2) ? (i+1) : width;
+case &lsquo;dog3&rsquo;: return (i&amp;3) ? (i+1) : width;
+case &lsquo;fray&rsquo;: return (i%2)*width;
+case &rsquo;notch&rsquo;: return width;
+case &lsquo;bevelfold&rsquo;:
+case &lsquo;bevel&rsquo;: return i+1;
+case &lsquo;steep&rsquo;: return i/2 + 1;
+case &lsquo;invsteep&rsquo;:return (width-i)/2+1;
+}
+};</p><p><span class="katex math inline">.fn.corner = function(options) {
+// in 1.3+ we can fix mistakes with the ready state
+if (this.length == 0) {
+if (!</span>.isReady && this.selector) {
+var s = this.selector, c = this.context;
+<span class="katex math inline">(function() {</span>(s,c).corner(options);
+});
+}
+return this;
+}</p><pre><code>return this.each(function(index){
+    var &lt;span class=&quot;katex math inline&quot;&gt;this =&lt;/span&gt;(this),
+        // meta values override options
+        o = [&lt;span class=&quot;katex math inline&quot;&gt;this.attr(&lt;/span&gt;.fn.corner.defaults.metaAttr) || '', options || ''].join(' ').toLowerCase(),
+        keep = /keep/.test(o),                       // keep borders?
+        cc = ((o.match(/cc:(#[0-9a-f]+)/)||[])[1]),  // corner color
+        sc = ((o.match(/sc:(#[0-9a-f]+)/)||[])[1]),  // strip color
+        width = parseInt((o.match(/(\d+)px/)||[])[1]) || 10, // corner width
+        re = /round|bevelfold|bevel|notch|bite|cool|sharp|slide|jut|curl|tear|fray|wicked|sculpt|long|dog3|dog2|dogfold|dog|invsteep|steep/,
+        fx = ((o.match(re)||['round'])[0]),
+        fold = /dogfold|bevelfold/.test(o),
+        edges = { T:0, B:1 },
+        opts = {
+            TL:  /top|tl|left/.test(o),       TR:  /top|tr|right/.test(o),
+            BL:  /bottom|bl|left/.test(o),    BR:  /bottom|br|right/.test(o)
+        },
+        // vars used in func later
+        strip, pad, cssHeight, j, bot, d, ds, bw, i, w, e, c, common, &lt;span class=&quot;katex math inline&quot;&gt;horz;
+    
+    if ( !opts.TL &amp;&amp; !opts.TR &amp;&amp; !opts.BL &amp;&amp; !opts.BR )
+        opts = { TL:1, TR:1, BL:1, BR:1 };
+        
+    // support native rounding
+    if (&lt;/span&gt;.fn.corner.defaults.useNative &amp;&amp; fx == 'round' &amp;&amp; (radius || moz || webkit) &amp;&amp; !cc &amp;&amp; !sc) {
+        if (opts.TL)
+            &lt;span class=&quot;katex math inline&quot;&gt;this.css(radius ? 'border-top-left-radius' : moz ? '-moz-border-radius-topleft' : '-webkit-border-top-left-radius', width + 'px');
+        if (opts.TR)&lt;/span&gt;this.css(radius ? 'border-top-right-radius' : moz ? '-moz-border-radius-topright' : '-webkit-border-top-right-radius', width + 'px');
+        if (opts.BL)
+            &lt;span class=&quot;katex math inline&quot;&gt;this.css(radius ? 'border-bottom-left-radius' : moz ? '-moz-border-radius-bottomleft' : '-webkit-border-bottom-left-radius', width + 'px');
+        if (opts.BR)&lt;/span&gt;this.css(radius ? 'border-bottom-right-radius' : moz ? '-moz-border-radius-bottomright' : '-webkit-border-bottom-right-radius', width + 'px');
+        return;
+    }
+        
+    strip = document.createElement('div');
+    &lt;span class=&quot;katex math inline&quot;&gt;(strip).css({
+        overflow: 'hidden',
+        height: '1px',
+        minHeight: '1px',
+        fontSize: '1px',
+        backgroundColor: sc || 'transparent',
+        borderStyle: 'solid'
+    });
+
+    pad = {
+        T: parseInt(&lt;/span&gt;.css(this,'paddingTop'))||0,     R: parseInt(&lt;span class=&quot;katex math inline&quot;&gt;.css(this,'paddingRight'))||0,
+        B: parseInt(&lt;/span&gt;.css(this,'paddingBottom'))||0,  L: parseInt(&lt;span class=&quot;katex math inline&quot;&gt;.css(this,'paddingLeft'))||0
+    };
+
+    if (typeof this.style.zoom != undefined) this.style.zoom = 1; // force 'hasLayout' in IE
+    if (!keep) this.style.border = 'none';
+    strip.style.borderColor = cc || gpc(this.parentNode);
+    cssHeight =&lt;/span&gt;(this).outerHeight();
+
+    for (j in edges) {
+        bot = edges[j];
+        // only add stips if needed
+        if ((bot &amp;&amp; (opts.BL || opts.BR)) || (!bot &amp;&amp; (opts.TL || opts.TR))) {
+            strip.style.borderStyle = 'none '+(opts[j+'R']?'solid':'none')+' none '+(opts[j+'L']?'solid':'none');
+            d = document.createElement('div');
+            &lt;span class=&quot;katex math inline&quot;&gt;(d).addClass('jquery-corner');
+            ds = d.style;
+
+            bot ? this.appendChild(d) : this.insertBefore(d, this.firstChild);
+
+            if (bot &amp;&amp; cssHeight != 'auto') {
+                if (&lt;/span&gt;.css(this,'position') == 'static')
+                    this.style.position = 'relative';
+                ds.position = 'absolute';
+                ds.bottom = ds.left = ds.padding = ds.margin = '0';
+                if (expr)
+                    ds.setExpression('width', 'this.parentNode.offsetWidth');
+                else
+                    ds.width = '100%';
+            }
+            else if (!bot &amp;&amp; &lt;span class=&quot;katex math inline&quot;&gt;.browser.msie) {
+                if (&lt;/span&gt;.css(this,'position') == 'static')
+                    this.style.position = 'relative';
+                ds.position = 'absolute';
+                ds.top = ds.left = ds.right = ds.padding = ds.margin = '0';
+                
+                // fix ie6 problem when blocked element has a border width
+                if (expr) {
+                    bw = sz(this,'borderLeftWidth') + sz(this,'borderRightWidth');
+                    ds.setExpression('width', 'this.parentNode.offsetWidth - '+bw+'+ &quot;px&quot;');
+                }
+                else
+                    ds.width = '100%';
+            }
+            else {
+                ds.position = 'relative';
+                ds.margin = !bot ? '-'+pad.T+'px -'+pad.R+'px '+(pad.T-width)+'px -'+pad.L+'px' : 
+                                    (pad.B-width)+'px -'+pad.R+'px -'+pad.B+'px -'+pad.L+'px';                
+            }
+
+            for (i=0; i &amp;lt; width; i++) {
+                w = Math.max(0,getWidth(fx,i, width));
+                e = strip.cloneNode(false);
+                e.style.borderWidth = '0 '+(opts[j+'R']?w:0)+'px 0 '+(opts[j+'L']?w:0)+'px';
+                bot ? d.appendChild(e) : d.insertBefore(e, d.firstChild);
+            }
+            
+            if (fold &amp;&amp; &lt;span class=&quot;katex math inline&quot;&gt;.support.boxModel) {
+                if (bot &amp;&amp; noBottomFold) continue;
+                for (c in opts) {
+                    if (!opts[c]) continue;
+                    if (bot &amp;&amp; (c == 'TL' || c == 'TR')) continue;
+                    if (!bot &amp;&amp; (c == 'BL' || c == 'BR')) continue;
+                    
+                    common = { position: 'absolute', border: 'none', margin: 0, padding: 0, overflow: 'hidden', backgroundColor: strip.style.borderColor };&lt;/span&gt;horz = &lt;span class=&quot;katex math inline&quot;&gt;('&amp;lt;div/&amp;gt;').css(common).css({ width: width + 'px', height: '1px' });
+                    switch(c) {
+                    case 'TL':&lt;/span&gt;horz.css({ bottom: 0, left: 0 }); break;
+                    case 'TR': &lt;span class=&quot;katex math inline&quot;&gt;horz.css({ bottom: 0, right: 0 }); break;
+                    case 'BL':&lt;/span&gt;horz.css({ top: 0, left: 0 }); break;
+                    case 'BR': &lt;span class=&quot;katex math inline&quot;&gt;horz.css({ top: 0, right: 0 }); break;
+                    }
+                    d.appendChild(&lt;/span&gt;horz[0]);
+                    
+                    var &lt;span class=&quot;katex math inline&quot;&gt;vert =&lt;/span&gt;('&amp;lt;div/&amp;gt;').css(common).css({ top: 0, bottom: 0, width: '1px', height: width + 'px' });
+                    switch(c) {
+                    case 'TL': &lt;span class=&quot;katex math inline&quot;&gt;vert.css({ left: width }); break;
+                    case 'TR':&lt;/span&gt;vert.css({ right: width }); break;
+                    case 'BL': &lt;span class=&quot;katex math inline&quot;&gt;vert.css({ left: width }); break;
+                    case 'BR':&lt;/span&gt;vert.css({ right: width }); break;
+                    }
+                    d.appendChild(&lt;span class=&quot;katex math inline&quot;&gt;vert[0]);
+                }
+            }
+        }
+    }
+});
+</code></pre><p>};</span>.fn.uncorner = function() {
+if (radius || moz || webkit)
+this.css(radius ? &lsquo;border-radius&rsquo; : moz ? &lsquo;-moz-border-radius&rsquo; : &lsquo;-webkit-border-radius&rsquo;, 0);
+<span class="katex math inline">(&lsquo;div.jquery-corner&rsquo;, this).remove();
+return this;
+};</p><p>// expose options</span>.fn.corner.defaults = {
+useNative: true, // true if plugin should attempt to use native browser support for border radius rounding
+metaAttr: &lsquo;data-corner&rsquo; // name of meta attribute to use for options
+};</p><p>})(jQuery);</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/%E4%BA%92%E8%81%94%E7%BD%91/>互联网</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/file_get_contents%E8%8E%B7%E5%8F%96https%E5%87%BA%E7%8E%B0%E8%BF%99%E4%B8%AA%E9%94%99%E8%AF%AFunable-to-find-the-wrapper-https-did/><span class=title>« 上一页</span>
+<span>file_get_contents()获取https出现这个错误Unable to find the wrapper “https” – did</span>
+</a><a class=next href=https://blog.zdltech.com/posts/css3%E5%AE%9E%E7%8E%B0%E5%9C%86%E5%BD%A2%E4%BB%A3%E7%A0%81/><span class=title>下一页 »</span>
+<span>CSS3实现圆形代码</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

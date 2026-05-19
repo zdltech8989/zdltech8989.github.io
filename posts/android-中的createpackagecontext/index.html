@@ -1,0 +1,159 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android 中的CreatePackageContext() | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="- /** - * Return a new Context object for the given application name. This - * Context is the same as what the named application gets when it is - * l..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android 中的CreatePackageContext()"><meta property="og:description" content="- /** - * Return a new Context object for the given application name. This - * Context is the same as what the named application gets when it is - * l..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-04-25T07:25:29+00:00"><meta property="article:modified_time" content="2017-04-25T07:25:29+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android 中的CreatePackageContext()"><meta name=twitter:description content="- /** - * Return a new Context object for the given application name. This - * Context is the same as what the named application gets when it is - * l..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android 中的CreatePackageContext()","item":"https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android 中的CreatePackageContext()","name":"Android 中的CreatePackageContext()","description":"- /** - * Return a new Context object for the given application name. This - * Context is the same as what the named application gets when it is - * l...","keywords":["android","移动开发"],"articleBody":" /**\n* Return a new Context object for the given application name. This\n* Context is the same as what the named application gets when it is\n* launched, containing the same resources and class loader. Each call to\n* this method returns a new instance of a Context object; Context objects\n* are not shared, however they share common state (Resources, ClassLoader,\n* etc) so the Context instance itself is fairly lightweight.\n*\n* Throws {@link PackageManager.NameNotFoundException} if there is no\n* application with the given package name.\n*\n* Throws {@link java.lang.SecurityException} if the Context requested\n* can not be loaded into the caller’s process for security reasons (see\n* {@link #CONTEXT_INCLUDE_CODE} for more information}.\n*\n* @param packageName Name of the application’s package.\n* @param flags Option flags, one of {@link #CONTEXT_INCLUDE_CODE}\n* or {@link #CONTEXT_IGNORE_SECURITY}.\n*\n* @return A Context for the application.\n*\n* @throws java.lang.SecurityException\n* @throws PackageManager.NameNotFoundException if there is no application with\n* the given package name\n*/\nOverride\npublic Context createPackageContext(String packageName, int flags)\nthrows PackageManager.NameNotFoundException {\nif (packageName.equals(“system”) || packageName.equals(“android”)) {\nfinal ContextImpl context = new ContextImpl(mMainThread.getSystemContext());\ncontext.mBasePackageName = mBasePackageName;\nreturn context;\n}\nLoadedApk pi =\nmMainThread.getPackageInfo(packageName, mResources.getCompatibilityInfo(), flags);\nif (pi != null) {\nContextImpl c = new ContextImpl();\nc.mRestricted = (flags \u0026 CONTEXT_RESTRICTED) == CONTEXT_RESTRICTED;\nc.init(pi, null, mMainThread, mResources, mBasePackageName);\nif (c.mResources != null) {\nreturn c;\n}\n}\n// Should be a better exception.\nthrow new PackageManager.NameNotFoundException(\n“Application package “ + packageName + ” not found”);\n}\n主要作用是:创建其它程序的Context,通过创建的这个Context，就可以访问该软件包的资源，甚至可以执行其它软件包的代码。\n使用：\n","wordCount":"594","inLanguage":"zh","datePublished":"2017-04-25T07:25:29Z","dateModified":"2017-04-25T07:25:29Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android 中的CreatePackageContext()</h1><div class=post-description>- /** - * Return a new Context object for the given application name. This - * Context is the same as what the named application gets when it is - * l...</div><div class=post-meta><span title='2017-04-25 07:25:29 +0000 UTC'>2017年4月25日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><ul><li><p><span class=comment>/**</span></p></li><li><p><span class=comment>     * Return a new Context object for the given application name.  This</span></p></li><li><p><span class=comment>     * Context is the same as what the named application gets when it is</span></p></li><li><p><span class=comment>     * launched, containing the same resources and class loader.  Each call to</span></p></li><li><p><span class=comment>     * this method returns a new instance of a Context object; Context objects</span></p></li><li><p><span class=comment>     * are not shared, however they share common state (Resources, ClassLoader,</span></p></li><li><p><span class=comment>     * etc) so the Context instance itself is fairly lightweight.</span></p></li><li><p><span class=comment>     *</span></p></li><li><p><span class=comment>     * 
+Throws {@link PackageManager.NameNotFoundException} if there is no</span></p></li><li><p><span class=comment>     * application with the given package name.</span></p></li><li><p><span class=comment>     *</span></p></li><li><p><span class=comment>     * 
+Throws {@link java.lang.SecurityException} if the Context requested</span></p></li><li><p><span class=comment>     * can not be loaded into the caller’s process for security reasons (see</span></p></li><li><p><span class=comment>     * {@link #CONTEXT_INCLUDE_CODE} for more information}.</span></p></li><li><p><span class=comment>     *</span></p></li><li><p><span class=comment>     * @param packageName Name of the application’s package.</span></p></li><li><p><span class=comment>     * @param flags Option flags, one of {@link #CONTEXT_INCLUDE_CODE}</span></p></li><li><p><span class=comment>     *              or {@link #CONTEXT_IGNORE_SECURITY}.</span></p></li><li><p><span class=comment>     *</span></p></li><li><p><span class=comment>     * @return A Context for the application.</span></p></li><li><p><span class=comment>     *</span></p></li><li><p><span class=comment>     * @throws java.lang.SecurityException</span></p></li><li><p><span class=comment>     * @throws PackageManager.NameNotFoundException if there is no application with</span></p></li><li><p><span class=comment>     * the given package name</span></p></li><li><p><span class=comment>     */</span></p></li><li></li><li><p>Override</p></li><li><p><span class=keyword>public</span> Context createPackageContext(String packageName, <span class=keyword>int</span> flags)</p></li><li><p><span class=keyword>throws</span> PackageManager.NameNotFoundException {</p></li><li><p><span class=keyword>if</span> (packageName.equals(<span class=string>“system”</span>) || packageName.equals(<span class=string>“android”</span>)) {</p></li><li><p><span class=keyword>final</span> ContextImpl context = <span class=keyword>new</span> ContextImpl(mMainThread.getSystemContext());</p></li><li><p>context.mBasePackageName = mBasePackageName;</p></li><li><p><span class=keyword>return</span> context;</p></li><li><p>}</p></li><li></li><li></li><li><p>LoadedApk pi =</p></li><li><p>mMainThread.getPackageInfo(packageName, mResources.getCompatibilityInfo(), flags);</p></li><li><p><span class=keyword>if</span> (pi != <span class=keyword>null</span>) {</p></li><li><p>ContextImpl c = <span class=keyword>new</span> ContextImpl();</p></li><li><p>c.mRestricted = (flags & CONTEXT_RESTRICTED) == CONTEXT_RESTRICTED;</p></li><li><p>c.init(pi, <span class=keyword>null</span>, mMainThread, mResources, mBasePackageName);</p></li><li><p><span class=keyword>if</span> (c.mResources != <span class=keyword>null</span>) {</p></li><li><p><span class=keyword>return</span> c;</p></li><li><p>}</p></li><li><p>}</p></li><li></li><li></li><li><p><span class=comment>// Should be a better exception.</span></p></li><li><p><span class=keyword>throw</span> <span class=keyword>new</span> PackageManager.NameNotFoundException(</p></li><li><p><span class=string>“Application package “</span> + packageName + <span class=string>” not found”</span>);</p></li><li><p>}</p></li></ul><p>主要作用是:创建其它程序的Context,通过创建的这个Context，就可以访问该软件包的资源，甚至可以执行其它软件包的代码。</p><p>使用：</p><div class="top-box hide"></div><div class="top-box hide"></div><div class="top-box hide"></div><div class="dp-highlighter bg_java" data-original-code='[java] view plain copy print?try { Context c = createPackageContext("com.dolphin.demo", Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY); } catch (SecurityException e) { e.printStackTrace(); } catch (Exception e) { e.printStackTrace(); } ' data-snippet-id=ext.e216745d364363d31bd51dab68f1040a data-snippet-saved=false data-codota-status=done><div class=bar></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- Context c = createPackageContext(&lt;span class=&quot;string&quot;&gt;&amp;#8220;com.dolphin.demo&amp;#8221;&lt;/span&gt;, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SecurityException e) {
+
+- e.printStackTrace();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (Exception e) {
+
+- e.printStackTrace();
+
+- }
+</code></pre></div><p>通常一个软件是不能创建其它程序的Context的，除非它们拥有相同的用户ID与签名。用户ID是一个字符串标识，在程序的AndroidManifest.xml文件的manifest标签中指定，格式为android:shareUserId=”**”。安装在设备中的每一个apk程序，Android系统会给其分配一个单独的用户空间,其中android:shareUserId就是对应一个Linux用户ID，并且为它创建一个沙箱，以防止与其它应用程序产生影响。用户ID 在应用程序被安装到设备中时分配。通过SharedUserid,拥有同一个Userid的多个APK可以配置成运行在同一个进程中，所以默认就是可以互相访问任意数据，也可以配置成运行在不同的进程中, 同时可以访问其APK的数据目录下的资源(图片，数据库和文件），就像访问本程序的数据一样。</p><p>经常的用途：<br>如经常一些应用提供的换皮肤功能，实现方法大致有两种：<br>1）把需要替换的资源图片打包好之后，放在客户端指定的目录下面，切换皮肤，查找相应的资源时，直接切换资源查找的路径到该打包文件中对应的资源路径即可。<br>2）把需要替换的资源，放在一个空的android 应用程序的drawable-**目录下面即可，编译，运行该apk，查找资源时，就需要用到createPackageContext获取对应包名的Context实例，然后通过context来查找对应的资源。查找时，也有两种方式：<br>2.1）通过ID来查找资源图片；</p><div class="top-box hide"></div><div class="top-box hide"></div><div class="top-box hide"></div><div class="dp-highlighter bg_java" data-original-code='[java] view plain copy print?Context context; try { context = createPackageContext("com.dolphin.demo", Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY); txvA.setText(context.getResources().getText(R.string.message)); } catch (NameNotFoundException e) { e.printStackTrace(); } ' data-snippet-id=ext.e01c7aac1d066c4777c740ce3b393b50 data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[java]** [view plain](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;span data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;28&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+  
+  
+
+    &lt;span data-mod=&quot;popu_169&quot;&gt; [print](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;/span&gt;[?](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_167&quot;&gt;[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/272565)&lt;/span&gt;&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_170&quot;&gt;[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/272565/fork)&lt;/span&gt;
+  
+
+&lt;/div&gt;
+</code></pre></div><pre><code>- Context context;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- context = createPackageContext(&lt;span class=&quot;string&quot;&gt;&amp;#8220;com.dolphin.demo&amp;#8221;&lt;/span&gt;, Context.CONTEXT_INCLUDE_CODE
+
+- | Context.CONTEXT_IGNORE_SECURITY);
+
+- txvA.setText(context.getResources().getText(R.string.message));
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (NameNotFoundException e) {
+
+- e.printStackTrace();
+
+- }
+</code></pre></div><p>2.2）通过资源Name，反推出资源ID，然后查找对应的资源图片；</p><div class="top-box hide"></div><div class="top-box hide"></div><div class="top-box hide"></div><div class="dp-highlighter bg_java" data-original-code='[java] view plain copy print?/*** * @param clazz 目标资源的R.java * @param className R.java的内部类，如layout,string,drawable... * @param name 资源名称 * @return */ private int getResourseIdByName(Class clazz, String className, String name) { int id = 0; try { Class[] classes = clazz.getClasses(); // 获取R.java里的所有静态内部类 Class desireClass = null; for (int i = 0; i < classes.length; i++) { if (classes[i].getName().split("\\$")[1].equals(className)) { desireClass = classes[i]; break; } } if (desireClass != null) id = desireClass.getField(name).getInt(desireClass); } catch (IllegalArgumentException e) { e.printStackTrace(); } catch (SecurityException e) { e.printStackTrace(); } catch (IllegalAccessException e) { e.printStackTrace(); } catch (NoSuchFieldException e) { e.printStackTrace(); } return id; } Context context; try { context = createPackageContext("com.dolphin.demo", Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY); Class cls = context.getClassLoader().loadClass("com.dolphin.demo.R"); // 获得目标apk的R类 txvA.setText(context.getResources().getText(getResourseIdByName(cls, "string", "message"))); } catch (NameNotFoundException e) { e.printStackTrace(); } catch (ClassNotFoundException e) { e.printStackTrace(); } ' data-snippet-id=ext.f851c9c6bd9d83352b315f4930978998 data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[java]** [view plain](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;span data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;28&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+  
+  
+
+    &lt;span data-mod=&quot;popu_169&quot;&gt; [print](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;/span&gt;[?](http://blog.csdn.net/wangbole/article/details/22876179#)&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_167&quot;&gt;[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/272565)&lt;/span&gt;&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_170&quot;&gt;[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/272565/fork)&lt;/span&gt;
+  
+
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;comment&quot;&gt;/***  &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;    * @param clazz 目标资源的R.java  &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;    * @param className R.java的内部类，如layout,string,drawable&amp;#8230;  &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;    * @param name 资源名称  &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;    * @return  &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;    */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; getResourseIdByName(Class clazz, String className, String name) {
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- 
+- Class[] classes = clazz.getClasses(); &lt;span class=&quot;comment&quot;&gt;// 获取R.java里的所有静态内部类  &lt;/span&gt;
+
+- Class desireClass = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;; i &lt; classes.length; i++) {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (classes[i].getName().split(&lt;span class=&quot;string&quot;&gt;&amp;#8220;\\$&amp;#8221;&lt;/span&gt;)[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;].equals(className)) {
+
+- desireClass = classes[i];
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (desireClass != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- id = desireClass.getField(name).getInt(desireClass);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (IllegalArgumentException e) {
+
+- e.printStackTrace();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SecurityException e) {
+
+- e.printStackTrace();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (IllegalAccessException e) {
+
+- e.printStackTrace();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (NoSuchFieldException e) {
+
+- e.printStackTrace();
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; id;
+
+- }
+
+- 
+- 
+- Context context;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- context = createPackageContext(&lt;span class=&quot;string&quot;&gt;&amp;#8220;com.dolphin.demo&amp;#8221;&lt;/span&gt;, Context.CONTEXT_INCLUDE_CODE
+
+- | Context.CONTEXT_IGNORE_SECURITY);
+
+- Class cls = context.getClassLoader().loadClass(&lt;span class=&quot;string&quot;&gt;&amp;#8220;com.dolphin.demo.R&amp;#8221;&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;// 获得目标apk的R类  &lt;/span&gt;
+
+- txvA.setText(context.getResources().getText(getResourseIdByName(cls, &lt;span class=&quot;string&quot;&gt;&amp;#8220;string&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;message&amp;#8221;&lt;/span&gt;)));
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (NameNotFoundException e) {
+
+- e.printStackTrace();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (ClassNotFoundException e) {
+
+- e.printStackTrace();
+
+- }
+
+- 
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/><span class=title>« 上一页</span>
+<span>自定义ImageView 宽度自适应屏幕，高度等比缩放</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%9F%BA%E7%A1%80-classloader%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/><span class=title>下一页 »</span>
+<span>Android动态加载基础 ClassLoader工作机制</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

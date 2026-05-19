@@ -1,0 +1,225 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>使用Artifactory搭建本地maven仓库 | ZDL Tech Blog</title>
+<meta name=keywords content="android,maven,移动开发"><meta name=description content="**引言** 前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="使用Artifactory搭建本地maven仓库"><meta property="og:description" content="**引言** 前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-03-21T08:06:38+00:00"><meta property="article:modified_time" content="2017-03-21T08:06:38+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="Maven"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="使用Artifactory搭建本地maven仓库"><meta name=twitter:description content="**引言** 前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"使用Artifactory搭建本地maven仓库","item":"https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用Artifactory搭建本地maven仓库","name":"使用Artifactory搭建本地maven仓库","description":"**引言** 前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第...","keywords":["android","maven","移动开发"],"articleBody":"引言\n前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第一次写成以后一般都会有一些小bug的，这样，同事A在自己电脑上修改代码，然后再次修改代码分别传给B和C。B和C需要替换之前的module，重新运行。这相当的麻烦，如果还有同事D,E,F..做起来真是噩梦，可能有有人想问，为什么不用svn或者git，用版本控制工具当然会好非常多，但每次pull其实也比较麻烦。还有另一种方法，使用本地maven仓库，使用过android studio的开发者都应该体会过其中的好处，当需要依赖一个新的模块(或者叫library)时，只需要这样\n填写需要的模块及对应的版本号，同步一下就行了，很方便。本篇文章就教各位如何使用Artifactory来搭建本地仓库，来完成上图的效果\n什么是Artifactory?\n一句话，开源的Maven仓库管理者\n搭建Artifactory\n1.检测你的jdk版本是否为1.8及以上\n打开cmd，输入java -version，如果输出结果如下所示即可，如果是1.6或者1.7，去官网下载最新版本替换\n`java -version java version \"1.8.0_31\" Java(TM) SE Runtime Environment (build 1.8.0_31-b13) Java HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode)\" data-snippet-id=\"ext.437a4825669d574acb250e72155a8b81\" data-snippet-saved=\"false\" data-codota-status=\"done\"\u003eC:\\Users\\Administrator\u003ejava -version\njava version \"1.8.0_31\"\nJava(TM) SE Runtime Environment (build 1.8.0_31-b13)\nJava HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode)` 2.下载Artifactory，解压下载好的安装包，打开解压后文件夹下的bin文件夹，运行artifactory.bat，大概等待1分钟左右就安装完成了\n3.打开http://localhost:8081/artifactory将会看到管理界面，如果看到此界面，就表示artifactory已经安装成功了.如果不是该界面，则需要等待安装完成\n上传library到maven\n创建自己的library project(注意你的 module是apply plugin: ‘com.android.library’)，写好自己模块的代码后,准备上传\n1.添加相关插件引用\n在你library 项目中顶级的build.gradle文件中，添加一条新的classpath引用\n","wordCount":"549","inLanguage":"zh","datePublished":"2017-03-21T08:06:38Z","dateModified":"2017-03-21T08:06:38Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">使用Artifactory搭建本地maven仓库</h1><div class=post-description>**引言** 前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第...</div><div class=post-meta><span title='2017-03-21 08:06:38 +0000 UTC'>2017年3月21日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p><strong>引言</strong></p><p>前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第一次写成以后一般都会有一些小bug的，这样，同事A在自己电脑上修改代码，然后再次修改代码分别传给B和C。B和C需要替换之前的module，重新运行。这相当的麻烦，如果还有同事D,E,F..做起来真是噩梦，可能有有人想问，为什么不用svn或者git，用版本控制工具当然会好非常多，但每次pull其实也比较麻烦。还有另一种方法，使用本地maven仓库，使用过android studio的开发者都应该体会过其中的好处，当需要依赖一个新的模块(或者叫library)时，只需要这样</p><p>填写需要的模块及对应的版本号，同步一下就行了，很方便。本篇文章就教各位如何使用Artifactory来搭建本地仓库，来完成上图的效果</p><p><strong>什么是Artifactory?</strong></p><p>一句话，开源的Maven仓库管理者</p><p><strong>搭建Artifactory</strong></p><p>1.检测你的jdk版本是否为1.8及以上</p><p>打开cmd，输入java -version，如果输出结果如下所示即可，如果是1.6或者1.7，去<a href=http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>官网下载</a>最新版本替换</p><div>`java -version java version "1.8.0_31" Java(TM) SE Runtime Environment (build 1.8.0_31-b13) Java HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode)" data-snippet-id="ext.437a4825669d574acb250e72155a8b81" data-snippet-saved="false" data-codota-status="done">C:\Users\Administrator>java -version&lt;br />
+java version "1.8.0_31"&lt;br />
+Java(TM) SE Runtime Environment (build 1.8.0_31-b13)&lt;br />
+Java HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode)`</div><p>2.下载<a href=https://www.jfrog.com/open-source/>Artifactory</a>，解压下载好的安装包，打开解压后文件夹下的bin文件夹，运行artifactory.bat，大概等待1分钟左右就安装完成了</p><p>3.打开<a href=http://localhost:8081/artifactory>http://localhost:8081/artifactory</a>将会看到管理界面，如果看到此界面，就表示artifactory已经安装成功了.如果不是该界面，则需要等待安装完成</p><p><img loading=lazy src=http://img.blog.csdn.net/20161206105644367></p><p><strong>上传library到maven</strong></p><p>创建自己的library project(注意你的 module是apply plugin: ‘com.android.library’)，写好自己模块的代码后,准备上传</p><p>1.添加相关插件引用</p><p>在你library 项目中顶级的build.gradle文件中，添加一条新的classpath引用</p><div class="dp-highlighter bg_plain" style="box-sizing:border-box;margin:18px 0!important;padding:1px 0 0;border:0;outline:0;font-size:12px;vertical-align:baseline;background:#e7e5dc;font-family:Consolas,courier new,Courier,mono,serif;width:643.5px;overflow-x:auto;overflow-y:hidden;text-align:left;position:relative;color:#999;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-indent:0;text-transform:none;white-space:normal;widows:2;word-spacing:0;-webkit-text-stroke-width:0" data-original-code='[plain] view plain copy print?<span style="font-family:Microsoft YaHei;font-size:14px;">buildscript { dependencies { classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1" } }</span> ' data-snippet-id=ext.49eb87db4d6b6b04f41cab38e173b3fd data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[plain]** [view plain](http://blog.csdn.net/level_26/article/details/53483444#)&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/level_26/article/details/53483444#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;16&quot; height=&quot;16&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&amp;#8221;font-family:Microsoft YaHei;font-size:14px;&amp;#8221;&gt;buildscript {
+
+- dependencies {
+
+- classpath &amp;#8220;org.jfrog.buildinfo:build-info-extractor-gradle:4.4.0&amp;#8221;
+
+- }
+
+- }&lt;/span&gt;
+</code></pre></div><p>然后在你的library module的build.gradle中，添加两条语句</p><p>apply plugin: ‘com.jfrog.artifactory’</p><p>apply plugin: ‘maven-publish’</p><p>一个是用来配置maven的，一个是用来配置artifactory的</p><p>2.配置参数</p><p>每个maven的artifact(你可以理解为library)都有三个必要的属性需要添加，分别是</p><p>artifactId:你library的名字，建议使用当前module的名字，在后面配置的时候方便使用</p><p>groupId:一般情况下是你library的包名</p><p>version:版本</p><div>举个例子</div><p>groupId:com.example.utils</p><p>artifactId:utils</p><p>version:1.0.0</p><p>上述就是将自己常用的工具封装成一个module的例子，如果上传好以后，在build.gradle里面添加相应连接引用就行了</p><p>然后在library的build.gradle中添加</p><p>def packageName = ‘com.example.common’<br>def libraryVersion = ‘1.0.0’</p><p>上述语句定义了两个属性，分别是包名和版本号</p><div class="dp-highlighter bg_plain" data-original-code='[plain] view plain copy print?publishing { publications { aar(MavenPublication) { groupId packageName version = libraryVersion artifactId project.getName() // Tell maven to prepare the generated "*.aar" file for publishing artifact("$buildDir/outputs/aar/${project.getName()}-release.aar") } } } ' data-snippet-id=ext.2c7bd47c48e6c4371a8c2a3415a5343e data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[plain]** [view plain](http://blog.csdn.net/level_26/article/details/53483444#)&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/level_26/article/details/53483444#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;16&quot; height=&quot;16&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- publishing {
+
+- publications {
+
+- aar(MavenPublication) {
+
+- groupId packageName
+
+- version = libraryVersion
+
+- artifactId project.getName()
+
+- // Tell maven to prepare the generated &amp;#8220;*.aar&amp;#8221; file for publishing
+
+- artifact(&amp;#8220;&lt;span class=&quot;katex math inline&quot;&gt;buildDir/outputs/aar/&lt;/span&gt;{project.getName()}-release.aar&amp;#8221;)
+
+- }
+
+- }
+
+- }
+</code></pre></div><p>上面是配置maven的参数，aar表示要生成的文件为aar，groupId等三个属性就是之前提到的maven的三要素，最后一行是告诉maven去哪里找到你要发布的aar文件</p><p>其中project.getName()用于得到当前的module名字，一般情况下，你生成的aar就是对应的module名+后缀名+.aar</p><div class="dp-highlighter bg_plain" style="box-sizing:border-box;margin:18px 0!important;padding:1px 0 0;border:0;outline:0;font-size:12px;vertical-align:baseline;background:#e7e5dc;font-family:Consolas,courier new,Courier,mono,serif;width:643.5px;overflow-x:auto;overflow-y:hidden;text-align:left;position:relative;color:#999;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-indent:0;text-transform:none;white-space:normal;widows:2;word-spacing:0;-webkit-text-stroke-width:0" data-original-code="[plain] view plain copy print?<span style=&#34;font-family:Microsoft YaHei;font-size:14px;&#34;>artifactory { contextUrl = 'http://localhost:8081/artifactory' publish { repository { repoKey = 'libs-release-local' username = &#34;admin&#34; password = &#34;password&#34; } defaults { publications('aar') publishArtifacts = true properties = ['qa.level': 'basic', 'dev.team': 'core'] publishPom = true } } }</span> " data-snippet-id=ext.af6559ebea779c2d3a07dc5ddd531e3f data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[plain]** [view plain](http://blog.csdn.net/level_26/article/details/53483444#)&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/level_26/article/details/53483444#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;16&quot; height=&quot;16&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&amp;#8221;font-family:Microsoft YaHei;font-size:14px;&amp;#8221;&gt;artifactory {
+
+- contextUrl = &amp;#8216;http://localhost:8081/artifactory&amp;#8217;
+
+- publish {
+
+- repository {
+
+- repoKey = &amp;#8216;libs-release-local&amp;#8217;
+
+- username = &amp;#8220;admin&amp;#8221;
+
+- password = &amp;#8220;password&amp;#8221;
+
+- }
+
+- defaults {
+
+- publications(&amp;#8216;aar&amp;#8217;)
+
+- publishArtifacts = true
+
+- properties = [&amp;#8216;qa.level&amp;#8217;: &amp;#8216;basic&amp;#8217;, &amp;#8216;dev.team&amp;#8217;: &amp;#8216;core&amp;#8217;]
+
+- publishPom = true
+
+- }
+
+- }
+
+- }&lt;/span&gt;
+</code></pre></div><p>上述则是artifactory需要的配置</p><p>contextUrl:表示要发布到哪里去，上下文连接</p><p>repository的repoKey表示要发布到哪个artifactory哪个分支下</p><p>username和password则是用于访问artifactory的权限认证，默认账号密码为admin和password</p><p>pubilcations:表示要发布的文件类型</p><p>publishPom:是否将自动生成的pom.xml文件发布到Artifactory</p><p>其实前期并不需要把所有的属性都弄明白，等需要用到的时候，再单个去查就可以了</p><p>3.打包并发布到Artifactory</p><p>在library主项目下，执行gradle命令</p><p>gradle assembleRelease artifactoryPublish</p><p>这行命令有两个功能，assembleRelease在前表示先打包，artifactoryPublish在后表示打包完以后发布到artifactory当中</p><p>打开http://locahost:8081/artifactory，看是否能找到刚才发布的module，如下图所示表示上传成功，否则失败，检验上述步骤是否有遗漏，再重试</p><p><img loading=lazy src=http://img.blog.csdn.net/20161206163737995></p><p><strong>引用本地仓库的library</strong></p><p>在项目顶级build.gradle中引入新的maven地址</p><div class="dp-highlighter bg_plain" data-original-code='[plain] view plain copy print?allprojects { repositories { jcenter() maven { url "http://localhost:8081/artifactory/libs-release-local"} } } ' data-snippet-id=ext.d530cef728d8c9e75ea98caedbe5288a data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[plain]** [view plain](http://blog.csdn.net/level_26/article/details/53483444#)&lt;span class=&quot;tracking-ad&quot; data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/level_26/article/details/53483444#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;16&quot; height=&quot;16&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- allprojects {
+
+- repositories {
+
+- jcenter()
+
+- maven { url &amp;#8220;http://localhost:8081/artifactory/libs-release-local&amp;#8221;}
+
+- }
+
+- }
+</code></pre></div><p>若library不在同一台电脑上，将locahost改为IP地址即可</p><p>在module的build.gralde中添加对library的依赖</p><p>格式为</p><p>compile ‘groupId:artifactId:version’</p><p>举例</p><p>compile ‘com.example.utils:utils:1.0.0’</p><p>然后同步一下，就将对应的module集成到本项目中了</p><p><strong>总结</strong></p><p>使用Artifactory搭建本地仓库需要以下步骤</p><p>1.下载Artifactory并运行</p><p>2.在build.gradle当中配置maven及artifactory的属性</p><p>3.使用gradle命令将library打包并上传到Artifactory</p><p>4.在需要使用的app中，添加maven的路径，并在dependencies中添加library对应的路径，然后同步</p><p> </p><p>参考：http://blog.csdn.net/level_26/article/details/53483444</p><p>参考：http://www.ituring.com.cn/article/211234</p><p>参考：http://blog.csdn.net/zzulp/article/details/51385701</p><p>参考：http://blog.csdn.net/qinxiandiqi/article/details/44458707</p><p>方案一：</p><p>先定义gradle.properties文件中定义变量</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>artifactory_user=admin
+</span></span><span style=display:flex><span>artifactory_password=xxxx
+</span></span><span style=display:flex><span>artifactory_contextUrl=http://xxxxxx/artifactory/
+</span></span><span style=display:flex><span>artifactory_repoKey=libs-release-local
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>注意填写正确的artfactory的用户名、密码、地址及仓库名
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>以下是bintray.gradle文件
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>apply plugin: &#34;com.jfrog.artifactory&#34;
+</span></span><span style=display:flex><span>apply plugin: &#34;maven-publish&#34;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>def packageName = &#39;com.etongwl.commonbase_lib&#39;
+</span></span><span style=display:flex><span>def libraryVersion = &#39;1.0.0&#39;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>publishing {
+</span></span><span style=display:flex><span>    publications {
+</span></span><span style=display:flex><span>        aar(MavenPublication) {
+</span></span><span style=display:flex><span>            groupId packageName
+</span></span><span style=display:flex><span>            version = libraryVersion
+</span></span><span style=display:flex><span>            artifactId project.getName()
+</span></span><span style=display:flex><span>            // Tell maven to prepare the generated “*.aar” file for publishing
+</span></span><span style=display:flex><span>            artifact(&#34;&lt;span class=&#34;katex math inline&#34;&gt;buildDir/outputs/aar/&lt;/span&gt;{project.getName()}-release.aar&#34;)
+</span></span><span style=display:flex><span>            artifact androidJavadocsJar//上传javadoc.jar
+</span></span><span style=display:flex><span>            artifact androidSourcesJar//上传sources.jar
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>artifactory {
+</span></span><span style=display:flex><span>    contextUrl = &#34;&lt;span class=&#34;katex math inline&#34;&gt;{artifactory_contextUrl}&#34;
+</span></span><span style=display:flex><span>    publish {
+</span></span><span style=display:flex><span>        repository {
+</span></span><span style=display:flex><span>            repoKey = &#34;&lt;/span&gt;{artifactory_repoKey}&#34;
+</span></span><span style=display:flex><span>            username = &#34;&lt;span class=&#34;katex math inline&#34;&gt;{artifactory_user}&#34;
+</span></span><span style=display:flex><span>            password = &#34;&lt;/span&gt;{artifactory_password}&#34;
+</span></span><span style=display:flex><span>            maven = true
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        defaults {
+</span></span><span style=display:flex><span>            publications(&#39;aar&#39;)
+</span></span><span style=display:flex><span>            publishArtifacts = true
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            properties = [&#39;qa.level&#39;: &#39;basic&#39;, &#39;q.os&#39;: &#39;android&#39;, &#39;dev.team&#39;: &#39;core&#39;]
+</span></span><span style=display:flex><span>            publishPom = true
+</span></span><span style=display:flex><span>            maven = true
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>task androidJavadocs(type: Javadoc) {
+</span></span><span style=display:flex><span> source = android.sourceSets.main.java.srcDirs
+</span></span><span style=display:flex><span> classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+</span></span><span style=display:flex><span> classifier = &#39;javadoc&#39;
+</span></span><span style=display:flex><span> from androidJavadocs.destinationDir
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>task androidSourcesJar(type: Jar) {
+</span></span><span style=display:flex><span> classifier = &#39;sources&#39;
+</span></span><span style=display:flex><span> from android.sourceSets.main.java.srcDirs
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>artifacts {
+</span></span><span style=display:flex><span> archives androidSourcesJar
+</span></span><span style=display:flex><span> archives androidJavadocsJar
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>在模块的build.gradle文件中添加
+</span></span><span style=display:flex><span>apply from: &#34;./bintray.gradle&#34;
+</span></span><span style=display:flex><span>执行命令：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>gradle assembleRelease artifactoryPublish
+</span></span></code></pre></div><p>方案二：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>以下是bintray.gradle文件内容
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>apply plugin: <span style=color:#f1fa8c>&#39;maven-publish&#39;</span>
+</span></span><span style=display:flex><span>apply plugin: <span style=color:#f1fa8c>&#39;maven&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>MAVEN_LOCAL_PATH</span> <span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#39;http://xxxxx/android-dev-local&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>ARTIFACT_ID</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>&#39;common-utils&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>VERSION_NAME</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>&#39;1.0.0&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>GROUP_ID</span> <span style=color:#ff79c6>=</span> <span style=color:#f1fa8c>&#39;com.etongwl.common.utils&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>uploadArchives {
+</span></span><span style=display:flex><span> repositories {
+</span></span><span style=display:flex><span> mavenDeployer {
+</span></span><span style=display:flex><span> repository(url:MAVEN_LOCAL_PATH ){
+</span></span><span style=display:flex><span> authentication(userName: <span style=color:#f1fa8c>&#39;admin&#39;</span>, password:<span style=color:#f1fa8c>&#39;xxxx&#39;</span>)
+</span></span><span style=display:flex><span> }
+</span></span><span style=display:flex><span> pom<span style=color:#ff79c6>.</span>project {
+</span></span><span style=display:flex><span> groupId GROUP_ID
+</span></span><span style=display:flex><span> artifactId ARTIFACT_ID
+</span></span><span style=display:flex><span> version VERSION_NAME
+</span></span><span style=display:flex><span> packaging <span style=color:#f1fa8c>&#39;aar&#39;</span>
+</span></span><span style=display:flex><span> }
+</span></span><span style=display:flex><span> }
+</span></span><span style=display:flex><span> }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>自己别忘记写用户名密码及请求的仓库地址
+</span></span><span style=display:flex><span>在build<span style=color:#ff79c6>.</span>gradle中添加
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>apply from: <span style=color:#f1fa8c>&#39;./bintray.gradle&#39;</span>
+</span></span><span style=display:flex><span>执行命令：gradle uploadArchives
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/maven/>Maven</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E8%B5%84%E6%BA%90%E6%94%B6%E8%97%8F/><span class=title>« 上一页</span>
+<span>资源收藏</span>
+</a><a class=next href=https://blog.zdltech.com/posts/mac-jdk%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84-java%E8%B7%AF%E5%BE%84/><span class=title>下一页 »</span>
+<span>MAC JDK默认安装路径 JAVA路径</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

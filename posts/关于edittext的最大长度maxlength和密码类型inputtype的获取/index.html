@@ -1,0 +1,111 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>关于EditText的最大长度maxLength和密码类型InputType的获取 | ZDL Tech Blog</title>
+<meta name=keywords content><meta name=description content="当在xml文件中声明了一个EditText 的时候，可能会加入这个属性 1 希望这个EditText 最多可以输入几位 应该假如这段代码 android:maxLength=&amp;#8221;**4**&amp;#8220; 当希望这个editText 的长度初始化为几个字符长度的时候，假如这段代码androi..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E5%85%B3%E4%BA%8Eedittext%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6maxlength%E5%92%8C%E5%AF%86%E7%A0%81%E7%B1%BB%E5%9E%8Binputtype%E7%9A%84%E8%8E%B7%E5%8F%96/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E5%85%B3%E4%BA%8Eedittext%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6maxlength%E5%92%8C%E5%AF%86%E7%A0%81%E7%B1%BB%E5%9E%8Binputtype%E7%9A%84%E8%8E%B7%E5%8F%96/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E5%85%B3%E4%BA%8Eedittext%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6maxlength%E5%92%8C%E5%AF%86%E7%A0%81%E7%B1%BB%E5%9E%8Binputtype%E7%9A%84%E8%8E%B7%E5%8F%96/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="关于EditText的最大长度maxLength和密码类型InputType的获取"><meta property="og:description" content="当在xml文件中声明了一个EditText 的时候，可能会加入这个属性 1 希望这个EditText 最多可以输入几位 应该假如这段代码 android:maxLength=”**4**“ 当希望这个editText 的长度初始化为几个字符长度的时候，假如这段代码androi..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-12-01T08:59:14+00:00"><meta property="article:modified_time" content="2014-12-01T08:59:14+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="关于EditText的最大长度maxLength和密码类型InputType的获取"><meta name=twitter:description content="当在xml文件中声明了一个EditText 的时候，可能会加入这个属性 1 希望这个EditText 最多可以输入几位 应该假如这段代码 android:maxLength=”**4**“ 当希望这个editText 的长度初始化为几个字符长度的时候，假如这段代码androi..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"关于EditText的最大长度maxLength和密码类型InputType的获取","item":"https://blog.zdltech.com/posts/%E5%85%B3%E4%BA%8Eedittext%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6maxlength%E5%92%8C%E5%AF%86%E7%A0%81%E7%B1%BB%E5%9E%8Binputtype%E7%9A%84%E8%8E%B7%E5%8F%96/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"关于EditText的最大长度maxLength和密码类型InputType的获取","name":"关于EditText的最大长度maxLength和密码类型InputType的获取","description":"当在xml文件中声明了一个EditText 的时候，可能会加入这个属性 1 希望这个EditText 最多可以输入几位 应该假如这段代码 android:maxLength=\u0026#8221;**4**\u0026#8220; 当希望这个editText 的长度初始化为几个字符长度的时候，假如这段代码androi...","keywords":[],"articleBody":"当在xml文件中声明了一个EditText 的时候，可能会加入这个属性\n1 希望这个EditText 最多可以输入几位 应该假如这段代码\nandroid:maxLength=”4“ 当希望这个editText 的长度初始化为几个字符长度的时候，假如这段代码android:ems=”10“\n那么想要在程序中获取这两个值的时候怎么办呢，有点麻烦了。\n下面给出代码，以获取最大显示长度为例吧：\n**[html]** [view plain](http://blog.csdn.net/rually/article/details/38442539#)[copy](http://blog.csdn.net/rually/article/details/38442539#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/446039)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/446039/fork) - public int getMaxLength() - { - int length =; - try - { - InputFilter[] inputFilters = getFilters(); - for(InputFilter filter:inputFilters) - { - Class\u003c?\u003e c = filter.getClass(); - if(c.getName().equals(\u0026#8220;android.text.InputFilter$LengthFilter\u0026#8221;)) - { - Field[] f = c.getDeclaredFields(); - for(Field field:f) - { - if(field.getName().equals(\u0026#8220;mMax\u0026#8221;)) - { - field.setAccessible(true); - length = (Integer)field.get(filter); - } - } - } - } - } - catch (Exception e) - { - e.printStackTrace(); - } - mMaxLength = length; - return length; - } 这里面要用到Inputfilter ，然后再这些筛选条件中去找，找到你要的那个条件就ok了\n2 当你希望这个文本框输入密码的时候，要加入这样的条件\n**[html]** [view plain](http://blog.csdn.net/rually/article/details/38442539#)[copy](http://blog.csdn.net/rually/article/details/38442539#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/446039)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/446039/fork) - android:inputType=\u0026#8220;textPassword\u0026#8221; 不要用password=”true” ,out了\n那么想要在程序里面获取这个属性的时候应该怎么写呢？\n看这段代码吧，别管什么意思，不大容易看明白，肯定是可以的\n**[html]** [view plain](http://blog.csdn.net/rually/article/details/38442539#)[copy](http://blog.csdn.net/rually/article/details/38442539#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/446039)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/446039/fork) - /** - * judge wether the editTextView\u0026#8217;s inputType is password or normal - * - **/ - public boolean isPasswordType() - { - int inputType = this.getInputType(); - final int variation = - inputType \u0026 (EditorInfo.TYPE_MASK_CLASS | EditorInfo.TYPE_MASK_VARIATION); - return variation - == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD) - || variation - == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD) - || variation - == (EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD); - } 这样就可以判断了，这个函数我也是在 textView 中找到的。\n","wordCount":"439","inLanguage":"zh","datePublished":"2014-12-01T08:59:14Z","dateModified":"2014-12-01T08:59:14Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E5%85%B3%E4%BA%8Eedittext%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6maxlength%E5%92%8C%E5%AF%86%E7%A0%81%E7%B1%BB%E5%9E%8Binputtype%E7%9A%84%E8%8E%B7%E5%8F%96/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">关于EditText的最大长度maxLength和密码类型InputType的获取</h1><div class=post-description>当在xml文件中声明了一个EditText 的时候，可能会加入这个属性 1 希望这个EditText 最多可以输入几位 应该假如这段代码 android:maxLength=&amp;#8221;**4**&amp;#8220; 当希望这个editText 的长度初始化为几个字符长度的时候，假如这段代码androi...</div><div class=post-meta><span title='2014-12-01 08:59:14 +0000 UTC'>2014年12月1日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>当在xml文件中声明了一个EditText 的时候，可能会加入这个属性</p><p>1 希望这个EditText 最多可以输入几位 应该假如这段代码</p><p><span class=t>android:maxLength</span><span class=m>=”</span><strong>4</strong><span class=m>“</span><span class=t> </span></p><p><span class=t>当希望这个editText 的长度初始化为几个字符长度的时候，假如这段代码android:ems</span><span class=m>=”</span><strong>10</strong>“</p><p>那么想要在程序中获取这两个值的时候怎么办呢，有点麻烦了。</p><p>下面给出代码，以获取最大显示长度为例吧：</p><p> </p><div class="dp-highlighter bg_html"><div class=bar><div class=tools style=color:silver>**[html]** [view plain](http://blog.csdn.net/rually/article/details/38442539#)[copy](http://blog.csdn.net/rually/article/details/38442539#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/446039)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/446039/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;public int getMaxLength()  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;{  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    int &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;length&lt;/span&gt; =&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    try   &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        InputFilter[] &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;inputFilters&lt;/span&gt; = &lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;getFilters&lt;/span&gt;();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        for(InputFilter filter:inputFilters)  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            Class&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: #993300;&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: #993300;&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;c&lt;/span&gt; = &lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;filter&lt;/span&gt;.getClass();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            if(c.getName().equals(&amp;#8220;android.text.InputFilter$LengthFilter&amp;#8221;))  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                Field[] &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;f&lt;/span&gt; = &lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;c&lt;/span&gt;.getDeclaredFields();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                for(Field field:f)  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    if(field.getName().equals(&amp;#8220;mMax&amp;#8221;))  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                        field.setAccessible(true);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;length&lt;/span&gt; = (Integer)field.get(filter);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    catch (Exception e)   &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        e.printStackTrace();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;mMaxLength&lt;/span&gt; = &lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;length&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    return length;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+</code></pre></div><p>这里面要用到Inputfilter ，然后再这些筛选条件中去找，找到你要的那个条件就ok了</p><p> </p><p>2 当你希望这个文本框输入密码的时候，要加入这样的条件</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools style=color:silver>**[html]** [view plain](http://blog.csdn.net/rually/article/details/38442539#)[copy](http://blog.csdn.net/rually/article/details/38442539#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/446039)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/446039/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:inputType&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;textPassword&amp;#8221;&lt;/span&gt;   &lt;/span&gt;
+</code></pre></div><p>不要用password=”true” ,out了</p><p> </p><p>那么想要在程序里面获取这个属性的时候应该怎么写呢？</p><p>看这段代码吧，别管什么意思，不大容易看明白，肯定是可以的</p><p> </p><div class="dp-highlighter bg_html"><div class=bar><div class=tools style=color:silver>**[html]** [view plain](http://blog.csdn.net/rually/article/details/38442539#)[copy](http://blog.csdn.net/rually/article/details/38442539#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/446039)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/446039/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;/**  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt; * judge wether the editTextView&amp;#8217;s inputType is password or normal    &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt; *   &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt; **/      &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;public  boolean isPasswordType()  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;{  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    int &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;inputType&lt;/span&gt; = &lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;this&lt;/span&gt;.getInputType();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;       final int &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;variation&lt;/span&gt; =  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;               &lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;inputType&lt;/span&gt; &amp; (EditorInfo.TYPE_MASK_CLASS | EditorInfo.TYPE_MASK_VARIATION);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;       return &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;variation&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;               == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD)  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;               || &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;variation&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;               == (EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD)  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;               || &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;variation&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;               == (EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+</code></pre></div><p>这样就可以判断了，这个函数我也是在 textView 中找到的。</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E5%9C%A8android%E5%AF%A6%E4%BD%9Chtml-textview%E8%88%87autolink%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BB%BA%E8%AD%B0%E6%96%B9%E5%BC%8F/><span class=title>« 上一页</span>
+<span>在Android實作HTML TextView與AutoLink使用的建議方式</span>
+</a><a class=next href=https://blog.zdltech.com/posts/js%E5%AE%9E%E7%8E%B0%E5%80%92%E8%AE%A1%E6%97%B6/><span class=title>下一页 »</span>
+<span>js实现倒计时</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,945 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android开发之多级下拉列表菜单实现（仿美团，淘宝等） | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="我们在常用的电商或者旅游APP中，例如美团，手机淘宝等等，都能够看的到有那种下拉式的二级列表菜单。具体如图所示： ![](http://img.blog.csdn.net/20140922235621019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvT..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E4%B9%8B%E5%A4%9A%E7%BA%A7%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8%E8%8F%9C%E5%8D%95%E5%AE%9E%E7%8E%B0%E4%BB%BF%E7%BE%8E%E5%9B%A2%E6%B7%98%E5%AE%9D%E7%AD%89/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E4%B9%8B%E5%A4%9A%E7%BA%A7%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8%E8%8F%9C%E5%8D%95%E5%AE%9E%E7%8E%B0%E4%BB%BF%E7%BE%8E%E5%9B%A2%E6%B7%98%E5%AE%9D%E7%AD%89/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E4%B9%8B%E5%A4%9A%E7%BA%A7%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8%E8%8F%9C%E5%8D%95%E5%AE%9E%E7%8E%B0%E4%BB%BF%E7%BE%8E%E5%9B%A2%E6%B7%98%E5%AE%9D%E7%AD%89/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android开发之多级下拉列表菜单实现（仿美团，淘宝等）"><meta property="og:description" content="我们在常用的电商或者旅游APP中，例如美团，手机淘宝等等，都能够看的到有那种下拉式的二级列表菜单。具体如图所示： ![](http://img.blog.csdn.net/20140922235621019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvT..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-09-25T01:28:30+00:00"><meta property="article:modified_time" content="2014-09-25T01:28:30+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android开发之多级下拉列表菜单实现（仿美团，淘宝等）"><meta name=twitter:description content="我们在常用的电商或者旅游APP中，例如美团，手机淘宝等等，都能够看的到有那种下拉式的二级列表菜单。具体如图所示： ![](http://img.blog.csdn.net/20140922235621019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvT..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android开发之多级下拉列表菜单实现（仿美团，淘宝等）","item":"https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E4%B9%8B%E5%A4%9A%E7%BA%A7%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8%E8%8F%9C%E5%8D%95%E5%AE%9E%E7%8E%B0%E4%BB%BF%E7%BE%8E%E5%9B%A2%E6%B7%98%E5%AE%9D%E7%AD%89/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android开发之多级下拉列表菜单实现（仿美团，淘宝等）","name":"Android开发之多级下拉列表菜单实现（仿美团，淘宝等）","description":"我们在常用的电商或者旅游APP中，例如美团，手机淘宝等等，都能够看的到有那种下拉式的二级列表菜单。具体如图所示： ![](http://img.blog.csdn.net/20140922235621019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvT...","keywords":["android","移动开发"],"articleBody":"我们在常用的电商或者旅游APP中，例如美团，手机淘宝等等，都能够看的到有那种下拉式的二级列表菜单。具体如图所示：\n上面两张图就是美团的一个二级列表菜单的一个展示。我相信很多人都想开发一个跟它一样的功能放到自己的APP中。好，接下来我们就开始动手，解决它。\n1，结构分析 首先，我们给出这个下来菜单需要的组建。我们用线框图来分析。\n1）如上图所示，最外围的是一个Activity，顶部包含了一个View的容器，这个容器主要是装载ToggleButton来实现诸如美团里面的“美食，全城，理我最近，刷选”这一行。这一行一点就会弹出对应的下来菜单。\n2）下拉菜单是如何实现的呢？，这里我们利用了PopupWindow来实现这一弹出式窗口。然后我们在弹出式窗口里面再定义我们的下来列表项，是单列还是二级菜单，都是由里面来定。\n3）不同的菜单，需要一级或者需要二级，在这里根据我的需求而变动。我们在PopupWindow上面加一个自定义的LeftView，或者是MiddleView，RightView。主要是一个ToggleButton，你弹出一个窗口，你就定制一个窗口。\n3）视图里面嵌入ListView，就形成了列表项。\n好分析就到上面为止，接下来我们一步步的说明实现。\n2，项目结构 本项目的项目结构如图所示：\n1） Adapter。适配器，主要是为ListView提供数据适配的。\n2）MainActivity。主活动页面。\n3）ExpandTabView。本项目的核心类，它包含ToggleButton容器和PopupWindow，是控制弹出窗口的核心类。\n4）ViewLeft,ViewMiddle,ViewRight。是弹出里面嵌套的类，实现不同的列表菜单。\n3，MainActivity 承载所有元素。看代码比看文字实在。 **[java]** [view plain](http://blog.csdn.net/minimicall/article/details/39484493#)[copy](http://blog.csdn.net/minimicall/article/details/39484493#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/473461)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/473461/fork) - package com.example.expandtabview; - - - import java.util.ArrayList; - - import android.app.Activity; - import android.os.Bundle; - import android.util.Log; - import android.view.View; - import android.widget.Toast; - - import com.example.view.ExpandTabView; - import com.example.view.ViewLeft; - import com.example.view.ViewMiddle; - import com.example.view.ViewRight; - - public class MainActivity extends Activity { - private static final String TAG = \u0026#8220;MainActivity\u0026#8221;; - private ExpandTabView expandTabView; - private ArrayList mViewArray = new ArrayList(); - private ViewLeft viewLeft; - private ViewMiddle viewMiddle; - private ViewRight viewRight; - - @Override - protected void onCreate(Bundle savedInstanceState) { - - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_main); - initView(); - initVaule(); - initListener(); - - } - - private void initView() { - Log.d(TAG,\u0026#8220;initView\u0026#8221;); - expandTabView = (ExpandTabView) findViewById(R.id.expandtab_view); - viewLeft = new ViewLeft(this); - viewMiddle = new ViewMiddle(this); - viewRight = new ViewRight(this); - - } - - private void initVaule() { - Log.d(TAG,\u0026#8220;initValue\u0026#8221;); - mViewArray.add(viewLeft); - mViewArray.add(viewMiddle); - mViewArray.add(viewRight); - ArrayList mTextArray = new ArrayList(); - mTextArray.add(\u0026#8220;距离\u0026#8221;); - mTextArray.add(\u0026#8220;区域\u0026#8221;); - mTextArray.add(\u0026#8220;距离\u0026#8221;); - expandTabView.setValue(mTextArray, mViewArray);//将三个下拉列表设置进去 - expandTabView.setTitle(viewLeft.getShowText(), ); - expandTabView.setTitle(viewMiddle.getShowText(), 1); - expandTabView.setTitle(viewRight.getShowText(), 2); - - } - - private void initListener() { - Log.d(TAG,\u0026#8220;initListener\u0026#8221;); - viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() { - - @Override - public void getValue(String distance, String showText) { - Log.d(\u0026#8220;ViewLeft\u0026#8221;, \u0026#8220;OnSelectListener, getValue\u0026#8221;); - onRefresh(viewLeft, showText); - } - }); - - viewMiddle.setOnSelectListener(new ViewMiddle.OnSelectListener() { - - @Override - public void getValue(String showText) { - Log.d(\u0026#8220;ViewMiddle\u0026#8221;,\u0026#8220;OnSelectListener, getValue\u0026#8221;); - onRefresh(viewMiddle,showText); - - } - }); - - viewRight.setOnSelectListener(new ViewRight.OnSelectListener() { - - @Override - public void getValue(String distance, String showText) { - Log.d(\u0026#8220;ViewRight\u0026#8221;,\u0026#8220;OnSelectListener, getValue\u0026#8221;); - onRefresh(viewRight, showText); - } - }); - - } - - private void onRefresh(View view, String showText) { - Log.d(TAG,\u0026#8220;onRefresh,view:\u0026#8221;+view+\u0026#8220;,showText:\u0026#8221;+showText); - expandTabView.onPressBack(); - int position = getPositon(view); - if (position \u003e= \u0026\u0026 !expandTabView.getTitle(position).equals(showText)) { - expandTabView.setTitle(showText, position); - } - Toast.makeText(MainActivity.this, showText, Toast.LENGTH_SHORT).show(); - - } - - private int getPositon(View tView) { - Log.d(TAG,\u0026#8220;getPosition\u0026#8221;); - for (int i = ; i \u003c mViewArray.size(); i++) { - if (mViewArray.get(i) == tView) { - return i; - } - } - return \u0026#8211;1; - } - - @Override - public void onBackPressed() { - - if (!expandTabView.onPressBack()) { - finish(); - } - - } - - } 4 ，ExpandTabView 最主要就是如何处理当我们点击这些ToggleButton的时候要弹出或者收起这些PopupWindow。\n**[java]** [view plain](http://blog.csdn.net/minimicall/article/details/39484493#)[copy](http://blog.csdn.net/minimicall/article/details/39484493#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/473461)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/473461/fork) - package com.example.view; - - import java.util.ArrayList; - - import com.example.expandtabview.R; - - import android.app.Activity; - import android.content.Context; - import android.util.AttributeSet; - import android.util.Log; - import android.view.LayoutInflater; - import android.view.View; - import android.widget.LinearLayout; - import android.widget.PopupWindow; - import android.widget.PopupWindow.OnDismissListener; - import android.widget.RelativeLayout; - import android.widget.TextView; - import android.widget.ToggleButton; - - /** - * 菜单控件头部，封装了下拉动画，动态生成头部按钮个数 - * - * @author zengjinlong - */ - - public class ExpandTabView extends LinearLayout implements OnDismissListener { - private static final String TAG = \u0026#8220;ExpandTabView\u0026#8221;; - private ToggleButton selectedButton; - private ArrayList mTextArray = new ArrayList(); - private ArrayList mViewArray = new ArrayList(); - private ArrayList mToggleButton = new ArrayList(); - private Context mContext; - private final int SMALL = ; - private int displayWidth; - private int displayHeight; - private PopupWindow popupWindow; - private int selectPosition; - - public ExpandTabView(Context context) { - super(context); - init(context); - } - - public ExpandTabView(Context context, AttributeSet attrs) { - super(context, attrs); - init(context); - } - - /** - * 根据选择的位置设置tabitem显示的值 - */ - public void setTitle(String valueText, int position) { - if (position \u003c mToggleButton.size()) { - mToggleButton.get(position).setText(valueText); - } - } - - public void setTitle(String title){ - - } - /** - * 根据选择的位置获取tabitem显示的值 - */ - public String getTitle(int position) { - if (position \u003c mToggleButton.size() \u0026\u0026 mToggleButton.get(position).getText() != null) { - return mToggleButton.get(position).getText().toString(); - } - return \u0026#8220;\u0026#8221;; - } - - /** - * 设置tabitem的个数和初始值 - * @param textArray 标题数组 - * @param viewArray 控件数组 - */ - public void setValue(ArrayList textArray, ArrayList viewArray) { - if (mContext == null) { - return; - } - LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE); - Log.d(TAG,\u0026#8220;setValue\u0026#8221;); - mTextArray = textArray; - for (int i = ; i \u003c viewArray.size(); i++) { - final RelativeLayout r = new RelativeLayout(mContext); - int maxHeight = (int) (displayHeight * 0.7); - RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, maxHeight); - rl.leftMargin = 10; - rl.rightMargin = 10; - r.addView(viewArray.get(i), rl); - mViewArray.add(r); - r.setTag(SMALL); - ToggleButton tButton = (ToggleButton) inflater.inflate(R.layout.toggle_button, this, false); - addView(tButton); - View line = new TextView(mContext); - line.setBackgroundResource(R.drawable.choosebar_line); - if (i \u003c viewArray.size() \u0026#8211; 1) { - LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(2, LinearLayout.LayoutParams.MATCH_PARENT); - addView(line, lp); - } - mToggleButton.add(tButton); - tButton.setTag(i); - tButton.setText(mTextArray.get(i)); - - r.setOnClickListener(new OnClickListener() { - @Override - public void onClick(View v) { - Log.d(\u0026#8220;RelativeLayout\u0026#8221;,\u0026#8220;view:\u0026#8221;+v); - onPressBack(); - } - }); - - r.setBackgroundColor(mContext.getResources().getColor(R.color.popup_main_background)); - tButton.setOnClickListener(new OnClickListener() { - @Override - public void onClick(View view) { - Log.d(\u0026#8220;tButton\u0026#8221;,\u0026#8220;setOnClickListener(l)\u0026#8221;); - // initPopupWindow(); - ToggleButton tButton = (ToggleButton) view; - - if (selectedButton != null \u0026\u0026 selectedButton != tButton) { - selectedButton.setChecked(false); - } - selectedButton = tButton; - selectPosition = (Integer) selectedButton.getTag(); - startAnimation(); - if (mOnButtonClickListener != null \u0026\u0026 tButton.isChecked()) { - mOnButtonClickListener.onClick(selectPosition); - } - } - }); - }// for.. - } - - private void startAnimation() { - Log.d(TAG,\u0026#8220;startAnimation\u0026#8221;); - if (popupWindow == null) { - Log.d(TAG,\u0026#8220;startAnimation(),new popupWindow now\u0026#8221;); - popupWindow = new PopupWindow(mViewArray.get(selectPosition), displayWidth, displayHeight); - popupWindow.setAnimationStyle(R.style.PopupWindowAnimation); - popupWindow.setFocusable(false); - popupWindow.setOutsideTouchable(true); - } - Log.d(TAG,\u0026#8220;startAnimation(),selectedButton:\u0026#8221;+selectedButton+\u0026#8220;,isChecked:\u0026#8221;+selectedButton.isChecked()+ - \u0026#8220;,popupWindow.isShowing:\u0026#8221;+popupWindow.isShowing()); - if (selectedButton.isChecked()) { - - if (!popupWindow.isShowing()) { - showPopup(selectPosition); - } else { - popupWindow.setOnDismissListener(this); - popupWindow.dismiss(); - hideView(); - } - } else { - if (popupWindow.isShowing()) { - popupWindow.dismiss(); - hideView(); - } - } - } - - private void showPopup(int position) { - View tView = mViewArray.get(selectPosition).getChildAt(); - if (tView instanceof ViewBaseAction) { - ViewBaseAction f = (ViewBaseAction) tView; - f.show(); - } - if (popupWindow.getContentView() != mViewArray.get(position)) { - popupWindow.setContentView(mViewArray.get(position)); - } - popupWindow.showAsDropDown(this, , ); - } - - /** - * 如果菜单成展开状态，则让菜单收回去 - */ - public boolean onPressBack() { - Log.d(TAG,\u0026#8220;onPressBack\u0026#8221;); - if (popupWindow != null \u0026\u0026 popupWindow.isShowing()) { - popupWindow.dismiss(); - hideView(); - if (selectedButton != null) { - selectedButton.setChecked(false); - } - return true; - } else { - return false; - } - - } - - private void hideView() { - Log.d(TAG, \u0026#8220;hide()\u0026#8221;); - View tView = mViewArray.get(selectPosition).getChildAt(); - if (tView instanceof ViewBaseAction) { - ViewBaseAction f = (ViewBaseAction) tView; - f.hide(); - } - } - - private void init(Context context) { - mContext = context; - displayWidth = ((Activity) mContext).getWindowManager().getDefaultDisplay().getWidth(); - displayHeight = ((Activity) mContext).getWindowManager().getDefaultDisplay().getHeight(); - setOrientation(LinearLayout.HORIZONTAL); - } - - @Override - public void onDismiss() { - Log.d(TAG,\u0026#8220;onDismiss,selectPosition:\u0026#8221;+selectPosition); - showPopup(selectPosition); - popupWindow.setOnDismissListener(null); - } - - private OnButtonClickListener mOnButtonClickListener; - - /** - * 设置tabitem的点击监听事件 - */ - public void setOnButtonClickListener(OnButtonClickListener l) { - mOnButtonClickListener = l; - } - - /** - * 自定义tabitem点击回调接口 - */ - public interface OnButtonClickListener { - public void onClick(int selectPosition); - } - - } 5，ViewLeft 其中的一个示例，其他两个就不列举了\n**[java]** [view plain](http://blog.csdn.net/minimicall/article/details/39484493#)[copy](http://blog.csdn.net/minimicall/article/details/39484493#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/473461)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/473461/fork) - package com.example.view; - - - import com.example.adapter.TextAdapter; - import com.example.expandtabview.R; - - - import android.content.Context; - import android.util.AttributeSet; - import android.view.LayoutInflater; - import android.view.View; - import android.widget.ListView; - import android.widget.RelativeLayout; - import android.widget.Toast; - - - - - public class ViewLeft extends RelativeLayout implements ViewBaseAction{ - private static final String TAG = \u0026#8220;ViewLeft\u0026#8221;; - private ListView mListView; - private final String[] items = new String[] { \u0026#8220;item1\u0026#8221;, \u0026#8220;item2\u0026#8221;, \u0026#8220;item3\u0026#8221;, \u0026#8220;item4\u0026#8221;, \u0026#8220;item5\u0026#8221;, \u0026#8220;item6\u0026#8221; };//显示字段 - private final String[] itemsVaule = new String[] { \u0026#8220;1\u0026#8221;, \u0026#8220;2\u0026#8221;, \u0026#8220;3\u0026#8221;, \u0026#8220;4\u0026#8221;, \u0026#8220;5\u0026#8221;, \u0026#8220;6\u0026#8221; };//隐藏id - private OnSelectListener mOnSelectListener; - private TextAdapter adapter; - private String mDistance; - private String showText = \u0026#8220;item1\u0026#8221;; - private Context mContext; - - - public String getShowText() { - return showText; - } - - - public ViewLeft(Context context) { - super(context); - init(context); - } - - - public ViewLeft(Context context, AttributeSet attrs, int defStyle) { - super(context, attrs, defStyle); - init(context); - } - - - public ViewLeft(Context context, AttributeSet attrs) { - super(context, attrs); - init(context); - } - - - private void init(Context context) { - mContext = context; - LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); - inflater.inflate(R.layout.view_distance, this, true); - setBackgroundDrawable(getResources().getDrawable(R.drawable.choosearea_bg_mid)); - mListView = (ListView) findViewById(R.id.listView); - adapter = new TextAdapter(context, items, R.drawable.choose_item_right, R.drawable.choose_eara_item_selector); - adapter.setTextSize(17); - if (mDistance != null) { - for (int i = ; i \u003c itemsVaule.length; i++) { - if (itemsVaule[i].equals(mDistance)) { - adapter.setSelectedPositionNoNotify(i); - showText = items[i]; - break; - } - } - } - mListView.setAdapter(adapter); - adapter.setOnItemClickListener(new TextAdapter.OnItemClickListener() { - - - @Override - public void onItemClick(View view, int position) { - - - if (mOnSelectListener != null) { - showText = items[position]; - mOnSelectListener.getValue(itemsVaule[position], items[position]); - } - } - }); - } - - - public void setOnSelectListener(OnSelectListener onSelectListener) { - mOnSelectListener = onSelectListener; - } - - - public interface OnSelectListener { - public void getValue(String distance, String showText); - } - - - @Override - public void hide() { - - } - - - @Override - public void show() { - - } - - - } 6，效果图 好，今天就到这里。。希望有用。\n","wordCount":"4937","inLanguage":"zh","datePublished":"2014-09-25T01:28:30Z","dateModified":"2014-09-25T01:28:30Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E4%B9%8B%E5%A4%9A%E7%BA%A7%E4%B8%8B%E6%8B%89%E5%88%97%E8%A1%A8%E8%8F%9C%E5%8D%95%E5%AE%9E%E7%8E%B0%E4%BB%BF%E7%BE%8E%E5%9B%A2%E6%B7%98%E5%AE%9D%E7%AD%89/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android开发之多级下拉列表菜单实现（仿美团，淘宝等）</h1><div class=post-description>我们在常用的电商或者旅游APP中，例如美团，手机淘宝等等，都能够看的到有那种下拉式的二级列表菜单。具体如图所示： ![](http://img.blog.csdn.net/20140922235621019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvT...</div><div class=post-meta><span title='2014-09-25 01:28:30 +0000 UTC'>2014年9月25日</span>&nbsp;·&nbsp;<span>24 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#1%e7%bb%93%e6%9e%84%e5%88%86%e6%9e%90 aria-label=1，结构分析>1，结构分析</a></li><li><a href=#2%e9%a1%b9%e7%9b%ae%e7%bb%93%e6%9e%84 aria-label=2，项目结构>2，项目结构</a></li><li><a href=#3mainactivity aria-label=3，MainActivity>3，MainActivity</a></li><li><a href=#4-expandtabview aria-label="4 ，ExpandTabView">4 ，ExpandTabView</a></li><li><a href=#5viewleft aria-label=5，ViewLeft>5，ViewLeft</a></li><li><a href=#6%e6%95%88%e6%9e%9c%e5%9b%be aria-label=6，效果图>6，效果图</a></li></ul></div></details><div class="post-content md-content"><p>我们在常用的电商或者旅游APP中，例如美团，手机淘宝等等，都能够看的到有那种下拉式的二级列表菜单。具体如图所示：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140922235621019?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p> </p><p><img loading=lazy src="http://img.blog.csdn.net/20140922235520578?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>上面两张图就是美团的一个二级列表菜单的一个展示。我相信很多人都想开发一个跟它一样的功能放到自己的APP中。好，接下来我们就开始动手，解决它。</p><p> </p><h2 id=1结构分析><a style=color:#369 name=t0></a>1，结构分析<a hidden class=anchor aria-hidden=true href=#1结构分析>#</a></h2><p>首先，我们给出这个下来菜单需要的组建。我们用线框图来分析。</p><p><img loading=lazy src="http://img.blog.csdn.net/20140923000721976?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>1）如上图所示，最外围的是一个Activity，顶部包含了一个View的容器，这个容器主要是装载ToggleButton来实现诸如美团里面的“美食，全城，理我最近，刷选”这一行。这一行一点就会弹出对应的下来菜单。</p><p>2）下拉菜单是如何实现的呢？，这里我们利用了PopupWindow来实现这一弹出式窗口。然后我们在弹出式窗口里面再定义我们的下来列表项，是单列还是二级菜单，都是由里面来定。</p><p>3）不同的菜单，需要一级或者需要二级，在这里根据我的需求而变动。我们在PopupWindow上面加一个自定义的LeftView，或者是MiddleView，RightView。主要是一个ToggleButton，你弹出一个窗口，你就定制一个窗口。</p><p>3）视图里面嵌入ListView，就形成了列表项。</p><p>好分析就到上面为止，接下来我们一步步的说明实现。</p><h2 id=2项目结构><a style=color:#369 name=t1></a>2，项目结构<a hidden class=anchor aria-hidden=true href=#2项目结构>#</a></h2><p>本项目的项目结构如图所示：</p><p>1） Adapter。适配器，主要是为ListView提供数据适配的。</p><p>2）MainActivity。主活动页面。</p><p>3）ExpandTabView。本项目的核心类，它包含ToggleButton容器和PopupWindow，是控制弹出窗口的核心类。</p><p>4）ViewLeft,ViewMiddle,ViewRight。是弹出里面嵌套的类，实现不同的列表菜单。</p><p> </p><p><img loading=lazy src="http://img.blog.csdn.net/20140923001303968?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p> </p><p> </p><h2 id=3mainactivity><a style=color:#369 name=t2></a>3，MainActivity<a hidden class=anchor aria-hidden=true href=#3mainactivity>#</a></h2><div>承载所有元素。看代码比看文字实在。</div><p> </p><div class="dp-highlighter bg_java"><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/minimicall/article/details/39484493#)[copy](http://blog.csdn.net/minimicall/article/details/39484493#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/473461)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/473461/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;package&lt;/span&gt; com.example.expandtabview;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; java.util.ArrayList;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.app.Activity;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.os.Bundle;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.util.Log;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.view.View;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.Toast;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; com.example.view.ExpandTabView;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; com.example.view.ViewLeft;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; com.example.view.ViewMiddle;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; com.example.view.ViewRight;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;extends&lt;/span&gt; Activity {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;final&lt;/span&gt; String TAG = &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;MainActivity&amp;#8221;&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ExpandTabView expandTabView;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ArrayList&lt;View&gt; mViewArray = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ArrayList&lt;View&gt;();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ViewLeft viewLeft;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ViewMiddle viewMiddle;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ViewRight viewRight;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        setContentView(R.layout.activity_main);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        initView();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        initVaule();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        initListener();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; initView() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;initView&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        expandTabView = (ExpandTabView) findViewById(R.id.expandtab_view);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        viewLeft = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ViewLeft(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        viewMiddle = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ViewMiddle(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        viewRight = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ViewRight(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; initVaule() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;initValue&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mViewArray.add(viewLeft);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mViewArray.add(viewMiddle);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mViewArray.add(viewRight);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        ArrayList&lt;String&gt; mTextArray = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ArrayList&lt;String&gt;();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mTextArray.add(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;距离&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mTextArray.add(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;区域&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mTextArray.add(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;距离&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        expandTabView.setValue(mTextArray, mViewArray);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//将三个下拉列表设置进去&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        expandTabView.setTitle(viewLeft.getShowText(), &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        expandTabView.setTitle(viewMiddle.getShowText(), &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        expandTabView.setTitle(viewRight.getShowText(), &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;2&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; initListener() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;initListener&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        viewLeft.setOnSelectListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ViewLeft.OnSelectListener() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; getValue(String distance, String showText) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                Log.d(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;ViewLeft&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;OnSelectListener, getValue&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                onRefresh(viewLeft, showText);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        });  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        viewMiddle.setOnSelectListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ViewMiddle.OnSelectListener() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; getValue(String showText) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                Log.d(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;ViewMiddle&amp;#8221;&lt;/span&gt;,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;OnSelectListener, getValue&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                onRefresh(viewMiddle,showText);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        });  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        viewRight.setOnSelectListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ViewRight.OnSelectListener() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; getValue(String distance, String showText) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                Log.d(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;ViewRight&amp;#8221;&lt;/span&gt;,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;OnSelectListener, getValue&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                onRefresh(viewRight, showText);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        });  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onRefresh(View view, String showText) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;onRefresh,view:&amp;#8221;&lt;/span&gt;+view+&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;,showText:&amp;#8221;&lt;/span&gt;+showText);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        expandTabView.onPressBack();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; position = getPositon(view);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (position &gt;= &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt; &amp;&amp; !expandTabView.getTitle(position).equals(showText)) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            expandTabView.setTitle(showText, position);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Toast.makeText(MainActivity.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;, showText, Toast.LENGTH_SHORT).show();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; getPositon(View tView) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;getPosition&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;; i &lt; mViewArray.size(); i++) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (mViewArray.get(i) == tView) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt; i;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt; &amp;#8211;&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onBackPressed() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (!expandTabView.onPressBack()) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            finish();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+</code></pre></div><h2 id=4-expandtabview><a style=color:#369 name=t3></a>4 ，ExpandTabView<a hidden class=anchor aria-hidden=true href=#4-expandtabview>#</a></h2><p>最主要就是如何处理当我们点击这些ToggleButton的时候要弹出或者收起这些PopupWindow。</p><p> </p><div class="dp-highlighter bg_java"><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/minimicall/article/details/39484493#)[copy](http://blog.csdn.net/minimicall/article/details/39484493#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/473461)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/473461/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;package&lt;/span&gt; com.example.view;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; java.util.ArrayList;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; com.example.expandtabview.R;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.app.Activity;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.content.Context;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.util.Log;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.view.LayoutInflater;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.view.View;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.LinearLayout;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.PopupWindow;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.PopupWindow.OnDismissListener;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.RelativeLayout;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.TextView;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.ToggleButton;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/**&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * 菜单控件头部，封装了下拉动画，动态生成头部按钮个数&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * &lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * @author zengjinlong&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; */&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;class&lt;/span&gt; ExpandTabView &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;extends&lt;/span&gt; LinearLayout &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;implements&lt;/span&gt; OnDismissListener {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;final&lt;/span&gt; String TAG = &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;ExpandTabView&amp;#8221;&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ToggleButton selectedButton;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ArrayList&lt;String&gt; mTextArray = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ArrayList&lt;String&gt;();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ArrayList&lt;RelativeLayout&gt; mViewArray = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ArrayList&lt;RelativeLayout&gt;();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ArrayList&lt;ToggleButton&gt; mToggleButton = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; ArrayList&lt;ToggleButton&gt;();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; Context mContext;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; SMALL = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; displayWidth;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; displayHeight;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; PopupWindow popupWindow;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; selectPosition;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; ExpandTabView(Context context) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;super&lt;/span&gt;(context);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        init(context);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; ExpandTabView(Context context, AttributeSet attrs) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;super&lt;/span&gt;(context, attrs);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        init(context);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/**&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * 根据选择的位置设置tabitem显示的值&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     */&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; setTitle(String valueText, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; position) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (position &lt; mToggleButton.size()) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            mToggleButton.get(position).setText(valueText);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; setTitle(String title){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/**&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * 根据选择的位置获取tabitem显示的值&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     */&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; String getTitle(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; position) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (position &lt; mToggleButton.size() &amp;&amp; mToggleButton.get(position).getText() != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt; mToggleButton.get(position).getText().toString();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/**&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * 设置tabitem的个数和初始值&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * @param textArray 标题数组&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * @param viewArray 控件数组&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     */&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; setValue(ArrayList&lt;String&gt; textArray, ArrayList&lt;View&gt; viewArray) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (mContext == &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;setValue&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mTextArray = textArray;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;; i &lt; viewArray.size(); i++) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;final&lt;/span&gt; RelativeLayout r = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; RelativeLayout(mContext);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; maxHeight = (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt;) (displayHeight * &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;0.7&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            RelativeLayout.LayoutParams rl = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, maxHeight);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            rl.leftMargin = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;10&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            rl.rightMargin = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;10&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            r.addView(viewArray.get(i), rl);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            mViewArray.add(r);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            r.setTag(SMALL);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            ToggleButton tButton = (ToggleButton) inflater.inflate(R.layout.toggle_button, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;false&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            addView(tButton);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            View line = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; TextView(mContext);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            line.setBackgroundResource(R.drawable.choosebar_line);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (i &lt; viewArray.size() &amp;#8211; &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                LinearLayout.LayoutParams lp = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; LinearLayout.LayoutParams(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;2&lt;/span&gt;, LinearLayout.LayoutParams.MATCH_PARENT);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                addView(line, lp);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            mToggleButton.add(tButton);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            tButton.setTag(i);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            tButton.setText(mTextArray.get(i));  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            r.setOnClickListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; OnClickListener() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onClick(View v) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    Log.d(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;RelativeLayout&amp;#8221;&lt;/span&gt;,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;view:&amp;#8221;&lt;/span&gt;+v);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    onPressBack();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            });  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            r.setBackgroundColor(mContext.getResources().getColor(R.color.popup_main_background));  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            tButton.setOnClickListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; OnClickListener() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onClick(View view) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    Log.d(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;tButton&amp;#8221;&lt;/span&gt;,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;setOnClickListener(l)&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// initPopupWindow();&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    ToggleButton tButton = (ToggleButton) view;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (selectedButton != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt; &amp;&amp; selectedButton != tButton) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                        selectedButton.setChecked(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;false&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    selectedButton = tButton;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    selectPosition = (Integer) selectedButton.getTag();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    startAnimation();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (mOnButtonClickListener != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt; &amp;&amp; tButton.isChecked()) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                        mOnButtonClickListener.onClick(selectPosition);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            });  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// for..&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; startAnimation() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;startAnimation&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (popupWindow == &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;startAnimation(),new popupWindow now&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            popupWindow = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; PopupWindow(mViewArray.get(selectPosition), displayWidth, displayHeight);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            popupWindow.setFocusable(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;false&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            popupWindow.setOutsideTouchable(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;true&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;startAnimation(),selectedButton:&amp;#8221;&lt;/span&gt;+selectedButton+&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;,isChecked:&amp;#8221;&lt;/span&gt;+selectedButton.isChecked()+  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;,popupWindow.isShowing:&amp;#8221;&lt;/span&gt;+popupWindow.isShowing());  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (selectedButton.isChecked()) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (!popupWindow.isShowing()) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                showPopup(selectPosition);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            } &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;else&lt;/span&gt; {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                popupWindow.setOnDismissListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                popupWindow.dismiss();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                hideView();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        } &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;else&lt;/span&gt; {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (popupWindow.isShowing()) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                popupWindow.dismiss();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                hideView();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; showPopup(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; position) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        View tView = mViewArray.get(selectPosition).getChildAt(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (tView &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;instanceof&lt;/span&gt; ViewBaseAction) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            ViewBaseAction f = (ViewBaseAction) tView;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            f.show();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (popupWindow.getContentView() != mViewArray.get(position)) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            popupWindow.setContentView(mViewArray.get(position));  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        popupWindow.showAsDropDown(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/**&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * 如果菜单成展开状态，则让菜单收回去&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     */&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;boolean&lt;/span&gt; onPressBack() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;onPressBack&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (popupWindow != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt; &amp;&amp; popupWindow.isShowing()) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            popupWindow.dismiss();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            hideView();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (selectedButton != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                selectedButton.setChecked(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;false&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        } &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;else&lt;/span&gt; {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;false&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; hideView() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;hide()&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        View tView = mViewArray.get(selectPosition).getChildAt(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (tView &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;instanceof&lt;/span&gt; ViewBaseAction) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            ViewBaseAction f = (ViewBaseAction) tView;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            f.hide();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; init(Context context) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mContext = context;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        displayWidth = ((Activity) mContext).getWindowManager().getDefaultDisplay().getWidth();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        displayHeight = ((Activity) mContext).getWindowManager().getDefaultDisplay().getHeight();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        setOrientation(LinearLayout.HORIZONTAL);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onDismiss() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        Log.d(TAG,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;onDismiss,selectPosition:&amp;#8221;&lt;/span&gt;+selectPosition);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        showPopup(selectPosition);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        popupWindow.setOnDismissListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; OnButtonClickListener mOnButtonClickListener;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/**&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * 设置tabitem的点击监听事件&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     */&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; setOnButtonClickListener(OnButtonClickListener l) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mOnButtonClickListener = l;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/**&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     * 自定义tabitem点击回调接口&lt;/span&gt; &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;     */&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;interface&lt;/span&gt; OnButtonClickListener {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onClick(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; selectPosition);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+</code></pre></div><p> </p><p> </p><h2 id=5viewleft><a style=color:#369 name=t4></a>5，ViewLeft<a hidden class=anchor aria-hidden=true href=#5viewleft>#</a></h2><p>其中的一个示例，其他两个就不列举了</p><p> </p><div class="dp-highlighter bg_java"><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/minimicall/article/details/39484493#)[copy](http://blog.csdn.net/minimicall/article/details/39484493#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/473461)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/473461/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;package&lt;/span&gt; com.example.view;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; com.example.adapter.TextAdapter;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; com.example.expandtabview.R;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.content.Context;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.view.LayoutInflater;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.view.View;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.ListView;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.RelativeLayout;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;import&lt;/span&gt; android.widget.Toast;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;class&lt;/span&gt; ViewLeft &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;extends&lt;/span&gt; RelativeLayout &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;implements&lt;/span&gt; ViewBaseAction{  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;final&lt;/span&gt; String TAG = &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;ViewLeft&amp;#8221;&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; ListView mListView;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;final&lt;/span&gt; String[] items = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; String[] { &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;item1&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;item2&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;item3&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;item4&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;item5&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;item6&amp;#8221;&lt;/span&gt; };&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//显示字段&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;final&lt;/span&gt; String[] itemsVaule = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; String[] { &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;1&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;2&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;3&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;4&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;5&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;6&amp;#8221;&lt;/span&gt; };&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//隐藏id&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; OnSelectListener mOnSelectListener;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; TextAdapter adapter;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; String mDistance;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; String showText = &lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;item1&amp;#8221;&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; Context mContext;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; String getShowText() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;return&lt;/span&gt; showText;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; ViewLeft(Context context) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;super&lt;/span&gt;(context);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        init(context);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; ViewLeft(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; defStyle) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        init(context);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; ViewLeft(Context context, AttributeSet attrs) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;super&lt;/span&gt;(context, attrs);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        init(context);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; init(Context context) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mContext = context;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        inflater.inflate(R.layout.view_distance, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;true&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        setBackgroundDrawable(getResources().getDrawable(R.drawable.choosearea_bg_mid));  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mListView = (ListView) findViewById(R.id.listView);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        adapter = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; TextAdapter(context, items, R.drawable.choose_item_right, R.drawable.choose_eara_item_selector);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        adapter.setTextSize(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;17&lt;/span&gt;);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (mDistance != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;; i &lt; itemsVaule.length; i++) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (itemsVaule[i].equals(mDistance)) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    adapter.setSelectedPositionNoNotify(i);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    showText = items[i];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;break&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mListView.setAdapter(adapter);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        adapter.setOnItemClickListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; TextAdapter.OnItemClickListener() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onItemClick(View view, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;int&lt;/span&gt; position) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;if&lt;/span&gt; (mOnSelectListener != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    showText = items[position];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                    mOnSelectListener.getValue(itemsVaule[position], items[position]);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        });  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; setOnSelectListener(OnSelectListener onSelectListener) {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        mOnSelectListener = onSelectListener;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;interface&lt;/span&gt; OnSelectListener {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; getValue(String distance, String showText);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; hide() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; show() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+</code></pre></div><p> </p><h2 id=6效果图><a style=color:#369 name=t5></a>6，效果图<a hidden class=anchor aria-hidden=true href=#6效果图>#</a></h2><p><img loading=lazy src="http://img.blog.csdn.net/20140923002303141?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><img loading=lazy src="http://img.blog.csdn.net/20140923002129375?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><img loading=lazy src="http://img.blog.csdn.net/20140923002339240?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><img loading=lazy src="http://img.blog.csdn.net/20140923002354668?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTWluaU1pY2FsbA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>好，今天就到这里。。希望有用。</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9wamp%E4%B8%ADmysql%E9%BB%98%E8%AE%A4%E7%A9%BA%E5%AF%86%E7%A0%81/><span class=title>« 上一页</span>
+<span>如何修改WAMP中mysql默认空密码</span>
+</a><a class=next href=https://blog.zdltech.com/posts/php-xml%E8%BD%ACjson%E6%96%B9%E6%B3%95/><span class=title>下一页 »</span>
+<span>PHP xml转json方法</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

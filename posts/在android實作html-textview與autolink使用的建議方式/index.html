@@ -1,0 +1,1058 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>在Android實作HTML TextView與AutoLink使用的建議方式 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="[Android](http://magiclen.org/tag/android/)的[TextView](http://magiclen.org/tag/textview/)除了可以用來顯示文字資料之外，還可以使用[HTML](http://magiclen.org/tag/html/)語法來調..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E5%9C%A8android%E5%AF%A6%E4%BD%9Chtml-textview%E8%88%87autolink%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BB%BA%E8%AD%B0%E6%96%B9%E5%BC%8F/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E5%9C%A8android%E5%AF%A6%E4%BD%9Chtml-textview%E8%88%87autolink%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BB%BA%E8%AD%B0%E6%96%B9%E5%BC%8F/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E5%9C%A8android%E5%AF%A6%E4%BD%9Chtml-textview%E8%88%87autolink%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BB%BA%E8%AD%B0%E6%96%B9%E5%BC%8F/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="在Android實作HTML TextView與AutoLink使用的建議方式"><meta property="og:description" content="[Android](http://magiclen.org/tag/android/)的[TextView](http://magiclen.org/tag/textview/)除了可以用來顯示文字資料之外，還可以使用[HTML](http://magiclen.org/tag/html/)語法來調..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-12-01T09:56:22+00:00"><meta property="article:modified_time" content="2014-12-01T09:56:22+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="在Android實作HTML TextView與AutoLink使用的建議方式"><meta name=twitter:description content="[Android](http://magiclen.org/tag/android/)的[TextView](http://magiclen.org/tag/textview/)除了可以用來顯示文字資料之外，還可以使用[HTML](http://magiclen.org/tag/html/)語法來調..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"在Android實作HTML TextView與AutoLink使用的建議方式","item":"https://blog.zdltech.com/posts/%E5%9C%A8android%E5%AF%A6%E4%BD%9Chtml-textview%E8%88%87autolink%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BB%BA%E8%AD%B0%E6%96%B9%E5%BC%8F/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"在Android實作HTML TextView與AutoLink使用的建議方式","name":"在Android實作HTML TextView與AutoLink使用的建議方式","description":"[Android](http://magiclen.org/tag/android/)的[TextView](http://magiclen.org/tag/textview/)除了可以用來顯示文字資料之外，還可以使用[HTML](http://magiclen.org/tag/html/)語法來調...","keywords":["android","移动开发"],"articleBody":"Android的TextView除了可以用來顯示文字資料之外，還可以使用HTML語法來調整文字的樣式和文字超連結，無需特地去使用WebView。只是一旦使用TextView製作超連結，該TextView就會變得難以控制，因此有幾個特性應該是設計師必須事先知道的。\nTextView顯示HTML 要使用TextView顯示HTML的作法很簡單，只要用以下方式來setText即可。\n``` textView.setText(Html.fromHtml(\"HTML語法字串\")); ``` 例如：\n``` textView.setText(Html.fromHtml(\"歡迎大家來到\\\"#FF0000\\\"\u003eMagicLen，本站網址如下：\\\"http://magiclen.org/\\\"\u003ehttp://magiclen.org/\")); ``` 結果如下：\n啟用HTML超連結 如果只是單單使用TextView的setText方法來指定HTML語法，HTML超連結將無法有真正的作用，可以使用Android SDK內建提供的方式來讓TextView擁有超連結的功能，程式只要添加一行即可，如下：\n``` textView.setMovementMethod(LinkMovementMethod.getInstance()); ``` 指定LinkMovementMethod給textView，使其擁有超連結的功能。\nTextView使用AutoLink自動判斷連結 若資料來源並非是HTML，而是純文字的話，如果想要讓文字中的網址、電子郵件等等的資訊也擁有超連結，可以設定TextView的AutoLink屬性，決定要將哪些資訊自動產生超連結。\n在XML檔案中設定autolink屬性 添加方式如下：\n``` ","wordCount":"2906","inLanguage":"zh","datePublished":"2014-12-01T09:56:22Z","dateModified":"2014-12-01T09:56:22Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E5%9C%A8android%E5%AF%A6%E4%BD%9Chtml-textview%E8%88%87autolink%E4%BD%BF%E7%94%A8%E7%9A%84%E5%BB%BA%E8%AD%B0%E6%96%B9%E5%BC%8F/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">在Android實作HTML TextView與AutoLink使用的建議方式</h1><div class=post-description>[Android](http://magiclen.org/tag/android/)的[TextView](http://magiclen.org/tag/textview/)除了可以用來顯示文字資料之外，還可以使用[HTML](http://magiclen.org/tag/html/)語法來調...</div><div class=post-meta><span title='2014-12-01 09:56:22 +0000 UTC'>2014年12月1日</span>&nbsp;·&nbsp;<span>14 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><ul><ul><li><a href=#textview%e9%a1%af%e7%a4%bahtml aria-label=TextView顯示HTML>TextView顯示HTML</a><ul><li><a href=#%e5%95%9f%e7%94%a8html%e8%b6%85%e9%80%a3%e7%b5%90 aria-label=啟用HTML超連結>啟用HTML超連結</a></li></ul></li><li><a href=#textview%e4%bd%bf%e7%94%a8autolink%e8%87%aa%e5%8b%95%e5%88%a4%e6%96%b7%e9%80%a3%e7%b5%90 aria-label=TextView使用AutoLink自動判斷連結>TextView使用AutoLink自動判斷連結</a><ul><li><a href=#%e5%9c%a8xml%e6%aa%94%e6%a1%88%e4%b8%ad%e8%a8%ad%e5%ae%9aautolink%e5%b1%ac%e6%80%a7 aria-label=在XML檔案中設定autolink屬性>在XML檔案中設定autolink屬性</a></li><li><a href=#%e5%9c%a8sdk%e4%b8%ad%e7%94%a8java%e7%a8%8b%e5%bc%8f%e6%8c%87%e5%ae%9aautolinkmask aria-label=在SDK中用Java程式指定AutoLinkMask>在SDK中用Java程式指定AutoLinkMask</a></li><li><a href=#%e4%b8%8d%e5%bf%85%e4%bd%bf%e7%94%a8html%e7%9a%84a%e6%a8%99%e7%b1%a4%e6%8c%87%e5%ae%9a%e8%b6%85%e9%80%a3%e7%b5%90 aria-label=不必使用HTML的a標籤指定超連結>不必使用HTML的a標籤指定超連結</a></li></ul></li><li><a href=#%e6%94%af%e6%8f%b4%e8%b6%85%e9%80%a3%e7%b5%90%e7%9a%84textview%e6%89%80%e7%94%a2%e7%94%9f%e7%9a%84%e5%95%8f%e9%a1%8c aria-label=支援超連結的TextView所產生的問題>支援超連結的TextView所產生的問題</a><ul><li><a href=#%e5%95%8f%e9%a1%8c%e8%88%87%e8%a7%a3%e6%b1%ba%e6%96%b9%e6%b3%95 aria-label=問題與解決方法>問題與解決方法</a></li></ul></li></ul></ul><li><a href=#clickablespanurlspan%e7%9a%84%e9%95%bf%e6%8c%89%e5%a4%84%e7%90%86 aria-label=ClickableSpan(URLSpan)的长按处理>ClickableSpan(URLSpan)的长按处理</a></li></ul></div></details><div class="post-content md-content"><p><a href=http://magiclen.org/tag/android/>Android</a>的<a href=http://magiclen.org/tag/textview/>TextView</a>除了可以用來顯示文字資料之外，還可以使用<a href=http://magiclen.org/tag/html/>HTML</a>語法來調整文字的樣式和文字超連結，無需特地去使用<a href=http://magiclen.org/tag/webview/>WebView</a>。只是一旦使用<a href=http://magiclen.org/tag/textview/>TextView</a>製作超連結，該<a href=http://magiclen.org/tag/textview/>TextView</a>就會變得難以控制，因此有幾個特性應該是設計師必須事先知道的。</p><h3 id=textview顯示html><a href=http://magiclen.org/tag/textview/>TextView</a>顯示<a href=http://magiclen.org/tag/html/>HTML</a><a hidden class=anchor aria-hidden=true href=#textview顯示html>#</a></h3><p>要使用<a href=http://magiclen.org/tag/textview/>TextView</a>顯示<a href=http://magiclen.org/tag/html/>HTML</a>的作法很簡單，只要用以下方式來setText即可。</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setText</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>Html.<span style=font-weight:inherit;font-style:inherit;color:#063>fromHtml</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#00f>"HTML語法字串"</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table></div><p>例如：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setText</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>Html.<span style=font-weight:inherit;font-style:inherit;color:#063>fromHtml</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#00f>"歡迎大家來到&lt;big>&lt;font color=<span style=font-weight:700;font-style:inherit;color:#009>\"</span>#FF0000<span style=font-weight:700;font-style:inherit;color:#009>\"</span>>&lt;b>MagicLen&lt;/b>&lt;/font>&lt;/big>，本站網址如下：&lt;br/>&lt;br/>&lt;a href=<span style=font-weight:700;font-style:inherit;color:#009>\"</span>http://magiclen.org/<span style=font-weight:700;font-style:inherit;color:#009>\"</span>>http://magiclen.org/&lt;/a>"</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table></div><p>結果如下：</p><p><a href=http://img.magiclen.org/albums/android-html-textview/p1.png><img alt="在Android實作HTML TextView與AutoLink使用的建議方式" loading=lazy src=http://img.magiclen.org/albums/android-html-textview/p1.png></a></p><h4 id=啟用html超連結>啟用<a href=http://magiclen.org/tag/html/>HTML</a>超連結<a hidden class=anchor aria-hidden=true href=#啟用html超連結>#</a></h4><p>如果只是單單使用<a href=http://magiclen.org/tag/textview/>TextView</a>的setText方法來指定<a href=http://magiclen.org/tag/html/>HTML</a>語法，<a href=http://magiclen.org/tag/html/>HTML</a>超連結將無法有真正的作用，可以使用<a href=http://magiclen.org/tag/android/>Android</a> <a href=http://magiclen.org/tag/sdk/>SDK</a>內建提供的方式來讓<a href=http://magiclen.org/tag/textview/>TextView</a>擁有超連結的功能，程式只要添加一行即可，如下：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setMovementMethod</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>LinkMovementMethod.<span style=font-weight:inherit;font-style:inherit;color:#063>getInstance</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table></div><p>指定<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>給textView，使其擁有超連結的功能。</p><h3 id=textview使用autolink自動判斷連結><a href=http://magiclen.org/tag/textview/>TextView</a>使用AutoLink自動判斷連結<a hidden class=anchor aria-hidden=true href=#textview使用autolink自動判斷連結>#</a></h3><p>若資料來源並非是<a href=http://magiclen.org/tag/html/>HTML</a>，而是純文字的話，如果想要讓文字中的網址、電子郵件等等的資訊也擁有超連結，可以設定<a href=http://magiclen.org/tag/textview/>TextView</a>的AutoLink屬性，決定要將哪些資訊自動產生超連結。</p><h4 id=在xml檔案中設定autolink屬性>在<a href=http://magiclen.org/tag/xml/>XML</a>檔案中設定autolink屬性<a hidden class=anchor aria-hidden=true href=#在xml檔案中設定autolink屬性>#</a></h4><p>添加方式如下：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:700;font-style:inherit;color:#000>&lt;TextView</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:id</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"@+id/textView"</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:layout_width</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"wrap_content"</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:layout_height</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"wrap_content"</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:autoLink</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"all"</span> <span style=font-weight:700;font-style:inherit;color:#000>/></span></span>
+```</td></tr></table></div><p>若將android:autoLink設為all，那它會將text文字中的網址、電子郵件、地址、電話都變成超連結。如果沒有特殊需求的話，不要自動將電話變成超連結，因為不是所有的<a href=http://magiclen.org/tag/android/>Android</a>裝置都能夠打電話，且電話格式各國都不太一樣，很大的機率會將一般<a href=http://magiclen.org/tag/%e6%95%b8%e5%ad%97/>數字</a>誤判成電話。也不要自動將地址變成超連結，因為並非在所有裝置上都有地圖<a href=http://magiclen.org/tag/app/>App</a>，而且<a href=http://magiclen.org/tag/android/>Android</a>好像沒辦法判斷中文地址。所以autoLink屬性可以改寫如下：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:700;font-style:inherit;color:#000>&lt;TextView</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:id</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"@+id/textView"</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:layout_width</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"wrap_content"</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:layout_height</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"wrap_content"</span></span>
+<span style=font-weight:inherit;font-style:inherit;color:#090><span style=font-weight:inherit;font-style:inherit;color:#006>android:autoLink</span>=<span style=font-weight:inherit;font-style:inherit;color:red>"web|email"</span> <span style=font-weight:700;font-style:inherit;color:#000>/></span></span>
+```</td></tr></table></div><p>如果在<a href=http://magiclen.org/tag/xml/>XML</a>設定autoLink，啟用了AutoLink屬性的話，<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>將會被自動加入<a href=http://magiclen.org/tag/textview/>TextView</a>中，因此沒有必要使用set<a href=http://magiclen.org/tag/movementmethod/>MovementMethod</a>再指定<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>。</p><h4 id=在sdk中用java程式指定autolinkmask>在<a href=http://magiclen.org/tag/sdk/>SDK</a>中用<a href=http://magiclen.org/tag/java/>Java</a>程式指定AutoLinkMask<a hidden class=anchor aria-hidden=true href=#在sdk中用java程式指定autolinkmask>#</a></h4><p>添加方式如下：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setAutoLinkMask</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>Linkify.<span style=font-weight:inherit;font-style:inherit;color:#063>ALL</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table></div><p>不將電話和地址加上超連結的寫法如下：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setAutoLinkMask</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>Linkify.<span style=font-weight:inherit;font-style:inherit;color:#063>EMAIL_ADDRESSES</span><span style=font-weight:inherit;font-style:inherit;color:#393>|</span>Linkify.<span style=font-weight:inherit;font-style:inherit;color:#063>WEB_URLS</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table></div><p>僅用setAutoLinkMask方法是無法啟用AutoLink屬性的，還再指定<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>給<a href=http://magiclen.org/tag/textview/>TextView</a>：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setMovementMethod</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>LinkMovementMethod.<span style=font-weight:inherit;font-style:inherit;color:#063>getInstance</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table></div><h4 id=不必使用html的a標籤指定超連結>不必使用<a href=http://magiclen.org/tag/html/>HTML</a>的a標籤指定超連結<a hidden class=anchor aria-hidden=true href=#不必使用html的a標籤指定超連結>#</a></h4><p>啟用textView的AutoLink之後，就不必再使用<a href=http://magiclen.org/tag/html/>HTML</a>的a標籤來製作超連結。因為<a href=http://magiclen.org/tag/android/>Android</a>會自動抓取text文字中符合的格式，將其自動更換為<a href=http://magiclen.org/tag/html/>HTML</a>的超連結。當然如果想要讓超連結顯示出不同的文字，還是可以使用a標籤來指定。完全不使用<a href=http://magiclen.org/tag/html/>HTML</a>，<a href=http://magiclen.org/tag/android/>Android</a>也會自動產生超連結。</p><p>以下舉個例子：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setText</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#00f>"歡迎大家來到MagicLen<span style=font-weight:700;font-style:inherit;color:#009>\n</span>本站網址：http://magiclen.org<span style=font-weight:700;font-style:inherit;color:#009>\n</span>電子郵件：len@magiclen.org"</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setAutoLinkMask</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>Linkify.<span style=font-weight:inherit;font-style:inherit;color:#063>EMAIL_ADDRESSES</span><span style=font-weight:inherit;font-style:inherit;color:#393>|</span>Linkify.<span style=font-weight:inherit;font-style:inherit;color:#063>WEB_URLS</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+textView.<span style=font-weight:inherit;font-style:inherit;color:#063>setMovementMethod</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>LinkMovementMethod.<span style=font-weight:inherit;font-style:inherit;color:#063>getInstance</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table></div><p>結果如下：</p><p><a href=http://img.magiclen.org/albums/android-html-textview/p2.png><img alt="在Android實作HTML TextView與AutoLink使用的建議方式" loading=lazy src=http://img.magiclen.org/albums/android-html-textview/p2.png></a></p><h3 id=支援超連結的textview所產生的問題>支援超連結的<a href=http://magiclen.org/tag/textview/>TextView</a>所產生的問題<a hidden class=anchor aria-hidden=true href=#支援超連結的textview所產生的問題>#</a></h3><p>要讓<a href=http://magiclen.org/tag/textview/>TextView</a>擁有超連結功能，必須要指定<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>給<a href=http://magiclen.org/tag/textview/>TextView</a>。然而<a href=http://magiclen.org/tag/textview/>TextView</a>一旦設定了<a href=http://magiclen.org/tag/movementmethod/>MovementMethod</a>或是KeyListener，<a href=http://magiclen.org/tag/textview/>TextView</a>會自動將Focusable、Clickable、LongClickable屬性設定為true。</p><h4 id=問題與解決方法>問題與解決方法<a hidden class=anchor aria-hidden=true href=#問題與解決方法>#</a></h4><p>當<a href=http://magiclen.org/tag/textview/>TextView</a>為Focusable的時候，且此<a href=http://magiclen.org/tag/textview/>TextView</a>作為<a href=http://magiclen.org/tag/gridview/>GridView</a>或是<a href=http://magiclen.org/tag/listview/>ListView</a>的Item，會使得無論是否點擊到<a href=http://magiclen.org/tag/textview/>TextView</a>，onItemClickListener和onItemLongClickListener都會沒有作用。所以一定要覆寫掉hasFocusable方法，讓他永遠傳回false。</p><p>當<a href=http://magiclen.org/tag/textview/>TextView</a>為Clickable的時候，onTouchEvent將永遠回傳true，所以點擊事件在<a href=http://magiclen.org/tag/textview/>TextView</a>中就被擋下了，無法傳給更上層的View，因此當此<a href=http://magiclen.org/tag/textview/>TextView</a>作為<a href=http://magiclen.org/tag/gridview/>GridView</a>或是<a href=http://magiclen.org/tag/listview/>ListView</a>的Item時，onItemClickListener和onItemLongClickListener將無作用，所以一定要想辦法覆寫掉onTouchEvent方法，讓它可以在點擊到<a href=http://magiclen.org/tag/textview/>TextView</a>中連結的時候傳回true就好。</p><p>但是，<a href=http://magiclen.org/tag/android/>Android</a>內建的<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>並不會讓我們知道使用者到底是不是點擊連結，因此我們還必須改寫<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>。</p><p>改寫後的<a href=http://magiclen.org/tag/textview/>TextView</a>命名為<a href=http://magiclen.org/tag/linktextview/>LinkTextView</a>，<a href=http://magiclen.org/tag/linkmovementmethod/>LinkMovementMethod</a>命名為<a href=http://magiclen.org/tag/linktextviewmovementmethod/>LinkTextViewMovementMethod</a>，程式碼如下：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+<span style=font-weight:700;font-style:italic;color:green>/**
+* 解決可使用Link HTML的TextView變成Clickable和Focusable的問題
+*
+* @author magiclen
+*/</span>
+<span style=font-weight:700;font-style:inherit>public</span> <span style=font-weight:700;font-style:inherit>class</span> LinkTextView <span style=font-weight:700;font-style:inherit>extends</span> TextView <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+ 
+<span style=font-weight:inherit;font-style:italic;color:#666>// -----物件變數-----</span>
+<span style=font-weight:700;font-style:inherit>private</span> <span style=font-weight:700;font-style:inherit;color:#006>boolean</span> linkHit<span style=font-weight:inherit;font-style:inherit;color:#393>;</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 是否為按下連結</span>
+ 
+<span style=font-weight:inherit;font-style:italic;color:#666>// -----建構子-----</span>
+<span style=font-weight:700;font-style:inherit>public</span> LinkTextView<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#039>Context</span> context<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit>super</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>context<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+ 
+<span style=font-weight:700;font-style:inherit>public</span> LinkTextView<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#039>Context</span> context, <span style=font-weight:inherit;font-style:inherit;color:#039>AttributeSet</span> attrs<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit>super</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>context, attrs<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+ 
+<span style=font-weight:700;font-style:inherit>public</span> LinkTextView<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#039>Context</span> context, <span style=font-weight:inherit;font-style:inherit;color:#039>AttributeSet</span> attrs, <span style=font-weight:700;font-style:inherit;color:#006>int</span> defStyle<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit>super</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>context, attrs, defStyle<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+ 
+<span style=font-weight:inherit;font-style:italic;color:#666>// -----物件方法-----</span>
+<span style=font-weight:700;font-style:italic;color:green>/**
+* 覆寫onTouchEvent，使其不會永遠傳回true，若為true，則無法將touch事件傳出給上層的View。
+*
+*/</span>
+@SuppressLint<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#00f>"ClickableViewAccessibility"</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span>
+@Override
+<span style=font-weight:700;font-style:inherit>public</span> <span style=font-weight:700;font-style:inherit;color:#006>boolean</span> onTouchEvent<span style=font-weight:inherit;font-style:inherit;color:#090>(</span>MotionEvent event<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit>super</span>.<span style=font-weight:inherit;font-style:inherit;color:#063>onTouchEvent</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>event<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:700;font-style:inherit>return</span> linkHit<span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+ 
+<span style=font-weight:700;font-style:italic;color:green>/**
+* 設定HTML內容給TextView，如果已啟用AutoLink屬性，則不需要使用這個方法來製作a標籤的連結。
+*
+* @param html
+*/</span>
+<span style=font-weight:700;font-style:inherit>public</span> <span style=font-weight:700;font-style:inherit;color:#006>void</span> setTextViewHTML<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#039>String</span> html<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+Spanned sequence <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> Html.<span style=font-weight:inherit;font-style:inherit;color:#063>fromHtml</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>html<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+SpannableStringBuilder strBuilder <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> <span style=font-weight:700;font-style:inherit>new</span> SpannableStringBuilder<span style=font-weight:inherit;font-style:inherit;color:#090>(</span>sequence<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+setText<span style=font-weight:inherit;font-style:inherit;color:#090>(</span>strBuilder<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+ 
+<span style=font-weight:700;font-style:italic;color:green>/**
+* 設定MovementMethod之後，TextView會成為Focusable，所以LinkTextView覆寫此方法，永遠傳回false。
+*/</span>
+@Override
+<span style=font-weight:700;font-style:inherit>public</span> <span style=font-weight:700;font-style:inherit;color:#006>boolean</span> hasFocusable<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit>return</span> <span style=font-weight:700;font-style:inherit;color:#006>false</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+ 
+<span style=font-weight:700;font-style:italic;color:green>/**
+* 繼承LinkMovementMethod的LinkTextViewMovementMethod，將會針對連結點擊進行處理，
+* 讓LinkTextView知道目前點擊是否為連結點擊。
+*
+* @author magiclen
+*
+*/</span>
+<span style=font-weight:700;font-style:inherit>public</span> <span style=font-weight:700;font-style:inherit>static</span> <span style=font-weight:700;font-style:inherit>class</span> LinkTextViewMovementMethod <span style=font-weight:700;font-style:inherit>extends</span> LinkMovementMethod <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+ 
+<span style=font-weight:inherit;font-style:italic;color:#666>// -----類別變數-----</span>
+<span style=font-weight:700;font-style:inherit>private</span> <span style=font-weight:700;font-style:inherit>static</span> LinkTextViewMovementMethod sInstance<span style=font-weight:inherit;font-style:inherit;color:#393>;</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 儲存唯一的實體參考</span>
+ 
+<span style=font-weight:inherit;font-style:italic;color:#666>// -----物件方法-----</span>
+<span style=font-weight:700;font-style:italic;color:green>/**
+* 取得LinkTextViewMovementMethod的唯一實體參考。
+*
+* @return
+*/</span>
+<span style=font-weight:700;font-style:inherit>public</span> <span style=font-weight:700;font-style:inherit>static</span> LinkTextViewMovementMethod getInstance<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit>if</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span>sInstance <span style=font-weight:inherit;font-style:inherit;color:#393>==</span> <span style=font-weight:700;font-style:inherit;color:#006>null</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+sInstance <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> <span style=font-weight:700;font-style:inherit>new</span> LinkTextViewMovementMethod<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 建立新的實體</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+<span style=font-weight:700;font-style:inherit>return</span> sInstance<span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+ 
+<span style=font-weight:700;font-style:italic;color:green>/**
+* 覆寫觸控事件，分辨出是否為連結的點擊。
+*/</span>
+@Override
+<span style=font-weight:700;font-style:inherit>public</span> <span style=font-weight:700;font-style:inherit;color:#006>boolean</span> onTouchEvent<span style=font-weight:inherit;font-style:inherit;color:#090>(</span>TextView widget, Spannable buffer, MotionEvent event<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit;color:#006>int</span> action <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> event.<span style=font-weight:inherit;font-style:inherit;color:#063>getAction</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 取得事件類型</span>
+ 
+<span style=font-weight:700;font-style:inherit>if</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span>action <span style=font-weight:inherit;font-style:inherit;color:#393>==</span> MotionEvent.<span style=font-weight:inherit;font-style:inherit;color:#063>ACTION_UP</span> <span style=font-weight:inherit;font-style:inherit;color:#393>||</span> action <span style=font-weight:inherit;font-style:inherit;color:#393>==</span> MotionEvent.<span style=font-weight:inherit;font-style:inherit;color:#063>ACTION_DOWN</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span>
+<span style=font-weight:700;font-style:inherit;color:#006>int</span> x <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:700;font-style:inherit;color:#006>int</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> event.<span style=font-weight:inherit;font-style:inherit;color:#063>getX</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:700;font-style:inherit;color:#006>int</span> y <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:700;font-style:inherit;color:#006>int</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> event.<span style=font-weight:inherit;font-style:inherit;color:#063>getY</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+ 
+x <span style=font-weight:inherit;font-style:inherit;color:#393>-=</span> widget.<span style=font-weight:inherit;font-style:inherit;color:#063>getTotalPaddingLeft</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+y <span style=font-weight:inherit;font-style:inherit;color:#393>-=</span> widget.<span style=font-weight:inherit;font-style:inherit;color:#063>getTotalPaddingTop</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+ 
+x <span style=font-weight:inherit;font-style:inherit;color:#393>+=</span> widget.<span style=font-weight:inherit;font-style:inherit;color:#063>getScrollX</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+y <span style=font-weight:inherit;font-style:inherit;color:#393>+=</span> widget.<span style=font-weight:inherit;font-style:inherit;color:#063>getScrollY</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+ 
+Layout layout <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> widget.<span style=font-weight:inherit;font-style:inherit;color:#063>getLayout</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:700;font-style:inherit;color:#006>int</span> line <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> layout.<span style=font-weight:inherit;font-style:inherit;color:#063>getLineForVertical</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>y<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:700;font-style:inherit;color:#006>int</span> off <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> layout.<span style=font-weight:inherit;font-style:inherit;color:#063>getOffsetForHorizontal</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>line, x<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+ 
+ClickableSpan<span style=font-weight:inherit;font-style:inherit;color:#090>[</span><span style=font-weight:inherit;font-style:inherit;color:#090>]</span> link <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> buffer.<span style=font-weight:inherit;font-style:inherit;color:#063>getSpans</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>off, off, ClickableSpan.<span style=font-weight:700;font-style:inherit>class</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+ 
+<span style=font-weight:700;font-style:inherit>if</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span>link.<span style=font-weight:inherit;font-style:inherit;color:#063>length</span> <span style=font-weight:inherit;font-style:inherit;color:#393>!=</span> <span style=font-weight:inherit;font-style:inherit;color:#c6c></span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 是連結點擊</span>
+<span style=font-weight:700;font-style:inherit>if</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span>widget <span style=font-weight:700;font-style:inherit>instanceof</span> LinkTextView<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 如果實體是LinkTextView</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>LinkTextView<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> widget<span style=font-weight:inherit;font-style:inherit;color:#090>)</span>.<span style=font-weight:inherit;font-style:inherit;color:#063>linkHit</span> <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> <span style=font-weight:700;font-style:inherit;color:#006>true</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+<span style=font-weight:700;font-style:inherit>if</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span>action <span style=font-weight:inherit;font-style:inherit;color:#393>==</span> MotionEvent.<span style=font-weight:inherit;font-style:inherit;color:#063>ACTION_UP</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 放開時</span>
+link<span style=font-weight:inherit;font-style:inherit;color:#090>[</span><span style=font-weight:inherit;font-style:inherit;color:#c6c></span><span style=font-weight:inherit;font-style:inherit;color:#090>]</span>.<span style=font-weight:inherit;font-style:inherit;color:#063>onClick</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>widget<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 開啟連結</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span> <span style=font-weight:700;font-style:inherit>else</span> <span style=font-weight:700;font-style:inherit>if</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span>action <span style=font-weight:inherit;font-style:inherit;color:#393>==</span> MotionEvent.<span style=font-weight:inherit;font-style:inherit;color:#063>ACTION_DOWN</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 按下時</span>
+Selection.<span style=font-weight:inherit;font-style:inherit;color:#063>setSelection</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>buffer, buffer.<span style=font-weight:inherit;font-style:inherit;color:#063>getSpanStart</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>link<span style=font-weight:inherit;font-style:inherit;color:#090>[</span><span style=font-weight:inherit;font-style:inherit;color:#c6c></span><span style=font-weight:inherit;font-style:inherit;color:#090>]</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span>, buffer.<span style=font-weight:inherit;font-style:inherit;color:#063>getSpanEnd</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>link<span style=font-weight:inherit;font-style:inherit;color:#090>[</span><span style=font-weight:inherit;font-style:inherit;color:#c6c></span><span style=font-weight:inherit;font-style:inherit;color:#090>]</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 選擇連結</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+<span style=font-weight:700;font-style:inherit>return</span> <span style=font-weight:700;font-style:inherit;color:#006>true</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span> <span style=font-weight:700;font-style:inherit>else</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 不是連結點擊</span>
+<span style=font-weight:700;font-style:inherit>if</span> <span style=font-weight:inherit;font-style:inherit;color:#090>(</span>widget <span style=font-weight:700;font-style:inherit>instanceof</span> LinkTextView<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> <span style=font-weight:inherit;font-style:inherit;color:#090>{</span> <span style=font-weight:inherit;font-style:italic;color:#666>// 如果實體是LinkTextView</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>LinkTextView<span style=font-weight:inherit;font-style:inherit;color:#090>)</span> widget<span style=font-weight:inherit;font-style:inherit;color:#090>)</span>.<span style=font-weight:inherit;font-style:inherit;color:#063>linkHit</span> <span style=font-weight:inherit;font-style:inherit;color:#393>=</span> <span style=font-weight:700;font-style:inherit;color:#006>false</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+Selection.<span style=font-weight:inherit;font-style:inherit;color:#063>removeSelection</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>buffer<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+Touch.<span style=font-weight:inherit;font-style:inherit;color:#063>onTouchEvent</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>widget, buffer, event<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:700;font-style:inherit>return</span> <span style=font-weight:700;font-style:inherit;color:#006>false</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+<span style=font-weight:700;font-style:inherit>return</span> Touch.<span style=font-weight:inherit;font-style:inherit;color:#063>onTouchEvent</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>widget, buffer, event<span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+<span style=font-weight:inherit;font-style:inherit;color:#090>}</span>
+```</td></tr></table></div><p><a href=http://magiclen.org/tag/linktextview/>LinkTextView</a>的使用方式和一般的<a href=http://magiclen.org/tag/textview/>TextView</a>一樣，只不過如果要使其支援超連結功能，一定要手動指定<a href=http://magiclen.org/tag/linktextviewmovementmethod/>LinkTextViewMovementMethod</a>給<a href=http://magiclen.org/tag/linktextview/>LinkTextView</a>，如下：</p><div class=wp_syntax style=color:#100><table style=font-weight:inherit;font-style:inherit><tr style=font-weight:inherit;font-style:inherit><td class=code style=font-weight:inherit;font-style:inherit>```
+linkTextView.<span style=font-weight:inherit;font-style:inherit;color:#063>setMovementMethod</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span>LinkTextViewMovementMethod.<span style=font-weight:inherit;font-style:inherit;color:#063>getInstance</span><span style=font-weight:inherit;font-style:inherit;color:#090>(</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#090>)</span><span style=font-weight:inherit;font-style:inherit;color:#393>;</span>
+```</td></tr></table><pre><code>&amp;nbsp;
+
+
+
+
+
+转自：http://magiclen.org/android-html-textview/
+</code></pre></div><p>最近在做项目研发过程中有这样一个需求：ListView的Item里的子控件TextView要设置超链接、指定文字高亮显示，然后点击超链接后跳转到指定URL的网页。实现超链接的跳转这很容易，只要通过对TextView设置SpannableString对象即可，即如下代码：<br>TextView tv = (TextView)findViewById(R.id.tv);<br>SpannableString sp = new SpannableString(“此处为tv里显示的内容”);<br>sp.setSpan( new URLSpan( “http://www.baidu.com” ), 3 , 8 , Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);<br>tv.setText(sp);<br>tv.setMovementMethod(LinkMovementMethod.getInstance());<br>通过这样的设置后已经能够实现对超链接点击跳转到指定URL的网页了，可麻烦又来了，你会发现点击ListView里的Item时没有任何反应，这是什么原因呢？还记得上面在设置超链接的时候有这样一条语句：tv.setMovementMethod(LinkMovementMethod.getInstance());我们现在把这条语句注释掉看看……run App,结果点击Item的时候能够响应了，可惜超链接又失效了，任你点击也没有响应了，哎，真可谓是“鱼和熊掌不可兼得”。现在已经断定Item失效的原因何在了，那为什么这条语句就会导致Item点击失效呢？源码往往是揭开程序中各种奇芭问题的尖锐利器，让我们跟踪下源码吧……打开TextView的源码文件，截取的关键代码片段如下：<br>wKioL1LHkTyjKLGQAACZ9Ux9MIg927.jpg<br>该代码片段是TextView源码的第1421行(Android4.2.2版本)，我们发现不能通过重写此方法来解决我们所面临的问题，再继续跟踪LinkMovementMethod这个类吧，关键源码如下：<br>@Override<br>public boolean onTouchEvent(TextView widget, Spannable buffer,<br>MotionEvent event) {<br>int action = event.getAction();<br>if (action == MotionEvent.ACTION_UP ||<br>action == MotionEvent.ACTION_DOWN) {<br>int x = (int) event.getX();<br>int y = (int) event.getY();<br>x -= widget.getTotalPaddingLeft();<br>y -= widget.getTotalPaddingTop();<br>x += widget.getScrollX();<br>y += widget.getScrollY();<br>Layout layout = widget.getLayout();<br>int line = layout.getLineForVertical(y);<br>int off = layout.getOffsetForHorizontal(line, x);<br>//获取textview里的超链接对象，并用ClickableSpan数组盛装<br>ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);<br>if (link.length != 0) { //此处是对超链接点击事件进行处理……<br>if (action == MotionEvent.ACTION_UP) {<br>link[0].onClick(widget);<br>} else if (action == MotionEvent.ACTION_DOWN) {<br>Selection.setSelection(buffer,<br>buffer.getSpanStart(link[0]),<br>buffer.getSpanEnd(link[0]));<br>}<br>return true; //处理结束后返回true,这里一定要注意：当返回值为true时则表示点击事件已经被，就再也不会继续传递了<br>} else {<br>Selection.removeSelection(buffer);<br>}<br>}<br>return super.onTouchEvent(widget, buffer, event);<br>}<br>上述源码为LinkMovementMethod类的第188行。发现了Item点击失效的原因是因为onTouch方法总是返回true而并没有根据不同的情况来作处理，此时大家可能会想直接对这个方法重写就能解决问题了。我和大家想的也一样，对该方法重写，并根据情况返回true或false,遗憾的是还是没有效果，并且在重写的方法里看不到输出的日志信息，暂时不明其中原因，请高手赐教！眼看就要看到光明了，可还是被打击了……不要灰心，面包总是会有的，如果你不放弃的话，哈哈。换个keywords google一下，终于找到国外的一个网站，上面的文章标题是：<br>wKiom1LHlTzxAlYtAAA2uld9Jrk531.jpg<br>此时此刻的心情真是如获至宝呀……接着看下去……发现有高人是这样解决的：<br>wKioL1LHldywWR1tAAE4WGfZtn4031.jpg<br>发现这位高人本质思路是我们开始分析的本质思路一样，只不过他把要处理的代码放在了TextView的onTouch方法里，然后根据不同的情况返回true或false.在getView()方法里对相应的TextView进行设置吧，Run app……见证奇迹的时刻到了……哈哈，结果真的能行了，耶哦！<br>原文链接：http://stackoverflow.com/questions/8558732/listview-textview-with-linkmovementmethod-makes-list-item-unclickable<br>经过此劫，我发现了为什么国外的技术总是比国内要先进得多了，我在此并不是贬低同僚，不支持国产，而是在国内的技术普遍都是你抄我，我抄你的，有的甚至连原文链接都不放……大家可以看看国外这个技术网站人家是怎么解决问题的，真是按部就班，循序渐进的，不仅让你知其然还知其所以然。</p><p>There are THREE show-stoppers in this case. the root reason is that when you call setMovementMethod or setKeyListener, TextView “fixes” it’s settings:</p><p>setFocusable(true);<br>setClickable(true);<br>setLongClickable(true);<br>So, the first reason is that when a View is clickable – it always consumes ACTION_UP event (by returning true in onTouchEvent(MotionEvent event) ). To fix that you should return true in that method only if the user actually clicks the URL. But the LinkMovementMethod doesn’t tell us, if the user actually clicked a link. It returns “true” in it’s onTouch if the user clicks the link, but also in many other cases.</p><p>So, actually I did a hack here:</p><p>public class TextViewFixTouchConsume extends TextView {<br>boolean dontConsumeNonUrlClicks = true;<br>boolean linkHit;</p><p>public TextViewFixTouchConsume(Context context) {<br>super(context);<br>}</p><p>public TextViewFixTouchConsume(Context context, AttributeSet attrs) {<br>super(context, attrs);<br>}</p><p>public TextViewFixTouchConsume(Context context, AttributeSet attrs, int defStyle) {<br>super(context, attrs, defStyle);<br>}</p><p>@Override<br>public boolean onTouchEvent(MotionEvent event) {<br>linkHit = false;<br>boolean res = super.onTouchEvent(event);</p><p>if (dontConsumeNonUrlClicks)<br>return linkHit;<br>return res;</p><p>}</p><p>public void setTextViewHTML(String html)<br>{<br>CharSequence sequence = Html.fromHtml(html);<br>SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);<br>setText(strBuilder);<br>}</p><p>public static class LocalLinkMovementMethod extends LinkMovementMethod{<br>static LocalLinkMovementMethod sInstance;</p><p>public static LocalLinkMovementMethod getInstance() {<br>if (sInstance == null)<br>sInstance = new LocalLinkMovementMethod();</p><p>return sInstance;<br>}</p><p>@Override<br>public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {<br>int action = event.getAction();</p><p>if (action == MotionEvent.ACTION_UP ||<br>action == MotionEvent.ACTION_DOWN) {<br>int x = (int) event.getX();<br>int y = (int) event.getY();</p><p>x -= widget.getTotalPaddingLeft();<br>y -= widget.getTotalPaddingTop();</p><p>x += widget.getScrollX();<br>y += widget.getScrollY();</p><p>Layout layout = widget.getLayout();<br>int line = layout.getLineForVertical(y);<br>int off = layout.getOffsetForHorizontal(line, x);</p><p>ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);</p><p>if (link.length != 0) {<br>if (action == MotionEvent.ACTION_UP) {<br>link[0].onClick(widget);<br>} else if (action == MotionEvent.ACTION_DOWN) {<br>Selection.setSelection(buffer,<br>buffer.getSpanStart(link[0]),<br>buffer.getSpanEnd(link[0]));<br>}</p><p>if (widget instanceof TextViewFixTouchConsume){<br>((TextViewFixTouchConsume) widget).linkHit = true;<br>}<br>return true;<br>} else {<br>Selection.removeSelection(buffer);<br>Touch.onTouchEvent(widget, buffer, event);<br>return false;<br>}<br>}<br>return Touch.onTouchEvent(widget, buffer, event);<br>}<br>}<br>}<br>You should call somewhere</p><p>textView.setMovementMethod(TextViewFixTouchConsume.LocalLinkMovementMethod.getInstance());<br>to set this MovementMethod for the textView.</p><p>This MovementMethod raises a flag in TextViewFixTouchConsume if user actually hits link. (only in ACTION_UP and ACTION_DOWN events) and TextViewFixTouchConsume.onTouchEvent returns true only if user actually hit link.</p><p>But that’s not all!!!! The third problem is that ListView (AbsListView) calls it’s performClick method (that calls onItemClick event handler) ONLY if ListView’s item view has no focusables. So, you need to override</p><p>@Override<br>public boolean hasFocusable() {<br>return false;<br>}<br>in a view that you add to ListView. (in my case that is a layout that contains textView)</p><p>or you can use setOnClickLIstener for that view. so, theese are hacks, but they work.</p><p>更多地址参考<a href=http://stackoverflow.com/questions/8558732/listview-textview-with-linkmovementmethod-makes-list-item-unclickable>http://stackoverflow.com/questions/8558732/listview-textview-with-linkmovementmethod-makes-list-item-unclickable</a></p><p> </p><h1 id=clickablespanurlspan的长按处理>ClickableSpan(URLSpan)的长按处理<a hidden class=anchor aria-hidden=true href=#clickablespanurlspan的长按处理>#</a></h1><p>给TextView设置了OnLongClickListener后，如果TextView中同时有ClickableSpan（一般为URLSpan），此时长按TextView，如果长按的位置在ClickableSpan上，会发现<span style=font-weight:700>同时触发了OnLongClickListener和ClickableSpan的onClick</span>。比如下面的代码</p><figure class="highlight java" style=color:#444><table><tr><td class=gutter style=color:#777><div class=line>1</div><pre><code>  &lt;div class=&quot;line&quot;&gt;
+    2
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    3
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    4
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    5
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    6
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    7
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    8
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    9
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    10
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    11
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    12
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    13
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    14
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    15
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    16
+  &lt;/div&gt;
+&lt;/td&gt;
+
+&lt;td class=&quot;code&quot; style=&quot;color: #666666;&quot;&gt;
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;final&lt;/span&gt; TextView tv = (TextView) findViewById(R.id.txt);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    String url = &lt;span class=&quot;string&quot; style=&quot;color: #2aa198;&quot;&gt;&amp;#8220;http://www.baidu.com&amp;#8221;&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    URLSpan span = &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;new&lt;/span&gt; URLSpan(url);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    String content = url + &lt;span class=&quot;string&quot; style=&quot;color: #2aa198;&quot;&gt;&amp;#8220;Test&amp;#8221;&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    SpannableString ss = &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;new&lt;/span&gt; SpannableString(content);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    ss.setSpan(span, &lt;span class=&quot;number&quot; style=&quot;color: #2aa198;&quot;&gt;&lt;/span&gt;, url.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    tv.setText(ss);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    tv.setMovementMethod(LinkMovementMethod.getInstance());
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    tv.setOnLongClickListener(&lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;new&lt;/span&gt; OnLongClickListener() {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #268bd2;&quot;&gt;onLongClick&lt;/span&gt;(View v) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    Toast.makeText(getApplicationContext(), &lt;span class=&quot;string&quot; style=&quot;color: #2aa198;&quot;&gt;&amp;#8220;OnLongClick&amp;#8221;&lt;/span&gt;, Toast.LENGTH_SHORT).show();
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;true&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    });
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre></tr></table></figure><p>当在Url上长按时，会同时弹出Toast并打开指定的网页。为什么这样？当然还要从源码中查找，看下TextView的onTouchEvent函数。</p><figure class="highlight java" style=color:#444><table><tr><td class=gutter style=color:#777><div class=line>1</div><pre><code>  &lt;div class=&quot;line&quot;&gt;
+    2
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    3
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    4
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    5
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    6
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    7
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    8
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    9
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    10
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    11
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    12
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    13
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    14
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    15
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    16
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    17
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    18
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    19
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    20
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    21
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    22
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    23
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    24
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    25
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    26
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    27
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    28
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    29
+  &lt;/div&gt;
+&lt;/td&gt;
+
+&lt;td class=&quot;code&quot; style=&quot;color: #666666;&quot;&gt;
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #268bd2;&quot;&gt;onTouchEvent&lt;/span&gt;(MotionEvent event) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;int&lt;/span&gt; action = event.getActionMasked();
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; (mEditor != &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt;) mEditor.onTouchEvent(event);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;boolean&lt;/span&gt; superResult = &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;super&lt;/span&gt;.onTouchEvent(event); &lt;span class=&quot;comment&quot; style=&quot;font-style: italic; color: #93a1a1;&quot;&gt;// 1&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; (mEditor != &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt; &amp;&amp; mEditor.mDiscardNextActionUp &amp;&amp; action == MotionEvent.ACTION_UP) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    mEditor.mDiscardNextActionUp = &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;false&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;return&lt;/span&gt; superResult;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;boolean&lt;/span&gt; touchIsFinished = (action == MotionEvent.ACTION_UP) &amp;&amp;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    (mEditor == &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt; || !mEditor.mIgnoreActionUpEvent) &amp;&amp; isFocused();
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; ((mMovement != &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt; || onCheckIsTextEditor()) &amp;&amp; isEnabled()
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &amp;&amp; mText &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;instanceof&lt;/span&gt; Spannable &amp;&amp; mLayout != &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt;) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;boolean&lt;/span&gt; handled = &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;false&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; (mMovement != &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt;) { &lt;span class=&quot;comment&quot; style=&quot;font-style: italic; color: #93a1a1;&quot;&gt;// 2&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    handled |= mMovement.onTouchEvent(&lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;this&lt;/span&gt;, (Spannable) mText, event);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &amp;#8230;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; (handled) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;true&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;return&lt;/span&gt; superResult;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre></tr></table></figure><p>在上面标注的第一步中，调用<code>super.onTouchEvent</code>，会处理长按事件。在接下来的第二步中，判断<code>mMovement</code>是否等于<code>null</code>，如果不为<code>null</code>，无论第一步中返回的结果是true还是false，都会调用<code>mMovement</code>的<code>onTouchEvent</code>，Shit，问题就在这里了。而<code>LinkMovementMethod</code>的<code>onTouchEvent</code>是这样的</p><figure class="highlight java" style=color:#444><table><tr><td class=gutter style=color:#777><div class=line>1</div><pre><code>  &lt;div class=&quot;line&quot;&gt;
+    2
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    3
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    4
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    5
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    6
+  &lt;/div&gt;
+&lt;/td&gt;
+
+&lt;td class=&quot;code&quot; style=&quot;color: #666666;&quot;&gt;
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; (action == MotionEvent.ACTION_UP) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    link[&lt;span class=&quot;number&quot; style=&quot;color: #2aa198;&quot;&gt;&lt;/span&gt;].onClick(widget);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    } &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; (action == MotionEvent.ACTION_DOWN) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    Selection.setSelection(buffer, buffer.getSpanStart(link[&lt;span class=&quot;number&quot; style=&quot;color: #2aa198;&quot;&gt;&lt;/span&gt;]), buffer.getSpanEnd(link[&lt;span class=&quot;number&quot; style=&quot;color: #2aa198;&quot;&gt;&lt;/span&gt;]));
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre></tr></table></figure><p>省略了次要部分，在<code>ACTION_UP</code>时就调用<code>link</code>即<code>ClickableSpan</code>的onClick了，Holy Shit。</p><p>问题找到了，那么怎么解决？从上面代码中看到，在进入第二步前有一个很长的<code>if</code>条件判断，破坏这个条件就行了，所以可以在<code>OnLongClickListner</code>中<code>setEnabled(false)</code>，在<code>ACTION_UP</code>中再<code>setEnabled(true)</code>，但什么时候调用<code>setEnabled(true)</code>？可以设置<code>OnTouchListener</code>，在<code>ACTION_UP</code>时post一个<code>Runnable</code>来设置，不过个人不喜欢这个方法。</p><p>另一个办法比较取巧，你要调用onClick就调用吧，我判断一下如果触发了长按就在onClick中什么都不做不就行了，这就要求继承<code>ClickableSpan</code>。那么判断的方法呢？最简单的方法就是通过<code>View.setTag</code>，如下所示</p><figure class="highlight java" style=color:#444><table><tr><td class=gutter style=color:#777><div class=line>1</div><pre><code>  &lt;div class=&quot;line&quot;&gt;
+    2
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    3
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    4
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    5
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    6
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    7
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    8
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    9
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    10
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    11
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    12
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    13
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    14
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    15
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    16
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    17
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    18
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    19
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    20
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    21
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    22
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    23
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    24
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    25
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    26
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    27
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    28
+  &lt;/div&gt;
+&lt;/td&gt;
+
+&lt;td class=&quot;code&quot; style=&quot;color: #666666;&quot;&gt;
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    tv.setOnLongClickListener(&lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;new&lt;/span&gt; OnLongClickListener() {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #268bd2;&quot;&gt;onLongClick&lt;/span&gt;(View v) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    Toast.makeText(getApplicationContext(), &lt;span class=&quot;string&quot; style=&quot;color: #2aa198;&quot;&gt;&amp;#8220;onLongClick&amp;#8221;&lt;/span&gt;, Toast.LENGTH_SHORT).show();
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    v.setTag(&lt;span class=&quot;string&quot; style=&quot;color: #2aa198;&quot;&gt;&amp;#8220;Test&amp;#8221;&lt;/span&gt;);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;true&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    });
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #b58900;&quot;&gt;NonLongClickableUrlSpan&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #b58900;&quot;&gt;URLSpan&lt;/span&gt; &lt;/span&gt;{
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #268bd2;&quot;&gt;NonLongClickableUrlSpan&lt;/span&gt;(String url) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;super&lt;/span&gt;(url);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #268bd2;&quot;&gt;onClick&lt;/span&gt;(View widget) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;if&lt;/span&gt; (widget.getTag() != &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt;) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    widget.setTag(&lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;null&lt;/span&gt;);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;return&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;super&lt;/span&gt;.onClick(widget);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre></tr></table></figure><p>直接通过tag判断，这个TextView的Tag已经用做其他用途了？没事，<code>setTag</code>还有一个重载版本：<code>setTag(int, Object)</code>。</p><p>主要问题已经解决了，但<em>可能</em>还会遇到一点小问题，对于URLSpan，点击时后有个背景，有时松手后这个背景并不消失，解决方法也很简单，手动让它消失就行了，在<code>onLongClick</code>中添加以下代码</p><figure class="highlight java" style=color:#444><table><tr><td class=gutter style=color:#777><div class=line>1</div><pre><code>  &lt;div class=&quot;line&quot;&gt;
+    2
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    3
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    4
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    5
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    6
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    7
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    8
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    9
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    10
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    11
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    12
+  &lt;/div&gt;
+&lt;/td&gt;
+
+&lt;td class=&quot;code&quot; style=&quot;color: #666666;&quot;&gt;
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    tv.setOnLongClickListener(&lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;new&lt;/span&gt; OnLongClickListener() {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot; style=&quot;color: #268bd2;&quot;&gt;onLongClick&lt;/span&gt;(View v) {
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &amp;#8230;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    TextView txt = (TextView) v;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    Spannable span = (Spannable) txt.getText();
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    Selection.removeSelection(span);
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;color: #859900;&quot;&gt;true&lt;/span&gt;;
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    }
+  &lt;/div&gt;
+  
+  &lt;div class=&quot;line&quot;&gt;
+    });
+  &lt;/div&gt;
+&lt;/td&gt;
+</code></pre></tr></table></figure><hr style=color:#444><p>前面说了简单针对TextView的情况，再来看一下其他情况，比如说ListView，假设它是一个聊天信息列表，每一项包含一个头像和一个消息内容，我们可能希望给这个消息内容加个长按事件，而这个长按事件的范围不包括头像，所以不能使用<code>setOnItemLongClickListener</code>，只能给这个消息内容的布局设置<code>OnLongClickListener</code>。这时可能会遇到一个问题：</p><blockquote style=font-style:italic;color:#444><pre><code>如果消息内容中有一个TextView包含URLSpan，当长按时点击的位置在这个URLSpan上时，可能不会触发外层Layout的长按事件，这个TextView拦截了焦点。
+</code></pre></blockquote><p>这时可以给这个TextView也设置一个OnLongClickListener，URLSpan的长按处理和前面讲的一样，而长按事件的处理，可以简单地调用外层Layout的<code>performLongClick()</code>方法。</p><p>如果这个外层布局设置了Selector Background，在长按包含URLSpan的TextView时外层Layout的背景是不会改变的，可以在这个Layout中添加<code>android:addStatesFromChildren="true"</code>属性解决。</p><div id=MySignature style=color:gray>原文链接：[http://www.angeldevil.me/2014/08/27/Long-click-about-Clickable(URLSpan)/](http://www.angeldevil.me/2014/08/27/Long-click-about-Clickable(URLSpan)/)</div><div style=color:gray></div><div style=color:gray></div><div style=color:gray></div><div>### [android textview 自动链接网址 修改默认点击事件](http://dingbuoyi.iteye.com/blog/1553464)<pre><code>&lt;span style=&quot;color: #000000;&quot;&gt;1 修改XML文件即可，&lt;/span&gt;&lt;span style=&quot;color: red;&quot;&gt;android:autoLink=&amp;#8221;web&amp;#8221;&lt;/span&gt;&lt;span style=&quot;color: #000000;&quot;&gt; &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;[code=xml&amp;#8221;] &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;&lt;TextView &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;        android:id=&amp;#8221;@+id/text_view&amp;#8221; &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;        android:layout_width=&amp;#8221;fill_parent&amp;#8221; &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;        android:layout_height=&amp;#8221;wrap_content&amp;#8221; &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;        android:autoLink=&amp;#8221;all&amp;#8221; &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;        android:text=&amp;#8221;@string/hello&amp;#8221; /&gt; &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;autoLink有好几种类型:web phone all等。 &lt;/span&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;br style=&quot;color: #000000;&quot; /&gt;&lt;span style=&quot;color: #000000;&quot;&gt;2 修改链接的默认点击事件 &lt;/span&gt;
+</code></pre><div class=dp-highlighter><div class=bar style=color:#000><div class=tools style=font-weight:700>Java代码  <a title=收藏这段代码>![收藏代码](http://dingbuoyi.iteye.com/images/icon_star.png)</a></div></div><pre><code>  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;class&lt;/span&gt; HtmlAllTestActivity &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;extends&lt;/span&gt; Activity{  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;private&lt;/span&gt; TextView tv;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        setContentView(R.layout.main);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;this&lt;/span&gt;.tv = (TextView)findViewById(R.id.text_view);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        CharSequence text = tv.getText();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;if&lt;/span&gt; (text &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;instanceof&lt;/span&gt; Spannable) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;int&lt;/span&gt; end = text.length();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            Spannable sp = (Spannable) tv.getText();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            URLSpan[] urls = sp.getSpans(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, end, URLSpan.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;class&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            SpannableStringBuilder style = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;new&lt;/span&gt; SpannableStringBuilder(text);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            style.clearSpans();&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// should clear old spans&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;for&lt;/span&gt; (URLSpan url : urls) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                MyURLSpan myURLSpan = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;new&lt;/span&gt; MyURLSpan(url.getURL());  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                style.setSpan(myURLSpan, sp.getSpanStart(url), sp.getSpanEnd(url), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            tv.setText(style);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;private&lt;/span&gt;  &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;class&lt;/span&gt; MyURLSpan &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;extends&lt;/span&gt; ClickableSpan {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;private&lt;/span&gt; String mUrl;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        MyURLSpan(String url) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mUrl = url;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;void&lt;/span&gt; onClick(View widget) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            Toast.makeText(HtmlAllTestActivity.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;this&lt;/span&gt;, mUrl, Toast.LENGTH_LONG).show();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            widget.setBackgroundColor(Color.parseColor(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;#00000000&amp;#8221;&lt;/span&gt;));  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+  
+  - 原文链接：http://dingbuoyi.iteye.com/blog/1553464
+  
+
+
+
+
+  
+
+    所以我通过以下方法控制textview的超链触发，总体思路是通过ontouch事件阻止超链的onclick事件。主要是因为长按事件在onclick事件之前完成，说白了就是`MotionEvent.ACTION_DOWN和`MotionEvent.ACTION_UP出现的前后顺序不同，控制是否消化掉事件。
+  
+
+  
+  
+
+    通过修改textview的长按和touch事件，实现在点击了长按事件以后，防止触发超链接的link事件。
+  
+
+  
+  ```
+</code></pre><p>`&lt;span style=&ldquo;color: #000000;">textview.setOnLongClickListener(new View.OnLongClickListener() {</p><pre><code>        @Override
+        public boolean onLongClick(View v) {
+            isLongClick= true;
+            return false;
+        }
+    });
+    textview.setOnTouchListener(new View.OnTouchListener() {
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if(event.getAction() == MotionEvent.ACTION_UP &amp;&amp; isLongClick){
+                isLongClick= false;
+                return true;
+            }
+            if(event.getAction() == MotionEvent.ACTION_DOWN){
+                isLongClick= false;
+            }
+            return v.onTouchEvent(event);
+        }
+
+    });
+</code></pre><p>控制textview的超链的长按和点击事件都执行的解决方案：现在2种方法解决，1是通过ontouch事键和长按事件逻辑判断控制。2是通过修改点击事件中的
+MyURLSpan &lt;span class=&ldquo;keyword&rdquo; style=&ldquo;font-weight: bold; color: #7f0055;">extends&lt;/span> ClickableSpan重新点击事件。
+下面是我用自定义LinkedTextView,使他能够在ListView中的item点击事件起作用。</p><p>&lt;/span>public class LinkTextView extends TextView {
+// 如果执行了长按
+boolean isOnLongClickRun = false;
+// boolean dontConsumeNonUrlClicks = true;
+boolean linkHit;</p><p>public LinkTextView(Context context) {
+super(context);
+}</p><p>public LinkTextView(Context context, AttributeSet attrs) {
+super(context, attrs);
+}</p><p>public LinkTextView(Context context, AttributeSet attrs, int defStyle) {
+super(context, attrs, defStyle);
+}
+@Override
+public boolean hasFocusable() {
+return false;
+}</p><p>public void setTextViewHTML(String html) {
+CharSequence sequence = Html.fromHtml(html);
+SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+setText(strBuilder);
+}</p><p>public static class LocalLinkMovementMethod extends LinkMovementMethod {
+static LocalLinkMovementMethod sInstance;</p><p>public static LocalLinkMovementMethod getInstance() {
+if (sInstance == null)
+sInstance = new LocalLinkMovementMethod();</p><p>return sInstance;
+}</p><p>@Override
+public boolean onTouchEvent(TextView widget, Spannable buffer,
+MotionEvent event) {
+int action = event.getAction();
+if (action == MotionEvent.ACTION_UP
+|| action == MotionEvent.ACTION_DOWN) {
+int x = (int) event.getX();
+int y = (int) event.getY();
+x -= widget.getTotalPaddingLeft();
+y -= widget.getTotalPaddingTop();
+x += widget.getScrollX();
+y += widget.getScrollY();
+Layout layout = widget.getLayout();
+int line = layout.getLineForVertical(y);
+int off = layout.getOffsetForHorizontal(line, x);</p><p>ClickableSpan[] link = buffer.getSpans(off, off,
+ClickableSpan.class);
+if (link.length != 0) {
+if (action == MotionEvent.ACTION_UP) {
+link[0].onClick(widget);
+} else if (action == MotionEvent.ACTION_DOWN) {
+Selection.setSelection(buffer,
+buffer.getSpanStart(link[0]),
+buffer.getSpanEnd(link[0]));
+}</p><p>if (widget instanceof LinkTextView) {
+((LinkTextView) widget).linkHit = true;
+}
+return true;
+} else {
+Selection.removeSelection(buffer);
+Touch.onTouchEvent(widget, buffer, event);
+return false;
+}
+}
+return Touch.onTouchEvent(widget, buffer, event);
+}
+}
+}`</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-ontouchevent-onclick%E5%8F%8Aonlongclick%E7%9A%84%E8%B0%83%E7%94%A8%E6%9C%BA%E5%88%B6/><span class=title>« 上一页</span>
+<span>Android onTouchEvent, onClick及onLongClick的调用机制</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E5%85%B3%E4%BA%8Eedittext%E7%9A%84%E6%9C%80%E5%A4%A7%E9%95%BF%E5%BA%A6maxlength%E5%92%8C%E5%AF%86%E7%A0%81%E7%B1%BB%E5%9E%8Binputtype%E7%9A%84%E8%8E%B7%E5%8F%96/><span class=title>下一页 »</span>
+<span>关于EditText的最大长度maxLength和密码类型InputType的获取</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

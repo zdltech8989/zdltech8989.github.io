@@ -1,0 +1,1187 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果 | ZDL Tech Blog</title>
+<meta name=keywords content="android,地图定位,移动开发"><meta name=description content="转载请注明本文出自xiaanming的博客（[http://blog.csdn.net/xiaanming/article/details/20481185](http://blog.csdn.net/xiaanming/article/details/20481185)），请尊重他人的辛勤劳动成果..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8%E5%BC%80%E6%BA%90%E5%BA%93stickygridheaders%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%B8%A6sections%E5%92%8Cheaders%E7%9A%84gridview%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8%E5%BC%80%E6%BA%90%E5%BA%93stickygridheaders%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%B8%A6sections%E5%92%8Cheaders%E7%9A%84gridview%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8%E5%BC%80%E6%BA%90%E5%BA%93stickygridheaders%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%B8%A6sections%E5%92%8Cheaders%E7%9A%84gridview%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果"><meta property="og:description" content="转载请注明本文出自xiaanming的博客（[http://blog.csdn.net/xiaanming/article/details/20481185](http://blog.csdn.net/xiaanming/article/details/20481185)），请尊重他人的辛勤劳动成果..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-01-20T07:29:09+00:00"><meta property="article:modified_time" content="2015-01-20T07:29:09+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="地图定位"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果"><meta name=twitter:description content="转载请注明本文出自xiaanming的博客（[http://blog.csdn.net/xiaanming/article/details/20481185](http://blog.csdn.net/xiaanming/article/details/20481185)），请尊重他人的辛勤劳动成果..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果","item":"https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8%E5%BC%80%E6%BA%90%E5%BA%93stickygridheaders%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%B8%A6sections%E5%92%8Cheaders%E7%9A%84gridview%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果","name":"Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果","description":"转载请注明本文出自xiaanming的博客（[http://blog.csdn.net/xiaanming/article/details/20481185](http://blog.csdn.net/xiaanming/article/details/20481185)），请尊重他人的辛勤劳动成果...","keywords":["android","地图定位","移动开发"],"articleBody":"转载请注明本文出自xiaanming的博客（http://blog.csdn.net/xiaanming/article/details/20481185），请尊重他人的辛勤劳动成果，谢谢！\n大家好！过完年回来到现在差不多一个月没写文章了，一是觉得不知道写哪些方面的文章，没有好的题材来写，二是因为自己的一些私事给耽误了，所以过完年的第一篇文章到现在才发表出来，2014年我还是会继续在CSDN上面更新我的博客，欢迎大家关注一下，今天这篇文章主要的是介绍下开源库StickyGridHeaders的使用，StickyGridHeaders是一个自定义GridView带sections和headers的Android库，sections就是GridView item之间的分隔，headers就是固定在GridView顶部的标题，类似一些Android手机联系人的效果，StickyGridHeaders的介绍在https://github.com/TonicArtos/StickyGridHeaders，与此对应也有一个相同效果的自定义ListView带sections和headers的开源库https://github.com/emilsjolander/StickyListHeaders，大家有兴趣的可以去看下，我这里介绍的是StickyGridHeaders的使用，我在Android应用方面看到使用StickyGridHeaders的不是很多，而是在Iphone上看到相册采用的是这种效果，于是我就使用StickyGridHeaders来仿照Iphone按照日期分隔显示本地图片\n我们先新建一个Android项目StickyHeaderGridView，去https://github.com/TonicArtos/StickyGridHeaders下载开源库，为了方便浏览源码我直接将源码拷到我的工程中了\ncom.tonicartos.widget.stickygridheaders这个包就是我放StickyGridHeaders开源库的源码，com.example.stickyheadergridview这个包是我实现此功能的代码，类看起来还蛮多的，下面我就一一来介绍了\nGridItem用来封装StickyGridHeadersGridView 每个Item的数据，里面有本地图片的路径，图片加入手机系统的时间和headerId\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork) - package com.example.stickyheadergridview; - /** - * @blog http://blog.csdn.net/xiaanming - * - * @author xiaanming - * - */ - public class GridItem { - /** - * 图片的路径 - */ - private String path; - /** - * 图片加入手机中的时间，只取了年月日 - */ - private String time; - /** - * 每个Item对应的HeaderId - */ - private int headerId; - - public GridItem(String path, String time) { - super(); - this.path = path; - this.time = time; - } - - public String getPath() { - return path; - } - public void setPath(String path) { - this.path = path; - } - public String getTime() { - return time; - } - public void setTime(String time) { - this.time = time; - } - - public int getHeaderId() { - return headerId; - } - - public void setHeaderId(int headerId) { - this.headerId = headerId; - } - - - } 图片的路径path和图片加入的时间time 我们直接可以通过ContentProvider获取，但是headerId需要我们根据逻辑来生成。\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork) - package com.example.stickyheadergridview; - - import android.content.ContentResolver; - import android.content.Context; - import android.content.Intent; - import android.database.Cursor; - import android.net.Uri; - import android.os.Environment; - import android.os.Handler; - import android.os.Message; - import android.provider.MediaStore; - /** - * 图片扫描器 - * - * @author xiaanming - * - */ - public class ImageScanner { - private Context mContext; - - public ImageScanner(Context context){ - this.mContext = context; - } - - /** - * 利用ContentProvider扫描手机中的图片，将扫描的Cursor回调到ScanCompleteCallBack - * 接口的scanComplete方法中，此方法在运行在子线程中 - */ - public void scanImages(final ScanCompleteCallBack callback) { - final Handler mHandler = new Handler() { - - @Override - public void handleMessage(Message msg) { - super.handleMessage(msg); - callback.scanComplete((Cursor)msg.obj); - } - }; - - new Thread(new Runnable() { - - @Override - public void run() { - //先发送广播扫描下整个sd卡 - mContext.sendBroadcast(new Intent( - Intent.ACTION_MEDIA_MOUNTED, - Uri.parse(\u0026#8220;file://\u0026#8221; + Environment.getExternalStorageDirectory()))); - - Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; - ContentResolver mContentResolver = mContext.getContentResolver(); - - Cursor mCursor = mContentResolver.query(mImageUri, null, null, null, MediaStore.Images.Media.DATE_ADDED); - - //利用Handler通知调用线程 - Message msg = mHandler.obtainMessage(); - msg.obj = mCursor; - mHandler.sendMessage(msg); - } - }).start(); - - } - - /** - * 扫描完成之后的回调接口 - * - */ - public static interface ScanCompleteCallBack{ - public void scanComplete(Cursor cursor); - } - - - } ImageScanner是一个图片的扫描器类，该类使用ContentProvider扫描手机中的图片，我们通过调用scanImages()方法就能对手机中的图片进行扫描，将扫描的Cursor回调到ScanCompleteCallBack 接口的scanComplete方法中，由于考虑到扫描图片属于耗时操作，所以该操作运行在子线程中，在我们扫描图片之前我们需要先发送广播来扫描外部媒体库，为什么要这么做呢，假如我们新增加一张图片到sd卡，图片确实已经添加了进去，但是我们此时的媒体库还没有同步更新，若不同步媒体库我们就看不到新增加的图片，当然我们可以通过重新启动系统来更新媒体库，但是这样不可取，所以我们直接发送广播就可以同步媒体库了。\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork) - package com.example.stickyheadergridview; - import java.util.concurrent.ExecutorService; - import java.util.concurrent.Executors; - - import android.graphics.Bitmap; - import android.graphics.BitmapFactory; - import android.graphics.Point; - import android.os.Handler; - import android.os.Message; - import android.support.v4.util.LruCache; - import android.util.Log; - - /** - * 本地图片加载器,采用的是异步解析本地图片，单例模式利用getInstance()获取NativeImageLoader实例 - * 调用loadNativeImage()方法加载本地图片，此类可作为一个加载本地图片的工具类 - * - * @blog http://blog.csdn.net/xiaanming - * - * @author xiaanming - * - */ - public class NativeImageLoader { - private static final String TAG = NativeImageLoader.class.getSimpleName(); - private static NativeImageLoader mInstance = new NativeImageLoader(); - private static LruCache mMemoryCache; - private ExecutorService mImageThreadPool = Executors.newFixedThreadPool(1); - - - private NativeImageLoader(){ - //获取应用程序的最大内存 - final int maxMemory = (int) (Runtime.getRuntime().maxMemory()); - - //用最大内存的1/8来存储图片 - final int cacheSize = maxMemory / 8; - mMemoryCache = new LruCache(cacheSize) { - - //获取每张图片的bytes - @Override - protected int sizeOf(String key, Bitmap bitmap) { - return bitmap.getRowBytes() * bitmap.getHeight(); - } - - }; - } - - /** - * 通过此方法来获取NativeImageLoader的实例 - * @return - */ - public static NativeImageLoader getInstance(){ - return mInstance; - } - - - /** - * 加载本地图片，对图片不进行裁剪 - * @param path - * @param mCallBack - * @return - */ - public Bitmap loadNativeImage(final String path, final NativeImageCallBack mCallBack){ - return this.loadNativeImage(path, null, mCallBack); - } - - /** - * 此方法来加载本地图片，这里的mPoint是用来封装ImageView的宽和高，我们会根据ImageView控件的大小来裁剪Bitmap - * 如果你不想裁剪图片，调用loadNativeImage(final String path, final NativeImageCallBack mCallBack)来加载 - * @param path - * @param mPoint - * @param mCallBack - * @return - */ - public Bitmap loadNativeImage(final String path, final Point mPoint, final NativeImageCallBack mCallBack){ - //先获取内存中的Bitmap - Bitmap bitmap = getBitmapFromMemCache(path); - - final Handler mHander = new Handler(){ - - @Override - public void handleMessage(Message msg) { - super.handleMessage(msg); - mCallBack.onImageLoader((Bitmap)msg.obj, path); - } - - }; - - //若该Bitmap不在内存缓存中，则启用线程去加载本地的图片，并将Bitmap加入到mMemoryCache中 - if(bitmap == null){ - mImageThreadPool.execute(new Runnable() { - - @Override - public void run() { - //先获取图片的缩略图 - Bitmap mBitmap = decodeThumbBitmapForFile(path, mPoint == null ? : mPoint.x, mPoint == null ? : mPoint.y); - Message msg = mHander.obtainMessage(); - msg.obj = mBitmap; - mHander.sendMessage(msg); - - //将图片加入到内存缓存 - addBitmapToMemoryCache(path, mBitmap); - } - }); - } - return bitmap; - - } - - - - /** - * 往内存缓存中添加Bitmap - * - * @param key - * @param bitmap - */ - private void addBitmapToMemoryCache(String key, Bitmap bitmap) { - if (getBitmapFromMemCache(key) == null \u0026\u0026 bitmap != null) { - mMemoryCache.put(key, bitmap); - } - } - - /** - * 根据key来获取内存中的图片 - * @param key - * @return - */ - private Bitmap getBitmapFromMemCache(String key) { - Bitmap bitmap = mMemoryCache.get(key); - - if(bitmap != null){ - Log.i(TAG, \u0026#8220;get image for LRUCache , path = \u0026#8220; + key); - } - return bitmap; - } - - /** - * 清除LruCache中的bitmap - */ - public void trimMemCache(){ - mMemoryCache.evictAll(); - } - - - /** - * 根据View(主要是ImageView)的宽和高来获取图片的缩略图 - * @param path - * @param viewWidth - * @param viewHeight - * @return - */ - private Bitmap decodeThumbBitmapForFile(String path, int viewWidth, int viewHeight){ - BitmapFactory.Options options = new BitmapFactory.Options(); - //设置为true,表示解析Bitmap对象，该对象不占内存 - options.inJustDecodeBounds = true; - BitmapFactory.decodeFile(path, options); - //设置缩放比例 - options.inSampleSize = computeScale(options, viewWidth, viewHeight); - - //设置为false,解析Bitmap对象加入到内存中 - options.inJustDecodeBounds = false; - - - Log.e(TAG, \u0026#8220;get Iamge form file, path = \u0026#8220; + path); - - return BitmapFactory.decodeFile(path, options); - } - - - /** - * 根据View(主要是ImageView)的宽和高来计算Bitmap缩放比例。默认不缩放 - * @param options - * @param width - * @param height - */ - private int computeScale(BitmapFactory.Options options, int viewWidth, int viewHeight){ - int inSampleSize = 1; - if(viewWidth == || viewWidth == ){ - return inSampleSize; - } - int bitmapWidth = options.outWidth; - int bitmapHeight = options.outHeight; - - //假如Bitmap的宽度或高度大于我们设定图片的View的宽高，则计算缩放比例 - if(bitmapWidth \u003e viewWidth || bitmapHeight \u003e viewWidth){ - int widthScale = Math.round((float) bitmapWidth / (float) viewWidth); - int heightScale = Math.round((float) bitmapHeight / (float) viewWidth); - - //为了保证图片不缩放变形，我们取宽高比例最小的那个 - inSampleSize = widthScale \u003c heightScale ? widthScale : heightScale; - } - return inSampleSize; - } - - - /** - * 加载本地图片的回调接口 - * - * @author xiaanming - * - */ - public interface NativeImageCallBack{ - /** - * 当子线程加载完了本地的图片，将Bitmap和图片路径回调在此方法中 - * @param bitmap - * @param path - */ - public void onImageLoader(Bitmap bitmap, String path); - } - } NativeImageLoader该类是一个单例类，提供了本地图片加载，内存缓存，裁剪等逻辑，该类在加载本地图片的时候采用的是异步加载的方式，对于大图片的加载也是比较耗时的，所以采用子线程的方式去加载，对于图片的缓存机制使用的是LruCache，我们使用手机分配给应用程序内存的1/8用来缓存图片，给图片缓存的内存不宜太大，太大也可能会发生OOM，该类是用我之前写的文章Android 使用ContentProvider扫描手机中的图片，仿微信显示本地图片效果，在这里我就不做过多的介绍，有兴趣的可以去看看那篇文章，不过这里新增了一个方法trimMemCache(),，用来清空LruCache使用的内存\n我们看主界面的布局代码，里面只有一个自定义的StickyGridHeadersGridView控件\n**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003ccom.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - xmlns:tools=\u0026#8220;http://schemas.android.com/tools\u0026#8221; - android:id=\u0026#8220;@+id/asset_grid\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:clipToPadding=\u0026#8220;false\u0026#8221; - android:columnWidth=\u0026#8220;90dip\u0026#8221; - android:horizontalSpacing=\u0026#8220;3dip\u0026#8221; - android:numColumns=\u0026#8220;auto_fit\u0026#8221; - android:verticalSpacing=\u0026#8220;3dip\u0026#8221; /\u003e 在看主界面的代码之前我们先看StickyGridAdapter的代码\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork) - package com.example.stickyheadergridview; - - import java.util.List; - - import android.content.Context; - import android.graphics.Bitmap; - import android.graphics.Point; - import android.view.LayoutInflater; - import android.view.View; - import android.view.ViewGroup; - import android.widget.BaseAdapter; - import android.widget.GridView; - import android.widget.ImageView; - import android.widget.TextView; - - import com.example.stickyheadergridview.MyImageView.OnMeasureListener; - import com.example.stickyheadergridview.NativeImageLoader.NativeImageCallBack; - import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleAdapter; - /** - * StickyHeaderGridView的适配器，除了要继承BaseAdapter之外还需要 - * 实现StickyGridHeadersSimpleAdapter接口 - * - * @blog http://blog.csdn.net/xiaanming - * - * @author xiaanming - * - */ - public class StickyGridAdapter extends BaseAdapter implements - StickyGridHeadersSimpleAdapter { - - private List hasHeaderIdList; - private LayoutInflater mInflater; - private GridView mGridView; - private Point mPoint = new Point(, );//用来封装ImageView的宽和高的对象 - - public StickyGridAdapter(Context context, List hasHeaderIdList, - GridView mGridView) { - mInflater = LayoutInflater.from(context); - this.mGridView = mGridView; - this.hasHeaderIdList = hasHeaderIdList; - } - - - @Override - public int getCount() { - return hasHeaderIdList.size(); - } - - @Override - public Object getItem(int position) { - return hasHeaderIdList.get(position); - } - - @Override - public long getItemId(int position) { - return position; - } - - @Override - public View getView(int position, View convertView, ViewGroup parent) { - ViewHolder mViewHolder; - if (convertView == null) { - mViewHolder = new ViewHolder(); - convertView = mInflater.inflate(R.layout.grid_item, parent, false); - mViewHolder.mImageView = (MyImageView) convertView - .findViewById(R.id.grid_item); - convertView.setTag(mViewHolder); - - //用来监听ImageView的宽和高 - mViewHolder.mImageView.setOnMeasureListener(new OnMeasureListener() { - - @Override - public void onMeasureSize(int width, int height) { - mPoint.set(width, height); - } - }); - - } else { - mViewHolder = (ViewHolder) convertView.getTag(); - } - - String path = hasHeaderIdList.get(position).getPath(); - mViewHolder.mImageView.setTag(path); - - Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint, - new NativeImageCallBack() { - - @Override - public void onImageLoader(Bitmap bitmap, String path) { - ImageView mImageView = (ImageView) mGridView - .findViewWithTag(path); - if (bitmap != null \u0026\u0026 mImageView != null) { - mImageView.setImageBitmap(bitmap); - } - } - }); - - if (bitmap != null) { - mViewHolder.mImageView.setImageBitmap(bitmap); - } else { - mViewHolder.mImageView.setImageResource(R.drawable.friends_sends_pictures_no); - } - - return convertView; - } - - - @Override - public View getHeaderView(int position, View convertView, ViewGroup parent) { - HeaderViewHolder mHeaderHolder; - - if (convertView == null) { - mHeaderHolder = new HeaderViewHolder(); - convertView = mInflater.inflate(R.layout.header, parent, false); - mHeaderHolder.mTextView = (TextView) convertView - .findViewById(R.id.header); - convertView.setTag(mHeaderHolder); - } else { - mHeaderHolder = (HeaderViewHolder) convertView.getTag(); - } - mHeaderHolder.mTextView.setText(hasHeaderIdList.get(position).getTime()); - - return convertView; - } - - /** - * 获取HeaderId, 只要HeaderId不相等就添加一个Header - */ - @Override - public long getHeaderId(int position) { - return hasHeaderIdList.get(position).getHeaderId(); - } - - - public static class ViewHolder { - public MyImageView mImageView; - } - - public static class HeaderViewHolder { - public TextView mTextView; - } - - - - } 除了要继承BaseAdapter之外还需要实现StickyGridHeadersSimpleAdapter接口，继承BaseAdapter需要实现getCount()，getItem(int position)， getItemId(int position)，getView(int position, View convertView, ViewGroup parent)这四个方法，这几个方法的实现跟我们平常实现的方式一样，主要是看一下getView()方法，我们将每个item的图片路径设置Tag到该ImageView上面，然后利用NativeImageLoader来加载本地图片，在这里使用的ImageView依然是自定义的MyImageView，该自定义ImageView主要实现当MyImageView测量完毕之后，就会将测量的宽和高回调到onMeasureSize()中，然后我们可以根据MyImageView的大小来裁剪图片\n另外我们需要实现StickyGridHeadersSimpleAdapter接口的getHeaderId(int position)和getHeaderView(int position, View convertView, ViewGroup parent)，getHeaderId(int position)方法返回每个Item的headerId，getHeaderView()方法是生成sections和headers的，如果某个item的headerId跟他下一个item的HeaderId不同，则会调用getHeaderView方法生成一个sections用来区分不同的组，还会根据firstVisibleItem的headerId来生成一个位于顶部的headers，所以如何生成每个Item的headerId才是关键，生成headerId的方法在MainActivity中\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork) - package com.example.stickyheadergridview; - - import java.text.SimpleDateFormat; - import java.util.ArrayList; - import java.util.Collections; - import java.util.Date; - import java.util.HashMap; - import java.util.List; - import java.util.ListIterator; - import java.util.Map; - import java.util.TimeZone; - - import android.app.Activity; - import android.app.ProgressDialog; - import android.database.Cursor; - import android.os.Bundle; - import android.provider.MediaStore; - import android.widget.GridView; - - import com.example.stickyheadergridview.ImageScanner.ScanCompleteCallBack; - - public class MainActivity extends Activity { - private ProgressDialog mProgressDialog; - /** - * 图片扫描器 - */ - private ImageScanner mScanner; - private GridView mGridView; - /** - * 没有HeaderId的List - */ - private List nonHeaderIdList = new ArrayList(); - - - @Override - protected void onCreate(Bundle savedInstanceState) { - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_main); - - mGridView = (GridView) findViewById(R.id.asset_grid); - mScanner = new ImageScanner(this); - - mScanner.scanImages(new ScanCompleteCallBack() { - { - mProgressDialog = ProgressDialog.show(MainActivity.this, null, \u0026#8220;正在加载\u0026#8230;\u0026#8221;); - } - - @Override - public void scanComplete(Cursor cursor) { - // 关闭进度条 - mProgressDialog.dismiss(); - - if(cursor == null){ - return; - } - - while (cursor.moveToNext()) { - // 获取图片的路径 - String path = cursor.getString(cursor - .getColumnIndex(MediaStore.Images.Media.DATA)); - //获取图片的添加到系统的毫秒数 - long times = cursor.getLong(cursor - .getColumnIndex(MediaStore.Images.Media.DATE_ADDED)); - - GridItem mGridItem = new GridItem(path, paserTimeToYMD(times, \u0026#8220;yyyy年MM月dd日\u0026#8221;)); - nonHeaderIdList.add(mGridItem); - - } - cursor.close(); - - //给GridView的item的数据生成HeaderId - List hasHeaderIdList = generateHeaderId(nonHeaderIdList); - //排序 - Collections.sort(hasHeaderIdList, new YMDComparator()); - mGridView.setAdapter(new StickyGridAdapter(MainActivity.this, hasHeaderIdList, mGridView)); - - } - }); - } - - - /** - * 对GridView的Item生成HeaderId, 根据图片的添加时间的年、月、日来生成HeaderId - * 年、月、日相等HeaderId就相同 - * @param nonHeaderIdList - * @return - */ - private List generateHeaderId(List nonHeaderIdList) { - Map mHeaderIdMap = new HashMap(); - int mHeaderId = 1; - List hasHeaderIdList; - - for(ListIterator it = nonHeaderIdList.listIterator(); it.hasNext();){ - GridItem mGridItem = it.next(); - String ymd = mGridItem.getTime(); - if(!mHeaderIdMap.containsKey(ymd)){ - mGridItem.setHeaderId(mHeaderId); - mHeaderIdMap.put(ymd, mHeaderId); - mHeaderId ++; - }else{ - mGridItem.setHeaderId(mHeaderIdMap.get(ymd)); - } - } - hasHeaderIdList = nonHeaderIdList; - - return hasHeaderIdList; - } - - - @Override - protected void onDestroy() { - super.onDestroy(); - //退出页面清除LRUCache中的Bitmap占用的内存 - NativeImageLoader.getInstance().trimMemCache(); - } - - - /** - * 将毫秒数装换成pattern这个格式，我这里是转换成年月日 - * @param time - * @param pattern - * @return - */ - public static String paserTimeToYMD(long time, String pattern ) { - System.setProperty(\u0026#8220;user.timezone\u0026#8221;, \u0026#8220;Asia/Shanghai\u0026#8221;); - TimeZone tz = TimeZone.getTimeZone(\u0026#8220;Asia/Shanghai\u0026#8221;); - TimeZone.setDefault(tz); - SimpleDateFormat format = new SimpleDateFormat(pattern); - return format.format(new Date(time * 1000L)); - } - - } 主界面的代码主要是组装StickyGridHeadersGridView的数据，我们将扫描出来的图片的路径，时间的毫秒数解析成年月日的格式封装到GridItem中，然后将GridItem加入到List中，此时每个Item还没有生成headerId，我们需要调用generateHeaderId()，该方法主要是将同一天加入的系统的图片生成相同的HeaderId,这样子同一天加入的图片就在一个组中，当然你要改成同一个月的图片在一起，修改paserTimeToYMD（）方法的第二个参数就行了，当Activity finish之后，我们利用NativeImageLoader.getInstance().trimMemCache()释放内存，当然我们还需要对GridView的数据进行排序，比如说headerId相同的item不连续，headerId相同的item就会生成多个sections(即多个分组)，所以我们要利用YMDComparator使得在同一天加入的图片在一起，YMDComparator的代码如下\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork) - package com.example.stickyheadergridview; - - import java.util.Comparator; - - public class YMDComparator implements Comparator { - - @Override - public int compare(GridItem o1, GridItem o2) { - return o1.getTime().compareTo(o2.getTime()); - } - - } 当然这篇文章不使用YMDComparator也是可以的，因为我在利用ContentProvider获取图片的时候，就是根据加入系统的时间排序的，排序只是针对一般的数据来说的。\n接下来我们运行下程序看看效果如何\n今天的文章就到这里结束了，感谢大家的观看，上面还有一个类和一些资源文件没有贴出来，大家有兴趣研究下就直接下载项目源码，记住采用LruCache缓存图片的时候，cacheSize不要设置得过大，不然产生OOM的概率就更大些，我利用上面的程序测试显示600多张图片来回滑动，没有产生OOM,有问题不明白的同学可以在下面留言！\n项目源码，点击下载\n转自：http://blog.csdn.net/xiaanming/article/details/20481185\n使用到的github library地址：https://github.com/emilsjolander/StickyListHeaders\n","wordCount":"2712","inLanguage":"zh","datePublished":"2015-01-20T07:29:09Z","dateModified":"2015-01-20T07:29:09Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8%E5%BC%80%E6%BA%90%E5%BA%93stickygridheaders%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%B8%A6sections%E5%92%8Cheaders%E7%9A%84gridview%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果</h1><div class=post-description>转载请注明本文出自xiaanming的博客（[http://blog.csdn.net/xiaanming/article/details/20481185](http://blog.csdn.net/xiaanming/article/details/20481185)），请尊重他人的辛勤劳动成果...</div><div class=post-meta><span title='2015-01-20 07:29:09 +0000 UTC'>2015年1月20日</span>&nbsp;·&nbsp;<span>13 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>转载请注明本文出自xiaanming的博客（<a href=http://blog.csdn.net/xiaanming/article/details/20481185>http://blog.csdn.net/xiaanming/article/details/20481185</a>），请尊重他人的辛勤劳动成果，谢谢！</p><p>大家好！过完年回来到现在差不多一个月没写文章了，一是觉得不知道写哪些方面的文章，没有好的题材来写，二是因为自己的一些私事给耽误了，所以过完年的第一篇文章到现在才发表出来，2014年我还是会继续在CSDN上面更新我的博客，欢迎大家关注一下，今天这篇文章主要的是介绍下开源库StickyGridHeaders的使用，StickyGridHeaders是一个自定义GridView带sections和headers的Android库，sections就是GridView item之间的分隔，headers就是固定在GridView顶部的标题，类似一些Android手机联系人的效果，StickyGridHeaders的介绍在<a href=https://github.com/TonicArtos/StickyGridHeaders>https://github.com/TonicArtos/StickyGridHeaders</a>，与此对应也有一个相同效果的自定义ListView带sections和headers的开源库<a href=https://github.com/emilsjolander/StickyListHeaders>https://github.com/emilsjolander/StickyListHeaders</a>，大家有兴趣的可以去看下，我这里介绍的是StickyGridHeaders的使用，我在Android应用方面看到使用StickyGridHeaders的不是很多，而是在Iphone上看到相册采用的是这种效果，于是我就使用StickyGridHeaders来仿照Iphone按照日期分隔显示本地图片</p><p>我们先新建一个Android项目StickyHeaderGridView，去<a href=https://github.com/TonicArtos/StickyGridHeaders>https://github.com/TonicArtos/StickyGridHeaders</a>下载开源库，为了方便浏览源码我直接将源码拷到我的工程中了</p><p><img loading=lazy src="http://img.blog.csdn.net/20140305103135687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveGlhYW5taW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>com.tonicartos.widget.stickygridheaders这个包就是我放StickyGridHeaders开源库的源码，com.example.stickyheadergridview这个包是我实现此功能的代码，类看起来还蛮多的，下面我就一一来介绍了</p><p>GridItem用来封装StickyGridHeadersGridView 每个Item的数据，里面有本地图片的路径，图片加入手机系统的时间和headerId</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.stickyheadergridview;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @blog http://blog.csdn.net/xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; *&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; GridItem {
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 图片的路径&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String path;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 图片加入手机中的时间，只取了年月日&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String time;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 每个Item对应的HeaderId&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; headerId;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; GridItem(String path, String time) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;();
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.path = path;
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.time = time;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String getPath() {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; path;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setPath(String path) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.path = path;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String getTime() {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; time;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setTime(String time) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.time = time;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; getHeaderId() {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; headerId;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setHeaderId(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; headerId) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.headerId = headerId;
+
+- }
+
+- 
+- 
+- }
+</code></pre></div><p>图片的路径path和图片加入的时间time 我们直接可以通过ContentProvider获取，但是headerId需要我们根据逻辑来生成。</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.stickyheadergridview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.ContentResolver;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.database.Cursor;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.net.Uri;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Environment;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Handler;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Message;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.provider.MediaStore;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 图片扫描器&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; *&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; ImageScanner {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Context mContext;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; ImageScanner(Context context){
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.mContext = context;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 利用ContentProvider扫描手机中的图片，将扫描的Cursor回调到ScanCompleteCallBack&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 接口的scanComplete方法中，此方法在运行在子线程中&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; scanImages(&lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; ScanCompleteCallBack callback) {
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Handler mHandler = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Handler() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; handleMessage(Message msg) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.handleMessage(msg);
+
+- callback.scanComplete((Cursor)msg.obj);
+
+- }
+
+- };
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Thread(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Runnable() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; run() {
+
+- &lt;span class=&quot;comment&quot;&gt;//先发送广播扫描下整个sd卡&lt;/span&gt;
+
+- mContext.sendBroadcast(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(
+
+- Intent.ACTION_MEDIA_MOUNTED,
+
+- Uri.parse(&lt;span class=&quot;string&quot;&gt;&amp;#8220;file://&amp;#8221;&lt;/span&gt; + Environment.getExternalStorageDirectory())));
+
+- 
+- Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+- ContentResolver mContentResolver = mContext.getContentResolver();
+
+- 
+- Cursor mCursor = mContentResolver.query(mImageUri, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, MediaStore.Images.Media.DATE_ADDED);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//利用Handler通知调用线程&lt;/span&gt;
+
+- Message msg = mHandler.obtainMessage();
+
+- msg.obj = mCursor;
+
+- mHandler.sendMessage(msg);
+
+- }
+
+- }).start();
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 扫描完成之后的回调接口&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     *&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; ScanCompleteCallBack{
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; scanComplete(Cursor cursor);
+
+- }
+
+- 
+- 
+- }
+</code></pre></div><p>ImageScanner是一个图片的扫描器类，该类使用ContentProvider扫描手机中的图片，我们通过调用scanImages()方法就能对手机中的图片进行扫描，将扫描的Cursor回调到ScanCompleteCallBack 接口的scanComplete方法中，由于考虑到扫描图片属于耗时操作，所以该操作运行在子线程中，在我们扫描图片之前我们需要先发送广播来扫描外部媒体库，为什么要这么做呢，假如我们新增加一张图片到sd卡，图片确实已经添加了进去，但是我们此时的媒体库还没有同步更新，若不同步媒体库我们就看不到新增加的图片，当然我们可以通过重新启动系统来更新媒体库，但是这样不可取，所以我们直接发送广播就可以同步媒体库了。</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.stickyheadergridview;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.concurrent.ExecutorService;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.concurrent.Executors;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Bitmap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.BitmapFactory;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Point;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Handler;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Message;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.support.v4.util.LruCache;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.Log;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 本地图片加载器,采用的是异步解析本地图片，单例模式利用getInstance()获取NativeImageLoader实例&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 调用loadNativeImage()方法加载本地图片，此类可作为一个加载本地图片的工具类&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @blog http://blog.csdn.net/xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; *&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; NativeImageLoader {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String TAG = NativeImageLoader.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;.getSimpleName();
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; NativeImageLoader mInstance = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NativeImageLoader();
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; LruCache&lt;String, Bitmap&gt; mMemoryCache;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ExecutorService mImageThreadPool = Executors.newFixedThreadPool(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- 
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; NativeImageLoader(){
+
+- &lt;span class=&quot;comment&quot;&gt;//获取应用程序的最大内存&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; maxMemory = (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) (Runtime.getRuntime().maxMemory());
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//用最大内存的1/8来存储图片&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; cacheSize = maxMemory / &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;;
+
+- mMemoryCache = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; LruCache&lt;String, Bitmap&gt;(cacheSize) {
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//获取每张图片的bytes&lt;/span&gt;
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; sizeOf(String key, Bitmap bitmap) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; bitmap.getRowBytes() * bitmap.getHeight();
+
+- }
+
+- 
+- };
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 通过此方法来获取NativeImageLoader的实例&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; NativeImageLoader getInstance(){
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; mInstance;
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 加载本地图片，对图片不进行裁剪&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param path&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param mCallBack&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Bitmap loadNativeImage(&lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String path, &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; NativeImageCallBack mCallBack){
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.loadNativeImage(path, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, mCallBack);
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 此方法来加载本地图片，这里的mPoint是用来封装ImageView的宽和高，我们会根据ImageView控件的大小来裁剪Bitmap&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 如果你不想裁剪图片，调用loadNativeImage(final String path, final NativeImageCallBack mCallBack)来加载&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param path&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param mPoint&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param mCallBack&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Bitmap loadNativeImage(&lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String path, &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Point mPoint, &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; NativeImageCallBack mCallBack){
+
+- &lt;span class=&quot;comment&quot;&gt;//先获取内存中的Bitmap&lt;/span&gt;
+
+- Bitmap bitmap = getBitmapFromMemCache(path);
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Handler mHander = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Handler(){
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; handleMessage(Message msg) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.handleMessage(msg);
+
+- mCallBack.onImageLoader((Bitmap)msg.obj, path);
+
+- }
+
+- 
+- };
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//若该Bitmap不在内存缓存中，则启用线程去加载本地的图片，并将Bitmap加入到mMemoryCache中&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(bitmap == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;){
+
+- mImageThreadPool.execute(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Runnable() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; run() {
+
+- &lt;span class=&quot;comment&quot;&gt;//先获取图片的缩略图&lt;/span&gt;
+
+- Bitmap mBitmap = decodeThumbBitmapForFile(path, mPoint == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; ? &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;: mPoint.x, mPoint == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; ? &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;: mPoint.y);
+
+- Message msg = mHander.obtainMessage();
+
+- msg.obj = mBitmap;
+
+- mHander.sendMessage(msg);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//将图片加入到内存缓存&lt;/span&gt;
+
+- addBitmapToMemoryCache(path, mBitmap);
+
+- }
+
+- });
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; bitmap;
+
+- 
+- }
+
+- 
+- 
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 往内存缓存中添加Bitmap&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param key&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param bitmap&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; addBitmapToMemoryCache(String key, Bitmap bitmap) {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getBitmapFromMemCache(key) == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; &amp;&amp; bitmap != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- mMemoryCache.put(key, bitmap);
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 根据key来获取内存中的图片&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param key&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Bitmap getBitmapFromMemCache(String key) {
+
+- Bitmap bitmap = mMemoryCache.get(key);
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(bitmap != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;){
+
+- Log.i(TAG, &lt;span class=&quot;string&quot;&gt;&amp;#8220;get image for LRUCache , path = &amp;#8220;&lt;/span&gt; + key);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; bitmap;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 清除LruCache中的bitmap&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; trimMemCache(){
+
+- mMemoryCache.evictAll();
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 根据View(主要是ImageView)的宽和高来获取图片的缩略图&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param path&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param viewWidth&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param viewHeight&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Bitmap decodeThumbBitmapForFile(String path, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; viewWidth, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; viewHeight){
+
+- BitmapFactory.Options options = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; BitmapFactory.Options();
+
+- &lt;span class=&quot;comment&quot;&gt;//设置为true,表示解析Bitmap对象，该对象不占内存&lt;/span&gt;
+
+- options.inJustDecodeBounds = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- BitmapFactory.decodeFile(path, options);
+
+- &lt;span class=&quot;comment&quot;&gt;//设置缩放比例&lt;/span&gt;
+
+- options.inSampleSize = computeScale(options, viewWidth, viewHeight);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//设置为false,解析Bitmap对象加入到内存中&lt;/span&gt;
+
+- options.inJustDecodeBounds = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- 
+- 
+- Log.e(TAG, &lt;span class=&quot;string&quot;&gt;&amp;#8220;get Iamge form file,  path = &amp;#8220;&lt;/span&gt; + path);
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; BitmapFactory.decodeFile(path, options);
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 根据View(主要是ImageView)的宽和高来计算Bitmap缩放比例。默认不缩放&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param options&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param width&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param height&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; computeScale(BitmapFactory.Options options, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; viewWidth, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; viewHeight){
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; inSampleSize = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(viewWidth == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; || viewWidth == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;){
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; inSampleSize;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; bitmapWidth = options.outWidth;
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; bitmapHeight = options.outHeight;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//假如Bitmap的宽度或高度大于我们设定图片的View的宽高，则计算缩放比例&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(bitmapWidth &gt; viewWidth || bitmapHeight &gt; viewWidth){
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; widthScale = Math.round((&lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;) bitmapWidth / (&lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;) viewWidth);
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; heightScale = Math.round((&lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;) bitmapHeight / (&lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;) viewWidth);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//为了保证图片不缩放变形，我们取宽高比例最小的那个&lt;/span&gt;
+
+- inSampleSize = widthScale &lt; heightScale ? widthScale : heightScale;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; inSampleSize;
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 加载本地图片的回调接口&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @author xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     *&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; NativeImageCallBack{
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         * 当子线程加载完了本地的图片，将Bitmap和图片路径回调在此方法中&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         * @param bitmap&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         * @param path&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onImageLoader(Bitmap bitmap, String path);
+
+- }
+
+- }
+</code></pre></div><p>NativeImageLoader该类是一个单例类，提供了本地图片加载，内存缓存，裁剪等逻辑，该类在加载本地图片的时候采用的是异步加载的方式，对于大图片的加载也是比较耗时的，所以采用子线程的方式去加载，对于图片的缓存机制使用的是LruCache，我们使用手机分配给应用程序内存的1/8用来缓存图片，给图片缓存的内存不宜太大，太大也可能会发生OOM，该类是用我之前写的文章<a href=http://blog.csdn.net/xiaanming/article/details/18730223>Android 使用ContentProvider扫描手机中的图片，仿微信显示本地图片效果</a>，在这里我就不做过多的介绍，有兴趣的可以去看看那篇文章，不过这里新增了一个方法trimMemCache(),，用来清空LruCache使用的内存</p><p>我们看主界面的布局代码，里面只有一个自定义的StickyGridHeadersGridView控件</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;xmlns:tools&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/tools&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/asset_grid&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:clipToPadding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;false&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:columnWidth&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;90dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:horizontalSpacing&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;3dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:numColumns&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;auto_fit&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:verticalSpacing&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;3dip&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+</code></pre></div><p>在看主界面的代码之前我们先看StickyGridAdapter的代码</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_5&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_5&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.stickyheadergridview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.List;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Bitmap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Point;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.LayoutInflater;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.BaseAdapter;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.GridView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ImageView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.TextView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.stickyheadergridview.MyImageView.OnMeasureListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.stickyheadergridview.NativeImageLoader.NativeImageCallBack;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleAdapter;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * StickyHeaderGridView的适配器，除了要继承BaseAdapter之外还需要&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 实现StickyGridHeadersSimpleAdapter接口&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @blog http://blog.csdn.net/xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; *&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; StickyGridAdapter &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; BaseAdapter &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt;
+
+- StickyGridHeadersSimpleAdapter {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; List&lt;GridItem&gt; hasHeaderIdList;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; LayoutInflater mInflater;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; GridView mGridView;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Point mPoint = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Point(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);&lt;span class=&quot;comment&quot;&gt;//用来封装ImageView的宽和高的对象 &lt;/span&gt;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; StickyGridAdapter(Context context, List&lt;GridItem&gt; hasHeaderIdList,
+
+- GridView mGridView) {
+
+- mInflater = LayoutInflater.from(context);
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.mGridView = mGridView;
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.hasHeaderIdList = hasHeaderIdList;
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; getCount() {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; hasHeaderIdList.size();
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Object getItem(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; hasHeaderIdList.get(position);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; getItemId(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; position;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; View getView(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position, View convertView, ViewGroup parent) {
+
+- ViewHolder mViewHolder;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (convertView == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- mViewHolder = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ViewHolder();
+
+- convertView = mInflater.inflate(R.layout.grid_item, parent, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);
+
+- mViewHolder.mImageView = (MyImageView) convertView
+
+- .findViewById(R.id.grid_item);
+
+- convertView.setTag(mViewHolder);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//用来监听ImageView的宽和高  &lt;/span&gt;
+
+- mViewHolder.mImageView.setOnMeasureListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnMeasureListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onMeasureSize(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; width, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; height) {
+
+- mPoint.set(width, height);
+
+- }
+
+- });
+
+- 
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- mViewHolder = (ViewHolder) convertView.getTag();
+
+- }
+
+- 
+- String path = hasHeaderIdList.get(position).getPath();
+
+- mViewHolder.mImageView.setTag(path);
+
+- 
+- Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint,
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NativeImageCallBack() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onImageLoader(Bitmap bitmap, String path) {
+
+- ImageView mImageView = (ImageView) mGridView
+
+- .findViewWithTag(path);
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (bitmap != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; &amp;&amp; mImageView != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- mImageView.setImageBitmap(bitmap);
+
+- }
+
+- }
+
+- });
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (bitmap != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- mViewHolder.mImageView.setImageBitmap(bitmap);
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- mViewHolder.mImageView.setImageResource(R.drawable.friends_sends_pictures_no);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; convertView;
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; View getHeaderView(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position, View convertView, ViewGroup parent) {
+
+- HeaderViewHolder mHeaderHolder;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (convertView == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- mHeaderHolder = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HeaderViewHolder();
+
+- convertView = mInflater.inflate(R.layout.header, parent, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);
+
+- mHeaderHolder.mTextView = (TextView) convertView
+
+- .findViewById(R.id.header);
+
+- convertView.setTag(mHeaderHolder);
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- mHeaderHolder = (HeaderViewHolder) convertView.getTag();
+
+- }
+
+- mHeaderHolder.mTextView.setText(hasHeaderIdList.get(position).getTime());
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; convertView;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 获取HeaderId, 只要HeaderId不相等就添加一个Header&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; getHeaderId(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; hasHeaderIdList.get(position).getHeaderId();
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; ViewHolder {
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyImageView mImageView;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; HeaderViewHolder {
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; TextView mTextView;
+
+- }
+
+- 
+- 
+- 
+- }
+</code></pre></div><p>除了要继承BaseAdapter之外还需要实现StickyGridHeadersSimpleAdapter接口，继承BaseAdapter需要实现getCount()，getItem(int position)， getItemId(int position)，getView(int position, View convertView, ViewGroup parent)这四个方法，这几个方法的实现跟我们平常实现的方式一样，主要是看一下getView()方法，我们将每个item的图片路径设置Tag到该ImageView上面，然后利用NativeImageLoader来加载本地图片，在这里使用的ImageView依然是自定义的MyImageView，该自定义ImageView主要实现当MyImageView测量完毕之后，就会将测量的宽和高回调到onMeasureSize()中，然后我们可以根据MyImageView的大小来裁剪图片</p><p>另外我们需要实现StickyGridHeadersSimpleAdapter接口的getHeaderId(int position)和getHeaderView(int position, View convertView, ViewGroup parent)，getHeaderId(int position)方法返回每个Item的headerId，getHeaderView()方法是生成sections和headers的，如果某个item的headerId跟他下一个item的HeaderId不同，则会调用getHeaderView方法生成一个sections用来区分不同的组，还会根据firstVisibleItem的headerId来生成一个位于顶部的headers，所以如何生成每个Item的headerId才是关键，生成headerId的方法在MainActivity中</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_6&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_6&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.stickyheadergridview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.text.SimpleDateFormat;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.ArrayList;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Collections;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Date;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.List;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.ListIterator;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Map;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.TimeZone;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.ProgressDialog;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.database.Cursor;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.provider.MediaStore;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.GridView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.stickyheadergridview.ImageScanner.ScanCompleteCallBack;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ProgressDialog mProgressDialog;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 图片扫描器&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ImageScanner mScanner;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; GridView mGridView;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 没有HeaderId的List&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; List&lt;GridItem&gt; nonHeaderIdList = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&lt;GridItem&gt;();
+
+- 
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.activity_main);
+
+- 
+- mGridView = (GridView) findViewById(R.id.asset_grid);
+
+- mScanner = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ImageScanner(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- 
+- mScanner.scanImages(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ScanCompleteCallBack() {
+
+- {
+
+- mProgressDialog = ProgressDialog.show(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;正在加载&amp;#8230;&amp;#8221;&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; scanComplete(Cursor cursor) {
+
+- &lt;span class=&quot;comment&quot;&gt;// 关闭进度条&lt;/span&gt;
+
+- mProgressDialog.dismiss();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(cursor == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;){
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (cursor.moveToNext()) {
+
+- &lt;span class=&quot;comment&quot;&gt;// 获取图片的路径&lt;/span&gt;
+
+- String path = cursor.getString(cursor
+
+- .getColumnIndex(MediaStore.Images.Media.DATA));
+
+- &lt;span class=&quot;comment&quot;&gt;//获取图片的添加到系统的毫秒数&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; times = cursor.getLong(cursor
+
+- .getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+
+- 
+- GridItem mGridItem = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; GridItem(path, paserTimeToYMD(times, &lt;span class=&quot;string&quot;&gt;&amp;#8220;yyyy年MM月dd日&amp;#8221;&lt;/span&gt;));
+
+- nonHeaderIdList.add(mGridItem);
+
+- 
+- }
+
+- cursor.close();
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//给GridView的item的数据生成HeaderId&lt;/span&gt;
+
+- List&lt;GridItem&gt; hasHeaderIdList = generateHeaderId(nonHeaderIdList);
+
+- &lt;span class=&quot;comment&quot;&gt;//排序&lt;/span&gt;
+
+- Collections.sort(hasHeaderIdList, &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; YMDComparator());
+
+- mGridView.setAdapter(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; StickyGridAdapter(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, hasHeaderIdList, mGridView));
+
+- 
+- }
+
+- });
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 对GridView的Item生成HeaderId, 根据图片的添加时间的年、月、日来生成HeaderId&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 年、月、日相等HeaderId就相同&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param nonHeaderIdList&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; List&lt;GridItem&gt; generateHeaderId(List&lt;GridItem&gt; nonHeaderIdList) {
+
+- Map&lt;String, Integer&gt; mHeaderIdMap = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashMap&lt;String, Integer&gt;();
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mHeaderId = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- List&lt;GridItem&gt; hasHeaderIdList;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt;(ListIterator&lt;GridItem&gt; it = nonHeaderIdList.listIterator(); it.hasNext();){
+
+- GridItem mGridItem = it.next();
+
+- String ymd = mGridItem.getTime();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(!mHeaderIdMap.containsKey(ymd)){
+
+- mGridItem.setHeaderId(mHeaderId);
+
+- mHeaderIdMap.put(ymd, mHeaderId);
+
+- mHeaderId ++;
+
+- }&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;{
+
+- mGridItem.setHeaderId(mHeaderIdMap.get(ymd));
+
+- }
+
+- }
+
+- hasHeaderIdList = nonHeaderIdList;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; hasHeaderIdList;
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onDestroy() {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onDestroy();
+
+- &lt;span class=&quot;comment&quot;&gt;//退出页面清除LRUCache中的Bitmap占用的内存&lt;/span&gt;
+
+- NativeImageLoader.getInstance().trimMemCache();
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 将毫秒数装换成pattern这个格式，我这里是转换成年月日&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param time&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param pattern&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; String paserTimeToYMD(&lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; time, String pattern ) {
+
+- System.setProperty(&lt;span class=&quot;string&quot;&gt;&amp;#8220;user.timezone&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;Asia/Shanghai&amp;#8221;&lt;/span&gt;);
+
+- TimeZone tz = TimeZone.getTimeZone(&lt;span class=&quot;string&quot;&gt;&amp;#8220;Asia/Shanghai&amp;#8221;&lt;/span&gt;);
+
+- TimeZone.setDefault(tz);
+
+- SimpleDateFormat format = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; SimpleDateFormat(pattern);
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; format.format(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Date(time * 1000L));
+
+- }
+
+- 
+- }
+</code></pre></div><p>主界面的代码主要是组装StickyGridHeadersGridView的数据，我们将扫描出来的图片的路径，时间的毫秒数解析成年月日的格式封装到GridItem中，然后将GridItem加入到List中，此时每个Item还没有生成headerId，我们需要调用generateHeaderId()，该方法主要是将同一天加入的系统的图片生成相同的HeaderId,这样子同一天加入的图片就在一个组中，当然你要改成同一个月的图片在一起，修改paserTimeToYMD（）方法的第二个参数就行了，当Activity finish之后，我们利用NativeImageLoader.getInstance().trimMemCache()释放内存，当然我们还需要对GridView的数据进行排序，比如说headerId相同的item不连续，headerId相同的item就会生成多个sections(即多个分组)，所以我们要利用YMDComparator使得在同一天加入的图片在一起，YMDComparator的代码如下</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20481185#)[copy](http://blog.csdn.net/xiaanming/article/details/20481185#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/220204)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/220204/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_7&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_7&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.stickyheadergridview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Comparator;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; YMDComparator &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; Comparator&lt;GridItem&gt; {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; compare(GridItem o1, GridItem o2) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; o1.getTime().compareTo(o2.getTime());
+
+- }
+
+- 
+- }
+</code></pre></div><p>当然这篇文章不使用YMDComparator也是可以的，因为我在利用ContentProvider获取图片的时候，就是根据加入系统的时间排序的，排序只是针对一般的数据来说的。</p><p>接下来我们运行下程序看看效果如何</p><p><img loading=lazy src=http://img.blog.csdn.net/20140305133522546></p><p>今天的文章就到这里结束了，感谢大家的观看，上面还有一个类和一些资源文件没有贴出来，大家有兴趣研究下就直接下载项目源码，记住采用LruCache缓存图片的时候，cacheSize不要设置得过大，不然产生OOM的概率就更大些，我利用上面的程序测试显示600多张图片来回滑动，没有产生OOM,有问题不明白的同学可以在下面留言！</p><p><a href=http://download.csdn.net/detail/xiaanming/6995385>项目源码，点击下载</a></p><p>转自：http://blog.csdn.net/xiaanming/article/details/20481185</p><p>使用到的github library地址：https://github.com/emilsjolander/StickyListHeaders</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E5%9C%B0%E5%9B%BE%E5%AE%9A%E4%BD%8D/>地图定位</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%9171oauth2-0%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83/><span class=title>« 上一页</span>
+<span>微信公众平台开发（71）OAuth2.0网页授权</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E5%AD%A6%E4%B9%A0%E5%B0%8Fdemo23aidl%E5%AE%9E%E7%8E%B0%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/><span class=title>下一页 »</span>
+<span>Android学习小Demo（23）Aidl实现进程间通信</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

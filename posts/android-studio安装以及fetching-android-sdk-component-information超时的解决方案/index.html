@@ -1,0 +1,210 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android Studio安装以及Fetching android sdk component information超时的解决方案 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="在经过两年的开发之本后，Google 公司终于发布了 Android Studio 1.0，喜欢折腾的童鞋们，抓紧折腾吧。。。。。 # 一、下载Android Studio 1.0： 1）可以在谷歌Android官网下载Android Studio 1.0[（链接）](http://develope..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-studio%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Afetching-android-sdk-component-information%E8%B6%85%E6%97%B6%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-studio%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Afetching-android-sdk-component-information%E8%B6%85%E6%97%B6%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-studio%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Afetching-android-sdk-component-information%E8%B6%85%E6%97%B6%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android Studio安装以及Fetching android sdk component information超时的解决方案"><meta property="og:description" content="在经过两年的开发之本后，Google 公司终于发布了 Android Studio 1.0，喜欢折腾的童鞋们，抓紧折腾吧。。。。。 # 一、下载Android Studio 1.0： 1）可以在谷歌Android官网下载Android Studio 1.0[（链接）](http://develope..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-12-16T03:47:35+00:00"><meta property="article:modified_time" content="2014-12-16T03:47:35+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android Studio安装以及Fetching android sdk component information超时的解决方案"><meta name=twitter:description content="在经过两年的开发之本后，Google 公司终于发布了 Android Studio 1.0，喜欢折腾的童鞋们，抓紧折腾吧。。。。。 # 一、下载Android Studio 1.0： 1）可以在谷歌Android官网下载Android Studio 1.0[（链接）](http://develope..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android Studio安装以及Fetching android sdk component information超时的解决方案","item":"https://blog.zdltech.com/posts/android-studio%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Afetching-android-sdk-component-information%E8%B6%85%E6%97%B6%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android Studio安装以及Fetching android sdk component information超时的解决方案","name":"Android Studio安装以及Fetching android sdk component information超时的解决方案","description":"在经过两年的开发之本后，Google 公司终于发布了 Android Studio 1.0，喜欢折腾的童鞋们，抓紧折腾吧。。。。。 # 一、下载Android Studio 1.0： 1）可以在谷歌Android官网下载Android Studio 1.0[（链接）](http://develope...","keywords":["android","移动开发"],"articleBody":"在经过两年的开发之本后，Google 公司终于发布了 Android Studio 1.0，喜欢折腾的童鞋们，抓紧折腾吧。。。。。\n一、下载Android Studio 1.0： 1）可以在谷歌Android官网下载Android Studio 1.0（链接）。下载不了的童鞋可以到百度网盘上下载（链接）。\n2）下载后，Android Studio 1.0\n二、安装Android Studio 1.0： 1）直接双击![](http://images.cnitblog.com/blog/695756/201412/100950433845238.png)进行安装。 2）直接一直下一步就可以。中间如果想修改安装目录的可以进行修改： ![](http://images.cnitblog.com/blog/695756/201412/100953418063713.png)　# 三、解决Fetching android sdk component information加载过久问题 安装完成后，如果直接启动，Android Studio会去获取 android sdk 组件信息，这个过程相当慢，还经常加载失败，导致Android Studio启动不起开。解决办法就是不去获取android sdk 组件信息。方法如下： 1）进入刚安装的Android Studio目录下的bin目录。找到idea.properties文件，用文本编辑器打开。 2）在idea.properties文件末尾添加一行：disable.android.first.run=true，然后保存文件。 3）关闭Android Studio后重新启动，便可进入界面。 ![](http://images.cnitblog.com/blog/695756/201412/101004062754693.png) # 四、新建一个Android工程项目 1）启动Android Studio后的界面： ![](http://images.cnitblog.com/blog/695756/201412/101004436962892.png) 备注：这里需要配置下sdk，感谢博客园朋友们的提醒： a、点击进入configure： ![](http://images.cnitblog.com/blog/695756/201412/101957450712770.png) b、进入界面后，再点击project Defaults: ![](http://images.cnitblog.com/blog/695756/201412/101959196185054.png) c、进入界面后，再点击Project Structure: ![](http://images.cnitblog.com/blog/695756/201412/102002137759526.png) d、进入界面后，设置Android SDK和JDK的路径。 ![](http://images.cnitblog.com/blog/695756/201412/102003264781538.png) 2）点击start a new android studio project,创建一个Android项目（可以修改工程的工作空间） ![](http://images.cnitblog.com/blog/695756/201412/101009122288363.png) 3）直接下一步 ![](http://images.cnitblog.com/blog/695756/201412/101011291038680.png) 4）再下一步 ![](http://images.cnitblog.com/blog/695756/201412/101012503219925.png) 5）再下一步 ![](http://images.cnitblog.com/blog/695756/201412/101014228535095.png) 6）点击finish完成工程项目的创建。工程项目整体结构如下： ![](http://images.cnitblog.com/blog/695756/201412/101016289159573.png) 完， 转自：http://www.cnblogs.com/sonyi/p/4154797.html ","wordCount":"135","inLanguage":"zh","datePublished":"2014-12-16T03:47:35Z","dateModified":"2014-12-16T03:47:35Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-studio%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8Afetching-android-sdk-component-information%E8%B6%85%E6%97%B6%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android Studio安装以及Fetching android sdk component information超时的解决方案</h1><div class=post-description>在经过两年的开发之本后，Google 公司终于发布了 Android Studio 1.0，喜欢折腾的童鞋们，抓紧折腾吧。。。。。 # 一、下载Android Studio 1.0： 1）可以在谷歌Android官网下载Android Studio 1.0[（链接）](http://develope...</div><div class=post-meta><span title='2014-12-16 03:47:35 +0000 UTC'>2014年12月16日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e4%b8%80%e4%b8%8b%e8%bd%bdandroid-studio-10 aria-label="一、下载Android Studio 1.0：">一、下载Android Studio 1.0：</a></li><li><a href=#%e4%ba%8c%e5%ae%89%e8%a3%85android-studio-10 aria-label="二、安装Android Studio 1.0：">二、安装Android Studio 1.0：</a></li></ul></div></details><div class="post-content md-content"><p>在经过两年的开发之本后，Google 公司终于发布了 Android Studio 1.0，喜欢折腾的童鞋们，抓紧折腾吧。。。。。</p><h1 id=一下载android-studio-10><span style=color:#00f>一、下载Android Studio 1.0：</span><a hidden class=anchor aria-hidden=true href=#一下载android-studio-10>#</a></h1><p>　　1）可以在谷歌Android官网下载Android Studio 1.0<a href=http://developer.android.com/sdk/index.html>（链接）</a>。下载不了的童鞋可以到百度网盘上下载<a href=http://pan.baidu.com/s/1tpuB8>（链接）</a>。</p><p>　　2）下载后，Android Studio 1.0<img loading=lazy src=http://images.cnitblog.com/blog/695756/201412/100950433845238.png></p><h1 id=二安装android-studio-10><span style=color:#00f>二、安装Android Studio 1.0：</span><a hidden class=anchor aria-hidden=true href=#二安装android-studio-10>#</a></h1><pre><code>&lt;span style=&quot;color: #0000ff;&quot;&gt;　　&lt;span style=&quot;color: #000000;&quot;&gt;1）直接双击![](http://images.cnitblog.com/blog/695756/201412/100950433845238.png)进行安装。&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+&lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　2）直接一直下一步就可以。中间如果想修改安装目录的可以进行修改：&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+&lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　![](http://images.cnitblog.com/blog/695756/201412/100953418063713.png)　　&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+# &lt;span style=&quot;color: #0000ff;&quot;&gt;三、解决Fetching android sdk component information加载过久问题&lt;/span&gt;
+
+
+
+  &lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　安装完成后，如果直接启动，Android Studio会去获取 android sdk 组件信息，这个过程相当慢，还经常加载失败，导致Android Studio启动不起开。解决办法就是不去获取android sdk 组件信息。方法如下：&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+  &lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　1）进入刚安装的Android Studio目录下的bin目录。找到idea.properties文件，用文本编辑器打开。&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+  &lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　2）在idea.properties文件末尾添加一行：&lt;span style=&quot;color: #ff0000;&quot;&gt;disable.android.first.run=true&lt;/span&gt;，然后保存文件。&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+  &lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　3）关闭Android Studio后重新启动，便可进入界面。&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+  &lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　![](http://images.cnitblog.com/blog/695756/201412/101004062754693.png)&lt;/span&gt;&lt;/span&gt;
+
+
+
+# &lt;span style=&quot;color: #0000ff;&quot;&gt;四、新建一个Android工程项目&lt;/span&gt;
+
+
+
+  &lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　1）启动Android Studio后的界面：&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+  &lt;span style=&quot;color: #0000ff;&quot;&gt;&lt;span style=&quot;color: #000000;&quot;&gt;　　![](http://images.cnitblog.com/blog/695756/201412/101004436962892.png)&lt;/span&gt;&lt;/span&gt;
+
+
+
+
+
+  
+
+    　　&lt;span style=&quot;color: #ff0000;&quot;&gt;备注：这里需要配置下sdk，感谢博客园朋友们的提醒：&lt;/span&gt;
+  
+
+  
+  
+
+    　　a、点击进入configure：
+  
+
+  
+  
+
+    　　![](http://images.cnitblog.com/blog/695756/201412/101957450712770.png)
+  
+
+  
+  
+
+    　　b、进入界面后，再点击project Defaults:
+  
+
+  
+  
+
+    　　![](http://images.cnitblog.com/blog/695756/201412/101959196185054.png)
+  
+
+  
+  
+
+    　　c、进入界面后，再点击Project Structure:
+  
+
+  
+  
+
+    　　![](http://images.cnitblog.com/blog/695756/201412/102002137759526.png)
+  
+
+  
+  
+
+    　　d、进入界面后，设置Android SDK和JDK的路径。
+  
+
+  
+  
+
+    　　![](http://images.cnitblog.com/blog/695756/201412/102003264781538.png)
+  
+
+  
+  
+
+    
+
+      　　2）点击start a new android studio project,创建一个Android项目（可以修改工程的工作空间）
+    
+
+    
+    
+
+      　![](http://images.cnitblog.com/blog/695756/201412/101009122288363.png)
+    
+
+    
+    
+
+      
+
+        　　3）直接下一步
+      
+
+      
+      
+
+        ![](http://images.cnitblog.com/blog/695756/201412/101011291038680.png)
+      
+
+      
+      
+
+        　　4）再下一步
+      
+
+      
+      
+
+        ![](http://images.cnitblog.com/blog/695756/201412/101012503219925.png)
+      
+
+      
+      
+
+        　　5）再下一步
+      
+
+      
+      
+
+        ![](http://images.cnitblog.com/blog/695756/201412/101014228535095.png)
+      
+
+      
+      
+
+        
+
+          　　6）点击finish完成工程项目的创建。工程项目整体结构如下：
+        
+
+        
+        
+
+          ![](http://images.cnitblog.com/blog/695756/201412/101016289159573.png)
+        
+
+        
+        
+
+          
+
+            　　&lt;span style=&quot;color: #0000ff;&quot;&gt;完，&lt;/span&gt;
+          
+
+          
+          
+
+            
+
+              转自：http://www.cnblogs.com/sonyi/p/4154797.html
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android%E6%B5%8F%E8%A7%88%E5%9B%BE%E7%89%87%E7%82%B9%E5%87%BB%E6%94%BE%E5%A4%A7%E8%87%B3%E5%85%A8%E5%B1%8F%E6%95%88%E6%9E%9C/><span class=title>« 上一页</span>
+<span>Android浏览图片，点击放大至全屏效果</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E5%90%84%E5%A4%A7%E7%BD%91%E7%AB%99%E6%94%B6%E5%BD%95%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E7%9A%84%E6%8F%90%E4%BA%A4%E5%85%A5%E5%8F%A3/><span class=title>下一页 »</span>
+<span>各大网站收录、搜索引擎的提交入口</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

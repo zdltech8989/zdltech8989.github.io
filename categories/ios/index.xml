@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>IOS on ZDL Tech Blog</title><link>https://blog.zdltech.com/categories/ios/</link><description>Recent content in IOS on ZDL Tech Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 09 Apr 2019 02:35:33 +0000</lastBuildDate><atom:link href="https://blog.zdltech.com/categories/ios/index.xml" rel="self" type="application/rss+xml"/><item><title>pod私有库制作过程</title><link>https://blog.zdltech.com/posts/pod%E7%A7%81%E6%9C%89%E5%BA%93%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B/</link><pubDate>Tue, 09 Apr 2019 02:35:33 +0000</pubDate><guid>https://blog.zdltech.com/posts/pod%E7%A7%81%E6%9C%89%E5%BA%93%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B/</guid><description>一、创建podspec索引仓库，创建源文件仓库 在自己私有git分别创建上述两个仓库，如果有则不用创建 二、将podspec索引仓库添加到本地pod repo 在终端执行下述命令即可 pod repo add xxxSpecs 仓库地址 **注：**** 1.****其中****xxxSpecs**...</description></item><item><title>Xcode 10 beta3 Error: Multiple commands produce</title><link>https://blog.zdltech.com/posts/xcode-10-beta3-error-multiple-commands-produce/</link><pubDate>Tue, 01 Jan 2019 14:40:01 +0000</pubDate><guid>https://blog.zdltech.com/posts/xcode-10-beta3-error-multiple-commands-produce/</guid><description>最近开发一直在使用Xcode10 beta版本的，今天升级到Xcode10 beta3，但是在编译项目时编译失败，报错内容: ![](//upload-images.jianshu.io/upload_images/2135374-e38dfa85c14dbcd3.png?imageMogr2/au...</description></item><item><title>cocospod 版本更新与更新到指定版本</title><link>https://blog.zdltech.com/posts/cocospod-%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0%E4%B8%8E%E6%9B%B4%E6%96%B0%E5%88%B0%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC/</link><pubDate>Mon, 22 Jan 2018 03:25:35 +0000</pubDate><guid>https://blog.zdltech.com/posts/cocospod-%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0%E4%B8%8E%E6%9B%B4%E6%96%B0%E5%88%B0%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC/</guid><description>&lt;p>一、升级本地cocopod到最新版本&lt;/p>
+&lt;p>1、先切换gem源&lt;/p>
+&lt;p>gem source -a &lt;a href="https://gems.ruby-china.org">https://gems.ruby-china.org&lt;/a>&lt;/p>
+&lt;p>查看是否切换成功&lt;/p>
+&lt;p>gem source -l&lt;/p>
+&lt;p>打印出*\&lt;em>* CURRENT SOURCES **&lt;/em>&lt;/p>
+&lt;p>&lt;a href="https://gems.ruby-china.org">https://gems.ruby-china.org&lt;/a>&lt;/p>
+&lt;p>就说明切换成功，如果还是官方的源, 请手动重启电脑尝试&lt;/p>
+&lt;p>2、接下来就可以开始升级了cocoapods了&lt;/p>
+&lt;p>3、然后敲下&lt;/p>
+&lt;p>4、剩下的就是设置pod仓库了&lt;/p>
+&lt;p>pod setup 重新设置下 pod仓库&lt;/p>
+&lt;p> &lt;/p>
+&lt;p>二、cocopod升级到指定的指定版本&lt;/p>
+&lt;p>1、在终端输入：sudo gem uninstall cocoapods&lt;/p>
+&lt;p>显示所有的版本，输入相应的数字，删除不想要的版本&lt;/p>
+&lt;p>2、在终端输入：sudo gem install cocoapods -v指定版本号&lt;/p>
+&lt;p>输出：Fetching: cocoapods-1.1.1.gem (100%)&lt;/p>
+&lt;p>ERROR:  While executing gem … (Errno::EPERM)&lt;/p>
+&lt;p>3、上面的方法不行，那咱们就换一种输入：sudo gem install -n /usr/local/bin cocoapods -v 指定版本&lt;/p>
+&lt;p> &lt;/p>
+&lt;p> &lt;/p>
+&lt;p> &lt;/p></description></item><item><title>Mac 下制作icns 图标</title><link>https://blog.zdltech.com/posts/mac-%E4%B8%8B%E5%88%B6%E4%BD%9Cicns-%E5%9B%BE%E6%A0%87/</link><pubDate>Tue, 05 Dec 2017 09:43:35 +0000</pubDate><guid>https://blog.zdltech.com/posts/mac-%E4%B8%8B%E5%88%B6%E4%BD%9Cicns-%E5%9B%BE%E6%A0%87/</guid><description>使用mac中自带的工具iconutil iconutil -c icns iconset文件夹 生成icns文件 例如：iconutil -c icns abc.iconset iconutil -c iconset icns文件 生成iconset文件夹，里面包含多种png图片 制作iconset...</description></item></channel></rss>

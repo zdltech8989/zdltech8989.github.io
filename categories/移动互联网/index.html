@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>移动互联网 | ZDL Tech Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术博客 - Linux · DevOps · 开发">
+<meta name="author" content="zhangdl">
+<link rel="canonical" href="http://localhost:1313/categories/%E7%A7%BB%E5%8A%A8%E4%BA%92%E8%81%94%E7%BD%91/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/%E7%A7%BB%E5%8A%A8%E4%BA%92%E8%81%94%E7%BD%91/index.xml" title="rss">
+<link rel="alternate" hreflang="zh" href="http://localhost:1313/categories/%E7%A7%BB%E5%8A%A8%E4%BA%92%E8%81%94%E7%BD%91/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="搜索 (Alt &#43; /)" accesskey=/>
+                    <span>搜索</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    <a href='http://localhost:1313/'>主页</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="http://localhost:1313/categories/">Categories</a></nav>
+  <h1>
+    移动互联网
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">微信开发值得推荐的开源项目
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>微信开发值得推荐的开源项目 http://www.csdn.net/article/2014-04-16/2819340
+微信公众平台开发（java)用什么框架最好呢？ http://www.oschina.net/question/1462914_162471
+weixin 1 0 微信开发框架 JAVA版 http://download.csdn.net/detail/april127/7675879
+微信公众平台技术方案- http://wenku.baidu.com/link?url=3JxSgzmrWFZdXAHJ9jf1bqhdO-FyGbhWYWIy7N_fBmqkMJ9MOvEe-sPXL76eeWNDV8w7PJpl21o4GQH6-M8FN8SEPuuhyY8GiWzvxTacObu
+http://www.eoeandroid.com/thread-317474-1-1.html
+http://tieba.baidu.com/p/3237760264
+微信公众帐号: 【凡尘工作室】的开源代码
+https://github.com/ostrichmyself/bae_weichat
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-12-29 07:08:04 +0000 +0000'>2014年12月29日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 微信开发值得推荐的开源项目" href="http://localhost:1313/posts/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E5%80%BC%E5%BE%97%E6%8E%A8%E8%8D%90%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE-2/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">《构建跨平台APP：jQuery Mobile移动应用实战》连载六-设计播放器APP
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前几节的例子已经介绍了一些按钮控件的用法，但是笔者的同事一致反映，在jQuery Mobile中按钮只能以占满一行的形式平铺显得过于单调，正巧笔者在贴吧看到了一个学生设计的简单播放器（如图6-13），于是产生了灵感，决定用一组内联的按钮来实现一个简单播放器的控制面板。
+图 6-13 简单的音乐播放器
+要实现的功能很简单，就是选取页面中的一行，使其中并排放置4个大小相同的按钮，分别显示为播放、停止、前进和后退，可是这真的能实现嘛？
+也许有读者会说，可以重新设计按钮的样式文件对其CSS进行重写，这当然是一种非常直接的方法，但是实在是过于麻烦了。因为jQuery Mobile已经为开发者准备了按钮的内联功能可以方便的实现笔者想要的效果。
+【范例6-5 利用按钮分组制作的播放器界面】
+[html] view plaincopy
+&lt;div&gt; &lt;/div&gt; &lt;/div&gt; &lt;!DOCTYPE html&gt; &lt;!–声明HTML 5 –&gt; &lt;html&gt; &lt;head&gt; &lt;meta http-equiv=“Content-Type” content=“text/html; charset=utf-8” /&gt; &lt;title&gt;简单的播放器&lt;/title&gt; &lt;!–页面标题–&gt; &lt;meta name=“viewport” content=“width=device-width, initial-scale=1”&gt; &lt;!–引入jQuery Mobile样式文件 &lt;link rel=“stylesheet” href=“jquery.mobile.min.css” /&gt; &lt;!–引入jQuery支持库 &lt;script src=“jquery-1.7.1.min.js”&gt;&lt;/script&gt; &lt;!–引入jQuery Mobile所需的js文件 &lt;script src=“jquery.mobile.min.js”&gt;&lt;/script&gt; &lt;/head&gt; &lt;body&gt; &lt;div data-role=“page” data-theme=“a”&gt; &lt;div data-role=“header”&gt; &lt;a href=“#”&gt;返回&lt;/a&gt; &lt;h1&gt;音乐播放器&lt;/h1&gt; &lt;/div&gt; &lt;div data-role=“content”&gt; &lt;div data-role=“controlgroup”&gt; &lt;a href=“#” data-role=“button”&gt;no air &lt;/a&gt; &lt;a href=“#” data-role=“button”&gt; &lt;!–网上随意下载的图片，将图片宽度设置为80%使两边留有空隙–&gt; &lt;img src=“1.jpg” style=“width:80%;”/&gt; &lt;/a&gt; &lt;!–这里歌手和来源占用两格可以使页面更加和谐–&gt; &lt;a href=“#” data-role=“button”&gt;jordin sparks&lt;/a&gt; &lt;a href=“#” data-role=“button”&gt;No Air &lt;/a&gt; &lt;/div&gt; &lt;div data-role=“controlgroup” data-type=“horizontal”&gt; &lt;a href=“#” data-role=“button”&gt;后退&lt;/a&gt; &lt;a href=“#” data-role=“button”&gt;播放&lt;/a&gt; &lt;a href=“#” data-role=“button”&gt;暂停&lt;/a&gt; &lt;a href=“#” data-role=“button”&gt;后退&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; &lt;div data-role=“footer”&gt; &lt;h1&gt;暂无歌词&lt;/h1&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt; ...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-11-24 16:19:25 +0000 +0000'>2014年11月24日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 《构建跨平台APP：jQuery Mobile移动应用实战》连载六-设计播放器APP" href="http://localhost:1313/posts/%E6%9E%84%E5%BB%BA%E8%B7%A8%E5%B9%B3%E5%8F%B0appjquery-mobile%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98%E8%BF%9E%E8%BD%BD%E5%85%AD-%E8%AE%BE%E8%AE%A1%E6%92%AD/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">20款优秀的移动产品原型和线框图设计工具
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 线框图(Wireframe)是app、软件或者网站设计过程中非常重要的一个环节，它可以合理地组织并简化内容和元素。线框图除了可以帮助开发者 节省时间外，更可以加深开发者对产品的认知，给开发者一个清晰的产品构架，避免了开发者陷入层次不清、功能不明的产品设计和开发混乱状态。
+1、Proto.io
+Proto.io是一个专用的手机原型开发平台——可以构建和部署全交互式的移动程序的原型，并且可以模拟出相似的成品。它可以运行在大多数的浏览器中，并提供了3个重要的接口：dashboard、编辑器以及播放器。
+dashboard可以用来管理项目。编辑器是构建原型的环境，由一组设计和开发原型的工具组成，另外还可以构建交互。播放器用来观看原型，并与原 型进行交互，并提供了相关工具来标注和保留反馈信息。你可以直接在真实的移动设备上对原型进行测试。并且可以使用iOS或Android上的浏览器以全屏 模式运行原型。
+2、Moqups
+是一个非常好的、免费的HTML5应用，通过它可以创建可爱朴素的线框图、实体模型和UI概念。该程序使用起来非常简单，并且有内置的模板可以直接使用（模板包括单选按钮、链接、图像占位符、文本框以及滑块等）。
+它还提供了iPhone和iPad模板，以及iOS相关的按钮、提示框、picker、菜单、开关以及键盘等。你可以设置网格的尺寸，并预览和分享你的线框图。Moqups提供了一个很有用的功能就是对齐网格，可以使对象精准对齐。
+3、UXPin
+UXPin是DeSmart团队开发的一个简易快速的实体模型和在线可点击原型创作工具。它基于优秀的用户体验设计原则，在构建原型中，它提供了一个完整的工具包（该工具包具有良好的用户设计模式和元素）来从头构建一个出色的原型。
+UXPin具有响应式的断点功能，创建的响应式原型和线框图可以运行在不同的设备和分辨率上。另外该软件还提供了版本控制和迭代功能，可以轻松的共 享预览，直观的注解和实时的协同编辑和聊天。该软件拥有大量具有吸引力的用户界面元素风格（包括web，iOS，Android等），并且具有快速、灵敏 的响应拖放接口。
+4、Balsamiq Mockups Balsamiq Mockups是一款非常使用起来非常方便、非常高效的原型设计软件。
+Balsamiq Mockups目前包括75个界面控件和187个漂亮的icon，基本上自带了常用的小控件，UI控件支持自动拖拽，并且可以实现自动对齐。还有不少随即 可用的元素，简单拖拽就能形成效果图。 Mockups To Go library中还有适合Android、Blackberry以及iOS开发者的模版，Windows、Mac OS、Linux下都可以使用。可使用XML语言保存元素，也可以导出PNG图片，可以插入到任何项目。
+Balsamiq Mockups再现在白板上绘制草图的体验，共享原型进行测试有助于合作与反馈。整体采用了手绘风格，Balsamiq Mockups还提供了一个将图片转换成手绘风格的选项，保持了整体风格的一致。
+5、JustinMind
+JustinMind是由西班牙JustinMind公司出品的原型制作工具，可以输出Html页面。与目前主流的交互设计工具axure，Balsamiq Mockups等相比，Justinmind Prototyper更为专属于设计移动终端上app应用。
+JustinMind可以帮助开发者设计更丰富、更具交互新的移动产品线框图，包含了iPhone、Android 以及iPad常用手势，滑动、缩放、旋转，甚至捕捉设备方向等，从而创造出更具交互性的原型。另外，它可以导出原型信息到Microsoft Word，生成规范的文档。
+此外，你还可以自定义小组件，创建自定义组件库，并进行分类，不管对象是iPhone、iPad、黑莓、Android还是其他。
+6、FluidUI
+Fluid UI是一款用于移动开发的Web原型设计工具，可以帮助设计师高效地完成产品原型设计。Fluid UI 内置超过1700款的线框图和手机UI控件，并且还会经常进行更新。
+Fluid UI无设备限制，无平台限制（Windows、Mac以及Linux系统），支持Chrome和Safari浏览器（Chrome浏览器上的app也可离 线使用）。你可以使用Fluid Player来预览你的设计，收集意见和反馈。还可以以PNG、PDF方式输出。
+Fluid UI使用方法简单，采取拖拽的操作方式，不需要程序员来写代码。另外，Fluid UI资源库非常丰富，有针对iOS、Android以及Windows 8的资源。如果你觉得库存资源不能满足你的需求，你也可以自行添加。
+7、Axure ...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-11-22 03:30:20 +0000 +0000'>2014年11月22日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 20款优秀的移动产品原型和线框图设计工具" href="http://localhost:1313/posts/20%E6%AC%BE%E4%BC%98%E7%A7%80%E7%9A%84%E7%A7%BB%E5%8A%A8%E4%BA%A7%E5%93%81%E5%8E%9F%E5%9E%8B%E5%92%8C%E7%BA%BF%E6%A1%86%E5%9B%BE%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">10个优秀的jQuery Mobile主题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> jQuery Mobile 是一个伟大的框架，而每个伟大的产品都需要一个好看的UI。很不幸，jQuery Mobile默认的主题不是一个现代化的设计。默认的CSS文档有a,b,c,d和e五个主题，a主题是黑色的默认主题，每个主题都有各自的颜色。 下面分享一下互联网上比较好看的jQuery Mobile UI框架 1. Graphite 支持版本: jQuery Mobile 1.3.2 链接和演示: http://driftyco.github.io/graphite/ 2. Flat UI theme 在 Flat-UI.的基础上创建 支持版本: jQuery Mobile 1.3.2 官网: https://github.com/ququplay/jquery-mobile-flat-ui-theme 演示: http://ququplay.github.io/jquery-mobile-flat-ui-theme/ 3. nativeDroid 支持版本: jQuery Mobile 1.3.2 链接和演示: http://nativedroid.godesign.ch/ 4. iOs theme 在IOS的界面上创建 支持版本: jQuery Mobile jQuery Mobile 1.2 链接: https://github.com/taitems/iOS-Inspired-jQuery-Mobile-Theme/ 演示： http://taitems.github.io/iOS-Inspired-jQuery-Mobile-Theme/ ...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-11-20 08:24:07 +0000 +0000'>2014年11月20日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 10个优秀的jQuery Mobile主题" href="http://localhost:1313/posts/10%E4%B8%AA%E4%BC%98%E7%A7%80%E7%9A%84jquery-mobile%E4%B8%BB%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">开发工具、设计工具、网站收集
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>原型设计工具（免费）
+http://www.mockupplus.com/download
+注册地址：http://www.mockplus.cn/referral?r=rxjuhv
+火狐开发者版本
+https://www.mozilla.org/en-US/firefox/developer/
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-11-13 06:28:01 +0000 +0000'>2014年11月13日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 开发工具、设计工具、网站收集" href="http://localhost:1313/posts/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7%E7%BD%91%E7%AB%99%E6%94%B6%E9%9B%86/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Mark走起！iOS开发最常用的第三方库
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>向自己的应用中添加第三方库是一件需要谨慎而行的事情，因为也许在不久的将来，这些库可能会停止开发，那么到时，当使用这些库遇到问题，却没了任何支持，会是一件很悲催的事情。所以，这里向大家介绍的是，在iOS应用开发中最常使用，而又有信心会继续开发和支持很长一段时间的第三方库，希望能够对你的开发工作有所帮助。
+1. CocoaPods
+是不是已经厌烦了将各种库拖拽到Xcode项目中？那么，CocoaPods的出现就帮你解决了这一问题。CocoaPods是Objective-C项目中最有名的类库管理工具，可以解决库与库之间的依赖关系，下载库的源码，供我们开发使用。最重要的是，大多的开源类库都支持它。所以，有了CocoaPods，你就可以很轻松地对项目进行扩展。
+2. Crashlytics
+Crashlytics是一款用于检测你开发的应用，何时在客户端设备上崩溃，并能找出其崩溃原因以及帮助开发者修复应用的工具。Crashlytics既免费又方便使用，另外，还内置一些基础的分析功能，让你无需总要依赖其他独立的分析工具。
+3. AFNetworking/Alamofire
+AFNetworking和之前文章中提到的Alamofire一样，是一个网络库，不同的是，Alamofire是用于Swift中，而AFNetworking则是为Objective-C准备的。AFNetworking是建立在Foundation URL Loading System之上，拥有一个精心设计的模块化架构，以及功能丰富的API，使用起来很是方便。
+4. Google Analytics、Mixpanel、Localytics
+通常情况下，当需要分析用户使用应用的各方面数据时，会在Google Analytics、Mixpanel和Localytics之间权衡。Google Analytics可以用来跟踪和统计应用程序，如访问数、停留时间、跳出率等；Mixpanel则是为大家提供公式化和分类类报告，从而给出详细的数据分析；而Localytics提供的是实时地分析服务，帮助开发者更好的理解用户。至于选择哪一个，可以根据自己的需求来判定。
+5. Urban Airship
+当需要向应用中添加推送通知时，Urban Airship会是一个不错的选择，不过这个是在它还是免费的时候。所以，当你是在为自己或是小的客户端构建应用时，你可以使用Parse和Mixpanel来取代Urban Airship。不过如果是为那些有能力出钱的大客户开发应用的话，Urban Airship还是首选。
+6. New Relic
+New Relic的移动应用监控能够很好地跟踪应用的性能问题，而无需等到应用崩溃后，再去检查问题的来源。让用户从多角度、实时地发现应用的错误，并对此进行处理。
+7. ZBar
+ZBar是一个开源的软件套件，实现了识别和读取来自各种资源的条形码，比如视频流、图像文件等。它支持众多主流的条码，其中包括EAN-13/UPC-A、UPC-E、EAN-8、Code 128、Code 39、Interleaved 2 of 5和QR Code。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-10-30 01:32:32 +0000 +0000'>2014年10月30日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Mark走起！iOS开发最常用的第三方库" href="http://localhost:1313/posts/mark%E8%B5%B0%E8%B5%B7ios%E5%BC%80%E5%8F%91%E6%9C%80%E5%B8%B8%E7%94%A8%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Html5 Geolocation获取地理位置信息
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Html5中提供了地理位置信息的API，通过浏览器来获取用户当前位置。基于此特性可以开发基于位置的服务应用。在获取地理位置信息前，首先浏览器都会向用户询问是否愿意共享其位置信息，待用户同意后才能使用。 Html5获取地理位置信息是通过Geolocation API提供，使用其getCurrentPosition方法，此方法中有三个参数，分别是成功获取到地理位置信息时所执行的回调函数，失败时所执行的回调函数和可选属性配置项。 如下Demo演示了通过Geolocation获取地理位置信息，并在百度地图上显示当前位置（通过调用百度地图API）。实验结果发现位置被定位到了大学城内环东四路入口处，与本人所在位置（华工学生宿舍）偏差还是有点大的，达到200-300米左右。 代码如下所示（其中convertor.js为百度地图提供的坐标转化文件）： 1 &lt;!DOCTYPE html&gt; 2 &lt;html&gt; 3 &lt;head&gt; 4 &lt;title&gt;H5地理位置Demo&lt;/title&gt; 5 &lt;script src=&#34;http://api.map.baidu.com/api?v=1.3&#34; type=&#34;text/javascript&#34;&gt; 6 &lt;/script&gt; 7 &lt;script type=&#34;text/javascript&#34; src=&#34;convertor.js&#34;&gt; 8 &lt;/script&gt; 9 &lt;/head&gt; 10 &lt;body&gt; 11 &lt;div id=&#34;map&#34; style=&#34;width:600px; height:400px&#34;&gt; 12 &lt;/div&gt; 13 &lt;/body&gt; 14 &lt;script type=&#34;text/javascript&#34;&gt; 15 if (window.navigator.geolocation) { 16 var options = { 17 enableHighAccuracy: true, 18 }; 19 window.navigator.geolocation.getCurrentPosition(handleSuccess, handleError, options); 20 } else { 21 alert(&#34;浏览器不支持html5来获取地理位置信息&#34;); 22 } 23 24 function handleSuccess(position){ 25 // 获取到当前位置经纬度 本例中是chrome浏览器取到的是google地图中的经纬度 26 var lng = position.coords.longitude; 27 var lat = position.coords.latitude; 28 // 调用百度地图api显示 29 var map = new BMap.Map(&#34;map&#34;); 30 var ggPoint = new BMap.Point(lng, lat); 31 // 将google地图中的经纬度转化为百度地图的经纬度 32 BMap.Convertor.translate(ggPoint, 2, function(point){ 33 var marker = new BMap.Marker(point); 34 map.addOverlay(marker); 35 map.centerAndZoom(point, 15); 36 }); 37 } 38 39 function handleError(error){ 40 41 } 42 &lt;/script&gt; 43 &lt;/html&gt; convertor.js文件： ...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-22 06:41:01 +0000 +0000'>2014年9月22日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Html5 Geolocation获取地理位置信息" href="http://localhost:1313/posts/html5-geolocation%E8%8E%B7%E5%8F%96%E5%9C%B0%E7%90%86%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">基于 html5 geolocation来获取经纬度地址
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>以前如果要获取互联网用户所在地都是根据用户的IP地址来获取地理位置，这样获取到的数据和真实数据有很大的偏差。为了获取更加精确的位置，可以使用了html5的geolocation来获取经纬度，然后再获取所在地理位置，如何获取，我在下面会说到。先说下基本概念。
+Geolocation在的navigator 对象中，我们可以通过 navigator.geolocation 来使用它。不支持 geolocation 的浏览器并不包含这一对象，那么可以通过下面的代码来做能力检测，对不同的浏览器做不同的处理。在访问 geolocation 对象时，即调用 geolocation 下面的方法时，浏览器会弹出提示，询问用户是否许可网站提供的位置服务，只有在得到用户许可过后，服务才会继续，否则将被停止。
+常用的navigator.geolocation对象有以下三种方法：
+获取当前地理位置：navigator.geolocation.getCurrentPosition(success_callback_function, error_callback_function, position_options)
+持续获取地理位置：navigator.geolocation.watchPosition(success_callback_function, error_callback_function, position_options)
+清除持续获取地理位置事件：navigator.geolocation.clearWatch(watch_position_id)
+参数position_options是配置项，由JSON格式传入：
+enableHighAccuracy：true/false，它将告诉浏览器是否启用高精度设备，所谓的高精度设备包含但不局限于前面所提到的 GPS 和 WIFI，值为 true 的时候，浏览器会尝试启用这些设备，默认指为 true，在这种情况下，浏览器会尽可能地进行更为精确的查询，简单地说，如果用户有可用的 GPS 设备，会返回 GPS 设备的查询结果，IP 是最后的选择，对于移动设备来说，网络接入点(基站)或许成为另一个选择，对此我还没有完全了解，但根据测试，即时没有任何额外功能的手机，也能够得到更为精确的查询结果。
+maximumAge：单位毫秒，告诉设备缓存时间，主要用于设备的省电或者节省带宽方面。
+timeout：单位毫秒，超时事件，获取位置信息时超出设定的这个时长，将会触发错误，捕获错误的函数将被调用，并且错误码指向TIMEOUT。
+? &lt;table border=&#34;0&#34; cellspacing=&#34;0&#34; cellpadding=&#34;0&#34;&gt; &lt;tr&gt; &lt;td class=&#34;code&#34;&gt; &lt;div class=&#34;container&#34;&gt; &lt;div class=&#34;line number1 index0 alt2&#34;&gt; &lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;var&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;position_option = {&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number2 index1 alt1&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;enableHighAccuracy: &lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;true&lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;,&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number3 index2 alt2&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;maximumAge: 30000,&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number4 index3 alt1&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;timeout: 20000&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number5 index4 alt2&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;};&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number6 index5 alt1&#34;&gt; &lt;code class=&#34;javascript plain&#34;&gt;navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, position_option);&lt;/code&gt; &lt;/div&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; ? &lt;table border=&#34;0&#34; cellspacing=&#34;0&#34; cellpadding=&#34;0&#34;&gt; &lt;tr&gt; &lt;td class=&#34;code&#34;&gt; &lt;div class=&#34;container&#34;&gt; &lt;div class=&#34;line number1 index0 alt2&#34;&gt; &lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;function&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;getPositionSuccess( position ){&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number2 index1 alt1&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;var&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;lat = position.coords.latitude;&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number3 index2 alt2&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;var&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;lng = position.coords.longitude;&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number4 index3 alt1&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;alert( &lt;/code&gt;&lt;code class=&#34;javascript string&#34; style=&#34;color: blue !important;&#34;&gt;&#34;您所在的位置： 纬度&#34;&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;&#43; lat &#43; &lt;/code&gt;&lt;code class=&#34;javascript string&#34; style=&#34;color: blue !important;&#34;&gt;&#34;，经度&#34;&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;&#43; lng );&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number5 index4 alt2&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;if&lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;(&lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;typeof&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;position.address !== &lt;/code&gt;&lt;code class=&#34;javascript string&#34; style=&#34;color: blue !important;&#34;&gt;&#34;undefined&#34;&lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;){&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number6 index5 alt1&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;var&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;country = position.address.country;&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number7 index6 alt2&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;var&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;province = position.address.region;&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number8 index7 alt1&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript keyword&#34; style=&#34;color: #0000ff !important;&#34;&gt;var&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;city = position.address.city;&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number9 index8 alt2&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;alert(&lt;/code&gt;&lt;code class=&#34;javascript string&#34; style=&#34;color: blue !important;&#34;&gt;&#39; 您位于 &#39;&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;&#43; country &#43; province &#43; &lt;/code&gt;&lt;code class=&#34;javascript string&#34; style=&#34;color: blue !important;&#34;&gt;&#39;省&#39;&lt;/code&gt; &lt;code class=&#34;javascript plain&#34;&gt;&#43; city &#43;&lt;/code&gt;&lt;code class=&#34;javascript string&#34; style=&#34;color: blue !important;&#34;&gt;&#39;市&#39;&lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;);&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number10 index9 alt1&#34;&gt; &lt;code class=&#34;javascript spaces&#34;&gt; &lt;/code&gt;&lt;code class=&#34;javascript plain&#34;&gt;}&lt;/code&gt; &lt;/div&gt; &lt;div class=&#34;line number11 index10 alt2&#34;&gt; &lt;code class=&#34;javascript plain&#34;&gt;}&lt;/code&gt; &lt;/div&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; coords其他返回信息：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-09-22 06:39:16 +0000 +0000'>2014年9月22日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 基于 html5 geolocation来获取经纬度地址" href="http://localhost:1313/posts/%E5%9F%BA%E4%BA%8E-html5-geolocation%E6%9D%A5%E8%8E%B7%E5%8F%96%E7%BB%8F%E7%BA%AC%E5%BA%A6%E5%9C%B0%E5%9D%80/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">微信开发之移动手机WEB页面(HTML5)Javascript实现一键拨号及短信发送功能
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在做一个微信的微网站中的一个便民服务电话功能的应用，用到移动web页面中列出的电话号码，点击需要实现调用通讯录，网页一键拨号的拨打电话功能。
+如果需要在移动浏览器中实现拨打电话，发送email，美国服务器，调用sns等功能，移动手机WEB页面(HTML5)Javascript提供的接口是一个好办法。
+采用url链接的方式，实现在Safari ios，香港服务器，Android 浏览器，webos 浏览器，塞班浏览器，IE，Operamini等主流浏览器，进行拨打电话功能。
+1.最常用WEB页面JS实现一键拨号的电话拨打功能：
+移动WEB页面JS一键拨打号码咨询功能
+在拨号界面，显示号码，并提示拨打。
+支持大部分的浏览器，但是在QQ浏览器上支持不好。
+微信现在出现屏蔽常规拨号功能，具体解决办法见《微信开发实现一键拨号出现屏蔽问题的解决方案》
+2.最常用WEB页面JS实现一键发送短信功能：
+移动WEB页面JS一键发送短信咨询功能
+在信息录入界面，显示发送号码，并提示录入信息。
+支持大部分的浏览器，但是在QQ浏览器上支持不好。
+3、移动web页面自动探测电话号码
+如果要支持safari for ios ，blackberry browser的号码，需要加上一下标签：
+4.使用wtai协议进行拨打电话。
+在wml中可以调用设备的wtai函数来呼叫特定的电话号码。目前，越来越多的浏览器都支持这个功能，但还不是所有。
+代码如下所示：
+实例：
+拨打10086 将10086存储至电话簿 建议采用这个方式。
+5、不太灵验的方式：
+移动WEB页面JS一键拨打号码咨询功能
+经过测试，大部分浏览器都不支持了。
+补充—————————–
+这段时间很多人看了我的帖子《微信开发之移动手机WEB页面(HTML5)Javascript实现一键拨号及短信发送功能 》询问我在微信中出现无法拨号的情况，原先我操作的时候，的确是OK的，现在微信版本升级了，我试了一下，果然拨号不行了，在首页的web页面中是没有问题的，但是在微信中就是拨打不了，找了很多，后来发现是微信做了屏蔽，解决方法如下：
+1、拨号的代码还是不变，和我原先的文章一样，
+2、打开拨号页面要做下处理，在网址后面增加一个锚节点mp.weixin.qq.com。
+实例如下：
+如：http://www.xxxxxx/xxxx.html 上需要拨号代码，操作如下
+1、 继续写拨号代码
+移动WEB页面JS一键拨打号码咨询功能
+2、打开这个网址链接的时候，就用这个链接http://www.xxxxxx/xxxx.html #mp.weixin.qq.com(多添加一个mp.weixin.qq.com)
+这样，微信里面的一键拨号功能就OK了
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-08-06 03:09:29 +0000 +0000'>2014年8月6日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 微信开发之移动手机WEB页面(HTML5)Javascript实现一键拨号及短信发送功能" href="http://localhost:1313/posts/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E4%B9%8B%E7%A7%BB%E5%8A%A8%E6%89%8B%E6%9C%BAweb%E9%A1%B5%E9%9D%A2html5javascript%E5%AE%9E%E7%8E%B0%E4%B8%80%E9%94%AE%E6%8B%A8%E5%8F%B7%E5%8F%8A%E7%9F%AD%E4%BF%A1/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Android之监测手机网络状态的广播
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>今天具体说下Android检测网络状态的广播，我们在做一些手机应用的时候如果网络发生改变可能会给用户造成一些损失，在中国2G，3G网络都没有普及的情况下，基本都是包流量的，所以在做一些视频应用软件的时候，如果用户在使用WIFI的时候如果无线网络中断，手机网络会自动换手机网络，从而给用户造成不必要的损失。
+Android手机在对于一些系统广播，如短信的接收，电话的接收，电池电量过低，网络状态改变都会发一个广播，既然系统会发送一条广播，那么就需要一个接收器来处理这个广播。首先定义一个类继承NetworkChangeReceiver，重写onReceive()就行了。然后在OnReceive()这个方法进行相应广播的处理。
+网络状态切换的广播类：
+[java] view plaincopy
+&lt;div&gt; &lt;/div&gt; &lt;/div&gt; package com.test; import android.content.BroadcastReceiver; import android.content.Context; import android.content.Intent; import android.net.ConnectivityManager; import android.net.NetworkInfo.State; public class extends BroadcastReceiver { @Override public void onReceive(Context context, Intent intent) { State wifiState = null; State mobileState = null; ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE); wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState(); mobileState = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState(); if (wifiState != null &amp;&amp; mobileState != null &amp;&amp; State.CONNECTED != wifiState &amp;&amp; State.CONNECTED == mobileState) { // 手机网络连接成功 } else if (wifiState != null &amp;&amp; mobileState != null &amp;&amp; State.CONNECTED != wifiState &amp;&amp; State.CONNECTED != mobileState) { // 手机没有任何的网络 } else if (wifiState != null &amp;&amp; State.CONNECTED == wifiState) { // 无线网络连接成功 } } } 在上面这个接收类中OnReceive()方法，你可以在上面三个网络状态（只有手机网络，只有无线网络，没有任何网络）中进行相应的处理，然后在应用中注册广播，注册广播有2种方式，一种在androidmanifest.xml中注册，一种在java代码中注册。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-07-04 06:23:49 +0000 +0000'>2014年7月4日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Android之监测手机网络状态的广播" href="http://localhost:1313/posts/android%E4%B9%8B%E7%9B%91%E6%B5%8B%E6%89%8B%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%8A%B6%E6%80%81%E7%9A%84%E5%B9%BF%E6%92%AD/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="http://localhost:1313/categories/%E7%A7%BB%E5%8A%A8%E4%BA%92%E8%81%94%E7%BD%91/page/2/">下一页&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">ZDL Tech Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

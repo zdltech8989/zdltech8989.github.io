@@ -1,0 +1,91 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>网络编程 | ZDL Tech Blog</title>
+<meta name=keywords content><meta name=description content="技术博客 - Linux · DevOps · 开发"><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.xml title=rss><link rel=alternate hreflang=zh href=https://blog.zdltech.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="网络编程"><meta property="og:description" content="技术博客 - Linux · DevOps · 开发"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="网络编程"><meta name=twitter:description content="技术博客 - Linux · DevOps · 开发"></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><header class=page-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/tags/>Tags</a></nav><h1>网络编程</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Socket请求网页</h2></header><div class=entry-content><p>Java Socket现实简单的HTTP服务
+http://jiangzhengjun.iteye.com/blog/512380
+Java socket 访问网页
+http://blog.csdn.net/yilip/article/details/45195713
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+public class WebpageSocket {
+private static int port = 80;
+private static String hostname = “www.iteye.com”;
+public static void main(String[] args) throws Exception{
+Socket socket = new Socket(hostname, port);
+BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), “utf-8”));
+writer.write(“GET ” + “/ask” + ” HTTP/1.0\r\n”);
+writer.write(“HOST:” + hostname + “\r\n”);
+writer.write(“Accept:*/*\r\n”);
+writer.write(“\r\n”);
+writer.flush();
+BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), “utf-8”));
+String line = null;
+while ((line = reader.readLine()) != null) {
+System.out.println(line);
+}
+reader.close();
+writer.close();
+socket.close();
+}
+}
+...</p></div><footer class=entry-footer><span title='2017-01-04 06:48:45 +0000 UTC'>2017年1月4日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Socket请求网页" href=https://blog.zdltech.com/posts/socket%E8%AF%B7%E6%B1%82%E7%BD%91%E9%A1%B5/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>WebSocket的C++服务器端实现</h2></header><div class=entry-content><p>由于需要在项目中增加Websocket协议，与客户端进行通信，不想使用开源的库，比如WebSocketPP，就自己根据WebSocket协议实现一套函数，完全使用C++实现。
+代码已经实现，放在个人github上面，地址：https://github.com/jice1001/websocket.git。下面进行解释说明：
+一、原理
+Websocket协议解析，已经在前面博客里面详细讲解过，可以参考博客http://www.cnblogs.com/jice1990/p/5435419.html，这里就不详细细说。
+服务器端实现就是使用TCP协议，使用传统的socket流程进行绑定监听，使用epoll控制多路并发，收到Websocket握手包时候进行握手处理，握手成功便可进行数据收发。
+二、实现
+1、服务器监听
+该部分使用的是TCP socket流程，首先是通过socket函数建立socket,通过bind函数绑定到某个端口，本例使用的是9000，然后通过listen函数开启监听，代码如下：
+![复制代码](http://common.cnblogs.com/images/copycode.gif) listenfd_ = socket(AF_INET, SOCK_STREAM, 0); if(listenfd_ == -1){ DEBUG_LOG("创建套接字失败!"); return -1; } struct sockaddr_in server_addr; memset(&amp;server_addr, 0, sizeof(sockaddr_in)); server_addr.sin_family = AF_INET; server_addr.sin_addr.s_addr = htonl(INADDR_ANY); server_addr.sin_port = htons(PORT); if(-1 == bind(listenfd_, (struct sockaddr *)(&amp;server_addr), sizeof(server_addr))){ DEBUG_LOG("绑定套接字失败!"); return -1; } if(-1 == listen(listenfd_, 5)){ DEBUG_LOG("监听失败!"); return -1; } ![复制代码](http://common.cnblogs.com/images/copycode.gif) 2、epoll控制多路并发
+...</p></div><footer class=entry-footer><span title='2016-09-11 09:13:18 +0000 UTC'>2016年9月11日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to WebSocket的C++服务器端实现" href=https://blog.zdltech.com/posts/websocket%E7%9A%84c%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E5%AE%9E%E7%8E%B0/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>WebSocket心跳实现</h2></header><div class=entry-content><p>//间隔发送心跳包数据给服务器，服务器在一定时间内发回心跳包响应，对比超时限定，如果超过设定的超时时间，则认为当前与服务器的websocket连接已经断开，关闭当前web socket连接，善后处理，例如重新连接，或者弹出提示……
+function keepalive(ws) {
+var time = new Date();
+//连接断开，可设置重连或者关闭连接
+(“#keeplive_box”).html(“服务器没有响应.”).css({ “color” : “red” }); //ws.close(); } else {(“#keeplive_box”).html(“连接正常”).css({
+“color” : “green”
+});
+if (ws.bufferedAmount == 0) {
+ws.send(‘H#C’);
+}
+}
+}
+var ws = new WebSocket(to_url);
+ws.onopen = function () {
+(“#statustxt”).html(“connected.”);(“#send_btn”).attr(“disabled”, false);
+heartbeat_timer = setInterval(function () {
+keepalive(ws)
+}, 3000);
+}</p></div><footer class=entry-footer><span title='2016-07-04 09:43:19 +0000 UTC'>2016年7月4日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to WebSocket心跳实现" href=https://blog.zdltech.com/posts/websocket%E5%BF%83%E8%B7%B3%E5%AE%9E%E7%8E%B0/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>WebSocket 的性能与压力测试</h2></header><div class=entry-content><p>*原文* [http://chensd.com/2015-07/websocket-stress-test-and-performance-test.html](http://chensd.com/2015-07/websocket-stress-test-and-performance-test.html?utm_source=tuicool&amp;utm_medium=referral) 主题 [WebSocket](http://www.tuicool.com/topics/11060032)[压力测试](http://www.tuicool.com/topics/11350019) 相对于短连接应用，长连接应用的测试要麻烦得多——尤其是性能和压力测试。此前，甚至从来没有给任何一个上线的 WebSocket 应用做过这方面的测试，前两天，看到有人在 [SegmentFault 上问](http://segmentfault.com/q/1010000003028043) 这方面的问题，刚好又有空，于是想着，还是来查查这方面的资料吧。在 Github 上一搜，还真有现成的工具，名字很简单，直接就叫[websocket-bench](https://github.com/M6Web/websocket-bench) ， websocket-bench 是个用 Node.js 编写的命令行工具，可以对使用 Socket.io、[faye](https://github.com/faye/faye) 、 [Primus](https://github.com/primus/primus) 、 [WAMP](https://github.com/tavendo/WAMP) 编写的长连接应用进行性能和压力测试，用法和参数与 ab 差不多，多了一个指定连接成功后进行的操作的定义。 ### websocket-bench 安装 需要使用 npm 以全局的方式来安装 websocket-bench，当然要用阿里提供的 []福利服务器](http://npm.taobao.org/) ，如下： &lt;div> &lt;div> ``` npm install -g websocket-bench –registry=http://registry.npm.taobao.org
+&lt;/div> &lt;/div> ### 基本使用 这里以在 CentOS 6.5 上进行测试为便进行说明。首先要修改一下文件打开数，默认是1024，修改为一个比较大的值就行，总共65535个端口，我们测试也不会用太大的并发，websocket-bench 推荐设置的是 60000 ，命令如下： &lt;div> &lt;div> ``` ulimit -n 60000 &lt;/div> &lt;/div> websocket-bench 的参数与 ab 基本一致，像这样 &lt;div> &lt;div> ``` websocket-bench -a 300 -c 29 http://localhost:8100 -o opt.log
+...</p></div><footer class=entry-footer><span title='2016-06-06 01:32:59 +0000 UTC'>2016年6月6日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to WebSocket 的性能与压力测试" href=https://blog.zdltech.com/posts/websocket-%E7%9A%84%E6%80%A7%E8%83%BD%E4%B8%8E%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>websocket开发第一篇</h2></header><div class=entry-content><p>客户端与服务端基于HTTP和WebSocket网络协议来通讯，其中HTTP用于从客户端向服务端的请求，WebSocket用于从服务端向客户端的推送，因此服务器端需要支持HTTP和WebSocket两种协议。HTTP好说，所有Web服务器都支持，而支持WebSocket的倒不多。
+Java阵营：Tomcat 7和Netty .Net阵营：System.Net.WebSockets Nodejs阵营：Socket.io WebSocket百度百科
+1）Web通信的演进
+2）WebSocket
+3）WebSocket在Apache Tomcat 7（7.0.27 ）的实现
+4）怎样用Jaggery开发WebSocket特性
+Tomcat 7中引入了WebSocket实现。下面我们先了解WebSocket的优缺点，其次简要介绍Apache Tomcat 7的WebSocket实现。
+WebSocket的演进过程如图所示：
+要知道在Tomcat 6中要实现双向HTTP通信，需要使用Tomcat的Comet处理模块。Comet有以下局限：
+1）HTTP协议本身是请求/响应协议，而不是双向协议
+2）代理和其它中间媒介不会工作的很好
+3）在任何给定的时间只有某个方向的数据包传输
+4）Servlet开发者要使用多线程很难
+Servlet 3.0版引入了一个新特征：异步Servlet。我们把它与客户端的Ajax调用进行比较。异步Servlet会把请求悬挂起，直到响应准备好交付，无需在容器中使用worker线程。WebSockets是另一个尝试标准化的技术，它支持HTTP之上的异步、事件驱动和全双工通信。
+WebSocket给我们带来了如下特性：
+1）通过升级/交换HTTP协议，在HTTP之上提供全双工通信
+2）基于消息/帧的通信
+3）可以与代理和中间媒介一起工作
+4）还可以不与代理和中间媒介一起工作
+WebSocket的优点：
+1）WebSocket是理想的，客户端和服务器之间不再需要长期运行的会话
+2）WebSocket是HTTP协议之上的全双工通信
+3）由于WebSocket是HTTP握手初始化之后的TCP之上的协议，所以你只需做两件事：
+发送消息
+接收消息</p></div><footer class=entry-footer><span title='2014-05-20 02:57:06 +0000 UTC'>2014年5月20日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to websocket开发第一篇" href=https://blog.zdltech.com/posts/websocket%E5%BC%80%E5%8F%91%E7%AC%AC%E4%B8%80%E7%AF%87/></a></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

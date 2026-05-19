@@ -1,0 +1,533 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>android之interpolator的用法详解 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="**android:interpolator** &amp;nbsp; Interpolator 被用来修饰动画效果，定义动画的变化率，可以使存在的动画效果accelerated(加速)，decelerated(减速),repeated(重复),bounced(弹跳)等。 android中的文档内容如下： ..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E4%B9%8Binterpolator%E7%9A%84%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E4%B9%8Binterpolator%E7%9A%84%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E4%B9%8Binterpolator%E7%9A%84%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="android之interpolator的用法详解"><meta property="og:description" content="**android:interpolator**   Interpolator 被用来修饰动画效果，定义动画的变化率，可以使存在的动画效果accelerated(加速)，decelerated(减速),repeated(重复),bounced(弹跳)等。 android中的文档内容如下： ..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-04-28T09:43:21+00:00"><meta property="article:modified_time" content="2015-04-28T09:43:21+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="android之interpolator的用法详解"><meta name=twitter:description content="**android:interpolator**   Interpolator 被用来修饰动画效果，定义动画的变化率，可以使存在的动画效果accelerated(加速)，decelerated(减速),repeated(重复),bounced(弹跳)等。 android中的文档内容如下： ..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"android之interpolator的用法详解","item":"https://blog.zdltech.com/posts/android%E4%B9%8Binterpolator%E7%9A%84%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"android之interpolator的用法详解","name":"android之interpolator的用法详解","description":"**android:interpolator** \u0026nbsp; Interpolator 被用来修饰动画效果，定义动画的变化率，可以使存在的动画效果accelerated(加速)，decelerated(减速),repeated(重复),bounced(弹跳)等。 android中的文档内容如下： ...","keywords":["android","移动开发"],"articleBody":"android:interpolator\nInterpolator 被用来修饰动画效果，定义动画的变化率，可以使存在的动画效果accelerated(加速)，decelerated(减速),repeated(重复),bounced(弹跳)等。\nandroid中的文档内容如下：\n![](http://img.blog.csdn.net/20131117161350500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFzb24wNTM5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) AccelerateDecelerateInterpolator 在动画开始与结束的地方速率改变比较慢，在中间的时候加速 AccelerateInterpolator 在动画开始的地方速率改变比较慢，然后开始加速 AnticipateInterpolator 开始的时候向后然后向前甩 AnticipateOvershootInterpolator 开始的时候向后然后向前甩一定值后返回最后的值 BounceInterpolator 动画结束的时候弹起 CycleInterpolator 动画循环播放特定的次数，速率改变沿着正弦曲线 DecelerateInterpolator 在动画开始的地方快然后慢 LinearInterpolator 以常量速率改变 OvershootInterpolator 向前甩一定值后再回到原来位置 如果android定义的interpolators不符合你的效果也可以自定义interpolators \u0026nbsp; Android中的Interpolator nterpolator用于动画中的时间插值，其作用就是把0到1的浮点值变化映射到另一个浮点值变化。 本文列出Android API提供的Interpolator的若干种实现，列出源码，并且用一个程序绘制出其数学曲线。（项目链接附在文后）。 AccelerateDecelerateInterpolator ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` /**\nAn interpolator where the rate of change starts and ends slowly but accelerates through the middle. */ public class AccelerateDecelerateInterpolator implements Interpolator { public AccelerateDecelerateInterpolator() { }\n@SuppressWarnings({\"UnusedDeclaration\"}) public AccelerateDecelerateInterpolator(Context context, AttributeSet attrs) { } public float getInterpolation(float input) { return (float)(Math.cos((input + 1) * Math.PI) / 2.0f) + 0.5f; } }\n\u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e \u003c/div\u003e \u0026nbsp; ![](http://images.cnitblog.com/blog/325852/201309/29162553-398804596d514dd795c2f19539148ca2.png) \u0026nbsp; ## AccelerateInterpolator \u003cdiv class=\"cnblogs_code\"\u003e \u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e ``` /** * An interpolator where the rate of change starts out slowly and * and then accelerates. * */ public class AccelerateInterpolator implements Interpolator { private final float mFactor; private final double mDoubleFactor; public AccelerateInterpolator() { mFactor = 1.0f; mDoubleFactor = 2.0; } /** * Constructor * * @param factor Degree to which the animation should be eased. Seting * factor to 1.0f produces a y=x^2 parabola. Increasing factor above * 1.0f exaggerates the ease-in effect (i.e., it starts even * slower and ends evens faster) */ public AccelerateInterpolator(float factor) { mFactor = factor; mDoubleFactor = 2 * mFactor; } public AccelerateInterpolator(Context context, AttributeSet attrs) { TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.AccelerateInterpolator); mFactor = a.getFloat(com.android.internal.R.styleable.AccelerateInterpolator_factor, 1.0f); mDoubleFactor = 2 * mFactor; a.recycle(); } public float getInterpolation(float input) { if (mFactor == 1.0f) { return input * input; } else { return (float)Math.pow(input, mDoubleFactor); } } } ![复制代码](http://common.cnblogs.com/images/copycode.gif) \u0026nbsp; ![](http://images.cnitblog.com/blog/325852/201309/29162735-9d46b2da759e4b668a5209557b6ee115.png) AnticipateInterpolator ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` /**\nAn interpolator where the change starts backward then flings forward. */ public class AnticipateInterpolator implements Interpolator { private final float mTension;\npublic AnticipateInterpolator() { mTension = 2.0f; }\n/**\n@param tension Amount of anticipation. When tension equals 0.0f, there is no anticipation and the interpolator becomes a simple acceleration interpolator. */ public AnticipateInterpolator(float tension) { mTension = tension; }\npublic AnticipateInterpolator(Context context, AttributeSet attrs) { TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.AnticipateInterpolator);\nmTension = a.getFloat(com.android.internal.R.styleable.AnticipateInterpolator_tension, 2.0f); a.recycle(); }\npublic float getInterpolation(float t) { // a(t) = t * t * ((tension + 1) * t - tension) return t * t * ((mTension + 1) * t - mTension); } }\n\u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e \u003c/div\u003e ![](http://images.cnitblog.com/blog/325852/201309/29162936-630167d6b6514c6c9fb8f8446b5cd251.png) \u0026nbsp; \u0026nbsp; ## AnticipateOvershootInterpolator \u003cdiv class=\"cnblogs_code\"\u003e \u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e ``` /** * An interpolator where the change starts backward then flings forward and overshoots * the target value and finally goes back to the final value. */ public class AnticipateOvershootInterpolator implements Interpolator { private final float mTension; public AnticipateOvershootInterpolator() { mTension = 2.0f * 1.5f; } /** * @param tension Amount of anticipation/overshoot. When tension equals 0.0f, * there is no anticipation/overshoot and the interpolator becomes * a simple acceleration/deceleration interpolator. */ public AnticipateOvershootInterpolator(float tension) { mTension = tension * 1.5f; } /** * @param tension Amount of anticipation/overshoot. When tension equals 0.0f, * there is no anticipation/overshoot and the interpolator becomes * a simple acceleration/deceleration interpolator. * @param extraTension Amount by which to multiply the tension. For instance, * to get the same overshoot as an OvershootInterpolator with * a tension of 2.0f, you would use an extraTension of 1.5f. */ public AnticipateOvershootInterpolator(float tension, float extraTension) { mTension = tension * extraTension; } public AnticipateOvershootInterpolator(Context context, AttributeSet attrs) { TypedArray a = context.obtainStyledAttributes(attrs, AnticipateOvershootInterpolator); mTension = a.getFloat(AnticipateOvershootInterpolator_tension, 2.0f) * a.getFloat(AnticipateOvershootInterpolator_extraTension, 1.5f); a.recycle(); } private static float a(float t, float s) { return t * t * ((s + 1) * t - s); } private static float o(float t, float s) { return t * t * ((s + 1) * t + s); } public float getInterpolation(float t) { // a(t, s) = t * t * ((s + 1) * t - s) // o(t, s) = t * t * ((s + 1) * t + s) // f(t) = 0.5 * a(t * 2, tension * extraTension), when t \u0026lt; 0.5 // f(t) = 0.5 * (o(t * 2 - 2, tension * extraTension) + 2), when t \u0026lt;= 1.0 if (t \u0026lt; 0.5f) return 0.5f * a(t * 2.0f, mTension); else return 0.5f * (o(t * 2.0f - 2.0f, mTension) + 2.0f); } } ![复制代码](http://common.cnblogs.com/images/copycode.gif) ![](http://images.cnitblog.com/blog/325852/201309/29163126-ca9aa8f0018e46ec839430f3c818a0e8.png) BounceInterpolator ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` /**\nAn interpolator where the change bounces at the end. */ public class BounceInterpolator implements Interpolator { public BounceInterpolator() { }\n@SuppressWarnings({“UnusedDeclaration”}) public BounceInterpolator(Context context, AttributeSet attrs) { }\nprivate static float bounce(float t) { return t * t * 8.0f; }\npublic float getInterpolation(float t) { // _b(t) = t * t * 8 // bs(t) = _b(t) for t \u003c 0.3535 // bs(t) = _b(t - 0.54719) + 0.7 for t \u003c 0.7408 // bs(t) = _b(t - 0.8526) + 0.9 for t \u003c 0.9644 // bs(t) = _b(t - 1.0435) + 0.95 for t \u003c= 1.0 // b(t) = bs(t * 1.1226) t *= 1.1226f; if (t \u003c 0.3535f) return bounce(t); else if (t \u003c 0.7408f) return bounce(t - 0.54719f) + 0.7f; else if (t \u003c 0.9644f) return bounce(t - 0.8526f) + 0.9f; else return bounce(t - 1.0435f) + 0.95f; } }\n\u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e \u003c/div\u003e \u0026nbsp; ![](http://images.cnitblog.com/blog/325852/201309/29163251-7079b1bb27c844aa8d007e6899688c2b.png) ## CycleInterpolator \u003cdiv class=\"cnblogs_code\"\u003e \u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e ``` /** * Repeats the animation for a specified number of cycles. The * rate of change follows a sinusoidal pattern. * */ public class CycleInterpolator implements Interpolator { public CycleInterpolator(float cycles) { mCycles = cycles; } public CycleInterpolator(Context context, AttributeSet attrs) { TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.CycleInterpolator); mCycles = a.getFloat(com.android.internal.R.styleable.CycleInterpolator_cycles, 1.0f); a.recycle(); } public float getInterpolation(float input) { return (float)(Math.sin(2 * mCycles * Math.PI * input)); } private float mCycles; } ![复制代码](http://common.cnblogs.com/images/copycode.gif) \u0026nbsp; 参数为2时的曲线： ![](http://images.cnitblog.com/blog/325852/201309/29163456-495a2721492946f4a4d894443491e4d6.png) \u0026nbsp; DecelerateInterpolator ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` /**\nAn interpolator where the rate of change starts out quickly and and then decelerates. */ public class DecelerateInterpolator implements Interpolator { public DecelerateInterpolator() { }\n/** * Constructor * * @param factor Degree to which the animation should be eased. Setting factor to 1.0f produces * an upside-down y=x^2 parabola. Increasing factor above 1.0f makes exaggerates the * ease-out effect (i.e., it starts even faster and ends evens slower) */ public DecelerateInterpolator(float factor) { mFactor = factor; } public DecelerateInterpolator(Context context, AttributeSet attrs) { TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.DecelerateInterpolator); mFactor = a.getFloat(com.android.internal.R.styleable.DecelerateInterpolator_factor, 1.0f); a.recycle(); } public float getInterpolation(float input) { float result; if (mFactor == 1.0f) { result = (float)(1.0f - (1.0f - input) * (1.0f - input)); } else { result = (float)(1.0f - Math.pow((1.0f - input), 2 * mFactor)); } return result; } private float mFactor = 1.0f; }\n\u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e \u003c/div\u003e \u0026nbsp; ![](http://images.cnitblog.com/blog/325852/201309/29163621-d9ecec56e54a4416a3cbed447f36379b.png) ## LinearInterpolator \u003cdiv class=\"cnblogs_code\"\u003e \u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e ``` /** * An interpolator where the rate of change is constant * */ public class LinearInterpolator implements Interpolator { public LinearInterpolator() { } public LinearInterpolator(Context context, AttributeSet attrs) { } public float getInterpolation(float input) { return input; } } ![复制代码](http://common.cnblogs.com/images/copycode.gif) \u0026nbsp; ![](http://images.cnitblog.com/blog/325852/201309/29163734-b31e9a2dcf84435288ba9188ca81c05a.png) OvershootInterpolator ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` /**\nAn interpolator where the change flings forward and overshoots the last value\nthen comes back. */ public class OvershootInterpolator implements Interpolator { private final float mTension;\npublic OvershootInterpolator() { mTension = 2.0f; }\n/**\n@param tension Amount of overshoot. When tension equals 0.0f, there is no overshoot and the interpolator becomes a simple deceleration interpolator. */ public OvershootInterpolator(float tension) { mTension = tension; }\npublic OvershootInterpolator(Context context, AttributeSet attrs) { TypedArray a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.OvershootInterpolator);\nmTension = a.getFloat(com.android.internal.R.styleable.OvershootInterpolator_tension, 2.0f); a.recycle(); }\npublic float getInterpolation(float t) { // _o(t) = t * t * ((tension + 1) * t + tension) // o(t) = _o(t - 1) + 1 t -= 1.0f; return t * t * ((mTension + 1) * t + mTension) + 1.0f; } }\n\u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e \u003c/div\u003e \u0026nbsp; ![](http://images.cnitblog.com/blog/325852/201309/29163839-66d3e2c296814c20848807cd05ae63f1.png) \u0026nbsp; ## 项目链接： [https://github.com/mengdd/HelloInterpolator.git](https://github.com/mengdd/HelloInterpolator.git) ","wordCount":"1315","inLanguage":"zh","datePublished":"2015-04-28T09:43:21Z","dateModified":"2015-04-28T09:43:21Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E4%B9%8Binterpolator%E7%9A%84%E7%94%A8%E6%B3%95%E8%AF%A6%E8%A7%A3/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">android之interpolator的用法详解</h1><div class=post-description>**android:interpolator** &amp;nbsp; Interpolator 被用来修饰动画效果，定义动画的变化率，可以使存在的动画效果accelerated(加速)，decelerated(减速),repeated(重复),bounced(弹跳)等。 android中的文档内容如下： ...</div><div class=post-meta><span title='2015-04-28 09:43:21 +0000 UTC'>2015年4月28日</span>&nbsp;·&nbsp;<span>7 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#android%e4%b8%ad%e7%9a%84interpolator aria-label=Android中的Interpolator>Android中的Interpolator</a><ul><li><a href=#acceleratedecelerateinterpolator aria-label=AccelerateDecelerateInterpolator>AccelerateDecelerateInterpolator</a></li><li><a href=#anticipateinterpolator aria-label=AnticipateInterpolator>AnticipateInterpolator</a></li><li><a href=#bounceinterpolator aria-label=BounceInterpolator>BounceInterpolator</a></li><li><a href=#decelerateinterpolator aria-label=DecelerateInterpolator>DecelerateInterpolator</a></li><li><a href=#overshootinterpolator aria-label=OvershootInterpolator>OvershootInterpolator</a></li></ul></li></ul></div></details><div class="post-content md-content"><p><strong>android:interpolator</strong></p><p> </p><p>Interpolator 被用来修饰动画效果，定义动画的变化率，可以使存在的动画效果accelerated(加速)，decelerated(减速),repeated(重复),bounced(弹跳)等。</p><p>android中的文档内容如下：</p><pre><code>![](http://img.blog.csdn.net/20131117161350500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFzb24wNTM5/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+
+
+
+
+AccelerateDecelerateInterpolator 在动画开始与结束的地方速率改变比较慢，在中间的时候加速
+
+
+
+
+
+AccelerateInterpolator  在动画开始的地方速率改变比较慢，然后开始加速
+
+
+
+
+
+AnticipateInterpolator 开始的时候向后然后向前甩
+
+
+
+
+
+AnticipateOvershootInterpolator 开始的时候向后然后向前甩一定值后返回最后的值
+
+
+
+
+
+BounceInterpolator   动画结束的时候弹起
+
+
+
+
+
+CycleInterpolator 动画循环播放特定的次数，速率改变沿着正弦曲线
+
+
+
+
+
+DecelerateInterpolator 在动画开始的地方快然后慢
+
+
+
+
+
+LinearInterpolator   以常量速率改变
+
+
+
+
+
+OvershootInterpolator    向前甩一定值后再回到原来位置
+
+
+
+
+
+如果android定义的interpolators不符合你的效果也可以自定义interpolators
+
+
+
+
+
+&amp;nbsp;
+</code></pre><h1 id=android中的interpolator>Android中的Interpolator<a hidden class=anchor aria-hidden=true href=#android中的interpolator>#</a></h1><pre><code>nterpolator用于动画中的时间插值，其作用就是把0到1的浮点值变化映射到另一个浮点值变化。
+
+
+
+
+
+本文列出Android API提供的Interpolator的若干种实现，列出源码，并且用一个程序绘制出其数学曲线。（项目链接附在文后）。
+</code></pre><h2></h2><h2 id=acceleratedecelerateinterpolator>AccelerateDecelerateInterpolator<a hidden class=anchor aria-hidden=true href=#acceleratedecelerateinterpolator>#</a></h2><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><pre><code>```
+</code></pre><p>/**</p><ul><li>An interpolator where the rate of change starts and ends slowly but</li><li>accelerates through the middle.</li><li></li></ul><p>*/
+public class AccelerateDecelerateInterpolator implements Interpolator {
+public AccelerateDecelerateInterpolator() {
+}</p><pre><code>@SuppressWarnings({&quot;UnusedDeclaration&quot;})
+public AccelerateDecelerateInterpolator(Context context, AttributeSet attrs) {
+}
+
+public float getInterpolation(float input) {
+    return (float)(Math.cos((input + 1) * Math.PI) / 2.0f) + 0.5f;
+}
+</code></pre><p>}</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>!</span>[](http:<span style=color:#ff79c6>//</span>images<span style=color:#ff79c6>.</span>cnitblog<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>blog<span style=color:#ff79c6>/</span><span style=color:#bd93f9>325852</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>201309</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>29162553</span><span style=color:#ff79c6>-</span><span style=color:#bd93f9>398804596</span>d514dd795c2f19539148ca2<span style=color:#ff79c6>.</span>png)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>## AccelerateInterpolator</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> An interpolator where the rate of change starts out slowly <span style=color:#ff79c6>and</span> 
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> <span style=color:#ff79c6>and</span> then accelerates<span style=color:#ff79c6>.</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>public <span style=color:#ff79c6>class</span> AccelerateInterpolator implements Interpolator {
+</span></span><span style=display:flex><span>    private final float mFactor;
+</span></span><span style=display:flex><span>    private final double mDoubleFactor;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public AccelerateInterpolator() {
+</span></span><span style=display:flex><span>        mFactor <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>1.0</span>f;
+</span></span><span style=display:flex><span>        mDoubleFactor <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>2.0</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span> Constructor
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span> 
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span> @param factor Degree to which the animation should be eased<span style=color:#ff79c6>.</span> Seting
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>        factor to <span style=color:#bd93f9>1.0</span>f produces a y<span style=color:#ff79c6>=</span>x<span style=color:#ff79c6>^</span><span style=color:#bd93f9>2</span> parabola<span style=color:#ff79c6>.</span> Increasing factor above
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>        <span style=color:#bd93f9>1.0</span>f  exaggerates the <span style=color:#8be9fd;font-style:italic>ease</span><span style=color:#ff79c6>-</span><span style=color:#ff79c6>in</span> effect (i<span style=color:#ff79c6>.</span>e<span style=color:#ff79c6>.</span>, it starts even
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>        slower <span style=color:#ff79c6>and</span> ends evens faster)
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>    public AccelerateInterpolator(float factor) {
+</span></span><span style=display:flex><span>        mFactor <span style=color:#ff79c6>=</span> factor;
+</span></span><span style=display:flex><span>        mDoubleFactor <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>2</span> <span style=color:#ff79c6>*</span> mFactor;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    public AccelerateInterpolator(Context context, AttributeSet attrs) {
+</span></span><span style=display:flex><span>        TypedArray a <span style=color:#ff79c6>=</span>
+</span></span><span style=display:flex><span>            context<span style=color:#ff79c6>.</span>obtainStyledAttributes(attrs, com<span style=color:#ff79c6>.</span>android<span style=color:#ff79c6>.</span>internal<span style=color:#ff79c6>.</span>R<span style=color:#ff79c6>.</span>styleable<span style=color:#ff79c6>.</span>AccelerateInterpolator);
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        mFactor <span style=color:#ff79c6>=</span> a<span style=color:#ff79c6>.</span>getFloat(com<span style=color:#ff79c6>.</span>android<span style=color:#ff79c6>.</span>internal<span style=color:#ff79c6>.</span>R<span style=color:#ff79c6>.</span>styleable<span style=color:#ff79c6>.</span>AccelerateInterpolator_factor, <span style=color:#bd93f9>1.0</span>f);
+</span></span><span style=display:flex><span>        mDoubleFactor <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>2</span> <span style=color:#ff79c6>*</span> mFactor;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        a<span style=color:#ff79c6>.</span>recycle();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    public float getInterpolation(float input) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (mFactor <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>1.0</span>f) {
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>return</span> input <span style=color:#ff79c6>*</span> input;
+</span></span><span style=display:flex><span>        } <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>return</span> (float)Math<span style=color:#ff79c6>.</span>pow(input, mDoubleFactor);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><pre><code>&lt;div class=&quot;cnblogs_code_toolbar&quot;&gt;
+  &lt;span class=&quot;cnblogs_code_copy&quot;&gt;&lt;a title=&quot;复制代码&quot;&gt;![复制代码](http://common.cnblogs.com/images/copycode.gif)&lt;/a&gt;&lt;/span&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>&amp;nbsp;
+
+
+
+
+
+![](http://images.cnitblog.com/blog/325852/201309/29162735-9d46b2da759e4b668a5209557b6ee115.png)
+</code></pre><h2 id=anticipateinterpolator>AnticipateInterpolator<a hidden class=anchor aria-hidden=true href=#anticipateinterpolator>#</a></h2><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><pre><code>```
+</code></pre><p>/**</p><ul><li><p>An interpolator where the change starts backward then flings forward.
+*/
+public class AnticipateInterpolator implements Interpolator {
+private final float mTension;</p><p>public AnticipateInterpolator() {
+mTension = 2.0f;
+}</p><p>/**</p><ul><li>@param tension Amount of anticipation. When tension equals 0.0f, there is</li><li><pre><code>           no anticipation and the interpolator becomes a simple
+</code></pre></li><li><pre><code>           acceleration interpolator.
+</code></pre></li></ul><p>*/
+public AnticipateInterpolator(float tension) {
+mTension = tension;
+}</p><p>public AnticipateInterpolator(Context context, AttributeSet attrs) {
+TypedArray a = context.obtainStyledAttributes(attrs,
+com.android.internal.R.styleable.AnticipateInterpolator);</p><pre><code> mTension =
+         a.getFloat(com.android.internal.R.styleable.AnticipateInterpolator_tension, 2.0f);
+
+ a.recycle();
+</code></pre><p>}</p><p>public float getInterpolation(float t) {
+// a(t) = t * t * ((tension + 1) * t - tension)
+return t * t * ((mTension + 1) * t - mTension);
+}
+}</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>!</span>[](http:<span style=color:#ff79c6>//</span>images<span style=color:#ff79c6>.</span>cnitblog<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>blog<span style=color:#ff79c6>/</span><span style=color:#bd93f9>325852</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>201309</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>29162936</span><span style=color:#ff79c6>-</span><span style=color:#bd93f9>630167</span>d6b6514c6c9fb8f8446b5cd251<span style=color:#ff79c6>.</span>png)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>## AnticipateOvershootInterpolator</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> An interpolator where the change starts backward then flings forward <span style=color:#ff79c6>and</span> overshoots
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> the target value <span style=color:#ff79c6>and</span> finally goes back to the final value<span style=color:#ff79c6>.</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>public <span style=color:#ff79c6>class</span> AnticipateOvershootInterpolator implements Interpolator {
+</span></span><span style=display:flex><span>    private final float mTension;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public AnticipateOvershootInterpolator() {
+</span></span><span style=display:flex><span>        mTension <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>2.0</span>f <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>1.5</span>f;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span> @param tension Amount of anticipation<span style=color:#ff79c6>/</span>overshoot<span style=color:#ff79c6>.</span> When tension equals <span style=color:#bd93f9>0.0</span>f,
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>                there is no anticipation<span style=color:#ff79c6>/</span>overshoot <span style=color:#ff79c6>and</span> the interpolator becomes
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>                a simple acceleration<span style=color:#ff79c6>/</span>deceleration interpolator<span style=color:#ff79c6>.</span>
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>    public AnticipateOvershootInterpolator(float tension) {
+</span></span><span style=display:flex><span>        mTension <span style=color:#ff79c6>=</span> tension <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>1.5</span>f;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span> @param tension Amount of anticipation<span style=color:#ff79c6>/</span>overshoot<span style=color:#ff79c6>.</span> When tension equals <span style=color:#bd93f9>0.0</span>f,
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>                there is no anticipation<span style=color:#ff79c6>/</span>overshoot <span style=color:#ff79c6>and</span> the interpolator becomes
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>                a simple acceleration<span style=color:#ff79c6>/</span>deceleration interpolator<span style=color:#ff79c6>.</span>
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span> @param extraTension Amount by which to multiply the tension<span style=color:#ff79c6>.</span> For instance,
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>                     to get the same overshoot as an OvershootInterpolator with
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*</span>                     a tension of <span style=color:#bd93f9>2.0</span>f, you would use an extraTension of <span style=color:#bd93f9>1.5</span>f<span style=color:#ff79c6>.</span>
+</span></span><span style=display:flex><span>     <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>    public AnticipateOvershootInterpolator(float tension, float extraTension) {
+</span></span><span style=display:flex><span>        mTension <span style=color:#ff79c6>=</span> tension <span style=color:#ff79c6>*</span> extraTension;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public AnticipateOvershootInterpolator(Context context, AttributeSet attrs) {
+</span></span><span style=display:flex><span>        TypedArray a <span style=color:#ff79c6>=</span> context<span style=color:#ff79c6>.</span>obtainStyledAttributes(attrs, AnticipateOvershootInterpolator);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        mTension <span style=color:#ff79c6>=</span> a<span style=color:#ff79c6>.</span>getFloat(AnticipateOvershootInterpolator_tension, <span style=color:#bd93f9>2.0</span>f) <span style=color:#ff79c6>*</span>
+</span></span><span style=display:flex><span>                a<span style=color:#ff79c6>.</span>getFloat(AnticipateOvershootInterpolator_extraTension, <span style=color:#bd93f9>1.5</span>f);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        a<span style=color:#ff79c6>.</span>recycle();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    private <span style=color:#ff79c6>static</span> float a(float t, float s) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> t <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>*</span> ((s <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>1</span>) <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>-</span> s);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    private <span style=color:#ff79c6>static</span> float o(float t, float s) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> t <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>*</span> ((s <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>1</span>) <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>+</span> s);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public float getInterpolation(float t) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>//</span> a(t, s) <span style=color:#ff79c6>=</span> t <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>*</span> ((s <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>1</span>) <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>-</span> s)
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>//</span> o(t, s) <span style=color:#ff79c6>=</span> t <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>*</span> ((s <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>1</span>) <span style=color:#ff79c6>*</span> t <span style=color:#ff79c6>+</span> s)
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>//</span> f(t) <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0.5</span> <span style=color:#ff79c6>*</span> a(t <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>2</span>, tension <span style=color:#ff79c6>*</span> extraTension), when t <span style=color:#ff79c6>&amp;</span>lt; <span style=color:#bd93f9>0.5</span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>//</span> f(t) <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0.5</span> <span style=color:#ff79c6>*</span> (o(t <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>2</span> <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>2</span>, tension <span style=color:#ff79c6>*</span> extraTension) <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>2</span>), when t <span style=color:#ff79c6>&amp;</span>lt;<span style=color:#ff79c6>=</span> <span style=color:#bd93f9>1.0</span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (t <span style=color:#ff79c6>&amp;</span>lt; <span style=color:#bd93f9>0.5</span>f) <span style=color:#ff79c6>return</span> <span style=color:#bd93f9>0.5</span>f <span style=color:#ff79c6>*</span> a(t <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>2.0</span>f, mTension);
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>else</span> <span style=color:#ff79c6>return</span> <span style=color:#bd93f9>0.5</span>f <span style=color:#ff79c6>*</span> (o(t <span style=color:#ff79c6>*</span> <span style=color:#bd93f9>2.0</span>f <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>2.0</span>f, mTension) <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>2.0</span>f);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><pre><code>&lt;div class=&quot;cnblogs_code_toolbar&quot;&gt;
+  &lt;span class=&quot;cnblogs_code_copy&quot;&gt;&lt;a title=&quot;复制代码&quot;&gt;![复制代码](http://common.cnblogs.com/images/copycode.gif)&lt;/a&gt;&lt;/span&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>![](http://images.cnitblog.com/blog/325852/201309/29163126-ca9aa8f0018e46ec839430f3c818a0e8.png)
+</code></pre><h2 id=bounceinterpolator>BounceInterpolator<a hidden class=anchor aria-hidden=true href=#bounceinterpolator>#</a></h2><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><pre><code>```
+</code></pre><p>/**</p><ul><li><p>An interpolator where the change bounces at the end.
+*/
+public class BounceInterpolator implements Interpolator {
+public BounceInterpolator() {
+}</p><p>@SuppressWarnings({&ldquo;UnusedDeclaration&rdquo;})
+public BounceInterpolator(Context context, AttributeSet attrs) {
+}</p><p>private static float bounce(float t) {
+return t * t * 8.0f;
+}</p><p>public float getInterpolation(float t) {
+// _b(t) = t * t * 8
+// bs(t) = _b(t) for t &lt; 0.3535
+// bs(t) = _b(t - 0.54719) + 0.7 for t &lt; 0.7408
+// bs(t) = _b(t - 0.8526) + 0.9 for t &lt; 0.9644
+// bs(t) = _b(t - 1.0435) + 0.95 for t &lt;= 1.0
+// b(t) = bs(t * 1.1226)
+t *= 1.1226f;
+if (t &lt; 0.3535f) return bounce(t);
+else if (t &lt; 0.7408f) return bounce(t - 0.54719f) + 0.7f;
+else if (t &lt; 0.9644f) return bounce(t - 0.8526f) + 0.9f;
+else return bounce(t - 1.0435f) + 0.95f;
+}
+}</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>!</span>[](http:<span style=color:#ff79c6>//</span>images<span style=color:#ff79c6>.</span>cnitblog<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>blog<span style=color:#ff79c6>/</span><span style=color:#bd93f9>325852</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>201309</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>29163251</span><span style=color:#ff79c6>-</span><span style=color:#bd93f9>7079</span>b1bb27c844aa8d007e6899688c2b<span style=color:#ff79c6>.</span>png)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>## CycleInterpolator</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> Repeats the animation <span style=color:#ff79c6>for</span> a specified number of cycles<span style=color:#ff79c6>.</span> The
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> rate of change follows a sinusoidal pattern<span style=color:#ff79c6>.</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>public <span style=color:#ff79c6>class</span> CycleInterpolator implements Interpolator {
+</span></span><span style=display:flex><span>    public CycleInterpolator(float cycles) {
+</span></span><span style=display:flex><span>        mCycles <span style=color:#ff79c6>=</span> cycles;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    public CycleInterpolator(Context context, AttributeSet attrs) {
+</span></span><span style=display:flex><span>        TypedArray a <span style=color:#ff79c6>=</span>
+</span></span><span style=display:flex><span>            context<span style=color:#ff79c6>.</span>obtainStyledAttributes(attrs, com<span style=color:#ff79c6>.</span>android<span style=color:#ff79c6>.</span>internal<span style=color:#ff79c6>.</span>R<span style=color:#ff79c6>.</span>styleable<span style=color:#ff79c6>.</span>CycleInterpolator);
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        mCycles <span style=color:#ff79c6>=</span> a<span style=color:#ff79c6>.</span>getFloat(com<span style=color:#ff79c6>.</span>android<span style=color:#ff79c6>.</span>internal<span style=color:#ff79c6>.</span>R<span style=color:#ff79c6>.</span>styleable<span style=color:#ff79c6>.</span>CycleInterpolator_cycles, <span style=color:#bd93f9>1.0</span>f);
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        a<span style=color:#ff79c6>.</span>recycle();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    public float getInterpolation(float input) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> (float)(Math<span style=color:#ff79c6>.</span>sin(<span style=color:#bd93f9>2</span> <span style=color:#ff79c6>*</span> mCycles <span style=color:#ff79c6>*</span> Math<span style=color:#ff79c6>.</span>PI <span style=color:#ff79c6>*</span> input));
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    private float mCycles;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><pre><code>&lt;div class=&quot;cnblogs_code_toolbar&quot;&gt;
+  &lt;span class=&quot;cnblogs_code_copy&quot;&gt;&lt;a title=&quot;复制代码&quot;&gt;![复制代码](http://common.cnblogs.com/images/copycode.gif)&lt;/a&gt;&lt;/span&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>&amp;nbsp;
+
+
+
+
+
+参数为2时的曲线：
+
+
+
+
+
+![](http://images.cnitblog.com/blog/325852/201309/29163456-495a2721492946f4a4d894443491e4d6.png)
+
+
+
+
+
+&amp;nbsp;
+</code></pre><h2 id=decelerateinterpolator>DecelerateInterpolator<a hidden class=anchor aria-hidden=true href=#decelerateinterpolator>#</a></h2><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><pre><code>```
+</code></pre><p>/**</p><ul><li>An interpolator where the rate of change starts out quickly and</li><li>and then decelerates.</li><li></li></ul><p>*/
+public class DecelerateInterpolator implements Interpolator {
+public DecelerateInterpolator() {
+}</p><pre><code>/**
+ * Constructor
+ * 
+ * @param factor Degree to which the animation should be eased. Setting factor to 1.0f produces
+ *        an upside-down y=x^2 parabola. Increasing factor above 1.0f makes exaggerates the
+ *        ease-out effect (i.e., it starts even faster and ends evens slower)
+ */
+public DecelerateInterpolator(float factor) {
+    mFactor = factor;
+}
+
+public DecelerateInterpolator(Context context, AttributeSet attrs) {
+    TypedArray a =
+        context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.DecelerateInterpolator);
+    
+    mFactor = a.getFloat(com.android.internal.R.styleable.DecelerateInterpolator_factor, 1.0f);
+    
+    a.recycle();
+}
+
+public float getInterpolation(float input) {
+    float result;
+    if (mFactor == 1.0f) {
+        result = (float)(1.0f - (1.0f - input) * (1.0f - input));
+    } else {
+        result = (float)(1.0f - Math.pow((1.0f - input), 2 * mFactor));
+    }
+    return result;
+}
+
+private float mFactor = 1.0f;
+</code></pre><p>}</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>!</span>[](http:<span style=color:#ff79c6>//</span>images<span style=color:#ff79c6>.</span>cnitblog<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>blog<span style=color:#ff79c6>/</span><span style=color:#bd93f9>325852</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>201309</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>29163621</span><span style=color:#ff79c6>-</span>d9ecec56e54a4416a3cbed447f36379b<span style=color:#ff79c6>.</span>png)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>## LinearInterpolator</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> An interpolator where the rate of change is constant
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>public <span style=color:#ff79c6>class</span> LinearInterpolator implements Interpolator {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public LinearInterpolator() {
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    public LinearInterpolator(Context context, AttributeSet attrs) {
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    public float getInterpolation(float input) {
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> input;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><pre><code>&lt;div class=&quot;cnblogs_code_toolbar&quot;&gt;
+  &lt;span class=&quot;cnblogs_code_copy&quot;&gt;&lt;a title=&quot;复制代码&quot;&gt;![复制代码](http://common.cnblogs.com/images/copycode.gif)&lt;/a&gt;&lt;/span&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>&amp;nbsp;
+
+
+
+
+
+![](http://images.cnitblog.com/blog/325852/201309/29163734-b31e9a2dcf84435288ba9188ca81c05a.png)
+</code></pre><h2 id=overshootinterpolator>OvershootInterpolator<a hidden class=anchor aria-hidden=true href=#overshootinterpolator>#</a></h2><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><pre><code>```
+</code></pre><p>/**</p><ul><li><p>An interpolator where the change flings forward and overshoots the last value</p></li><li><p>then comes back.
+*/
+public class OvershootInterpolator implements Interpolator {
+private final float mTension;</p><p>public OvershootInterpolator() {
+mTension = 2.0f;
+}</p><p>/**</p><ul><li>@param tension Amount of overshoot. When tension equals 0.0f, there is</li><li><pre><code>           no overshoot and the interpolator becomes a simple
+</code></pre></li><li><pre><code>           deceleration interpolator.
+</code></pre></li></ul><p>*/
+public OvershootInterpolator(float tension) {
+mTension = tension;
+}</p><p>public OvershootInterpolator(Context context, AttributeSet attrs) {
+TypedArray a = context.obtainStyledAttributes(attrs,
+com.android.internal.R.styleable.OvershootInterpolator);</p><pre><code> mTension =
+         a.getFloat(com.android.internal.R.styleable.OvershootInterpolator_tension, 2.0f);
+
+ a.recycle();
+</code></pre><p>}</p><p>public float getInterpolation(float t) {
+// _o(t) = t * t * ((tension + 1) * t + tension)
+// o(t) = _o(t - 1) + 1
+t -= 1.0f;
+return t * t * ((mTension + 1) * t + mTension) + 1.0f;
+}
+}</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>!</span>[](http:<span style=color:#ff79c6>//</span>images<span style=color:#ff79c6>.</span>cnitblog<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>blog<span style=color:#ff79c6>/</span><span style=color:#bd93f9>325852</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>201309</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>29163839</span><span style=color:#ff79c6>-</span><span style=color:#bd93f9>66</span>d3e2c296814c20848807cd05ae63f1<span style=color:#ff79c6>.</span>png)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>## 项目链接：</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    [https:<span style=color:#ff79c6>//</span>github<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>mengdd<span style=color:#ff79c6>/</span>HelloInterpolator<span style=color:#ff79c6>.</span>git](https:<span style=color:#ff79c6>//</span>github<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>mengdd<span style=color:#ff79c6>/</span>HelloInterpolator<span style=color:#ff79c6>.</span>git)
+</span></span><span style=display:flex><span>  
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-staticlayout%E4%BD%BF%E7%94%A8%E8%AE%B2%E8%A7%A3/><span class=title>« 上一页</span>
+<span>android staticlayout使用讲解</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E7%94%A8%E6%88%B7%E6%89%8B%E5%8A%BF%E6%A3%80%E6%B5%8B-gesturedetector%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/><span class=title>下一页 »</span>
+<span>用户手势检测-GestureDetector使用详解</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,256 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android加载长图那些事 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="对于图片加载有一种这样的情况，就是单个图片非常巨大，并且还不允许压缩。比如显示：世界地图、微博长图等。首先不压缩，按照原图尺寸加载，那么屏幕肯定是不够大的，并且考虑到内存的情况，不可能一次性整图加载到内存中，所以肯定是局部加载。这就需要用到Api提供的这个类：BitmapRegionDecoder。..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E5%8A%A0%E8%BD%BD%E9%95%BF%E5%9B%BE%E9%82%A3%E4%BA%9B%E4%BA%8B/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E5%8A%A0%E8%BD%BD%E9%95%BF%E5%9B%BE%E9%82%A3%E4%BA%9B%E4%BA%8B/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E5%8A%A0%E8%BD%BD%E9%95%BF%E5%9B%BE%E9%82%A3%E4%BA%9B%E4%BA%8B/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android加载长图那些事"><meta property="og:description" content="对于图片加载有一种这样的情况，就是单个图片非常巨大，并且还不允许压缩。比如显示：世界地图、微博长图等。首先不压缩，按照原图尺寸加载，那么屏幕肯定是不够大的，并且考虑到内存的情况，不可能一次性整图加载到内存中，所以肯定是局部加载。这就需要用到Api提供的这个类：BitmapRegionDecoder。..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-04-06T08:08:08+00:00"><meta property="article:modified_time" content="2016-04-06T08:08:08+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android加载长图那些事"><meta name=twitter:description content="对于图片加载有一种这样的情况，就是单个图片非常巨大，并且还不允许压缩。比如显示：世界地图、微博长图等。首先不压缩，按照原图尺寸加载，那么屏幕肯定是不够大的，并且考虑到内存的情况，不可能一次性整图加载到内存中，所以肯定是局部加载。这就需要用到Api提供的这个类：BitmapRegionDecoder。..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android加载长图那些事","item":"https://blog.zdltech.com/posts/android%E5%8A%A0%E8%BD%BD%E9%95%BF%E5%9B%BE%E9%82%A3%E4%BA%9B%E4%BA%8B/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android加载长图那些事","name":"Android加载长图那些事","description":"对于图片加载有一种这样的情况，就是单个图片非常巨大，并且还不允许压缩。比如显示：世界地图、微博长图等。首先不压缩，按照原图尺寸加载，那么屏幕肯定是不够大的，并且考虑到内存的情况，不可能一次性整图加载到内存中，所以肯定是局部加载。这就需要用到Api提供的这个类：BitmapRegionDecoder。...","keywords":["android","移动开发"],"articleBody":" 对于图片加载有一种这样的情况，就是单个图片非常巨大，并且还不允许压缩。比如显示：世界地图、微博长图等。首先不压缩，按照原图尺寸加载，那么屏幕肯定是不够大的，并且考虑到内存的情况，不可能一次性整图加载到内存中，所以肯定是局部加载。这就需要用到Api提供的这个类：BitmapRegionDecoder。 ### BitmapRegionDecoder 我们来看一下官方的介绍： ``` `BitmapRegionDecoder can be used to decode a rectangle region from an image. BitmapRegionDecoder is particularly useful when an original image is large and you only need parts of the image.\nTo create a BitmapRegionDecoder, call newInstance(…). Given a BitmapRegionDecoder, users can call decodeRegion() repeatedly to get a decoded Bitmap of the specified region.`\n- 1 - 2 - 3 **BitmapRegionDecoder主要用于显示图片的某一块矩形区域，如果你需要显示某个图片的指定区域，或者你需要显示一张非常大的图片，那么这个类非常合适。我们可以调用newInstance(…)方法来获得一个BitmapRegionDecoder对象，然后调用decodeRegion()方法就可以获得指定位置的图片了。** 接下来看一个简单的例子 ``` `\u0026lt;span class=\"hljs-keyword\"\u003epackage\u0026lt;/span\u003e oracleen.decoder; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e android.app.Activity; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e android.graphics.Bitmap; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e android.graphics.BitmapFactory; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e android.graphics.BitmapRegionDecoder; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e android.graphics.Rect; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e android.os.Bundle; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e android.widget.ImageView; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e java.io.IOException; \u0026lt;span class=\"hljs-keyword\"\u003eimport\u0026lt;/span\u003e java.io.InputStream; \u0026lt;span class=\"hljs-keyword\"\u003epublic\u0026lt;/span\u003e \u0026lt;span class=\"hljs-class\"\u003e\u0026lt;span class=\"hljs-keyword\"\u003eclass\u0026lt;/span\u003e \u0026lt;span class=\"hljs-title\"\u003eMainActivity\u0026lt;/span\u003e \u0026lt;span class=\"hljs-keyword\"\u003eextends\u0026lt;/span\u003e \u0026lt;span class=\"hljs-title\"\u003eActivity\u0026lt;/span\u003e {\u0026lt;/span\u003e \u0026lt;span class=\"hljs-keyword\"\u003eprivate\u0026lt;/span\u003e ImageView decoder; \u0026lt;span class=\"hljs-annotation\"\u003e@Override\u0026lt;/span\u003e \u0026lt;span class=\"hljs-keyword\"\u003eprotected\u0026lt;/span\u003e \u0026lt;span class=\"hljs-keyword\"\u003evoid\u0026lt;/span\u003e \u0026lt;span class=\"hljs-title\"\u003eonCreate\u0026lt;/span\u003e(Bundle savedInstanceState) { \u0026lt;span class=\"hljs-keyword\"\u003esuper\u0026lt;/span\u003e.onCreate(savedInstanceState); setContentView(R.layout.activity_main); decoder = (ImageView) findViewById(R.id.decoder); \u0026lt;span class=\"hljs-keyword\"\u003etry\u0026lt;/span\u003e { InputStream inputStreamF = getAssets().open(\u0026lt;span class=\"hljs-string\"\u003e\"datu.png\"\u0026lt;/span\u003e); \u0026lt;span class=\"hljs-comment\"\u003e//获得图片的宽、高\u0026lt;/span\u003e BitmapFactory.Options tmpOptions = \u0026lt;span class=\"hljs-keyword\"\u003enew\u0026lt;/span\u003e BitmapFactory.Options(); tmpOptions.inJustDecodeBounds = \u0026lt;span class=\"hljs-keyword\"\u003etrue\u0026lt;/span\u003e; BitmapFactory.decodeStream(inputStreamF, \u0026lt;span class=\"hljs-keyword\"\u003enull\u0026lt;/span\u003e, tmpOptions); \u0026lt;span class=\"hljs-keyword\"\u003eint\u0026lt;/span\u003e width = tmpOptions.outWidth; \u0026lt;span class=\"hljs-keyword\"\u003eint\u0026lt;/span\u003e height = tmpOptions.outHeight; InputStream inputStreamS = getAssets().open(\u0026lt;span class=\"hljs-string\"\u003e\"datu.png\"\u0026lt;/span\u003e); \u0026lt;span class=\"hljs-comment\"\u003e//设置显示图片的中心区域\u0026lt;/span\u003e BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStreamS, \u0026lt;span class=\"hljs-keyword\"\u003efalse\u0026lt;/span\u003e); BitmapFactory.Options options = \u0026lt;span class=\"hljs-keyword\"\u003enew\u0026lt;/span\u003e BitmapFactory.Options(); options.inPreferredConfig = Bitmap.Config.RGB_565; Bitmap bitmap = bitmapRegionDecoder.decodeRegion(\u0026lt;span class=\"hljs-keyword\"\u003enew\u0026lt;/span\u003e Rect(\u0026lt;span class=\"hljs-number\"\u003e0\u0026lt;/span\u003e, \u0026lt;span class=\"hljs-number\"\u003e0\u0026lt;/span\u003e, width / \u0026lt;span class=\"hljs-number\"\u003e2\u0026lt;/span\u003e, height), options); decoder.setImageBitmap(bitmap); } \u0026lt;span class=\"hljs-keyword\"\u003ecatch\u0026lt;/span\u003e (IOException e) { e.printStackTrace(); } } } ` - 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 - 10 - 11 - 12 - 13 - 14 - 15 - 16 - 17 - 18 - 19 - 20 - 21 - 22 - 23 - 24 - 25 - 26 - 27 - 28 - 29 - 30 - 31 - 32 - 33 - 34 - 35 - 36 - 37 - 38 - 39 - 40 - 41 - 42 - 43 - 44 - 45 - 46 - 47 - 48 - 49 这里我们截取了一个高度等于大图高度，长度等于大图长度一般的图片。 这里注意一下，有时候会抛 ``` Throws IOException \u0026lt;span class=\"hljs-keyword\"\u003eif\u0026lt;/span\u003e \u0026lt;span class=\"hljs-operator\"\u003ethe\u0026lt;/span\u003e image \u0026lt;span class=\"hljs-built_in\"\u003eformat\u0026lt;/span\u003e is \u0026lt;span class=\"hljs-operator\"\u003enot\u0026lt;/span\u003e supported \u0026lt;span class=\"hljs-operator\"\u003eor\u0026lt;/span\u003e can \u0026lt;span class=\"hljs-operator\"\u003enot\u0026lt;/span\u003e be decoded.\n- 1 - 2 这个异常，这里需要重新初始化一下我们的输入流，保证它是初始的可读状态。 ![这里写图片描述](http://img.blog.csdn.net/20160318151945160) ### 小B的总结 对于小B的问题有两种解决办法： 1.把原始的长图切成5张小图，分别设置给5个ImageView，这样每个imageview加载的图都不会超出阈值。 但是问题是整张图会全部加载出来，可能会出现OOM。 2.重写HorizontalScrollView，根据左右滑动的距离用BitmapRegionDecoder去分区域显示。 3.自定义view，在view内部用BitmapRegionDecoder去分区域显示。然后对外提供一个设置图片资源的方法。 参考链接： [http://blog.csdn.net/lmj623565791/article/details/49300989](http://blog.csdn.net/lmj623565791/article/details/49300989) [http://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html#newInstance%28java.io.InputStream,%20boolean%29](http://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html#newInstance%28java.io.InputStream,%20boolean%29) ","wordCount":"380","inLanguage":"zh","datePublished":"2016-04-06T08:08:08Z","dateModified":"2016-04-06T08:08:08Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E5%8A%A0%E8%BD%BD%E9%95%BF%E5%9B%BE%E9%82%A3%E4%BA%9B%E4%BA%8B/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android加载长图那些事</h1><div class=post-description>对于图片加载有一种这样的情况，就是单个图片非常巨大，并且还不允许压缩。比如显示：世界地图、微博长图等。首先不压缩，按照原图尺寸加载，那么屏幕肯定是不够大的，并且考虑到内存的情况，不可能一次性整图加载到内存中，所以肯定是局部加载。这就需要用到Api提供的这个类：BitmapRegionDecoder。...</div><div class=post-meta><span title='2016-04-06 08:08:08 +0000 UTC'>2016年4月6日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><div id=article_content class=article_content><div class=markdown_views><pre><code>  对于图片加载有一种这样的情况，就是单个图片非常巨大，并且还不允许压缩。比如显示：世界地图、微博长图等。首先不压缩，按照原图尺寸加载，那么屏幕肯定是不够大的，并且考虑到内存的情况，不可能一次性整图加载到内存中，所以肯定是局部加载。这就需要用到Api提供的这个类：BitmapRegionDecoder。
+
+
+
+### &lt;a name=&quot;t1&quot;&gt;&lt;/a&gt;BitmapRegionDecoder
+
+
+
+  我们来看一下官方的介绍：
+
+
+
+```
+</code></pre><p>`BitmapRegionDecoder can be used &lt;span class=&ldquo;hljs-built_in&rdquo;>to&lt;/span> decode &lt;span class=&ldquo;hljs-operator&rdquo;>a&lt;/span> rectangle region &lt;span class=&ldquo;hljs-built_in&rdquo;>from&lt;/span> &lt;span class=&ldquo;hljs-operator&rdquo;>an&lt;/span> image. BitmapRegionDecoder is particularly useful when &lt;span class=&ldquo;hljs-operator&rdquo;>an&lt;/span> original image is large &lt;span class=&ldquo;hljs-operator&rdquo;>and&lt;/span> you only need parts &lt;span class=&ldquo;hljs-operator&rdquo;>of&lt;/span> &lt;span class=&ldquo;hljs-operator&rdquo;>the&lt;/span> image.</p><p>To &lt;span class=&ldquo;hljs-built_in&rdquo;>create&lt;/span> &lt;span class=&ldquo;hljs-operator&rdquo;>a&lt;/span> BitmapRegionDecoder, call newInstance(&mldr;). Given &lt;span class=&ldquo;hljs-operator&rdquo;>a&lt;/span> BitmapRegionDecoder, users can call decodeRegion() repeatedly &lt;span class=&ldquo;hljs-built_in&rdquo;>to&lt;/span> &lt;span class=&ldquo;hljs-built_in&rdquo;>get&lt;/span> &lt;span class=&ldquo;hljs-operator&rdquo;>a&lt;/span> decoded Bitmap &lt;span class=&ldquo;hljs-operator&rdquo;>of&lt;/span> &lt;span class=&ldquo;hljs-operator&rdquo;>the&lt;/span> specified region.`</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - 1
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 2
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 3
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      **BitmapRegionDecoder主要用于显示图片的某一块矩形区域，如果你需要显示某个图片的指定区域，或者你需要显示一张非常大的图片，那么这个类非常合适。我们可以调用newInstance(…)方法来获得一个BitmapRegionDecoder对象，然后调用decodeRegion()方法就可以获得指定位置的图片了。**
+</span></span><span style=display:flex><span> 接下来看一个简单的例子
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span>`&amp;lt;span class=&#34;hljs-keyword&#34;&gt;package&amp;lt;/span&gt; oracleen.decoder;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; android.app.Activity;
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; android.graphics.Bitmap;
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; android.graphics.BitmapFactory;
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; android.graphics.BitmapRegionDecoder;
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; android.graphics.Rect;
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; android.os.Bundle;
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; android.widget.ImageView;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; java.io.IOException;
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;import&amp;lt;/span&gt; java.io.InputStream;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&amp;lt;span class=&#34;hljs-keyword&#34;&gt;public&amp;lt;/span&gt; &amp;lt;span class=&#34;hljs-class&#34;&gt;&amp;lt;span class=&#34;hljs-keyword&#34;&gt;class&amp;lt;/span&gt; &amp;lt;span class=&#34;hljs-title&#34;&gt;MainActivity&amp;lt;/span&gt; &amp;lt;span class=&#34;hljs-keyword&#34;&gt;extends&amp;lt;/span&gt; &amp;lt;span class=&#34;hljs-title&#34;&gt;Activity&amp;lt;/span&gt; {&amp;lt;/span&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    &amp;lt;span class=&#34;hljs-keyword&#34;&gt;private&amp;lt;/span&gt; ImageView decoder;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    &amp;lt;span class=&#34;hljs-annotation&#34;&gt;@Override&amp;lt;/span&gt;
+</span></span><span style=display:flex><span>    &amp;lt;span class=&#34;hljs-keyword&#34;&gt;protected&amp;lt;/span&gt; &amp;lt;span class=&#34;hljs-keyword&#34;&gt;void&amp;lt;/span&gt; &amp;lt;span class=&#34;hljs-title&#34;&gt;onCreate&amp;lt;/span&gt;(Bundle savedInstanceState) {
+</span></span><span style=display:flex><span>        &amp;lt;span class=&#34;hljs-keyword&#34;&gt;super&amp;lt;/span&gt;.onCreate(savedInstanceState);
+</span></span><span style=display:flex><span>        setContentView(R.layout.activity_main);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        decoder = (ImageView) findViewById(R.id.decoder);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        &amp;lt;span class=&#34;hljs-keyword&#34;&gt;try&amp;lt;/span&gt; {
+</span></span><span style=display:flex><span>            InputStream inputStreamF = getAssets().open(&amp;lt;span class=&#34;hljs-string&#34;&gt;&#34;datu.png&#34;&amp;lt;/span&gt;);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            &amp;lt;span class=&#34;hljs-comment&#34;&gt;//获得图片的宽、高&amp;lt;/span&gt;
+</span></span><span style=display:flex><span>            BitmapFactory.Options tmpOptions = &amp;lt;span class=&#34;hljs-keyword&#34;&gt;new&amp;lt;/span&gt; BitmapFactory.Options();
+</span></span><span style=display:flex><span>            tmpOptions.inJustDecodeBounds = &amp;lt;span class=&#34;hljs-keyword&#34;&gt;true&amp;lt;/span&gt;;
+</span></span><span style=display:flex><span>            BitmapFactory.decodeStream(inputStreamF, &amp;lt;span class=&#34;hljs-keyword&#34;&gt;null&amp;lt;/span&gt;, tmpOptions);
+</span></span><span style=display:flex><span>            &amp;lt;span class=&#34;hljs-keyword&#34;&gt;int&amp;lt;/span&gt; width = tmpOptions.outWidth;
+</span></span><span style=display:flex><span>            &amp;lt;span class=&#34;hljs-keyword&#34;&gt;int&amp;lt;/span&gt; height = tmpOptions.outHeight;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            InputStream inputStreamS = getAssets().open(&amp;lt;span class=&#34;hljs-string&#34;&gt;&#34;datu.png&#34;&amp;lt;/span&gt;);
+</span></span><span style=display:flex><span>            &amp;lt;span class=&#34;hljs-comment&#34;&gt;//设置显示图片的中心区域&amp;lt;/span&gt;
+</span></span><span style=display:flex><span>            BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStreamS, &amp;lt;span class=&#34;hljs-keyword&#34;&gt;false&amp;lt;/span&gt;);
+</span></span><span style=display:flex><span>            BitmapFactory.Options options = &amp;lt;span class=&#34;hljs-keyword&#34;&gt;new&amp;lt;/span&gt; BitmapFactory.Options();
+</span></span><span style=display:flex><span>            options.inPreferredConfig = Bitmap.Config.RGB_565;
+</span></span><span style=display:flex><span>            Bitmap bitmap = bitmapRegionDecoder.decodeRegion(&amp;lt;span class=&#34;hljs-keyword&#34;&gt;new&amp;lt;/span&gt; Rect(&amp;lt;span class=&#34;hljs-number&#34;&gt;0&amp;lt;/span&gt;, &amp;lt;span class=&#34;hljs-number&#34;&gt;0&amp;lt;/span&gt;, width / &amp;lt;span class=&#34;hljs-number&#34;&gt;2&amp;lt;/span&gt;, height), options);
+</span></span><span style=display:flex><span>            decoder.setImageBitmap(bitmap);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        } &amp;lt;span class=&#34;hljs-keyword&#34;&gt;catch&amp;lt;/span&gt; (IOException e) {
+</span></span><span style=display:flex><span>            e.printStackTrace();
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>`
+</span></span></code></pre></div><pre><code>  - 1
+  
+  - 2
+  
+  - 3
+  
+  - 4
+  
+  - 5
+  
+  - 6
+  
+  - 7
+  
+  - 8
+  
+  - 9
+  
+  - 10
+  
+  - 11
+  
+  - 12
+  
+  - 13
+  
+  - 14
+  
+  - 15
+  
+  - 16
+  
+  - 17
+  
+  - 18
+  
+  - 19
+  
+  - 20
+  
+  - 21
+  
+  - 22
+  
+  - 23
+  
+  - 24
+  
+  - 25
+  
+  - 26
+  
+  - 27
+  
+  - 28
+  
+  - 29
+  
+  - 30
+  
+  - 31
+  
+  - 32
+  
+  - 33
+  
+  - 34
+  
+  - 35
+  
+  - 36
+  
+  - 37
+  
+  - 38
+  
+  - 39
+  
+  - 40
+  
+  - 41
+  
+  - 42
+  
+  - 43
+  
+  - 44
+  
+  - 45
+  
+  - 46
+  
+  - 47
+  
+  - 48
+  
+  - 49
+  
+
+
+
+
+  这里我们截取了一个高度等于大图高度，长度等于大图长度一般的图片。
+
+
+
+
+
+  这里注意一下，有时候会抛
+
+
+
+```
+</code></pre><p><code>Throws IOException &amp;lt;span class="hljs-keyword">if&amp;lt;/span> &amp;lt;span class="hljs-operator">the&amp;lt;/span> image &amp;lt;span class="hljs-built_in">format&amp;lt;/span> is &amp;lt;span class="hljs-operator">not&amp;lt;/span> supported &amp;lt;span class="hljs-operator">or&amp;lt;/span> can &amp;lt;span class="hljs-operator">not&amp;lt;/span> be decoded.</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - 1
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 2
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      这个异常，这里需要重新初始化一下我们的输入流，保证它是初始的可读状态。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      ![这里写图片描述](http://img.blog.csdn.net/20160318151945160)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ### &lt;a name=&#34;t2&#34;&gt;&lt;/a&gt;小B的总结
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      对于小B的问题有两种解决办法：
+</span></span><span style=display:flex><span> 1.把原始的长图切成5张小图，分别设置给5个ImageView，这样每个imageview加载的图都不会超出阈值。
+</span></span><span style=display:flex><span> 但是问题是整张图会全部加载出来，可能会出现OOM。
+</span></span><span style=display:flex><span> 2.重写HorizontalScrollView，根据左右滑动的距离用BitmapRegionDecoder去分区域显示。
+</span></span><span style=display:flex><span> 3.自定义view，在view内部用BitmapRegionDecoder去分区域显示。然后对外提供一个设置图片资源的方法。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      参考链接：
+</span></span><span style=display:flex><span> [http://blog.csdn.net/lmj623565791/article/details/49300989](http://blog.csdn.net/lmj623565791/article/details/49300989)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      [http://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html#newInstance%28java.io.InputStream,%20boolean%29](http://developer.android.com/reference/android/graphics/BitmapRegionDecoder.html#newInstance%28java.io.InputStream,%20boolean%29)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>&lt;/div&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;div class=&#34;bdsharebuttonbox tracking-ad bdshare-button-style0-16&#34; data-mod=&#34;popu_172&#34; data-bd-bind=&#34;1459929845641&#34;&gt;
+</span></span><span style=display:flex><span>&lt;/div&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;div id=&#34;digg&#34;&gt;
+</span></span><span style=display:flex><span>&lt;/div&gt;
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-%E9%AB%98%E6%B8%85%E5%8A%A0%E8%BD%BD%E5%B7%A8%E5%9B%BE%E6%96%B9%E6%A1%88-%E6%8B%92%E7%BB%9D%E5%8E%8B%E7%BC%A9%E5%9B%BE%E7%89%87/><span class=title>« 上一页</span>
+<span>Android 高清加载巨图方案 拒绝压缩图片</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E7%B3%BB%E5%88%97%E4%BA%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%80%E5%85%B3%E6%8C%89%E9%92%AE%E4%B8%80/><span class=title>下一页 »</span>
+<span>Android自定义控件系列二：自定义开关按钮（一）</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

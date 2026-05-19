@@ -1,0 +1,911 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android 快速开发系列 ORMLite 框架最佳实践 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="转载请标明出处：[http://blog.csdn.net/lmj623565791/article/details/39122981](http://blog.csdn.net/lmj623565791/article/details/39122981)，本文出自【张鸿洋的博客】 上一篇已经对OR..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97-ormlite-%E6%A1%86%E6%9E%B6%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97-ormlite-%E6%A1%86%E6%9E%B6%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97-ormlite-%E6%A1%86%E6%9E%B6%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android 快速开发系列 ORMLite 框架最佳实践"><meta property="og:description" content="转载请标明出处：[http://blog.csdn.net/lmj623565791/article/details/39122981](http://blog.csdn.net/lmj623565791/article/details/39122981)，本文出自【张鸿洋的博客】 上一篇已经对OR..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-08-05T04:10:36+00:00"><meta property="article:modified_time" content="2015-08-05T04:10:36+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android 快速开发系列 ORMLite 框架最佳实践"><meta name=twitter:description content="转载请标明出处：[http://blog.csdn.net/lmj623565791/article/details/39122981](http://blog.csdn.net/lmj623565791/article/details/39122981)，本文出自【张鸿洋的博客】 上一篇已经对OR..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android 快速开发系列 ORMLite 框架最佳实践","item":"https://blog.zdltech.com/posts/android-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97-ormlite-%E6%A1%86%E6%9E%B6%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android 快速开发系列 ORMLite 框架最佳实践","name":"Android 快速开发系列 ORMLite 框架最佳实践","description":"转载请标明出处：[http://blog.csdn.net/lmj623565791/article/details/39122981](http://blog.csdn.net/lmj623565791/article/details/39122981)，本文出自【张鸿洋的博客】 上一篇已经对OR...","keywords":["android","移动开发"],"articleBody":"转载请标明出处：http://blog.csdn.net/lmj623565791/article/details/39122981，本文出自【张鸿洋的博客】\n上一篇已经对ORMLite框架做了简单的介绍：Android ORMLite 框架的入门用法~~本篇将介绍项目可能会使用到的一些用法，也为我们的使用ORMLite框架总结出一个较合理的用法。\n通过上一篇的了解，我们使用ORMLite，需要自己写一个DatabaseHelper去继承OrmLiteSqliteOpenHelper，下面我们首先给出一个我认为比较靠谱的Helper的写法：\n1、DatabaseHelper **[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - package com.zhy.zhy_ormlite.db; - - import java.sql.SQLException; - import java.util.HashMap; - import java.util.Map; - - import android.content.Context; - import android.database.sqlite.SQLiteDatabase; - - import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper; - import com.j256.ormlite.dao.Dao; - import com.j256.ormlite.support.ConnectionSource; - import com.j256.ormlite.table.TableUtils; - import com.zhy.zhy_ormlite.bean.Article; - import com.zhy.zhy_ormlite.bean.Student; - import com.zhy.zhy_ormlite.bean.User; - - public class DatabaseHelper extends OrmLiteSqliteOpenHelper - { - private static final String TABLE_NAME = \u0026#8220;sqlite-test.db\u0026#8221;; - - private Map daos = new HashMap(); - - private DatabaseHelper(Context context) - { - super(context, TABLE_NAME, null, 4); - } - - @Override - public void onCreate(SQLiteDatabase database, - ConnectionSource connectionSource) - { - try - { - TableUtils.createTable(connectionSource, User.class); - TableUtils.createTable(connectionSource, Article.class); - TableUtils.createTable(connectionSource, Student.class); - } catch (SQLException e) - { - e.printStackTrace(); - } - } - - @Override - public void onUpgrade(SQLiteDatabase database, - ConnectionSource connectionSource, int oldVersion, int newVersion) - { - try - { - TableUtils.dropTable(connectionSource, User.class, true); - TableUtils.dropTable(connectionSource, Article.class, true); - TableUtils.dropTable(connectionSource, Student.class, true); - onCreate(database, connectionSource); - } catch (SQLException e) - { - e.printStackTrace(); - } - } - - private static DatabaseHelper instance; - - /** - * 单例获取该Helper - * - * @param context - * @return - */ - public static synchronized DatabaseHelper getHelper(Context context) - { - context = context.getApplicationContext(); - if (instance == null) - { - synchronized (DatabaseHelper.class) - { - if (instance == null) - instance = new DatabaseHelper(context); - } - } - - return instance; - } - - public synchronized Dao getDao(Class clazz) throws SQLException - { - Dao dao = null; - String className = clazz.getSimpleName(); - - if (daos.containsKey(className)) - { - dao = daos.get(className); - } - if (dao == null) - { - dao = super.getDao(clazz); - daos.put(className, dao); - } - return dao; - } - - /** - * 释放资源 - */ - @Override - public void close() - { - super.close(); - - for (String key : daos.keySet()) - { - Dao dao = daos.get(key); - dao = null; - } - } - - } 1、整个DatabaseHelper使用单例只对外公布出一个对象，保证app中只存在一个SQLite Connection ， 参考文章：http://www.touchlab.co/2011/10/single-sqlite-connection/\n2、我们对每个Bean创建一个XXXDao来处理当前Bean的数据库操作，当然真正去和数据库打交道的对象，通过上面代码中的getDao（T t）进行获取\ngetDao为一个泛型方法，会根据传入Class对象进行创建Dao，并且使用一个Map来保持所有的Dao对象，只有第一次调用时才会去调用底层的getDao()。\n2、Bean的Dao **[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - package com.zhy.zhy_ormlite.db; - - import java.sql.SQLException; - - import android.content.Context; - - import com.j256.ormlite.dao.Dao; - import com.zhy.zhy_ormlite.bean.User; - - public class UserDao - { - private Context context; - private Dao userDaoOpe; - private DatabaseHelper helper; - - public UserDao(Context context) - { - this.context = context; - try - { - helper = DatabaseHelper.getHelper(context); - userDaoOpe = helper.getDao(User.class); - } catch (SQLException e) - { - e.printStackTrace(); - } - } - - /** - * 增加一个用户 - * @param user - */ - public void add(User user) - { - try - { - userDaoOpe.create(user); - } catch (SQLException e) - { - e.printStackTrace(); - } - - }//\u0026#8230;other operations - - - } 我们的所有的XXXDao遵循以上的风格~\n好了，基本了解了我们的代码的结构~~ps:如果觉得不合理可以留言指出，如果觉得不能接收，直接忽略。。。\n3、ORMLite外键引用 现在我们有两张表一张User，一张Article；\nArticle中当然需要存储User的主键，作为关联~~那么在ORMLite中如何做到呢？\n可能有人会直接在Article中声明一个int类型userId属性，当作普通属性处理搞定，这种做法并没有做，但是没有体现出面向对象的思想。\n面向对象是这样的：Article属于某个User\n类这么定义：\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - package com.zhy.zhy_ormlite.bean; - - import com.j256.ormlite.field.DatabaseField; - import com.j256.ormlite.table.DatabaseTable; - - @DatabaseTable(tableName = \u0026#8220;tb_article\u0026#8221;) - public class Article - { - @DatabaseField(generatedId = true) - private int id; - @DatabaseField - private String title; - @DatabaseField(canBeNull = true, foreign = true, columnName = \u0026#8220;user_id\u0026#8221;) - private User user; - - public int getId() - { - return id; - } - - public void setId(int id) - { - this.id = id; - } - - public String getTitle() - { - return title; - } - - public void setTitle(String title) - { - this.title = title; - } - - public User getUser() - { - return user; - } - - public void setUser(User user) - { - this.user = user; - } - - @Override - public String toString() - { - return \u0026#8220;Article [id=\u0026#8221; + id + \u0026#8220;, title=\u0026#8221; + title + \u0026#8220;, user=\u0026#8221; + user - + \u0026#8220;]\u0026#8221;; - } - - } 不会去定义一个int类型的userId，而是直接定义一个User成员变量，表示本Article属于该User;\n然后在User user属性上添加： @DatabaseField(canBeNull = true, foreign = true, columnName = “user_id”)\ncanBeNull -表示不能为null；foreign=true表示是一个外键;columnName 列名\nUser类暂且就两个属性：\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - package com.zhy.zhy_ormlite.bean; - - import com.j256.ormlite.field.DatabaseField; - import com.j256.ormlite.table.DatabaseTable; - - @DatabaseTable(tableName = \u0026#8220;tb_user\u0026#8221;) - public class User - { - @DatabaseField(generatedId = true) - private int id; - @DatabaseField(columnName = \u0026#8220;name\u0026#8221;) - private String name; - - - public User() - { - } - - public int getId() - { - return id; - } - - public void setId(int id) - { - this.id = id; - } - - public String getName() - { - return name; - } - - public void setName(String name) - { - this.name = name; - } - - @Override - public String toString() - { - return \u0026#8220;User [id=\u0026#8221; + id + \u0026#8220;, name=\u0026#8221; + name - + \u0026#8220;]\u0026#8221;; - } - - - - - - } 现在看我们的ArticleDao\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - package com.zhy.zhy_ormlite.db; - - import java.sql.SQLException; - import java.util.List; - - import android.content.Context; - - import com.j256.ormlite.dao.Dao; - import com.zhy.zhy_ormlite.bean.Article; - import com.zhy.zhy_ormlite.bean.User; - - public class ArticleDao - { - private Dao articleDaoOpe; - private DatabaseHelper helper; - - @SuppressWarnings(\u0026#8220;unchecked\u0026#8221;) - public ArticleDao(Context context) - { - try - { - helper = DatabaseHelper.getHelper(context); - articleDaoOpe = helper.getDao(Article.class); - } catch (SQLException e) - { - e.printStackTrace(); - } - } - - /** - * 添加一个Article - * @param article - */ - public void add(Article article) - { - try - { - articleDaoOpe.create(article); - } catch (SQLException e) - { - e.printStackTrace(); - } - } - - /** - * 通过Id得到一个Article - * @param id - * @return - */ - @SuppressWarnings(\u0026#8220;unchecked\u0026#8221;) - public Article getArticleWithUser(int id) - { - Article article = null; - try - { - article = articleDaoOpe.queryForId(id); - helper.getDao(User.class).refresh(article.getUser()); - - } catch (SQLException e) - { - e.printStackTrace(); - } - return article; - } - - /** - * 通过Id得到一篇文章 - * @param id - * @return - */ - public Article get(int id) - { - Article article = null; - try - { - article = articleDaoOpe.queryForId(id); - - } catch (SQLException e) - { - e.printStackTrace(); - } - return article; - } - - /** - * 通过UserId获取所有的文章 - * @param userId - * @return - */ - public List listByUserId(int userId) - { - try - { - return articleDaoOpe.queryBuilder().where().eq(\u0026#8220;user_id\u0026#8221;, userId) - .query(); - } catch (SQLException e) - { - e.printStackTrace(); - } - return null; - } - - } 接下来看我们的测试类：\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - public class OrmLiteDbTest extends AndroidTestCase - { - public void testAddArticle() - { - User u = new User(); - u.setName(\u0026#8220;张鸿洋\u0026#8221;); - new UserDao(getContext()).add(u); - Article article = new Article(); - article.setTitle(\u0026#8220;ORMLite的使用\u0026#8221;); - article.setUser(u); - new ArticleDao(getContext()).add(article); - - } - - public void testGetArticleById() - { - Article article = new ArticleDao(getContext()).get(1); - L.e(article.getUser() + \u0026#8221; , \u0026#8220; + article.getTitle()); - } - - public void testGetArticleWithUser() - { - - Article article = new ArticleDao(getContext()).getArticleWithUser(1); - L.e(article.getUser() + \u0026#8221; , \u0026#8220; + article.getTitle()); - } - - public void testListArticlesByUserId() - { - - List articles = new ArticleDao(getContext()).listByUserId(1); - L.e(articles.toString()); - } 分别测试，添加一个Article；通过Id获取一个Article；通过Id获取一个Article且携带User；通过userId获取所有的Article；\n主要看第三个：通过Id获取一个Article且携带User，testGetArticleWithUser（id）\n如何值传一个Article的Id，然后能够拿到Article对象，且内部的user属性直接赋值呢？\n两种方式：\n1、即上述写法\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - article = articleDaoOpe.queryForId(id); - helper.getDao(User.class).refresh(article.getUser()); 2、在user属性的注解上：@DatabaseField(canBeNull = true, foreign = true, columnName = “user_id”, foreignAutoRefresh = true)\n添加foreignAutoRefresh =true，这样；当调用queryForId时，拿到Article对象则直接携带了user；\n4、关联一个集合 每个User关联一个或多个Article，如果我在User中声明一个Collection articles，我能否在查询User的时候，一并能够获取到articles的值呢？\n答案是可以的。在User中添加如下属性，且注解如下：\n@ForeignCollectionField\nprivate Collection articles;\n我们在UserDao中书写查询User的代码：\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - public User get(int id) - { - try - { - return userDaoOpe.queryForId(id); - } catch (SQLException e) - { - e.printStackTrace(); - } - return null ; - } 测试代码：\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - public void testGetUserById() - { - User user = new UserDao(getContext()).get(1); - L.e(user.getName()); - if (user.getArticles() != null) - for (Article article : user.getArticles()) - { - L.e(article.toString()); - } - } 输出：\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) 可以看到，我们通过一个queryForId，成功的获取了User，以及User关联的所有的Articles；\n5、条件查询QueryBuilder的使用 上述代码其实已经用到了简单的条件查询了：\n1、简单的where等于\narticleDaoOpe.queryBuilder().where().eq(“user_id”, userId).query();直接返回Article的列表\n2、where and\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - QueryBuilder queryBuilder = articleDaoOpe - .queryBuilder(); - Where where = queryBuilder.where(); - where.eq(\u0026#8220;user_id\u0026#8221;, 1); - where.and(); - where.eq(\u0026#8220;name\u0026#8221;, \u0026#8220;xxx\u0026#8221;); - - //或者 - articleDaoOpe.queryBuilder().// - where().// - eq(\u0026#8220;user_id\u0026#8221;, 1).and().// - eq(\u0026#8220;name\u0026#8221;, \u0026#8220;xxx\u0026#8221;); 上述两种都相当与：select * from tb_article where user_id = 1 and name = ‘xxx’ ;\n3、更复杂的查询\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - where.or( - // - where.and(// - where.eq(\u0026#8220;user_id\u0026#8221;, 1), where.eq(\u0026#8220;name\u0026#8221;, \u0026#8220;xxx\u0026#8221;)), - where.and(// - where.eq(\u0026#8220;user_id\u0026#8221;, 2), where.eq(\u0026#8220;name\u0026#8221;, \u0026#8220;yyy\u0026#8221;))); select * from tb_article where ( user_id = 1 and name = ‘xxx’ ) or ( user_id = 2 and name = ‘yyy’ ) ;\n好了，再复杂的查询估计也能够凑出来了~~\n6、updateBuilder、deleteBuilder 使用queryBuilder是因为我们希望执行完成查询直接返回List集合；\n对于Update我们并不关注返回值，直接使用\narticleDaoOpe.updateRaw(statement, arguments);传入sql和参数即可~~\n何必在那articleDaoOpe.updateBuilder().updateColumnValue(“name”,”zzz”).where().eq(“user_id”, 1);这样的痛苦呢~~~\n同理还有deleteBuilder还是建议直接拼写sql，当然很简单的除外，直接使用它的API~\n7、事务操作 在我们的Dao中直接写如下代码：\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - //事务操作 - TransactionManager.callInTransaction(helper.getConnectionSource(), - new Callable() - { - - @Override - public Void call() throws Exception - { - return null; - } - }); 8、其他操作 1、当Bean继承BaseDaoEnabled时，可以使用bean.create(bean)；bean.update(bean)一类操作\n例如：\nStudent extends BaseDaoEnabled\nDao dao = DatabaseHelper.getHelper(getContext()).getDao(Student.class);\nStudent student = new Student();\nstudent.setDao(dao);\nstudent.setName(“张鸿洋”);\nstudent.create();\n前提dao需要手动设置，如果dao为null会报错，尼玛，我觉得一点用没有。。。\n2、Join\n**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork) - QueryBuilder articleBuilder = articleDaoOpe - .queryBuilder(); - QueryBuilder userBuilder = helper.getDao(User.class).queryBuilder(); - articleBuilder.join(userBuilder); Article与User做Join操作；\n本篇主要想介绍在项目中如何写DataBaseHelper已经如何写BeanDao，以及列出了在项目中可能会用到的ORMLite的功能，如果需要详细了解，还请看ORMLite官方文档，源码中也会提供~~\n源码点击下载\n","wordCount":"1991","inLanguage":"zh","datePublished":"2015-08-05T04:10:36Z","dateModified":"2015-08-05T04:10:36Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97-ormlite-%E6%A1%86%E6%9E%B6%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android 快速开发系列 ORMLite 框架最佳实践</h1><div class=post-description>转载请标明出处：[http://blog.csdn.net/lmj623565791/article/details/39122981](http://blog.csdn.net/lmj623565791/article/details/39122981)，本文出自【张鸿洋的博客】 上一篇已经对OR...</div><div class=post-meta><span title='2015-08-05 04:10:36 +0000 UTC'>2015年8月5日</span>&nbsp;·&nbsp;<span>10 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#1databasehelper aria-label=1、DatabaseHelper>1、DatabaseHelper</a></li><li><a href=#2bean%e7%9a%84dao aria-label=2、Bean的Dao>2、Bean的Dao</a></li><li><a href=#3ormlite%e5%a4%96%e9%94%ae%e5%bc%95%e7%94%a8 aria-label=3、ORMLite外键引用>3、ORMLite外键引用</a></li><li><a href=#4%e5%85%b3%e8%81%94%e4%b8%80%e4%b8%aa%e9%9b%86%e5%90%88 aria-label=4、关联一个集合>4、关联一个集合</a></li><li><a href=#5%e6%9d%a1%e4%bb%b6%e6%9f%a5%e8%af%a2querybuilder%e7%9a%84%e4%bd%bf%e7%94%a8 aria-label=5、条件查询QueryBuilder的使用>5、条件查询QueryBuilder的使用</a></li><li><a href=#6updatebuilderdeletebuilder aria-label=6、updateBuilder、deleteBuilder>6、updateBuilder、deleteBuilder</a></li><li><a href=#7%e4%ba%8b%e5%8a%a1%e6%93%8d%e4%bd%9c aria-label=7、事务操作>7、事务操作</a></li><li><a href=#8%e5%85%b6%e4%bb%96%e6%93%8d%e4%bd%9c aria-label=8、其他操作>8、其他操作</a></li></ul></div></details><div class="post-content md-content"><p>转载请标明出处：<a href=http://blog.csdn.net/lmj623565791/article/details/39122981>http://blog.csdn.net/lmj623565791/article/details/39122981</a>，本文出自【张鸿洋的博客】</p><p>上一篇已经对ORMLite框架做了简单的介绍：<a href=http://blog.csdn.net/lmj623565791/article/details/39121377>Android ORMLite 框架的入门用法</a>~~本篇将介绍项目可能会使用到的一些用法，也为我们的使用ORMLite框架总结出一个较合理的用法。</p><p>通过上一篇的了解，我们使用ORMLite，需要自己写一个DatabaseHelper去继承OrmLiteSqliteOpenHelper，下面我们首先给出一个我认为比较靠谱的Helper的写法：</p><h1 id=1databasehelper><a name=t0></a>1、DatabaseHelper<a hidden class=anchor aria-hidden=true href=#1databasehelper>#</a></h1><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.zhy.zhy_ormlite.db;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.sql.SQLException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Map;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.database.sqlite.SQLiteDatabase;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.dao.Dao;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.support.ConnectionSource;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.table.TableUtils;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.zhy.zhy_ormlite.bean.Article;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.zhy.zhy_ormlite.bean.Student;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.zhy.zhy_ormlite.bean.User;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt;  &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; DatabaseHelper &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; OrmLiteSqliteOpenHelper
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String TABLE_NAME = &lt;span class=&quot;string&quot;&gt;&amp;#8220;sqlite-test.db&amp;#8221;&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Map&lt;String, Dao&gt; daos = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashMap&lt;String, Dao&gt;();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; DatabaseHelper(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, TABLE_NAME, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(SQLiteDatabase database,
+
+- ConnectionSource connectionSource)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- TableUtils.createTable(connectionSource, User.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- TableUtils.createTable(connectionSource, Article.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- TableUtils.createTable(connectionSource, Student.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onUpgrade(SQLiteDatabase database,
+
+- ConnectionSource connectionSource, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; oldVersion, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; newVersion)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- TableUtils.dropTable(connectionSource, User.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+
+- TableUtils.dropTable(connectionSource, Article.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+
+- TableUtils.dropTable(connectionSource, Student.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+
+- onCreate(database, connectionSource);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; DatabaseHelper instance;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 单例获取该Helper&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param context&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;synchronized&lt;/span&gt; DatabaseHelper getHelper(Context context)
+
+- {
+
+- context = context.getApplicationContext();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (instance == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;synchronized&lt;/span&gt; (DatabaseHelper.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (instance == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- instance = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; DatabaseHelper(context);
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; instance;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;synchronized&lt;/span&gt; Dao getDao(Class clazz) &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; SQLException
+
+- {
+
+- Dao dao = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- String className = clazz.getSimpleName();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (daos.containsKey(className))
+
+- {
+
+- dao = daos.get(className);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (dao == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- dao = &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.getDao(clazz);
+
+- daos.put(className, dao);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; dao;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 释放资源&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; close()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.close();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String key : daos.keySet())
+
+- {
+
+- Dao dao = daos.get(key);
+
+- dao = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- }
+
+- }
+
+- 
+- }
+</code></pre></div><p>1、整个DatabaseHelper使用单例只对外公布出一个对象，保证app中只存在一个SQLite Connection ， 参考文章：http://www.touchlab.co/2011/10/single-sqlite-connection/</p><p>2、我们对每个Bean创建一个XXXDao来处理当前Bean的数据库操作，当然真正去和数据库打交道的对象，通过上面代码中的getDao（T t）进行获取</p><p>getDao为一个泛型方法，会根据传入Class对象进行创建Dao，并且使用一个Map来保持所有的Dao对象，只有第一次调用时才会去调用底层的getDao()。</p><h1 id=2bean的dao><a name=t1></a>2、Bean的Dao<a hidden class=anchor aria-hidden=true href=#2bean的dao>#</a></h1><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.zhy.zhy_ormlite.db;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.sql.SQLException;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.dao.Dao;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.zhy.zhy_ormlite.bean.User;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; UserDao
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Context context;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Dao&lt;User, Integer&gt; userDaoOpe;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; DatabaseHelper helper;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; UserDao(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.context = context;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- helper = DatabaseHelper.getHelper(context);
+
+- userDaoOpe = helper.getDao(User.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 增加一个用户&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param user&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; add(User user)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- userDaoOpe.create(user);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- 
+- }&lt;span class=&quot;comment&quot;&gt;//&amp;#8230;other operations&lt;/span&gt;
+
+- 
+- 
+- }
+</code></pre></div><p>我们的所有的XXXDao遵循以上的风格~</p><p>好了，基本了解了我们的代码的结构~~ps:如果觉得不合理可以留言指出，如果觉得不能接收，直接忽略。。。</p><h1 id=3ormlite外键引用><a name=t2></a>3、ORMLite外键引用<a hidden class=anchor aria-hidden=true href=#3ormlite外键引用>#</a></h1><p>现在我们有两张表一张User，一张Article；</p><p>Article中当然需要存储User的主键，作为关联~~那么在ORMLite中如何做到呢？</p><p>可能有人会直接在Article中声明一个int类型userId属性，当作普通属性处理搞定，这种做法并没有做，但是没有体现出面向对象的思想。</p><p>面向对象是这样的：Article属于某个User</p><p>类这么定义：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.zhy.zhy_ormlite.bean;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.field.DatabaseField;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.table.DatabaseTable;
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@DatabaseTable&lt;/span&gt;(tableName = &lt;span class=&quot;string&quot;&gt;&amp;#8220;tb_article&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; Article
+
+- {
+
+- &lt;span class=&quot;annotation&quot;&gt;@DatabaseField&lt;/span&gt;(generatedId = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id;
+
+- &lt;span class=&quot;annotation&quot;&gt;@DatabaseField&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String title;
+
+- &lt;span class=&quot;annotation&quot;&gt;@DatabaseField&lt;/span&gt;(canBeNull = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, foreign = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, columnName = &lt;span class=&quot;string&quot;&gt;&amp;#8220;user_id&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; User user;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; getId()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; id;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setId(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.id = id;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String getTitle()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; title;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setTitle(String title)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.title = title;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; User getUser()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; user;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setUser(User user)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.user = user;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String toString()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;#8220;Article [id=&amp;#8221;&lt;/span&gt; + id + &lt;span class=&quot;string&quot;&gt;&amp;#8220;, title=&amp;#8221;&lt;/span&gt; + title + &lt;span class=&quot;string&quot;&gt;&amp;#8220;, user=&amp;#8221;&lt;/span&gt; + user
+
+- + &lt;span class=&quot;string&quot;&gt;&amp;#8220;]&amp;#8221;&lt;/span&gt;;
+
+- }
+
+- 
+- }
+</code></pre></div><p>不会去定义一个int类型的userId，而是直接定义一个User成员变量，表示本Article属于该User;</p><p>然后在User user属性上添加： @DatabaseField(canBeNull = true, foreign = true, columnName = “user_id”)</p><p>canBeNull -表示不能为null；foreign=true表示是一个外键;columnName 列名</p><p>User类暂且就两个属性：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.zhy.zhy_ormlite.bean;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.field.DatabaseField;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.table.DatabaseTable;
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@DatabaseTable&lt;/span&gt;(tableName = &lt;span class=&quot;string&quot;&gt;&amp;#8220;tb_user&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; User
+
+- {
+
+- &lt;span class=&quot;annotation&quot;&gt;@DatabaseField&lt;/span&gt;(generatedId = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id;
+
+- &lt;span class=&quot;annotation&quot;&gt;@DatabaseField&lt;/span&gt;(columnName = &lt;span class=&quot;string&quot;&gt;&amp;#8220;name&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String name;
+
+- 
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; User()
+
+- {
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; getId()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; id;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setId(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.id = id;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String getName()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; name;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setName(String name)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.name = name;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String toString()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;#8220;User [id=&amp;#8221;&lt;/span&gt; + id + &lt;span class=&quot;string&quot;&gt;&amp;#8220;, name=&amp;#8221;&lt;/span&gt; + name
+
+- + &lt;span class=&quot;string&quot;&gt;&amp;#8220;]&amp;#8221;&lt;/span&gt;;
+
+- }
+
+- 
+- 
+- 
+- 
+- 
+- }
+</code></pre></div><p>现在看我们的ArticleDao</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_5&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_5&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.zhy.zhy_ormlite.db;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.sql.SQLException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.List;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.j256.ormlite.dao.Dao;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.zhy.zhy_ormlite.bean.Article;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.zhy.zhy_ormlite.bean.User;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; ArticleDao
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Dao&lt;Article, Integer&gt; articleDaoOpe;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; DatabaseHelper helper;
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@SuppressWarnings&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;#8220;unchecked&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; ArticleDao(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- helper = DatabaseHelper.getHelper(context);
+
+- articleDaoOpe = helper.getDao(Article.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 添加一个Article&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param article&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; add(Article article)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- articleDaoOpe.create(article);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 通过Id得到一个Article&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param id&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;annotation&quot;&gt;@SuppressWarnings&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;#8220;unchecked&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Article getArticleWithUser(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id)
+
+- {
+
+- Article article = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- article = articleDaoOpe.queryForId(id);
+
+- helper.getDao(User.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;).refresh(article.getUser());
+
+- 
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; article;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 通过Id得到一篇文章&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param id&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Article get(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id)
+
+- {
+
+- Article article = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- article = articleDaoOpe.queryForId(id);
+
+- 
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; article;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 通过UserId获取所有的文章&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param userId&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; List&lt;Article&gt; listByUserId(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; userId)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; articleDaoOpe.queryBuilder().where().eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;user_id&amp;#8221;&lt;/span&gt;, userId)
+
+- .query();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- }
+
+- 
+- }
+</code></pre></div><p>接下来看我们的测试类：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_6&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_6&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; OrmLiteDbTest &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; AndroidTestCase
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; testAddArticle()
+
+- {
+
+- User u = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; User();
+
+- u.setName(&lt;span class=&quot;string&quot;&gt;&amp;#8220;张鸿洋&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; UserDao(getContext()).add(u);
+
+- Article article = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Article();
+
+- article.setTitle(&lt;span class=&quot;string&quot;&gt;&amp;#8220;ORMLite的使用&amp;#8221;&lt;/span&gt;);
+
+- article.setUser(u);
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArticleDao(getContext()).add(article);
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; testGetArticleById()
+
+- {
+
+- Article article = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArticleDao(getContext()).get(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- L.e(article.getUser() + &lt;span class=&quot;string&quot;&gt;&amp;#8221; , &amp;#8220;&lt;/span&gt; + article.getTitle());
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; testGetArticleWithUser()
+
+- {
+
+- 
+- Article article = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArticleDao(getContext()).getArticleWithUser(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- L.e(article.getUser() + &lt;span class=&quot;string&quot;&gt;&amp;#8221; , &amp;#8220;&lt;/span&gt; + article.getTitle());
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; testListArticlesByUserId()
+
+- {
+
+- 
+- List&lt;Article&gt; articles = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArticleDao(getContext()).listByUserId(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- L.e(articles.toString());
+
+- }
+</code></pre></div><p>分别测试，添加一个Article；通过Id获取一个Article；通过Id获取一个Article且携带User；通过userId获取所有的Article；</p><p>主要看第三个：通过Id获取一个Article且携带User，testGetArticleWithUser（id）</p><p>如何值传一个Article的Id，然后能够拿到Article对象，且内部的user属性直接赋值呢？</p><p>两种方式：</p><p>1、即上述写法</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_7&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_7&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- article = articleDaoOpe.queryForId(id);
+
+- helper.getDao(User.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;).refresh(article.getUser());
+</code></pre></div><p>2、在user属性的注解上：@DatabaseField(canBeNull = true, foreign = true, columnName = “user_id”, foreignAutoRefresh = true)</p><p>添加foreignAutoRefresh =true，这样；当调用queryForId时，拿到Article对象则直接携带了user；</p><h1 id=4关联一个集合><a name=t3></a>4、关联一个集合<a hidden class=anchor aria-hidden=true href=#4关联一个集合>#</a></h1><p>每个User关联一个或多个Article，如果我在User中声明一个Collection<article>articles，我能否在查询User的时候，一并能够获取到articles的值呢？</p><p>答案是可以的。在User中添加如下属性，且注解如下：</p><p>@ForeignCollectionField<br>private Collection<article>articles;</p><p>我们在UserDao中书写查询User的代码：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_8&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_8&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; User get(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; id)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; userDaoOpe.queryForId(id);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (SQLException e)
+
+- {
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; ;
+
+- }
+</code></pre></div><p>测试代码：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_9&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_9&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; testGetUserById()
+
+- {
+
+- User user = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; UserDao(getContext()).get(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- L.e(user.getName());
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (user.getArticles() != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (Article article : user.getArticles())
+
+- {
+
+- L.e(article.toString());
+
+- }
+
+- }
+</code></pre></div><p>输出：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_10&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_10&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div></div><p>可以看到，我们通过一个queryForId，成功的获取了User，以及User关联的所有的Articles；</p><h1 id=5条件查询querybuilder的使用><a name=t4></a>5、条件查询QueryBuilder的使用<a hidden class=anchor aria-hidden=true href=#5条件查询querybuilder的使用>#</a></h1><p>上述代码其实已经用到了简单的条件查询了：</p><p>1、简单的where等于</p><p>articleDaoOpe.queryBuilder().where().eq(“user_id”, userId).query();直接返回Article的列表</p><p>2、where and</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_11&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_11&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- QueryBuilder&lt;Article, Integer&gt; queryBuilder = articleDaoOpe
+
+- .queryBuilder();
+
+- Where&lt;Article, Integer&gt; where = queryBuilder.where();
+
+- where.eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;user_id&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- where.and();
+
+- where.eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;name&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxx&amp;#8221;&lt;/span&gt;);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//或者&lt;/span&gt;
+
+- articleDaoOpe.queryBuilder().&lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+
+- where().&lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+
+- eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;user_id&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;).and().&lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+
+- eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;name&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxx&amp;#8221;&lt;/span&gt;);
+</code></pre></div><p>上述两种都相当与：select * from tb_article where user_id = 1 and name = ‘xxx’ ;</p><p>3、更复杂的查询</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_12&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_12&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- where.or(
+
+- &lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+
+- where.and(&lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+
+- where.eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;user_id&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;), where.eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;name&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;xxx&amp;#8221;&lt;/span&gt;)),
+
+- where.and(&lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+
+- where.eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;user_id&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;), where.eq(&lt;span class=&quot;string&quot;&gt;&amp;#8220;name&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;yyy&amp;#8221;&lt;/span&gt;)));
+</code></pre></div><p>select * from tb_article where ( user_id = 1 and name = ‘xxx’ )  or ( user_id = 2 and name = ‘yyy’ )  ;</p><p>好了，再复杂的查询估计也能够凑出来了~~</p><h1 id=6updatebuilderdeletebuilder><a name=t5></a>6、updateBuilder、deleteBuilder<a hidden class=anchor aria-hidden=true href=#6updatebuilderdeletebuilder>#</a></h1><p>使用queryBuilder是因为我们希望执行完成查询直接返回List<bean>集合；</p><p>对于Update我们并不关注返回值，直接使用</p><p>articleDaoOpe.updateRaw(statement, arguments);传入sql和参数即可~~</p><p>何必在那articleDaoOpe.updateBuilder().updateColumnValue(“name”,”zzz”).where().eq(“user_id”, 1);这样的痛苦呢~~~</p><p>同理还有deleteBuilder还是建议直接拼写sql，当然很简单的除外，直接使用它的API~</p><h1 id=7事务操作><a name=t6></a>7、事务操作<a hidden class=anchor aria-hidden=true href=#7事务操作>#</a></h1><p>在我们的Dao中直接写如下代码：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_13&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_13&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;comment&quot;&gt;//事务操作&lt;/span&gt;
+
+- TransactionManager.callInTransaction(helper.getConnectionSource(),
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Callable&lt;Void&gt;()
+
+- {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Void call() &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; Exception
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- }
+
+- });
+</code></pre></div><p> </p><h1 id=8其他操作><a name=t7></a>8、其他操作<a hidden class=anchor aria-hidden=true href=#8其他操作>#</a></h1><p>1、当Bean继承BaseDaoEnabled时，可以使用bean.create(bean)；bean.update(bean)一类操作</p><p>例如：</p><p>Student extends BaseDaoEnabled&lt;Student, Integer></p><p>Dao dao = DatabaseHelper.getHelper(getContext()).getDao(Student.class);<br>Student student = new Student();<br>student.setDao(dao);<br>student.setName(“张鸿洋”);<br>student.create();</p><p>前提dao需要手动设置，如果dao为null会报错，尼玛，我觉得一点用没有。。。</p><p>2、Join</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/lmj623565791/article/details/39122981#)[copy](http://blog.csdn.net/lmj623565791/article/details/39122981#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/465469)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/465469/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_14&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_14&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- QueryBuilder&lt;Article, Integer&gt; articleBuilder = articleDaoOpe
+
+- .queryBuilder();
+
+- QueryBuilder userBuilder = helper.getDao(User.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;).queryBuilder();
+
+- articleBuilder.join(userBuilder);
+</code></pre></div><p>Article与User做Join操作；</p><p>本篇主要想介绍在项目中如何写DataBaseHelper已经如何写BeanDao，以及列出了在项目中可能会用到的ORMLite的功能，如果需要详细了解，还请看ORMLite官方文档，源码中也会提供~~</p><p><a href=http://download.csdn.net/detail/lmj623565791/7878003>源码点击下载</a></p><p> </p><p> </p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-paint%E4%B9%8B-setxfermode-porterduffxfermode-%E8%AE%B2%E8%A7%A3androidsetxfermode/><span class=title>« 上一页</span>
+<span>Android Paint之 setXfermode PorterDuffXfermode 讲解，androidsetxfermode</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E4%BD%BF%E7%94%A8uncaughtexceptionhandler%E6%8D%95%E8%8E%B7%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8/><span class=title>下一页 »</span>
+<span>Android使用UncaughtExceptionHandler捕获全局异常</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,852 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android的Activity切换动画特效库SwitchLayout，视图切换动画库，媲美IOS | ZDL Tech Blog</title>
+<meta name=keywords content="android,动画,移动开发"><meta name=description content="由于看了IOS上面很多开发者开发的APP的视图界面切换动画体验非常好，这些都是IOS自带的，但是Android的Activity等视图切换动画并没有提供原生的，所以特此写了一个可以媲美IOS视图切换动画的Android视图切换动画特效库！SwitchLayout！可以说是目前Android上第一个，..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E7%9A%84activity%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88%E5%BA%93switchlayout%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%BA%93%E5%AA%B2%E7%BE%8Eio/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E7%9A%84activity%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88%E5%BA%93switchlayout%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%BA%93%E5%AA%B2%E7%BE%8Eio/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E7%9A%84activity%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88%E5%BA%93switchlayout%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%BA%93%E5%AA%B2%E7%BE%8Eio/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android的Activity切换动画特效库SwitchLayout，视图切换动画库，媲美IOS"><meta property="og:description" content="由于看了IOS上面很多开发者开发的APP的视图界面切换动画体验非常好，这些都是IOS自带的，但是Android的Activity等视图切换动画并没有提供原生的，所以特此写了一个可以媲美IOS视图切换动画的Android视图切换动画特效库！SwitchLayout！可以说是目前Android上第一个，..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-08-15T00:49:59+00:00"><meta property="article:modified_time" content="2015-08-15T00:49:59+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="动画"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android的Activity切换动画特效库SwitchLayout，视图切换动画库，媲美IOS"><meta name=twitter:description content="由于看了IOS上面很多开发者开发的APP的视图界面切换动画体验非常好，这些都是IOS自带的，但是Android的Activity等视图切换动画并没有提供原生的，所以特此写了一个可以媲美IOS视图切换动画的Android视图切换动画特效库！SwitchLayout！可以说是目前Android上第一个，..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android的Activity切换动画特效库SwitchLayout，视图切换动画库，媲美IOS","item":"https://blog.zdltech.com/posts/android%E7%9A%84activity%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88%E5%BA%93switchlayout%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%BA%93%E5%AA%B2%E7%BE%8Eio/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android的Activity切换动画特效库SwitchLayout，视图切换动画库，媲美IOS","name":"Android的Activity切换动画特效库SwitchLayout，视图切换动画库，媲美IOS","description":"由于看了IOS上面很多开发者开发的APP的视图界面切换动画体验非常好，这些都是IOS自带的，但是Android的Activity等视图切换动画并没有提供原生的，所以特此写了一个可以媲美IOS视图切换动画的Android视图切换动画特效库！SwitchLayout！可以说是目前Android上第一个，...","keywords":["android","动画","移动开发"],"articleBody":"由于看了IOS上面很多开发者开发的APP的视图界面切换动画体验非常好，这些都是IOS自带的，但是Android的Activity等视图切换动画并没有提供原生的，所以特此写了一个可以媲美IOS视图切换动画的Android视图切换动画特效库！SwitchLayout！可以说是目前Android上第一个，也是唯一的一个强大的视图切换动画库引擎！\n作者：谭东\nQQ：852041173\n项目开源！推荐使用jar包形式！\n没有经过作者允许，不可修改项目库源码自行发布。\n如果你的项目中使用了SwtichLayout，建议你在您的APP关于页面注明SwitchLayout库提供支持！非常感谢！如果您觉得SwitchLayout强大，欢迎推荐给你们的朋友。\n如果有什么建议，也可以反馈给我，会及时升级SwitchLayout库。\nSwitchLayout 的1.0jar包下载地址和Demo下载地址：http://pan.baidu.com/s/1dD6baLV\n源码和demo在github地址：https://github.com/jaychou2012/SwitchLayout\n好了，先看下主要的界面支持的视图切换特效吧！（此为Demo截图）\n、\n效果引擎足够媲美IOS了。\n里面的列表中，每个特效暴露的自定义扩展特效引擎接口大概可以扩充8个特效。所以一共大概可以扩充105种特效！足够强大！\n好了，下面说下大致的用法：\n1.导入SwitchLayout1.0.jar或者下载开源库。\n2.每个Activity实现接口implements SwichLayoutInterFace。推荐这种用法；接口里分别实现2个方法：setEnterSwichLayout();和setExitSwichLayout();这两个方法分别是设置进入Activity动画和离开Activity的动画的。\n在onCreate()里调用setEnterSwichLayout(); 在关闭Activity操作里调用setExitSwichLayout(); 如果需要的话在onKeyDown里拦截返回按键，调用setExitSwichLayout();\n3.具体特效调用（举一个例子）： SwitchLayout.getSlideFromBottom(this, false,BaseEffects.getMoreSlowEffect());\n// 三个参数分别为（Activity/View，是否关闭Activity，特效（可为空））；每个特效支持8种扩种，也可以不填特效。\n4.注意，在项目注册清单里，每个Activity要设置主题为透明主题。 android:theme=”@android:style/Theme.Translucent”，API在11以上即可。\n下面贴下SwitchLayoutDemo里的代码：\n**[java]** [view plain](http://blog.csdn.net/jay100500/article/details/42227365#)[copy](http://blog.csdn.net/jay100500/article/details/42227365#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/565636)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/565636/fork) - package com.tandong.swichlayoutdemo; - - import android.app.Activity; - import android.content.Intent; - import android.os.Bundle; - import android.view.View; - import android.view.View.OnClickListener; - import android.view.Window; - import android.widget.Button; - - import com.tandong.swichlayout.BaseEffects; - import com.tandong.swichlayout.SwitchLayout; - - /** - * SwitchLayout - * - * QQ 852041173 - * - * 为Android提供IOS平台自有的界面视图切换动画而开发此库，工作量也不小，感谢支持SwitchLayout - * - * 如果想自定义特效动画时长的话，请在此四个变量对应设置 SwitchLayout.animDuration = 1000; - * SwitchLayout.longAnimDuration = 2000; BaseAnimViewS.animDuration = 1000; - * BaseAnimViewS.longAnimDuration = 2000;即可。单位毫秒。 - * - * 以后SwitchLayout将会划分入我的SmartUI库下面 - * - * @author Tan Dong（谭东） 2014.12.28 - * - */ - public class MainActivity extends Activity { - private Button btn_ok, btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, - btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14; - - @Override - protected void onCreate(Bundle savedInstanceState) { - requestWindowFeature(Window.FEATURE_NO_TITLE); - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_main); - initView(); - - // 设置进入Activity的Activity特效动画，同理可拓展为布局动画 - SwitchLayout.getSlideFromBottom(this, false, - BaseEffects.getQuickToSlowEffect()); - // 三个参数分别为（Activity/View，是否关闭Activity，特效（可为空）） - initListener(); - - } - - private void initListener() { - btn_ok.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, ); - MainActivity.this.startActivity(in); - } - }); - - btn_1.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 1); - MainActivity.this.startActivity(in); - } - }); - btn_2.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 2); - MainActivity.this.startActivity(in); - } - }); - btn_3.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 3); - MainActivity.this.startActivity(in); - } - }); - btn_4.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 4); - MainActivity.this.startActivity(in); - } - }); - btn_5.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 5); - MainActivity.this.startActivity(in); - } - }); - btn_6.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 6); - MainActivity.this.startActivity(in); - } - }); - - btn_7.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 7); - MainActivity.this.startActivity(in); - } - }); - btn_8.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 8); - MainActivity.this.startActivity(in); - } - }); - btn_9.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 9); - MainActivity.this.startActivity(in); - } - }); - btn_10.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 10); - MainActivity.this.startActivity(in); - } - }); - btn_11.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 11); - MainActivity.this.startActivity(in); - } - }); - btn_12.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 12); - MainActivity.this.startActivity(in); - } - }); - btn_13.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 13); - MainActivity.this.startActivity(in); - } - }); - btn_14.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - // TODO Auto-generated method stub - Intent in = new Intent(MainActivity.this, SecondActivity.class); - in.putExtra(\u0026#8220;key\u0026#8221;, 14); - MainActivity.this.startActivity(in); - } - }); - } - - private void initView() { - btn_ok = (Button) this.findViewById(R.id.btn_ok); - btn_1 = (Button) this.findViewById(R.id.btn_1); - btn_2 = (Button) this.findViewById(R.id.btn_2); - btn_3 = (Button) this.findViewById(R.id.btn_3); - btn_4 = (Button) this.findViewById(R.id.btn_4); - btn_5 = (Button) this.findViewById(R.id.btn_5); - btn_6 = (Button) this.findViewById(R.id.btn_6); - btn_7 = (Button) this.findViewById(R.id.btn_7); - btn_8 = (Button) this.findViewById(R.id.btn_8); - btn_9 = (Button) this.findViewById(R.id.btn_9); - btn_10 = (Button) this.findViewById(R.id.btn_10); - btn_11 = (Button) this.findViewById(R.id.btn_11); - btn_12 = (Button) this.findViewById(R.id.btn_12); - btn_13 = (Button) this.findViewById(R.id.btn_13); - btn_14 = (Button) this.findViewById(R.id.btn_14); - - } - } **[java]** [view plain](http://blog.csdn.net/jay100500/article/details/42227365#)[copy](http://blog.csdn.net/jay100500/article/details/42227365#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/565636)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/565636/fork) - package com.tandong.swichlayoutdemo; - - import android.app.Activity; - import android.content.Intent; - import android.os.Bundle; - import android.view.KeyEvent; - import android.view.View; - import android.view.View.OnClickListener; - import android.view.Window; - import android.widget.ImageView; - - import com.tandong.swichlayout.BaseEffects; - import com.tandong.swichlayout.SwichLayoutInterFace; - import com.tandong.swichlayout.SwitchLayout; - import com.tandong.swichlayoutdemo.R; - - /** - * SwitchLayout - * - * QQ 852041173 - * - * 为Android提供IOS平台自有的界面视图切换动画而开发此库，工作量也不小，感谢支持SwitchLayout - * - * @author Tan Dong（谭东） 2014.12.28 - * - */ - public class SecondActivity extends Activity implements SwichLayoutInterFace { - private Intent intent; - private ImageView iv_back; - private int key = ; - - @Override - protected void onCreate(Bundle savedInstanceState) { - requestWindowFeature(Window.FEATURE_NO_TITLE); - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_second); - initIntent(); - // 设置进入Activity的Activity特效动画，同理可拓展为布局动画 - setEnterSwichLayout(); - } - - private void initIntent() { - intent = getIntent(); - key = intent.getExtras().getInt(\u0026#8220;key\u0026#8221;); - iv_back = (ImageView) this.findViewById(R.id.iv_back); - iv_back.setOnClickListener(new OnClickListener() { - - @Override - public void onClick(View arg0) { - setExitSwichLayout(); - } - }); - } - - public boolean onKeyDown(int keyCode, KeyEvent event) {// 按返回键时退出Activity的Activity特效动画 - - if (keyCode == KeyEvent.KEYCODE_BACK \u0026\u0026 event.getRepeatCount() == ) { - setExitSwichLayout(); - return true; - } - return super.onKeyDown(keyCode, event); - } - - @Override - public void setEnterSwichLayout() { - switch (key) { - case : - SwitchLayout.get3DRotateFromLeft(this, false, null); - // 三个参数分别为（Activity/View，是否关闭Activity，特效（可为空）） - break; - case 1: - SwitchLayout.getSlideFromBottom(this, false, - BaseEffects.getMoreSlowEffect()); - break; - case 2: - SwitchLayout.getSlideFromTop(this, false, - BaseEffects.getReScrollEffect()); - break; - case 3: - SwitchLayout.getSlideFromLeft(this, false, - BaseEffects.getLinearInterEffect()); - break; - case 4: - SwitchLayout.getSlideFromRight(this, false, null); - break; - case 5: - SwitchLayout.getFadingIn(this); - break; - case 6: - SwitchLayout.ScaleBig(this, false, null); - break; - case 7: - SwitchLayout.FlipUpDown(this, false, - BaseEffects.getQuickToSlowEffect()); - break; - case 8: - SwitchLayout.ScaleBigLeftTop(this, false, null); - break; - case 9: - SwitchLayout.getShakeMode(this, false, null); - break; - case 10: - SwitchLayout.RotateLeftCenterIn(this, false, null); - break; - case 11: - SwitchLayout.RotateLeftTopIn(this, false, null); - break; - case 12: - SwitchLayout.RotateCenterIn(this, false, null); - break; - case 13: - SwitchLayout.ScaleToBigHorizontalIn(this, false, null); - break; - case 14: - SwitchLayout.ScaleToBigVerticalIn(this, false, null); - break; - default: - break; - } - - } - - @Override - public void setExitSwichLayout() { - switch (key) { - case : - SwitchLayout.get3DRotateFromRight(this, true, null); - break; - case 1: - SwitchLayout.getSlideToBottom(this, true, - BaseEffects.getMoreSlowEffect()); - break; - case 2: - SwitchLayout.getSlideToTop(this, true, - BaseEffects.getReScrollEffect()); - break; - case 3: - SwitchLayout.getSlideToLeft(this, true, - BaseEffects.getLinearInterEffect()); - break; - case 4: - SwitchLayout.getSlideToRight(this, true, null); - break; - case 5: - SwitchLayout.getFadingOut(this, true); - break; - case 6: - SwitchLayout.ScaleSmall(this, true, null); - break; - case 7: - SwitchLayout.FlipUpDown(this, true, - BaseEffects.getQuickToSlowEffect()); - break; - case 8: - SwitchLayout.ScaleSmallLeftTop(this, true, null); - break; - case 9: - SwitchLayout.getShakeMode(this, true, null); - break; - case 10: - SwitchLayout.RotateLeftCenterOut(this, true, null); - break; - case 11: - SwitchLayout.RotateLeftTopOut(this, true, null); - break; - case 12: - SwitchLayout.RotateCenterOut(this, true, null); - break; - case 13: - SwitchLayout.ScaleToBigHorizontalOut(this, true, null); - break; - case 14: - SwitchLayout.ScaleToBigVerticalOut(this, true, null); - break; - default: - break; - } - - } - - } **[java]** [view plain](http://blog.csdn.net/jay100500/article/details/42227365#)[copy](http://blog.csdn.net/jay100500/article/details/42227365#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/565636)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/565636/fork) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - package=\u0026#8220;com.tandong.swichlayoutdemo\u0026#8221; - android:versionCode=\u0026#8220;1\u0026#8221; - android:versionName=\u0026#8220;1.0\u0026#8221; \u003e - - \u0026#8220;11\u0026#8221; - android:targetSdkVersion=\u0026#8220;19\u0026#8221; /\u003e - - \u0026#8220;true\u0026#8221; - android:icon=\u0026#8220;@drawable/ic_launcher\u0026#8221; - android:label=\u0026#8220;@string/app_name\u0026#8221; - android:theme=\u0026#8220;@style/AppTheme\u0026#8221; \u003e - \u0026#8220;com.tandong.swichlayoutdemo.MainActivity\u0026#8221; - android:label=\u0026#8220;@string/app_name\u0026#8221; - android:theme=\u0026#8220;@android:style/Theme.Translucent\u0026#8221; \u003e - - \u0026#8220;android.intent.action.MAIN\u0026#8221; /\u003e - - \u0026#8220;android.intent.category.LAUNCHER\u0026#8221; /\u003e - - - \u0026#8220;com.tandong.swichlayoutdemo.SecondActivity\u0026#8221; - android:launchMode=\u0026#8220;singleTask\u0026#8221; - android:theme=\u0026#8220;@android:style/Theme.Translucent\u0026#8221; \u003e - - - - ","wordCount":"1944","inLanguage":"zh","datePublished":"2015-08-15T00:49:59Z","dateModified":"2015-08-15T00:49:59Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E7%9A%84activity%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E7%89%B9%E6%95%88%E5%BA%93switchlayout%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%BA%93%E5%AA%B2%E7%BE%8Eio/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android的Activity切换动画特效库SwitchLayout，视图切换动画库，媲美IOS</h1><div class=post-description>由于看了IOS上面很多开发者开发的APP的视图界面切换动画体验非常好，这些都是IOS自带的，但是Android的Activity等视图切换动画并没有提供原生的，所以特此写了一个可以媲美IOS视图切换动画的Android视图切换动画特效库！SwitchLayout！可以说是目前Android上第一个，...</div><div class=post-meta><span title='2015-08-15 00:49:59 +0000 UTC'>2015年8月15日</span>&nbsp;·&nbsp;<span>10 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>由于看了IOS上面很多开发者开发的APP的视图界面切换动画体验非常好，这些都是IOS自带的，但是Android的Activity等视图切换动画并没有提供原生的，所以特此写了一个可以媲美IOS视图切换动画的Android视图切换动画特效库！SwitchLayout！可以说是目前Android上第一个，也是唯一的一个强大的视图切换动画库引擎！</p><p>作者：谭东</p><p>QQ：852041173</p><p>项目开源！推荐使用jar包形式！</p><p>没有经过作者允许，不可修改项目库源码自行发布。</p><p>如果你的项目中使用了SwtichLayout，建议你在您的APP关于页面注明SwitchLayout库提供支持！非常感谢！如果您觉得SwitchLayout强大，欢迎推荐给你们的朋友。</p><p>如果有什么建议，也可以反馈给我，会及时升级SwitchLayout库。</p><p>SwitchLayout 的1.0jar包下载地址和Demo下载地址：<a href=http://pan.baidu.com/s/1dD6baLV>http://pan.baidu.com/s/1dD6baLV</a></p><p>源码和demo在github地址：<a href=https://github.com/jaychou2012/SwitchLayout>https://github.com/jaychou2012/SwitchLayout</a></p><p>好了，先看下主要的界面支持的视图切换特效吧！（此为Demo截图）</p><p><img loading=lazy src="http://img.blog.csdn.net/20141229010619196?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamF5MTAwNTAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"> 、</p><p><img loading=lazy src="http://img.blog.csdn.net/20141229010634515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamF5MTAwNTAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>效果引擎足够媲美IOS了。</p><p>里面的列表中，每个特效暴露的自定义扩展特效引擎接口大概可以扩充8个特效。所以一共大概可以扩充105种特效！足够强大！</p><p>好了，下面说下大致的用法：</p><p>1.导入SwitchLayout1.0.jar或者下载开源库。</p><p>2.每个Activity实现接口implements SwichLayoutInterFace。推荐这种用法；接口里分别实现2个方法：setEnterSwichLayout();和setExitSwichLayout();这两个方法分别是设置进入Activity动画和离开Activity的动画的。</p><p>在onCreate()里调用setEnterSwichLayout();  在关闭Activity操作里调用setExitSwichLayout(); 如果需要的话在onKeyDown里拦截返回按键，调用setExitSwichLayout();</p><p>3.具体特效调用（举一个例子）： SwitchLayout.getSlideFromBottom(this, false,BaseEffects.getMoreSlowEffect());</p><p>// 三个参数分别为（Activity/View，是否关闭Activity，特效（可为空））；每个特效支持8种扩种，也可以不填特效。</p><p>4.注意，在项目注册清单里，每个Activity要设置主题为透明主题。 android:theme=”@android:style/Theme.Translucent”，API在11以上即可。</p><p>下面贴下SwitchLayoutDemo里的代码：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/jay100500/article/details/42227365#)[copy](http://blog.csdn.net/jay100500/article/details/42227365#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/565636)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/565636/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.tandong.swichlayoutdemo;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View.OnClickListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.Window;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Button;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.tandong.swichlayout.BaseEffects;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.tandong.swichlayout.SwitchLayout;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * SwitchLayout&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * QQ 852041173&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 为Android提供IOS平台自有的界面视图切换动画而开发此库，工作量也不小，感谢支持SwitchLayout&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 如果想自定义特效动画时长的话，请在此四个变量对应设置 SwitchLayout.animDuration = 1000;&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * SwitchLayout.longAnimDuration = 2000; BaseAnimViewS.animDuration = 1000;&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * BaseAnimViewS.longAnimDuration = 2000;即可。单位毫秒。&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 以后SwitchLayout将会划分入我的SmartUI库下面&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author Tan Dong（谭东） 2014.12.28&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Button btn_ok, btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7,
+
+- btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14;
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.activity_main);
+
+- initView();
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 设置进入Activity的Activity特效动画，同理可拓展为布局动画&lt;/span&gt;
+
+- SwitchLayout.getSlideFromBottom(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;,
+
+- BaseEffects.getQuickToSlowEffect());
+
+- &lt;span class=&quot;comment&quot;&gt;// 三个参数分别为（Activity/View，是否关闭Activity，特效（可为空））&lt;/span&gt;
+
+- initListener();
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; initListener() {
+
+- btn_ok.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- 
+- btn_1.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_2.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_3.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_4.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_5.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_6.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- 
+- btn_7.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_8.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_9.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;9&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_10.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_11.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;11&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_12.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_13.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- btn_14.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- Intent in = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, SecondActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- in.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;14&lt;/span&gt;);
+
+- MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.startActivity(in);
+
+- }
+
+- });
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; initView() {
+
+- btn_ok = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_ok);
+
+- btn_1 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_1);
+
+- btn_2 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_2);
+
+- btn_3 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_3);
+
+- btn_4 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_4);
+
+- btn_5 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_5);
+
+- btn_6 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_6);
+
+- btn_7 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_7);
+
+- btn_8 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_8);
+
+- btn_9 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_9);
+
+- btn_10 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_10);
+
+- btn_11 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_11);
+
+- btn_12 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_12);
+
+- btn_13 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_13);
+
+- btn_14 = (Button) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.btn_14);
+
+- 
+- }
+
+- }
+</code></pre></div><p> </p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/jay100500/article/details/42227365#)[copy](http://blog.csdn.net/jay100500/article/details/42227365#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/565636)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/565636/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.tandong.swichlayoutdemo;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.KeyEvent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View.OnClickListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.Window;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ImageView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.tandong.swichlayout.BaseEffects;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.tandong.swichlayout.SwichLayoutInterFace;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.tandong.swichlayout.SwitchLayout;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.tandong.swichlayoutdemo.R;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * SwitchLayout&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * QQ 852041173&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 为Android提供IOS平台自有的界面视图切换动画而开发此库，工作量也不小，感谢支持SwitchLayout&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author Tan Dong（谭东） 2014.12.28&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; SecondActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; SwichLayoutInterFace {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Intent intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ImageView iv_back;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; key = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.activity_second);
+
+- initIntent();
+
+- &lt;span class=&quot;comment&quot;&gt;// 设置进入Activity的Activity特效动画，同理可拓展为布局动画&lt;/span&gt;
+
+- setEnterSwichLayout();
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; initIntent() {
+
+- intent = getIntent();
+
+- key = intent.getExtras().getInt(&lt;span class=&quot;string&quot;&gt;&amp;#8220;key&amp;#8221;&lt;/span&gt;);
+
+- iv_back = (ImageView) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.findViewById(R.id.iv_back);
+
+- iv_back.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View arg0) {
+
+- setExitSwichLayout();
+
+- }
+
+- });
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; onKeyDown(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; keyCode, KeyEvent event) {&lt;span class=&quot;comment&quot;&gt;// 按返回键时退出Activity的Activity特效动画&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (keyCode == KeyEvent.KEYCODE_BACK &amp;&amp; event.getRepeatCount() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+
+- setExitSwichLayout();
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onKeyDown(keyCode, event);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setEnterSwichLayout() {
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (key) {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;:
+
+- SwitchLayout.get3DRotateFromLeft(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;// 三个参数分别为（Activity/View，是否关闭Activity，特效（可为空））&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;:
+
+- SwitchLayout.getSlideFromBottom(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;,
+
+- BaseEffects.getMoreSlowEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;:
+
+- SwitchLayout.getSlideFromTop(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;,
+
+- BaseEffects.getReScrollEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;:
+
+- SwitchLayout.getSlideFromLeft(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;,
+
+- BaseEffects.getLinearInterEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;:
+
+- SwitchLayout.getSlideFromRight(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;:
+
+- SwitchLayout.getFadingIn(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;:
+
+- SwitchLayout.ScaleBig(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;:
+
+- SwitchLayout.FlipUpDown(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;,
+
+- BaseEffects.getQuickToSlowEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;:
+
+- SwitchLayout.ScaleBigLeftTop(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;9&lt;/span&gt;:
+
+- SwitchLayout.getShakeMode(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;:
+
+- SwitchLayout.RotateLeftCenterIn(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;11&lt;/span&gt;:
+
+- SwitchLayout.RotateLeftTopIn(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;:
+
+- SwitchLayout.RotateCenterIn(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;:
+
+- SwitchLayout.ScaleToBigHorizontalIn(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;14&lt;/span&gt;:
+
+- SwitchLayout.ScaleToBigVerticalIn(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setExitSwichLayout() {
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (key) {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;:
+
+- SwitchLayout.get3DRotateFromRight(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;:
+
+- SwitchLayout.getSlideToBottom(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;,
+
+- BaseEffects.getMoreSlowEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;:
+
+- SwitchLayout.getSlideToTop(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;,
+
+- BaseEffects.getReScrollEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;:
+
+- SwitchLayout.getSlideToLeft(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;,
+
+- BaseEffects.getLinearInterEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;:
+
+- SwitchLayout.getSlideToRight(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;:
+
+- SwitchLayout.getFadingOut(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;:
+
+- SwitchLayout.ScaleSmall(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;:
+
+- SwitchLayout.FlipUpDown(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;,
+
+- BaseEffects.getQuickToSlowEffect());
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;:
+
+- SwitchLayout.ScaleSmallLeftTop(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;9&lt;/span&gt;:
+
+- SwitchLayout.getShakeMode(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;:
+
+- SwitchLayout.RotateLeftCenterOut(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;11&lt;/span&gt;:
+
+- SwitchLayout.RotateLeftTopOut(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;:
+
+- SwitchLayout.RotateCenterOut(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;:
+
+- SwitchLayout.ScaleToBigHorizontalOut(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;14&lt;/span&gt;:
+
+- SwitchLayout.ScaleToBigVerticalOut(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- 
+- }
+
+- 
+- }
+</code></pre></div><p> </p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/jay100500/article/details/42227365#)[copy](http://blog.csdn.net/jay100500/article/details/42227365#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/565636)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/565636/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;?xml version=&lt;span class=&quot;string&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; encoding=&lt;span class=&quot;string&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;?&gt;
+
+- &lt;manifest xmlns:android=&lt;span class=&quot;string&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&amp;#8220;com.tandong.swichlayoutdemo&amp;#8221;&lt;/span&gt;
+
+- android:versionCode=&lt;span class=&quot;string&quot;&gt;&amp;#8220;1&amp;#8221;&lt;/span&gt;
+
+- android:versionName=&lt;span class=&quot;string&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &gt;
+
+- 
+- &lt;uses-sdk
+
+- android:minSdkVersion=&lt;span class=&quot;string&quot;&gt;&amp;#8220;11&amp;#8221;&lt;/span&gt;
+
+- android:targetSdkVersion=&lt;span class=&quot;string&quot;&gt;&amp;#8220;19&amp;#8221;&lt;/span&gt; /&gt;
+
+- 
+- &lt;application
+
+- android:allowBackup=&lt;span class=&quot;string&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+
+- android:icon=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@drawable/ic_launcher&amp;#8221;&lt;/span&gt;
+
+- android:label=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@string/app_name&amp;#8221;&lt;/span&gt;
+
+- android:theme=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@style/AppTheme&amp;#8221;&lt;/span&gt; &gt;
+
+- &lt;activity
+
+- android:name=&lt;span class=&quot;string&quot;&gt;&amp;#8220;com.tandong.swichlayoutdemo.MainActivity&amp;#8221;&lt;/span&gt;
+
+- android:label=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@string/app_name&amp;#8221;&lt;/span&gt;
+
+- android:theme=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@android:style/Theme.Translucent&amp;#8221;&lt;/span&gt; &gt;
+
+- &lt;intent-filter&gt;
+
+- &lt;action android:name=&lt;span class=&quot;string&quot;&gt;&amp;#8220;android.intent.action.MAIN&amp;#8221;&lt;/span&gt; /&gt;
+
+- 
+- &lt;category android:name=&lt;span class=&quot;string&quot;&gt;&amp;#8220;android.intent.category.LAUNCHER&amp;#8221;&lt;/span&gt; /&gt;
+
+- &lt;/intent-filter&gt;
+
+- &lt;/activity&gt;
+
+- &lt;activity
+
+- android:name=&lt;span class=&quot;string&quot;&gt;&amp;#8220;com.tandong.swichlayoutdemo.SecondActivity&amp;#8221;&lt;/span&gt;
+
+- android:launchMode=&lt;span class=&quot;string&quot;&gt;&amp;#8220;singleTask&amp;#8221;&lt;/span&gt;
+
+- android:theme=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@android:style/Theme.Translucent&amp;#8221;&lt;/span&gt; &gt;
+
+- &lt;/activity&gt;
+
+- &lt;/application&gt;
+
+- 
+- &lt;/manifest&gt;
+</code></pre></div><p> </p><p><img loading=lazy src="http://img.blog.csdn.net/20141229011852906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamF5MTAwNTAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><img loading=lazy src="http://img.blog.csdn.net/20141229011913581?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamF5MTAwNTAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E5%8A%A8%E7%94%BB/>动画</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/2014-%E9%9D%9E%E5%B8%B8%E5%A5%BD%E7%94%A8%E7%9A%84%E5%BC%80%E6%BA%90-android-%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/><span class=title>« 上一页</span>
+<span>2014 非常好用的开源 Android 测试工具</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E4%B9%8B%E6%89%80%E6%9C%89%E5%8A%A8%E7%94%BB%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/><span class=title>下一页 »</span>
+<span>Android应用开发之所有动画使用详解</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

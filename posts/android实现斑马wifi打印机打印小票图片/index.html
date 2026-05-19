@@ -1,0 +1,1668 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android实现斑马Wifi打印机打印小票图片 | ZDL Tech Blog</title>
+<meta name=keywords content><meta name=description content="最近一期做WiFi打印机打印小票功能，其中有一个功能点是把Logo打印在小票上面。 实现思路就是对网上的思路进行一下调整修改，方便Android端调用，很简单； 测试的打印机型号：Zebra GK888T #### Bitmap to ZPL 1 2 3 4 5 6 7 8 9 10 11 12 1..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E5%AE%9E%E7%8E%B0%E6%96%91%E9%A9%ACwifi%E6%89%93%E5%8D%B0%E6%9C%BA%E6%89%93%E5%8D%B0%E5%B0%8F%E7%A5%A8%E5%9B%BE%E7%89%87/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E5%AE%9E%E7%8E%B0%E6%96%91%E9%A9%ACwifi%E6%89%93%E5%8D%B0%E6%9C%BA%E6%89%93%E5%8D%B0%E5%B0%8F%E7%A5%A8%E5%9B%BE%E7%89%87/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E5%AE%9E%E7%8E%B0%E6%96%91%E9%A9%ACwifi%E6%89%93%E5%8D%B0%E6%9C%BA%E6%89%93%E5%8D%B0%E5%B0%8F%E7%A5%A8%E5%9B%BE%E7%89%87/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android实现斑马Wifi打印机打印小票图片"><meta property="og:description" content="最近一期做WiFi打印机打印小票功能，其中有一个功能点是把Logo打印在小票上面。 实现思路就是对网上的思路进行一下调整修改，方便Android端调用，很简单； 测试的打印机型号：Zebra GK888T #### Bitmap to ZPL 1 2 3 4 5 6 7 8 9 10 11 12 1..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-08-14T09:58:55+00:00"><meta property="article:modified_time" content="2018-08-14T09:58:55+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android实现斑马Wifi打印机打印小票图片"><meta name=twitter:description content="最近一期做WiFi打印机打印小票功能，其中有一个功能点是把Logo打印在小票上面。 实现思路就是对网上的思路进行一下调整修改，方便Android端调用，很简单； 测试的打印机型号：Zebra GK888T #### Bitmap to ZPL 1 2 3 4 5 6 7 8 9 10 11 12 1..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android实现斑马Wifi打印机打印小票图片","item":"https://blog.zdltech.com/posts/android%E5%AE%9E%E7%8E%B0%E6%96%91%E9%A9%ACwifi%E6%89%93%E5%8D%B0%E6%9C%BA%E6%89%93%E5%8D%B0%E5%B0%8F%E7%A5%A8%E5%9B%BE%E7%89%87/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android实现斑马Wifi打印机打印小票图片","name":"Android实现斑马Wifi打印机打印小票图片","description":"最近一期做WiFi打印机打印小票功能，其中有一个功能点是把Logo打印在小票上面。 实现思路就是对网上的思路进行一下调整修改，方便Android端调用，很简单； 测试的打印机型号：Zebra GK888T #### Bitmap to ZPL 1 2 3 4 5 6 7 8 9 10 11 12 1...","keywords":[],"articleBody":" 最近一期做WiFi打印机打印小票功能，其中有一个功能点是把Logo打印在小票上面。 实现思路就是对网上的思路进行一下调整修改，方便Android端调用，很简单； 测试的打印机型号：Zebra GK888T Bitmap to ZPL 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 /** */ public class ZPLImageConverter { private Context context; public ZPLImageConverter(Context context) { this.context = context; } private int blackLimit = 380; private int total; private int widthBytes; private boolean compressHex = false; private static Map mapCode = new HashMap(); { mapCode.put(1, \u0026#8220;G\u0026#8221;); mapCode.put(2, \u0026#8220;H\u0026#8221;); mapCode.put(3, \u0026#8220;I\u0026#8221;); mapCode.put(4, \u0026#8220;J\u0026#8221;); mapCode.put(5, \u0026#8220;K\u0026#8221;); mapCode.put(6, \u0026#8220;L\u0026#8221;); mapCode.put(7, \u0026#8220;M\u0026#8221;); mapCode.put(8, \u0026#8220;N\u0026#8221;); mapCode.put(9, \u0026#8220;O\u0026#8221;); mapCode.put(10, \u0026#8220;P\u0026#8221;); mapCode.put(11, \u0026#8220;Q\u0026#8221;); mapCode.put(12, \u0026#8220;R\u0026#8221;); mapCode.put(13, \u0026#8220;S\u0026#8221;); mapCode.put(14, \u0026#8220;T\u0026#8221;); mapCode.put(15, \u0026#8220;U\u0026#8221;); mapCode.put(16, \u0026#8220;V\u0026#8221;); mapCode.put(17, \u0026#8220;W\u0026#8221;); mapCode.put(18, \u0026#8220;X\u0026#8221;); mapCode.put(19, \u0026#8220;Y\u0026#8221;); mapCode.put(20, \u0026#8220;g\u0026#8221;); mapCode.put(40, \u0026#8220;h\u0026#8221;); mapCode.put(60, \u0026#8220;i\u0026#8221;); mapCode.put(80, \u0026#8220;j\u0026#8221;); mapCode.put(100, \u0026#8220;k\u0026#8221;); mapCode.put(120, \u0026#8220;l\u0026#8221;); mapCode.put(140, \u0026#8220;m\u0026#8221;); mapCode.put(160, \u0026#8220;n\u0026#8221;); mapCode.put(180, \u0026#8220;o\u0026#8221;); mapCode.put(200, \u0026#8220;p\u0026#8221;); mapCode.put(220, \u0026#8220;q\u0026#8221;); mapCode.put(240, \u0026#8220;r\u0026#8221;); mapCode.put(260, \u0026#8220;s\u0026#8221;); mapCode.put(280, \u0026#8220;t\u0026#8221;); mapCode.put(300, \u0026#8220;u\u0026#8221;); mapCode.put(320, \u0026#8220;v\u0026#8221;); mapCode.put(340, \u0026#8220;w\u0026#8221;); mapCode.put(360, \u0026#8220;x\u0026#8221;); mapCode.put(380, \u0026#8220;y\u0026#8221;); mapCode.put(400, \u0026#8220;z\u0026#8221;); } public String convertFromImg(Bitmap image) throws IOException { String cuerpo = createBody(image); if(compressHex) cuerpo = encodeHexAscii(cuerpo); return headDoc() + cuerpo + footDoc(); } private String createBody(Bitmap originalImage) throws IOException { StringBuffer sb = new StringBuffer(); // Graphics2D graphics = originalImage.createGraphics(); // graphics.drawImage(originalImage, 0, 0, null); int height = originalImage.getHeight(); int width = originalImage.getWidth(); int rgb, red, green, blue, index=; char auxBinaryChar[] = {\u0026#8216;0\u0026#8217;, \u0026#8216;0\u0026#8217;, \u0026#8216;0\u0026#8217;, \u0026#8216;0\u0026#8217;, \u0026#8216;0\u0026#8217;, \u0026#8216;0\u0026#8217;, \u0026#8216;0\u0026#8217;, \u0026#8216;0\u0026#8217;}; widthBytes = width/8; if(width%8 \u003e ){ widthBytes= (((int)(width / 8)) + 1); } else { widthBytes= width/8; } this.total = widthBytes*height; for (int h = ; h","wordCount":"2319","inLanguage":"zh","datePublished":"2018-08-14T09:58:55Z","dateModified":"2018-08-14T09:58:55Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E5%AE%9E%E7%8E%B0%E6%96%91%E9%A9%ACwifi%E6%89%93%E5%8D%B0%E6%9C%BA%E6%89%93%E5%8D%B0%E5%B0%8F%E7%A5%A8%E5%9B%BE%E7%89%87/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android实现斑马Wifi打印机打印小票图片</h1><div class=post-description>最近一期做WiFi打印机打印小票功能，其中有一个功能点是把Logo打印在小票上面。 实现思路就是对网上的思路进行一下调整修改，方便Android端调用，很简单； 测试的打印机型号：Zebra GK888T #### Bitmap to ZPL 1 2 3 4 5 6 7 8 9 10 11 12 1...</div><div class=post-meta><span title='2018-08-14 09:58:55 +0000 UTC'>2018年8月14日</span>&nbsp;·&nbsp;<span>11 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#bitmap-to-zpl aria-label="Bitmap to ZPL">Bitmap to ZPL</a></li><li><a href=#%e8%b0%83%e7%94%a8%e6%96%b9%e5%bc%8f aria-label=调用方式>调用方式</a></li><li><a href=#refs aria-label=refs>refs</a></li></ul></div></details><div class="post-content md-content"><div class=post-body><pre><code>最近一期做WiFi打印机打印小票功能，其中有一个功能点是把Logo打印在小票上面。
+</code></pre><p><a id=more></a></p><pre><code>实现思路就是对网上的思路进行一下调整修改，方便Android端调用，很简单；
+
+
+
+
+
+测试的打印机型号：Zebra GK888T
+</code></pre><h4 id=bitmap-to-zpl>Bitmap to ZPL<figure class="highlight java"><a hidden class=anchor aria-hidden=true href=#bitmap-to-zpl>#</a></h4><table><tr><td class=gutter><div class="top-box hide"><div class=alert-info></div></div><pre><code>    &lt;div class=&quot;line&quot;&gt;
+      1
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      2
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      3
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      4
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      5
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      6
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      7
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      8
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      9
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      10
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      11
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      12
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      13
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      14
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      15
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      16
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      17
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      18
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      19
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      20
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      21
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      22
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      23
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      24
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      25
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      26
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      27
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      28
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      29
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      30
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      31
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      32
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      33
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      34
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      35
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      36
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      37
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      38
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      39
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      40
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      41
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      42
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      43
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      44
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      45
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      46
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      47
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      48
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      49
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      50
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      51
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      52
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      53
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      54
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      55
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      56
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      57
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      58
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      59
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      60
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      61
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      62
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      63
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      64
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      65
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      66
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      67
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      68
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      69
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      70
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      71
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      72
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      73
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      74
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      75
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      76
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      77
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      78
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      79
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      80
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      81
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      82
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      83
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      84
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      85
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      86
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      87
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      88
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      89
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      90
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      91
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      92
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      93
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      94
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      95
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      96
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      97
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      98
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      99
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      100
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      101
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      102
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      103
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      104
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      105
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      106
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      107
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      108
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      109
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      110
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      111
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      112
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      113
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      114
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      115
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      116
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      117
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      118
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      119
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      120
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      121
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      122
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      123
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      124
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      125
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      126
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      127
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      128
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      129
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      130
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      131
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      132
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      133
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      134
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      135
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      136
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      137
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      138
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      139
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      140
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      141
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      142
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      143
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      144
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      145
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      146
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      147
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      148
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      149
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      150
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      151
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      152
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      153
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      154
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      155
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      156
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      157
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      158
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      159
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      160
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      161
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      162
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      163
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      164
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      165
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      166
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      167
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      168
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      169
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      170
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      171
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      172
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      173
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      174
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      175
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      176
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      177
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      178
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      179
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      180
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      181
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      182
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      183
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      184
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      185
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      186
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      187
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      188
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      189
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      190
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      191
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      192
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      193
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      194
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      195
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      196
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      197
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      198
+    &lt;/div&gt;
+  &lt;/td&gt;
+  
+  &lt;td class=&quot;code&quot;&gt;
+    &lt;div class=&quot;top-box hide&quot;&gt;
+      &lt;div class=&quot;alert-info&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      */
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ZPLImageConverter&lt;/span&gt; &lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Context context;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ZPLImageConverter&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Context context)&lt;/span&gt; &lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.context = context;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; blackLimit = &lt;span class=&quot;number&quot;&gt;380&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; total;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; widthBytes;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; compressHex = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; Map&lt;Integer, String&gt; mapCode = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashMap&lt;Integer, String&gt;();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;G&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;H&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;I&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;J&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;K&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;L&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;7&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;M&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;N&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;9&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;O&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;P&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;11&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;Q&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;12&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;R&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;S&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;14&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;T&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;U&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;V&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;17&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;W&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;18&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;X&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;19&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;Y&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;g&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;40&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;h&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;60&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;i&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;j&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;k&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;120&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;l&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;140&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;m&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;160&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;n&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;180&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;o&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;p&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;220&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;q&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;240&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;r&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;260&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;s&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;280&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;t&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;300&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;u&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;320&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;v&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;340&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;w&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;360&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;x&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;380&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;y&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      mapCode.put(&lt;span class=&quot;number&quot;&gt;400&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;z&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;convertFromImg&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bitmap image)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; IOException &lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      String cuerpo = createBody(image);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(compressHex)
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      cuerpo = encodeHexAscii(cuerpo);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; headDoc() + cuerpo + footDoc();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;createBody&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bitmap originalImage)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; IOException &lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      StringBuffer sb = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; StringBuffer();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;comment&quot;&gt;// Graphics2D graphics = originalImage.createGraphics();&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;comment&quot;&gt;// graphics.drawImage(originalImage, 0, 0, null);&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; height = originalImage.getHeight();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; width = originalImage.getWidth();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; rgb, red, green, blue, index=&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; auxBinaryChar[] = {&lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;};
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      widthBytes = width/&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(width%&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt; &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      widthBytes= (((&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;)(width / &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;)) + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      widthBytes= width/&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.total = widthBytes*height;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; h = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;; h&lt;height; h++)
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; w = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;; w&lt;width; w++)
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;comment&quot;&gt;// rgb = originalImage.getRGB(w, h);&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      rgb = originalImage.getPixel(w, h);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      red = (rgb &gt;&gt; &lt;span class=&quot;number&quot;&gt;16&lt;/span&gt; ) &amp; &lt;span class=&quot;number&quot;&gt;0x000000FF&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      green = (rgb &gt;&gt; &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt; ) &amp; &lt;span class=&quot;number&quot;&gt;0x000000FF&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      blue = (rgb) &amp; &lt;span class=&quot;number&quot;&gt;0x000000FF&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; auxChar = &lt;span class=&quot;string&quot;&gt;&amp;#8216;1&amp;#8217;&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; totalColor = red + green + blue;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(totalColor&gt;blackLimit){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      auxChar = &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      auxBinaryChar[index] = auxChar;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      index++;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(index==&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt; || w==(width-&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sb.append(fourByteBinary(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; String(auxBinaryChar)));
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      auxBinaryChar = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt;[]{&lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;};
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      index=&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sb.append(&lt;span class=&quot;string&quot;&gt;&amp;#8220;\n&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; sb.toString();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;fourByteBinary&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String binaryStr)&lt;/span&gt;&lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; decimal = Integer.parseInt(binaryStr,&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (decimal&gt;&lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; Integer.toString(decimal,&lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;).toUpperCase();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;#8220;0&amp;#8221;&lt;/span&gt; + Integer.toString(decimal,&lt;span class=&quot;number&quot;&gt;16&lt;/span&gt;).toUpperCase();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;encodeHexAscii&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String code)&lt;/span&gt;&lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; maxlinea = widthBytes * &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      StringBuffer sbCode = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; StringBuffer();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      StringBuffer sbLinea = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; StringBuffer();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      String previousLine = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; counter = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; aux = code.charAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; firstChar = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; i&lt; code.length(); i++ ){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(firstChar){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      aux = code.charAt(i);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      firstChar = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;continue&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(code.charAt(i)==&lt;span class=&quot;string&quot;&gt;&amp;#8216;\n&amp;#8217;&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(counter&gt;=maxlinea &amp;&amp; aux==&lt;span class=&quot;string&quot;&gt;&amp;#8216;0&amp;#8217;&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(&lt;span class=&quot;string&quot;&gt;&amp;#8220;,&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(counter&gt;=maxlinea &amp;&amp; aux==&lt;span class=&quot;string&quot;&gt;&amp;#8216;F&amp;#8217;&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(&lt;span class=&quot;string&quot;&gt;&amp;#8220;!&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (counter&gt;&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; multi20 = (counter/&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;)*&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; resto20 = (counter%&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(mapCode.get(multi20));
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(resto20!=&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(mapCode.get(resto20) + aux);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(aux);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(mapCode.get(counter) + aux);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(mapCode.get(counter)==&lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      counter = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      firstChar = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(sbLinea.toString().equals(previousLine)){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbCode.append(&lt;span class=&quot;string&quot;&gt;&amp;#8220;:&amp;#8221;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbCode.append(sbLinea.toString());
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      previousLine = sbLinea.toString();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.setLength(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;continue&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(aux == code.charAt(i)){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      counter++;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(counter&gt;&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; multi20 = (counter/&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;)*&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; resto20 = (counter%&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(mapCode.get(multi20));
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(resto20!=&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;){
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(mapCode.get(resto20) + aux);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(aux);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      sbLinea.append(mapCode.get(counter) + aux);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      counter = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      aux = code.charAt(i);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; sbCode.toString();
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;headDoc&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      String str = &lt;span class=&quot;comment&quot;&gt;/*&amp;#8221;^XA &amp;#8221; +*/&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;string&quot;&gt;&amp;#8220;^FO10,50^GFA,&amp;#8221;&lt;/span&gt;+ total + &lt;span class=&quot;string&quot;&gt;&amp;#8220;,&amp;#8221;&lt;/span&gt;+ total + &lt;span class=&quot;string&quot;&gt;&amp;#8220;,&amp;#8221;&lt;/span&gt; + widthBytes +&lt;span class=&quot;string&quot;&gt;&amp;#8220;, &amp;#8220;&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; str;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;footDoc&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      String str = &lt;span class=&quot;string&quot;&gt;&amp;#8220;^FS&amp;#8221;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;/*+ &amp;#8220;^XZ&amp;#8221;*/&lt;/span&gt;;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; str;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;setCompressHex&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; compressHex)&lt;/span&gt; &lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.compressHex = compressHex;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;setBlacknessLimitPercentage&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; percentage)&lt;/span&gt;&lt;/span&gt;{
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      blackLimit = (percentage * &lt;span class=&quot;number&quot;&gt;768&lt;/span&gt; / &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      }
+    &lt;/div&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+</code></pre></table></figure><h4 id=调用方式>调用方式<a hidden class=anchor aria-hidden=true href=#调用方式>#</a></h4><pre><code>就是把Bitmap对象转化为ZPL编码格式，并把转化后的内容塞到ZPL命令中，和打印机通过Wifi 连接，把组装后的命令发给打印机就可以了。
+</code></pre><figure class="highlight java"><table><tr><td class=gutter><div class=line>1</div><pre><code>    &lt;div class=&quot;line&quot;&gt;
+      2
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      3
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      4
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      5
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      6
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      7
+    &lt;/div&gt;
+  &lt;/td&gt;
+  
+  &lt;td class=&quot;code&quot;&gt;
+    &lt;div class=&quot;top-box hide&quot;&gt;
+      &lt;div class=&quot;alert-info&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      ZPLImageConverter zp = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ZPLImageConverter(context);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      zp.setCompressHex(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      zp.setBlacknessLimitPercentage(&lt;span class=&quot;number&quot;&gt;50&lt;/span&gt;);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      String str = zp.convertFromImg(myBitmap);
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      zplStr += str;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;line&quot;&gt;
+      &lt;span class=&quot;comment&quot;&gt;//&amp;#8230;&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+</code></pre></table></figure><pre><code>其它命令的时候可以参考zebra打印机官方文档。
+</code></pre><h4 id=refs>refs<a hidden class=anchor aria-hidden=true href=#refs>#</a></h4><pre><code>- [http://labelary.com/viewer.html](http://labelary.com/viewer.html) （在线调整打印小票样式细节）
+
+- [http://www.jcgonzalez.com/java-image-to-zpl-example](http://www.jcgonzalez.com/java-image-to-zpl-example)
+
+- https://jinfengli.github.io/2017/11/17/zebra_printer_logo/
+</code></pre></div></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-hdpi-ldpi-mdpi-xhdpi-xxhdpi%E9%80%82%E9%85%8D%E8%AF%A6%E8%A7%A3/><span class=title>« 上一页</span>
+<span>Android hdpi ldpi mdpi xhdpi xxhdpi适配详解</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E5%90%8E%E7%AE%A1%E6%A8%A1%E7%89%88%E6%95%B4%E7%90%86/><span class=title>下一页 »</span>
+<span>后管模版整理</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

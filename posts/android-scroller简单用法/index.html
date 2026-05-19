@@ -1,0 +1,486 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android Scroller简单用法 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="Android里Scroller类是为了实现View平滑滚动的一个Helper类。通常在自定义的View时使用，在View中定义一个私有成员mScroller = new Scroller(context)。设置mScroller滚动的位置时，并不会导致View的滚动，通常是用mScroller记录..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-scroller%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-scroller%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-scroller%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android Scroller简单用法"><meta property="og:description" content="Android里Scroller类是为了实现View平滑滚动的一个Helper类。通常在自定义的View时使用，在View中定义一个私有成员mScroller = new Scroller(context)。设置mScroller滚动的位置时，并不会导致View的滚动，通常是用mScroller记录..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-04-28T09:34:34+00:00"><meta property="article:modified_time" content="2015-04-28T09:34:34+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android Scroller简单用法"><meta name=twitter:description content="Android里Scroller类是为了实现View平滑滚动的一个Helper类。通常在自定义的View时使用，在View中定义一个私有成员mScroller = new Scroller(context)。设置mScroller滚动的位置时，并不会导致View的滚动，通常是用mScroller记录..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android Scroller简单用法","item":"https://blog.zdltech.com/posts/android-scroller%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android Scroller简单用法","name":"Android Scroller简单用法","description":"Android里Scroller类是为了实现View平滑滚动的一个Helper类。通常在自定义的View时使用，在View中定义一个私有成员mScroller = new Scroller(context)。设置mScroller滚动的位置时，并不会导致View的滚动，通常是用mScroller记录...","keywords":["android","移动开发"],"articleBody":"Android里Scroller类是为了实现View平滑滚动的一个Helper类。通常在自定义的View时使用，在View中定义一个私有成员mScroller = new Scroller(context)。设置mScroller滚动的位置时，并不会导致View的滚动，通常是用mScroller记录/计算View滚动的位置，再重写View的computeScroll()，完成实际的滚动。\n相关API介绍如下\nJava代码 ![收藏代码](http://ipjmc.iteye.com/images/icon_star.png) - mScroller.getCurrX() //获取mScroller当前水平滚动的位置 - mScroller.getCurrY() //获取mScroller当前竖直滚动的位置 - mScroller.getFinalX() //获取mScroller最终停止的水平位置 - mScroller.getFinalY() //获取mScroller最终停止的竖直位置 - mScroller.setFinalX(int newX) //设置mScroller最终停留的水平位置，没有动画效果，直接跳到目标位置 - mScroller.setFinalY(int newY) //设置mScroller最终停留的竖直位置，没有动画效果，直接跳到目标位置 - - //滚动，startX, startY为开始滚动的位置，dx,dy为滚动的偏移量, duration为完成滚动的时间 - mScroller.startScroll(int startX, int startY, int dx, int dy) //使用默认完成时间250ms - mScroller.startScroll(int startX, int startY, int dx, int dy, int duration) - - mScroller.computeScrollOffset() //返回值为boolean，true说明滚动尚未完成，false说明滚动已经完成。这是一个很重要的方法，通常放在View.computeScroll()中，用来判断是否滚动是否结束。 举例说明，自定义一个CustomView，使用Scroller实现滚动：\nJava代码 ![收藏代码](http://ipjmc.iteye.com/images/icon_star.png) - import android.content.Context; - import android.util.AttributeSet; - import android.util.Log; - import android.view.View; - import android.widget.LinearLayout; - import android.widget.Scroller; - - public class CustomView extends LinearLayout { - - private static final String TAG = \u0026#8220;Scroller\u0026#8221;; - - private Scroller mScroller; - - public CustomView(Context context, AttributeSet attrs) { - super(context, attrs); - mScroller = new Scroller(context); - } - - //调用此方法滚动到目标位置 - public void smoothScrollTo(int fx, int fy) { - int dx = fx \u0026#8211; mScroller.getFinalX(); - int dy = fy \u0026#8211; mScroller.getFinalY(); - smoothScrollBy(dx, dy); - } - - //调用此方法设置滚动的相对偏移 - public void smoothScrollBy(int dx, int dy) { - - //设置mScroller的滚动偏移量 - mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy); - invalidate();//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果 - } - - @Override - public void computeScroll() { - - //先判断mScroller滚动是否完成 - if (mScroller.computeScrollOffset()) { - - //这里调用View的scrollTo()完成实际的滚动 - scrollTo(mScroller.getCurrX(), mScroller.getCurrY()); - - //必须调用该方法，否则不一定能看到滚动效果 - postInvalidate(); - } - super.computeScroll(); - } - } - 转自：http://ipjmc.iteye.com/blog/1615828 \u0026nbsp; public class CustomView extends LinearLayout { private static final String TAG = CustomView.class.getName(); // 定义一个滑动 private Scroller mScroller; //手势 private GestureDetector mGestureDetector;\npublic CustomView(Context context, AttributeSet attrs, int defStyle) { super(context, attrs, defStyle); mScroller = new Scroller(context); mGestureDetector = new GestureDetector(context, new CustomGestureListener()); }\npublic CustomView(Context context, AttributeSet attrs) { super(context, attrs); mScroller = new Scroller(context); mGestureDetector = new GestureDetector(context, new CustomGestureListener()); }\npublic CustomView(Context context) { super(context); mScroller = new Scroller(context); mGestureDetector = new GestureDetector(context, new CustomGestureListener()); // setClickable(true); // setLongClickable(true); }\n// 调用此方法滚动到目标位置 public void smoothScrollTo(int fx, int fy) { int dx = fx – mScroller.getFinalX(); int dy = fy – mScroller.getFinalY(); smoothScrollBy(dx, dy); }\n// 调用此方法设置滚动的相对偏移 public void smoothScrollBy(int dx, int dy) { // 设置mScroller的滚动偏移量 mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy); invalidate();// 这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果 }\n/** 完成实际的滚动 */ @Override public void computeScroll() { // 判断Scroll是否滚动完成 if (mScroller.computeScrollOffset()) { // 调用View 的scrollto完成实际的滚动 scrollTo(mScroller.getCurrX(), mScroller.getCurrY()); //必须调用该方法，否则不一定能看到滚动效果 postInvalidate(); } super.computeScroll(); }\n@Override public boolean onTouchEvent(MotionEvent event) { switch (event.getAction()) { case MotionEvent.ACTION_UP : Log.e(TAG, “get Sy” + getScrollY()); smoothScrollTo(0, 0); break; default: return mGestureDetector.onTouchEvent(event); } return super.onTouchEvent(event); }\nclass CustomGestureListener implements GestureDetector.OnGestureListener {\n@Override public boolean onDown(MotionEvent e) { // TODO Auto-generated method stub return true; }\n@Override public void onShowPress(MotionEvent e) { // TODO Auto-generated method stub\n}\n@Override public boolean onSingleTapUp(MotionEvent e) { // TODO Auto-generated method stub return false; }\n@Override public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {\nint dis = (int)((distanceY-0.5)/2); Log.e(TAG, dis + “.”); smoothScrollBy(0, dis); return false; }\n@Override public void onLongPress(MotionEvent e) { // TODO Auto-generated method stub\n}\n@Override public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) { // TODO Auto-generated method stub return false; }\n} }\nandroid 使用Scroller实现缓慢移动\n转载请声明:http://bbs.niuzhi.cc/thread-24-1-1.html\n在Launcher中的Workspace中实现了左右屏幕切换效果，里面就用到了Scroller记录滑动轨迹，实现一种缓慢地向左或向右移动的效果，这里我对这种效果进行总结:\n我们先看一个例子:点击按钮时红经块会从左边缓慢地移向左右，这个该怎么实现呢\n我们先来看一下，Scroller，这个对象里有startScroll方法\nvoid android.widget.Scroller.startScroll(int startX, int startY, int dx, int dy, int duration) 第一个参数是起始移动的x坐标值，第二个是起始移动的y坐标值，第三个第四个参数都是移到某点的坐标值，而**duration **当然就是执行移动的时间。这个有什么用呢。要知道有什么用还得再看一个方法\nboolean android.widget.[Scroller](http://blog.csdn.net/c_weibin/article/details/7438323).computeScrollOffset() 当startScroll执行过程中即在duration时间内，**computeScrollOffset **方法会一直返回false，但当动画执行完成后会返回返加true. 有了这两个方法还不够，我们还需要再重写viewGroup的一个方法， **computeScroll 这个方法什么时候会被调用呢** **官网上这样说的** public void computeScroll () Since: [API Level 1](http://developer.android.com/guide/appendix/api-levels.html#level1) Called by a parent to request that a child update its values for mScrollX and mScrollY if necessary. This will typically be done if the child is animating a scroll using a `\u0026lt;a href=\"http://developer.android.com/reference/android/widget/Scroller.html\"\u003eScroller\u0026lt;/a\u003e` object. 当我们执行ontouch或invalidate(）或postInvalidate()都会导致这个方法的执行 **所以我们像下面这样调用，**postInvalidate执行后，会去调**computeScroll 方法，而这个方法里再去调postInvalidate，这样******就可以不断地去调用scrollTo方法了，直到mScroller动画结束，当然第一次时，我们需要手动去调用一次**postInvalidate才会去调用 ** computeScroll 方法 **[java]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#) - @Override - public void computeScroll() { - if (mScroller.computeScrollOffset()) { - scrollTo(mScroller.getCurrX(), ); - postInvalidate(); - } - } 下面附上上面那个例子的源代码 首先是MyViewGroup.java **[java]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#) - package com.wb; - - import android.content.Context; - import android.util.AttributeSet; - import android.view.View; - import android.view.ViewGroup; - import android.widget.LinearLayout; - import android.widget.Scroller; - - public class MyViewGroup extends LinearLayout { - private boolean s1=true; - Scroller mScroller=null; - public MyViewGroup(Context context, AttributeSet attrs) { - super(context, attrs); - mScroller=new Scroller(context); - // TODO Auto-generated constructor stub - } - @Override - public void computeScroll() { - if (mScroller.computeScrollOffset()) { - scrollTo(mScroller.getCurrX(), ); - postInvalidate(); - } - } - public void beginScroll(){ - if (!s1) { - mScroller.startScroll(, , , , 1000); - s1 = true; - } else { - mScroller.startScroll(, , \u0026#8211;500, , 1000); - s1 = false; - } - invalidate(); - } - } 然后是WheelActivity.java **[java]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#) - package com.wb; - - import android.app.Activity; - import android.graphics.Color; - import android.os.Bundle; - import android.view.Gravity; - import android.view.View; - import android.view.ViewGroup; - import android.widget.AbsListView; - import android.widget.AbsListView.LayoutParams; - import android.widget.AbsListView.OnScrollListener; - import android.widget.Adapter; - import android.widget.BaseAdapter; - import android.widget.ListView; - import android.widget.TextView; - - public class WheelActivity extends Activity { - - private ListView listView = null; - private MyViewGroup myViewGroup; - - @Override - public void onCreate(Bundle savedInstanceState) { - super.onCreate(savedInstanceState); - setContentView(R.layout.main); - myViewGroup = (MyViewGroup) findViewById(R.id.myviewGroup); - - } - - public void scroll(View view) { - - myViewGroup.beginScroll(); - - } - - } main.xml **[html]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cLinearLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - \u003cButton - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;scroll\u0026#8221; - android:onClick=\u0026#8220;scroll\u0026#8221; /\u003e - - \u003ccom.wb.MyViewGroup - xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; android:id=\u0026#8220;@+id/myviewGroup\u0026#8221;\u003e - - \u003cTextView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:background=\u0026#8220;#ff0000\u0026#8221; - android:text=\u0026#8220;我在這\u0026#8221;/\u003e - - - \u003c/com.wb.MyViewGroup\u003e - - \u003c/LinearLayout\u003e 源代码下载地址：[http://download.csdn.net/detail/c_weibin/4208751](http://download.csdn.net/detail/c_weibin/4208751) ","wordCount":"1130","inLanguage":"zh","datePublished":"2015-04-28T09:34:34Z","dateModified":"2015-04-28T09:34:34Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-scroller%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android Scroller简单用法</h1><div class=post-description>Android里Scroller类是为了实现View平滑滚动的一个Helper类。通常在自定义的View时使用，在View中定义一个私有成员mScroller = new Scroller(context)。设置mScroller滚动的位置时，并不会导致View的滚动，通常是用mScroller记录...</div><div class=post-meta><span title='2015-04-28 09:34:34 +0000 UTC'>2015年4月28日</span>&nbsp;·&nbsp;<span>6 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><ul><li><a href=# aria-label></a></li></ul><li><a href=#public-voidcomputescroll aria-label="public void computeScroll ()">public void computeScroll ()</a></li><li><a href=#computescroll%e6%96%b9%e6%b3%95 aria-label=computeScroll 方法>computeScroll 方法</a></li></ul></div></details><div class="post-content md-content"><p>Android里Scroller类是为了实现View平滑滚动的一个Helper类。通常在自定义的View时使用，在View中定义一个私有成员mScroller = new Scroller(context)。设置mScroller滚动的位置时，并不会导致View的滚动，通常是用mScroller记录/计算View滚动的位置，再重写View的computeScroll()，完成实际的滚动。</p><p>相关API介绍如下</p><div class=dp-highlighter><div class=bar><div class=tools>Java代码<pre><code>  &lt;embed src=&quot;http://ipjmc.iteye.com/javascripts/syntaxhighlighter/clipboard_new.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;14&quot; height=&quot;15&quot;&gt;
+  &lt;/embed&gt; 
+  
+  &lt;a title=&quot;收藏这段代码&quot;&gt;![收藏代码](http://ipjmc.iteye.com/images/icon_star.png)&lt;/a&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- mScroller.getCurrX() &lt;span class=&quot;comment&quot;&gt;//获取mScroller当前水平滚动的位置&lt;/span&gt;
+
+- mScroller.getCurrY() &lt;span class=&quot;comment&quot;&gt;//获取mScroller当前竖直滚动的位置&lt;/span&gt;
+
+- mScroller.getFinalX() &lt;span class=&quot;comment&quot;&gt;//获取mScroller最终停止的水平位置&lt;/span&gt;
+
+- mScroller.getFinalY() &lt;span class=&quot;comment&quot;&gt;//获取mScroller最终停止的竖直位置&lt;/span&gt;
+
+- mScroller.setFinalX(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; newX) &lt;span class=&quot;comment&quot;&gt;//设置mScroller最终停留的水平位置，没有动画效果，直接跳到目标位置&lt;/span&gt;
+
+- mScroller.setFinalY(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; newY) &lt;span class=&quot;comment&quot;&gt;//设置mScroller最终停留的竖直位置，没有动画效果，直接跳到目标位置&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//滚动，startX, startY为开始滚动的位置，dx,dy为滚动的偏移量, duration为完成滚动的时间&lt;/span&gt;
+
+- mScroller.startScroll(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; startX, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; startY, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dx, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dy) &lt;span class=&quot;comment&quot;&gt;//使用默认完成时间250ms&lt;/span&gt;
+
+- mScroller.startScroll(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; startX, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; startY, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dx, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dy, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; duration)
+
+- 
+- mScroller.computeScrollOffset() &lt;span class=&quot;comment&quot;&gt;//返回值为boolean，true说明滚动尚未完成，false说明滚动已经完成。这是一个很重要的方法，通常放在View.computeScroll()中，用来判断是否滚动是否结束。&lt;/span&gt;
+</code></pre></div><p>举例说明，自定义一个CustomView，使用Scroller实现滚动：</p><div class=dp-highlighter><div class=bar><div class=tools>Java代码<pre><code>  &lt;embed src=&quot;http://ipjmc.iteye.com/javascripts/syntaxhighlighter/clipboard_new.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;14&quot; height=&quot;15&quot;&gt;
+  &lt;/embed&gt; 
+  
+  &lt;a title=&quot;收藏这段代码&quot;&gt;![收藏代码](http://ipjmc.iteye.com/images/icon_star.png)&lt;/a&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.Log;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.LinearLayout;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Scroller;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; CustomView &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; LinearLayout {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String TAG = &lt;span class=&quot;string&quot;&gt;&amp;#8220;Scroller&amp;#8221;&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Scroller mScroller;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; CustomView(Context context, AttributeSet attrs) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- mScroller = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Scroller(context);
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//调用此方法滚动到目标位置&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; smoothScrollTo(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; fx, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; fy) {
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dx = fx &amp;#8211; mScroller.getFinalX();
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dy = fy &amp;#8211; mScroller.getFinalY();
+
+- smoothScrollBy(dx, dy);
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//调用此方法设置滚动的相对偏移&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; smoothScrollBy(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dx, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; dy) {
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//设置mScroller的滚动偏移量&lt;/span&gt;
+
+- mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy);
+
+- invalidate();&lt;span class=&quot;comment&quot;&gt;//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果&lt;/span&gt;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; computeScroll() {
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//先判断mScroller滚动是否完成&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mScroller.computeScrollOffset()) {
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//这里调用View的scrollTo()完成实际的滚动&lt;/span&gt;
+
+- scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//必须调用该方法，否则不一定能看到滚动效果&lt;/span&gt;
+
+- postInvalidate();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.computeScroll();
+
+- }
+
+- }
+
+- 转自：http://ipjmc.iteye.com/blog/1615828
+
+
+
+
+
+&amp;nbsp;
+
+
+
+
+
+public class CustomView extends LinearLayout {
+
+
+
+
+
+private static final String TAG = CustomView.class.getName();
+</code></pre><p>// 定义一个滑动
+private Scroller mScroller;
+//手势
+private GestureDetector mGestureDetector;</p><pre><code>public CustomView(Context context, AttributeSet attrs, int defStyle) {
+</code></pre><p>super(context, attrs, defStyle);
+mScroller = new Scroller(context);
+mGestureDetector = new GestureDetector(context, new CustomGestureListener());
+}</p><pre><code>public CustomView(Context context, AttributeSet attrs) {
+</code></pre><p>super(context, attrs);
+mScroller = new Scroller(context);
+mGestureDetector = new GestureDetector(context, new CustomGestureListener());
+}</p><pre><code>public CustomView(Context context) {
+</code></pre><p>super(context);
+mScroller = new Scroller(context);
+mGestureDetector = new GestureDetector(context, new CustomGestureListener());
+// setClickable(true);
+// setLongClickable(true);
+}</p><pre><code>// 调用此方法滚动到目标位置
+</code></pre><p>public void smoothScrollTo(int fx, int fy) {
+int dx = fx – mScroller.getFinalX();
+int dy = fy – mScroller.getFinalY();
+smoothScrollBy(dx, dy);
+}</p><pre><code>// 调用此方法设置滚动的相对偏移
+</code></pre><p>public void smoothScrollBy(int dx, int dy) {
+// 设置mScroller的滚动偏移量
+mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx,
+dy);
+invalidate();// 这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
+}</p><pre><code>/**
+</code></pre><ul><li><p>完成实际的滚动
+*/
+@Override
+public void computeScroll() {
+// 判断Scroll是否滚动完成
+if (mScroller.computeScrollOffset()) {
+// 调用View 的scrollto完成实际的滚动
+scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+//必须调用该方法，否则不一定能看到滚动效果
+postInvalidate();
+}
+super.computeScroll();
+}</p><p>@Override
+public boolean onTouchEvent(MotionEvent event) {
+switch (event.getAction()) {
+case MotionEvent.ACTION_UP :
+Log.e(TAG, “get Sy” + getScrollY());
+smoothScrollTo(0, 0);
+break;
+default:
+return mGestureDetector.onTouchEvent(event);
+}
+return super.onTouchEvent(event);
+}</p><p>class CustomGestureListener implements GestureDetector.OnGestureListener {</p><p>@Override
+public boolean onDown(MotionEvent e) {
+// TODO Auto-generated method stub
+return true;
+}</p><p>@Override
+public void onShowPress(MotionEvent e) {
+// TODO Auto-generated method stub</p><p>}</p><p>@Override
+public boolean onSingleTapUp(MotionEvent e) {
+// TODO Auto-generated method stub
+return false;
+}</p><p>@Override
+public boolean onScroll(MotionEvent e1, MotionEvent e2,
+float distanceX, float distanceY) {</p><p>int dis = (int)((distanceY-0.5)/2);
+Log.e(TAG, dis + “.”);
+smoothScrollBy(0, dis);
+return false;
+}</p><p>@Override
+public void onLongPress(MotionEvent e) {
+// TODO Auto-generated method stub</p><p>}</p><p>@Override
+public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+float velocityY) {
+// TODO Auto-generated method stub
+return false;
+}</p><p>}
+}</p><p> </p><p><a href=http://blog.csdn.net/c_weibin/article/details/7438323>android 使用Scroller实现缓慢移动</a></p><p>转载请声明:<a href=http://bbs.niuzhi.cc/thread-24-1-1.html>http://bbs.niuzhi.cc/thread-24-1-1.html</a></p><p>在Launcher中的Workspace中实现了左右屏幕切换效果，里面就用到了Scroller记录滑动轨迹，实现一种缓慢地向左或向右移动的效果，这里我对这种效果进行总结:</p><p>我们先看一个例子:点击按钮时红经块会从左边缓慢地移向左右，这个该怎么实现呢</p><p><img alt=红色块在右边 loading=lazy src=http://my.csdn.net/uploads/201204/08/1333881550_3188.png> <img loading=lazy src=http://my.csdn.net/uploads/201204/08/1333881578_3680.png></p><p>我们先来看一下，Scroller，这个对象里有startScroll方法</p><p><strong>void android.widget.<a href=http://blog.csdn.net/c_weibin/article/details/7438323>Scroller</a>.startScroll(int startX, int startY, int dx, int dy, int duration)</strong>
+第一个参数是起始移动的x坐标值，第二个是起始移动的y坐标值，第三个第四个参数都是移到某点的坐标值，而**duration **当然就是执行移动的时间。这个有什么用呢。要知道有什么用还得再看一个方法</p></li></ul><h5><a name=t0></a></h5><div>boolean android.widget.[Scroller](http://blog.csdn.net/c_weibin/article/details/7438323).computeScrollOffset()</div><div></div><pre><code>当startScroll执行过程中即在duration时间内，**computeScrollOffset  **方法会一直返回false，但当动画执行完成后会返回返加true.
+
+
+
+
+
+有了这两个方法还不够，我们还需要再重写viewGroup的一个方法，
+
+
+
+
+
+**computeScroll 这个方法什么时候会被调用呢**
+
+
+
+
+
+**官网上这样说的**
+</code></pre><h4 id=public-voidcomputescroll><a name=t1></a><span class=normal>public void </span><span class=sympad>computeScroll</span> <span class=normal>()</span><a hidden class=anchor aria-hidden=true href=#public-voidcomputescroll>#</a></h4><div class=api-level><div>Since: [API Level 1](http://developer.android.com/guide/appendix/api-levels.html#level1)</div></div><div class=jd-details-descr><div class="jd-tagdata jd-tagdescr"><pre><code>    Called by a parent to request that a child update its values for mScrollX and mScrollY if necessary. This will typically be done if the child is animating a scroll using a `&amp;lt;a href=&quot;http://developer.android.com/reference/android/widget/Scroller.html&quot;&gt;Scroller&amp;lt;/a&gt;` object.
+  
+
+&lt;/div&gt;
+</code></pre></div><pre><code>当我们执行ontouch或invalidate(）或postInvalidate()都会导致这个方法的执行
+
+
+
+
+
+**所以我们像下面这样调用，**postInvalidate执行后，会去调**computeScroll 方法，而这个方法里再去调&lt;strong&gt;postInvalidate，这样******就可以不断地去调用scrollTo方法了，直到mScroller动画结束，当然第一次时，我们需要手动去调用一次**postInvalidate才会去调用 **&lt;/strong&gt;
+</code></pre><h4 id=computescroll方法><a name=t2></a><span class=sympad>computeScroll</span> 方法<a hidden class=anchor aria-hidden=true href=#computescroll方法>#</a></h4><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; computeScroll() {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mScroller.computeScrollOffset()) {
+  
+  - scrollTo(mScroller.getCurrX(), &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+  
+  - postInvalidate();
+  
+  - }
+  
+  - }
+</code></pre></div><pre><code>下面附上上面那个例子的源代码
+
+
+
+
+
+首先是MyViewGroup.java
+</code></pre><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.wb;
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.LinearLayout;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Scroller;
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MyViewGroup &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; LinearLayout {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; s1=&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+  
+  - Scroller mScroller=&lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyViewGroup(Context context, AttributeSet attrs) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+  
+  - mScroller=&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Scroller(context);
+  
+  - &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated constructor stub&lt;/span&gt;
+  
+  - }
+  
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; computeScroll() {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mScroller.computeScrollOffset()) {
+  
+  - scrollTo(mScroller.getCurrX(), &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+  
+  - postInvalidate();
+  
+  - }
+  
+  - }
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; beginScroll(){
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!s1) {
+  
+  - mScroller.startScroll(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);
+  
+  - s1 = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+  
+  - } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+  
+  - mScroller.startScroll(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &amp;#8211;&lt;span class=&quot;number&quot;&gt;500&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);
+  
+  - s1 = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+  
+  - }
+  
+  - invalidate();
+  
+  - }
+  
+  - }
+</code></pre></div><pre><code>然后是WheelActivity.java
+</code></pre><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.wb;
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Color;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.Gravity;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AbsListView;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AbsListView.LayoutParams;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AbsListView.OnScrollListener;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Adapter;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.BaseAdapter;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ListView;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.TextView;
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; WheelActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity {
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ListView listView = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; MyViewGroup myViewGroup;
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+  
+  - setContentView(R.layout.main);
+  
+  - myViewGroup = (MyViewGroup) findViewById(R.id.myviewGroup);
+  
+  - 
+  - }
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; scroll(View view) {
+  
+  - 
+  - myViewGroup.beginScroll();
+  
+  - 
+  - }
+  
+  - 
+  - }
+</code></pre></div><pre><code>main.xml
+</code></pre><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/c_weibin/article/details/7438323#)[copy](http://blog.csdn.net/c_weibin/article/details/7438323#)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+  
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;scroll&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:onClick&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;scroll&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;com.wb.MyViewGroup&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/myviewGroup&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;#ff0000&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;我在這&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+  
+  - 
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;com.wb.MyViewGroup&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><pre><code>源代码下载地址：[http://download.csdn.net/detail/c_weibin/4208751](http://download.csdn.net/detail/c_weibin/4208751)
+</code></pre></div><p> </p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E7%94%A8%E6%88%B7%E6%89%8B%E5%8A%BF%E6%A3%80%E6%B5%8B-gesturedetector%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/><span class=title>« 上一页</span>
+<span>用户手势检测-GestureDetector使用详解</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android-4-4%E4%BB%8E%E5%9B%BE%E5%BA%93%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84%E5%B9%B6%E8%A3%81%E5%89%AA/><span class=title>下一页 »</span>
+<span>Android 4.4从图库选择图片,获取图片路径并裁剪</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

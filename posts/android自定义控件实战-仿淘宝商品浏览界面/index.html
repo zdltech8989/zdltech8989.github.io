@@ -1,0 +1,835 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android自定义控件实战——仿淘宝商品浏览界面 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发,自定义控件"><meta name=description content="转载出处[http://blog.csdn.net/zhongkejingwang/article/details/38656929](http://blog.csdn.net/zhongkejingwang/article/details/38656929) 用手机淘宝浏览商品详情时，商品图片是放..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E5%AE%9E%E6%88%98-%E4%BB%BF%E6%B7%98%E5%AE%9D%E5%95%86%E5%93%81%E6%B5%8F%E8%A7%88%E7%95%8C%E9%9D%A2/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E5%AE%9E%E6%88%98-%E4%BB%BF%E6%B7%98%E5%AE%9D%E5%95%86%E5%93%81%E6%B5%8F%E8%A7%88%E7%95%8C%E9%9D%A2/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E5%AE%9E%E6%88%98-%E4%BB%BF%E6%B7%98%E5%AE%9D%E5%95%86%E5%93%81%E6%B5%8F%E8%A7%88%E7%95%8C%E9%9D%A2/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android自定义控件实战——仿淘宝商品浏览界面"><meta property="og:description" content="转载出处[http://blog.csdn.net/zhongkejingwang/article/details/38656929](http://blog.csdn.net/zhongkejingwang/article/details/38656929) 用手机淘宝浏览商品详情时，商品图片是放..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-03-04T02:28:16+00:00"><meta property="article:modified_time" content="2015-03-04T02:28:16+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta property="article:tag" content="自定义控件"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android自定义控件实战——仿淘宝商品浏览界面"><meta name=twitter:description content="转载出处[http://blog.csdn.net/zhongkejingwang/article/details/38656929](http://blog.csdn.net/zhongkejingwang/article/details/38656929) 用手机淘宝浏览商品详情时，商品图片是放..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android自定义控件实战——仿淘宝商品浏览界面","item":"https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E5%AE%9E%E6%88%98-%E4%BB%BF%E6%B7%98%E5%AE%9D%E5%95%86%E5%93%81%E6%B5%8F%E8%A7%88%E7%95%8C%E9%9D%A2/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android自定义控件实战——仿淘宝商品浏览界面","name":"Android自定义控件实战——仿淘宝商品浏览界面","description":"转载出处[http://blog.csdn.net/zhongkejingwang/article/details/38656929](http://blog.csdn.net/zhongkejingwang/article/details/38656929) 用手机淘宝浏览商品详情时，商品图片是放...","keywords":["android","移动开发","自定义控件"],"articleBody":"转载出处http://blog.csdn.net/zhongkejingwang/article/details/38656929\n用手机淘宝浏览商品详情时，商品图片是放在后面的，在第一个ScrollView滚动到最底下时会有提示，继续拖动才能浏览图片。仿照这个效果写一个出来并不难，只要定义一个Layout管理两个ScrollView就行了，当第一个ScrollView滑到底部时，再次向上滑动进入第二个ScrollView。效果如下：\n需要注意的地方是：\n1、如果是手动滑到底部需要再次按下才能继续往下滑，自动滚动到底部则不需要\n2、在由上一个ScrollView滑动到下一个ScrollView的过程中多只手指相继拖动也不会导致布局的剧变，也就是多个pointer的滑动不会导致move距离的剧变。\n这个Layout的实现思路是：\n在布局中放置两个ScrollView，并为其设置OnTouchListener，时刻判断ScrollView的滚动距离，一旦第一个ScrollView滚动到底部，则标识改为可向上拖动，此时开始记录滑动距离mMoveLen，根据mMoveLen重新layout两个ScrollView；同理，监听第二个ScrollView是否滚动到顶部，以往下拖动。\nOK，明白了原理之后可以看代码了：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38656929#) - package com.jingchen.tbviewer; - - import java.util.Timer; - import java.util.TimerTask; - - import android.content.Context; - import android.os.Handler; - import android.os.Message; - import android.util.AttributeSet; - import android.view.MotionEvent; - import android.view.VelocityTracker; - import android.view.View; - import android.widget.RelativeLayout; - import android.widget.ScrollView; - - /** - * 包含两个ScrollView的容器 - * - * @author chenjing - * - */ - public class ScrollViewContainer extends RelativeLayout { - - /** - * 自动上滑 - */ - public static final int AUTO_UP = ; - /** - * 自动下滑 - */ - public static final int AUTO_DOWN = 1; - /** - * 动画完成 - */ - public static final int DONE = 2; - /** - * 动画速度 - */ - public static final float SPEED = 6.5f; - - private boolean isMeasured = false; - - /** - * 用于计算手滑动的速度 - */ - private VelocityTracker vt; - - private int mViewHeight; - private int mViewWidth; - - private View topView; - private View bottomView; - - private boolean canPullDown; - private boolean canPullUp; - private int state = DONE; - - /** - * 记录当前展示的是哪个view，0是topView，1是bottomView - */ - private int mCurrentViewIndex = ; - /** - * 手滑动距离，这个是控制布局的主要变量 - */ - private float mMoveLen; - private MyTimer mTimer; - private float mLastY; - /** - * 用于控制是否变动布局的另一个条件，mEvents==0时布局可以拖拽了，mEvents==-1时可以舍弃将要到来的第一个move事件， - * 这点是去除多点拖动剧变的关键 - */ - private int mEvents; - - private Handler handler = new Handler() { - - @Override - public void handleMessage(Message msg) { - if (mMoveLen != ) { - if (state == AUTO_UP) { - mMoveLen -= SPEED; - if (mMoveLen \u003c= -mViewHeight) { - mMoveLen = -mViewHeight; - state = DONE; - mCurrentViewIndex = 1; - } - } else if (state == AUTO_DOWN) { - mMoveLen += SPEED; - if (mMoveLen \u003e= ) { - mMoveLen = ; - state = DONE; - mCurrentViewIndex = ; - } - } else { - mTimer.cancel(); - } - } - requestLayout(); - } - - }; - - public ScrollViewContainer(Context context) { - super(context); - init(); - } - - public ScrollViewContainer(Context context, AttributeSet attrs) { - super(context, attrs); - init(); - } - - public ScrollViewContainer(Context context, AttributeSet attrs, int defStyle) { - super(context, attrs, defStyle); - init(); - } - - private void init() { - mTimer = new MyTimer(handler); - } - - @Override - public boolean dispatchTouchEvent(MotionEvent ev) { - switch (ev.getActionMasked()) { - case MotionEvent.ACTION_DOWN: - if (vt == null) - vt = VelocityTracker.obtain(); - else - vt.clear(); - mLastY = ev.getY(); - vt.addMovement(ev); - mEvents = ; - break; - case MotionEvent.ACTION_POINTER_DOWN: - case MotionEvent.ACTION_POINTER_UP: - // 多一只手指按下或抬起时舍弃将要到来的第一个事件move，防止多点拖拽的bug - break; - case MotionEvent.ACTION_MOVE: - vt.addMovement(ev); - if (canPullUp \u0026\u0026 mCurrentViewIndex == \u0026\u0026 mEvents == ) { - // 防止上下越界 - if (mMoveLen \u003e ) { - mMoveLen = ; - mCurrentViewIndex = ; - } else if (mMoveLen \u003c -mViewHeight) { - mMoveLen = -mViewHeight; - mCurrentViewIndex = 1; - - } - // 防止事件冲突 - ev.setAction(MotionEvent.ACTION_CANCEL); - } - } else if (canPullDown \u0026\u0026 mCurrentViewIndex == 1 \u0026\u0026 mEvents == ) { - // 防止上下越界 - if (mMoveLen \u003c -mViewHeight) { - mMoveLen = -mViewHeight; - mCurrentViewIndex = 1; - } else if (mMoveLen \u003e ) { - mMoveLen = ; - mCurrentViewIndex = ; - } - // 防止事件冲突 - ev.setAction(MotionEvent.ACTION_CANCEL); - } - } else - mEvents++; - mLastY = ev.getY(); - requestLayout(); - break; - case MotionEvent.ACTION_UP: - mLastY = ev.getY(); - vt.addMovement(ev); - vt.computeCurrentVelocity(700); - // 获取Y方向的速度 - float mYV = vt.getYVelocity(); - if (mMoveLen == || mMoveLen == -mViewHeight) - break; - if (Math.abs(mYV) \u003c 500) { - // 速度小于一定值的时候当作静止释放，这时候两个View往哪移动取决于滑动的距离 - if (mMoveLen \u003c= -mViewHeight / 2) { - state = AUTO_UP; - } else if (mMoveLen \u003e -mViewHeight / 2) { - state = AUTO_DOWN; - } - } else { - // 抬起手指时速度方向决定两个View往哪移动 - if (mYV \u003c ) - state = AUTO_UP; - else - state = AUTO_DOWN; - } - mTimer.schedule(2); - try { - vt.recycle(); - } catch (Exception e) { - e.printStackTrace(); - } - break; - - } - super.dispatchTouchEvent(ev); - return true; - } - - @Override - protected void onLayout(boolean changed, int l, int t, int r, int b) { - topView.layout(, (int) mMoveLen, mViewWidth, - topView.getMeasuredHeight() + (int) mMoveLen); - bottomView.layout(, topView.getMeasuredHeight() + (int) mMoveLen, - mViewWidth, topView.getMeasuredHeight() + (int) mMoveLen - + bottomView.getMeasuredHeight()); - } - - @Override - protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) { - super.onMeasure(widthMeasureSpec, heightMeasureSpec); - if (!isMeasured) { - isMeasured = true; - - mViewHeight = getMeasuredHeight(); - mViewWidth = getMeasuredWidth(); - - topView = getChildAt(); - bottomView = getChildAt(1); - - bottomView.setOnTouchListener(bottomViewTouchListener); - topView.setOnTouchListener(topViewTouchListener); - } - } - - private OnTouchListener topViewTouchListener = new OnTouchListener() { - - @Override - public boolean onTouch(View v, MotionEvent event) { - ScrollView sv = (ScrollView) v; - .getMeasuredHeight()) \u0026\u0026 mCurrentViewIndex == ) - canPullUp = true; - else - canPullUp = false; - return false; - } - }; - private OnTouchListener bottomViewTouchListener = new OnTouchListener() { - - @Override - public boolean onTouch(View v, MotionEvent event) { - ScrollView sv = (ScrollView) v; - if (sv.getScrollY() == \u0026\u0026 mCurrentViewIndex == 1) - canPullDown = true; - else - canPullDown = false; - return false; - } - }; - - class MyTimer { - private Handler handler; - private Timer timer; - private MyTask mTask; - - public MyTimer(Handler handler) { - this.handler = handler; - timer = new Timer(); - } - - public void schedule(long period) { - if (mTask != null) { - mTask.cancel(); - mTask = null; - } - mTask = new MyTask(handler); - timer.schedule(mTask, , period); - } - - public void cancel() { - if (mTask != null) { - mTask.cancel(); - mTask = null; - } - } - - class MyTask extends TimerTask { - private Handler handler; - - public MyTask(Handler handler) { - this.handler = handler; - } - - @Override - public void run() { - handler.obtainMessage().sendToTarget(); - } - - } - } - - } 注释写的很清楚了，有几个关键点需要讲一下：\n1、由于这里为两个ScrollView设置了OnTouchListener，所以在其他地方不能再设置了，否则就白搭了。\n2、两个ScrollView的layout参数统一由mMoveLen决定。\n3、变量mEvents有两个作用：一是防止手动滑到底部或顶部时继续滑动而改变布局，必须再次按下才能继续滑动；二是在新的pointer down或up时把mEvents设置成-1可以舍弃将要到来的第一个move事件，防止mMoveLen出现剧变。为什么会出现剧变呢？因为假设一开始只有一只手指在滑动，记录的坐标值是这个pointer的事件坐标点，这时候另一只手指按下了导致事件又多了一个pointer，这时候到来的move事件的坐标可能就变成了新的pointer的坐标，这时计算与上一次坐标的差值就会出现剧变，变化的距离就是两个pointer间的距离。所以要把这个move事件舍弃掉，让mLastY值记录这个pointer的坐标再开始计算mMoveLen。pointer up的时候也一样。\n理解了这几点，看起来就没什么难度了，代码量也很小。\nMainActivity的布局：\n**[html]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38656929#) - \u003cRelativeLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; \u003e - - \u003ccom.jingchen.tbviewer.ScrollViewContainer - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; \u003e - - \u003cScrollView - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; \u003e - - \u003cRelativeLayout - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; \u003e - - \u003cLinearLayout - android:id=\u0026#8220;@+id/imagesLayout\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:gravity=\u0026#8220;center_horizontal\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/h\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/i\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/j\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/k\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/l\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/m\u0026#8221; /\u003e - \u003c/LinearLayout\u003e - - \u003cTextView - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;60dp\u0026#8221; - android:layout_below=\u0026#8220;@id/imagesLayout\u0026#8221; - android:background=\u0026#8220;#eeeeee\u0026#8221; - android:gravity=\u0026#8220;center\u0026#8221; - android:text=\u0026#8220;继续拖动，查看更多美女\u0026#8221; - android:textSize=\u0026#8220;20sp\u0026#8221; /\u003e - \u003c/RelativeLayout\u003e - \u003c/ScrollView\u003e - - \u003cScrollView - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:background=\u0026#8220;#000000\u0026#8221; \u003e - - \u003cLinearLayout - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:gravity=\u0026#8220;center_horizontal\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/a\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/b\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/c\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/d\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/e\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/f\u0026#8221; /\u003e - - \u003cImageView - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@drawable/g\u0026#8221; /\u003e - \u003c/LinearLayout\u003e - \u003c/ScrollView\u003e - \u003c/com.jingchen.tbviewer.ScrollViewContainer\u003e - - \u003c/RelativeLayout\u003e 在ScrollView中放了几张图片而已。\nMainActivity的代码：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38656929#) - package com.jingchen.tbviewer; - - import android.app.Activity; - import android.os.Bundle; - import android.view.Menu; - - public class MainActivity extends Activity - { - @Override - protected void onCreate(Bundle savedInstanceState) - { - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_main); - } - - @Override - public boolean onCreateOptionsMenu(Menu menu) - { - getMenuInflater().inflate(R.menu.main, menu); - return true; - } - - } 啥也没有……\n好了，到此结束~\n源码下载\n","wordCount":"1884","inLanguage":"zh","datePublished":"2015-03-04T02:28:16Z","dateModified":"2015-03-04T02:28:16Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E5%AE%9E%E6%88%98-%E4%BB%BF%E6%B7%98%E5%AE%9D%E5%95%86%E5%93%81%E6%B5%8F%E8%A7%88%E7%95%8C%E9%9D%A2/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android自定义控件实战——仿淘宝商品浏览界面</h1><div class=post-description>转载出处[http://blog.csdn.net/zhongkejingwang/article/details/38656929](http://blog.csdn.net/zhongkejingwang/article/details/38656929) 用手机淘宝浏览商品详情时，商品图片是放...</div><div class=post-meta><span title='2015-03-04 02:28:16 +0000 UTC'>2015年3月4日</span>&nbsp;·&nbsp;<span>9 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>转载出处<a href=http://blog.csdn.net/zhongkejingwang/article/details/38656929>http://blog.csdn.net/zhongkejingwang/article/details/38656929</a></p><p>用手机淘宝浏览商品详情时，商品图片是放在后面的，在第一个ScrollView滚动到最底下时会有提示，继续拖动才能浏览图片。仿照这个效果写一个出来并不难，只要定义一个Layout管理两个ScrollView就行了，当第一个ScrollView滑到底部时，再次向上滑动进入第二个ScrollView。效果如下：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140818121207234?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>需要注意的地方是：</p><p>1、如果是手动滑到底部需要再次按下才能继续往下滑，自动滚动到底部则不需要</p><p>2、在由上一个ScrollView滑动到下一个ScrollView的过程中多只手指相继拖动也不会导致布局的剧变，也就是多个pointer的滑动不会导致move距离的剧变。</p><p>这个Layout的实现思路是：</p><p>在布局中放置两个ScrollView，并为其设置OnTouchListener，时刻判断ScrollView的滚动距离，一旦第一个ScrollView滚动到底部，则标识改为可向上拖动，此时开始记录滑动距离mMoveLen，根据mMoveLen重新layout两个ScrollView；同理，监听第二个ScrollView是否滚动到顶部，以往下拖动。</p><p>OK，明白了原理之后可以看代码了：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.tbviewer;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Timer;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.TimerTask;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Handler;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Message;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.MotionEvent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.VelocityTracker;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.RelativeLayout;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ScrollView;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 包含两个ScrollView的容器&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author chenjing&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; ScrollViewContainer &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; RelativeLayout {
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 自动上滑&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; AUTO_UP = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 自动下滑&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; AUTO_DOWN = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 动画完成&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; DONE = &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 动画速度&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; SPEED = &lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;.5f;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isMeasured = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 用于计算手滑动的速度&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; VelocityTracker vt;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mViewHeight;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mViewWidth;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View topView;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View bottomView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; state = DONE;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 记录当前展示的是哪个view，0是topView，1是bottomView&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mCurrentViewIndex = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 手滑动距离，这个是控制布局的主要变量&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; mMoveLen;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; MyTimer mTimer;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; mLastY;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 用于控制是否变动布局的另一个条件，mEvents==0时布局可以拖拽了，mEvents==-1时可以舍弃将要到来的第一个move事件，&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 这点是去除多点拖动剧变的关键&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mEvents;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Handler handler = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Handler() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; handleMessage(Message msg) {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen != &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == AUTO_UP) {
+
+- mMoveLen -= SPEED;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &lt;= -mViewHeight) {
+
+- mMoveLen = -mViewHeight;
+
+- state = DONE;
+
+- mCurrentViewIndex = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == AUTO_DOWN) {
+
+- mMoveLen += SPEED;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &gt;= &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+
+- mMoveLen = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- state = DONE;
+
+- mCurrentViewIndex = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- mTimer.cancel();
+
+- }
+
+- }
+
+- requestLayout();
+
+- }
+
+- 
+- };
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; ScrollViewContainer(Context context) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- init();
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; ScrollViewContainer(Context context, AttributeSet attrs) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- init();
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; ScrollViewContainer(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- init();
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; init() {
+
+- mTimer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyTimer(handler);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; dispatchTouchEvent(MotionEvent ev) {
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (ev.getActionMasked()) {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_DOWN:
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (vt == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- vt = VelocityTracker.obtain();
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- vt.clear();
+
+- mLastY = ev.getY();
+
+- vt.addMovement(ev);
+
+- mEvents = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_POINTER_DOWN:
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_POINTER_UP:
+
+- &lt;span class=&quot;comment&quot;&gt;// 多一只手指按下或抬起时舍弃将要到来的第一个事件move，防止多点拖拽的bug&lt;/span&gt;
+
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_MOVE:
+
+- vt.addMovement(ev);
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (canPullUp &amp;&amp; mCurrentViewIndex == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; &amp;&amp; mEvents == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+
+
+- &lt;span class=&quot;comment&quot;&gt;// 防止上下越界&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+
+- mMoveLen = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- mCurrentViewIndex = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &lt; -mViewHeight) {
+
+- mMoveLen = -mViewHeight;
+
+- mCurrentViewIndex = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- 
+- }
+
+
+- &lt;span class=&quot;comment&quot;&gt;// 防止事件冲突&lt;/span&gt;
+
+- ev.setAction(MotionEvent.ACTION_CANCEL);
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (canPullDown &amp;&amp; mCurrentViewIndex == &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; &amp;&amp; mEvents == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+
+
+- &lt;span class=&quot;comment&quot;&gt;// 防止上下越界&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &lt; -mViewHeight) {
+
+- mMoveLen = -mViewHeight;
+
+- mCurrentViewIndex = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+
+- mMoveLen = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- mCurrentViewIndex = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- }
+
+
+- &lt;span class=&quot;comment&quot;&gt;// 防止事件冲突&lt;/span&gt;
+
+- ev.setAction(MotionEvent.ACTION_CANCEL);
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- mEvents++;
+
+- mLastY = ev.getY();
+
+- requestLayout();
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_UP:
+
+- mLastY = ev.getY();
+
+- vt.addMovement(ev);
+
+- vt.computeCurrentVelocity(&lt;span class=&quot;number&quot;&gt;700&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;// 获取Y方向的速度&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; mYV = vt.getYVelocity();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; || mMoveLen == -mViewHeight)
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (Math.abs(mYV) &lt; &lt;span class=&quot;number&quot;&gt;500&lt;/span&gt;) {
+
+- &lt;span class=&quot;comment&quot;&gt;// 速度小于一定值的时候当作静止释放，这时候两个View往哪移动取决于滑动的距离&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &lt;= -mViewHeight / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;) {
+
+- state = AUTO_UP;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mMoveLen &gt; -mViewHeight / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;) {
+
+- state = AUTO_DOWN;
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- &lt;span class=&quot;comment&quot;&gt;// 抬起手指时速度方向决定两个View往哪移动&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mYV &lt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- state = AUTO_UP;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- state = AUTO_DOWN;
+
+- }
+
+- mTimer.schedule(&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- vt.recycle();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (Exception e) {
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- 
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.dispatchTouchEvent(ev);
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onLayout(&lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; changed, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; t, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; r, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; b) {
+
+- topView.layout(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) mMoveLen, mViewWidth,
+
+- topView.getMeasuredHeight() + (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) mMoveLen);
+
+- bottomView.layout(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, topView.getMeasuredHeight() + (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) mMoveLen,
+
+- mViewWidth, topView.getMeasuredHeight() + (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) mMoveLen
+
+- + bottomView.getMeasuredHeight());
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onMeasure(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; widthMeasureSpec, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; heightMeasureSpec) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!isMeasured) {
+
+- isMeasured = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- 
+- mViewHeight = getMeasuredHeight();
+
+- mViewWidth = getMeasuredWidth();
+
+- 
+- topView = getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+
+- bottomView = getChildAt(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- 
+- bottomView.setOnTouchListener(bottomViewTouchListener);
+
+- topView.setOnTouchListener(topViewTouchListener);
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; OnTouchListener topViewTouchListener = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnTouchListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; onTouch(View v, MotionEvent event) {
+
+- ScrollView sv = (ScrollView) v;
+
+
+- .getMeasuredHeight()) &amp;&amp; mCurrentViewIndex == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- canPullUp = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- canPullUp = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- };
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; OnTouchListener bottomViewTouchListener = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnTouchListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; onTouch(View v, MotionEvent event) {
+
+- ScrollView sv = (ScrollView) v;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (sv.getScrollY() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; &amp;&amp; mCurrentViewIndex == &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+
+- canPullDown = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- canPullDown = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- };
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MyTimer {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Handler handler;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Timer timer;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; MyTask mTask;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyTimer(Handler handler) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.handler = handler;
+
+- timer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Timer();
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; schedule(&lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; period) {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mTask != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- mTask.cancel();
+
+- mTask = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- }
+
+- mTask = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyTask(handler);
+
+- timer.schedule(mTask, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, period);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; cancel() {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mTask != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- mTask.cancel();
+
+- mTask = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MyTask &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; TimerTask {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Handler handler;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyTask(Handler handler) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.handler = handler;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; run() {
+
+- handler.obtainMessage().sendToTarget();
+
+- }
+
+- 
+- }
+
+- }
+
+- 
+- }
+</code></pre></div><p>注释写的很清楚了，有几个关键点需要讲一下：</p><p>1、由于这里为两个ScrollView设置了OnTouchListener，所以在其他地方不能再设置了，否则就白搭了。</p><p>2、两个ScrollView的layout参数统一由mMoveLen决定。</p><p>3、变量mEvents有两个作用：一是防止手动滑到底部或顶部时继续滑动而改变布局，必须再次按下才能继续滑动；二是在新的pointer down或up时把mEvents设置成-1可以舍弃将要到来的第一个move事件，防止mMoveLen出现剧变。为什么会出现剧变呢？因为假设一开始只有一只手指在滑动，记录的坐标值是这个pointer的事件坐标点，这时候另一只手指按下了导致事件又多了一个pointer，这时候到来的move事件的坐标可能就变成了新的pointer的坐标，这时计算与上一次坐标的差值就会出现剧变，变化的距离就是两个pointer间的距离。所以要把这个move事件舍弃掉，让mLastY值记录这个pointer的坐标再开始计算mMoveLen。pointer up的时候也一样。</p><p>理解了这几点，看起来就没什么难度了，代码量也很小。</p><p>MainActivity的布局：</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;com.jingchen.tbviewer.ScrollViewContainer&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ScrollView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/imagesLayout&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center_horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/h&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/i&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/j&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/k&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/l&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/m&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;60dp&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_below&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/imagesLayout&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;#eeeeee&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;继续拖动，查看更多美女&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:textSize&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;20sp&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ScrollView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ScrollView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;#000000&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center_horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/a&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/b&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/c&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/d&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/e&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/f&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/g&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ScrollView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;com.jingchen.tbviewer.ScrollViewContainer&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>在ScrollView中放了几张图片而已。</p><p>MainActivity的代码：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38656929#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.tbviewer;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.Menu;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity
+
+- {
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.activity_main);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; onCreateOptionsMenu(Menu menu)
+
+- {
+
+- getMenuInflater().inflate(R.menu.main, menu);
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- 
+- }
+</code></pre></div><p>啥也没有……</p><p>好了，到此结束~</p><p><a href=http://download.csdn.net/detail/zhongkejingwang/7776161>源码下载</a></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li><li><a href=https://blog.zdltech.com/tags/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6/>自定义控件</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E5%AE%9E%E6%88%98-%E6%B0%B4%E6%B5%81%E6%B3%A2%E5%8A%A8%E6%95%88%E6%9E%9C%E7%9A%84%E5%AE%9E%E7%8E%B0waveview/><span class=title>« 上一页</span>
+<span>Android自定义控件实战——水流波动效果的实现WaveView</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E6%8E%A2%E7%B4%A2android-%E6%BB%91%E5%8A%A8%E7%BD%AE%E9%A1%B6%E6%A0%87%E9%A2%98%E7%9A%84%E5%AE%9E%E7%8E%B0/><span class=title>下一页 »</span>
+<span>探索Android 滑动置顶标题的实现</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

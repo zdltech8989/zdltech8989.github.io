@@ -1,0 +1,1638 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>java自带线程池和队列详细讲解，android中适用 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="- [一简介](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_1) - [二：线程池](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_2) - [三：ThreadPoolExecutor详..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/java%E8%87%AA%E5%B8%A6%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%92%8C%E9%98%9F%E5%88%97%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3android%E4%B8%AD%E9%80%82%E7%94%A8/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/java%E8%87%AA%E5%B8%A6%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%92%8C%E9%98%9F%E5%88%97%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3android%E4%B8%AD%E9%80%82%E7%94%A8/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/java%E8%87%AA%E5%B8%A6%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%92%8C%E9%98%9F%E5%88%97%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3android%E4%B8%AD%E9%80%82%E7%94%A8/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="java自带线程池和队列详细讲解，android中适用"><meta property="og:description" content="- [一简介](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_1) - [二：线程池](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_2) - [三：ThreadPoolExecutor详..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-06-15T06:46:31+00:00"><meta property="article:modified_time" content="2015-06-15T06:46:31+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="java自带线程池和队列详细讲解，android中适用"><meta name=twitter:description content="- [一简介](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_1) - [二：线程池](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_2) - [三：ThreadPoolExecutor详..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"java自带线程池和队列详细讲解，android中适用","item":"https://blog.zdltech.com/posts/java%E8%87%AA%E5%B8%A6%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%92%8C%E9%98%9F%E5%88%97%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3android%E4%B8%AD%E9%80%82%E7%94%A8/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"java自带线程池和队列详细讲解，android中适用","name":"java自带线程池和队列详细讲解，android中适用","description":"- [一简介](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_1) - [二：线程池](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_2) - [三：ThreadPoolExecutor详...","keywords":["android","移动开发"],"articleBody":" - [一简介](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_1) - [二：线程池](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_2) - [三：ThreadPoolExecutor详解](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_3) Java线程池使用说明 \u0026nbsp; 一简介 线程的使用在java中占有极其重要的地位，在jdk1.4极其之前的jdk版本中，关于线程池的使用是极其简陋的。在jdk1.5之后这一情况有了很大的改观。Jdk1.5之后加入了java.util.concurrent包，这个包中主要介绍java中线程以及线程池的使用。为我们在开发中处理线程的问题提供了非常大的帮助。 \u0026nbsp; 二：线程池 **线程池的作用：** 线程池作用就是限制系统中执行线程的数量。 根据系统的环境情况，可以自动或手动设置线程数量，达到运行的最佳效果；少了浪费了系统资源，多了造成系统拥挤效率不高。用线程池控制线程数量，其他线程排队等候。一个任务执行完毕，再从队列的中取最前面的任务开始执行。若队列中没有等待进程，线程池的这一资源处于等待。当一个新任务需要运行时，如果线程池中有等待的工作线程，就可以开始运行了；否则进入等待队列。\n**为什么要用线程池:** 1.减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。 2.可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)。 Java里面线程池的顶级接口是Executor，但是严格意义上讲Executor并不是一个线程池，而只是一个执行线程的工具。真正的线程池接口是ExecutorService。 比较重要的几个类： ExecutorService 真正的线程池接口。 ScheduledExecutorService 能和Timer/TimerTask类似，解决那些需要任务重复执行的问题。 ThreadPoolExecutor ExecutorService的默认实现。 ScheduledThreadPoolExecutor 继承ThreadPoolExecutor的ScheduledExecutorService接口实现，周期性任务调度的类实现。 要配置一个线程池是比较复杂的，尤其是对于线程池的原理不是很清楚的情况下，很有可能配置的线程池不是较优的，因此在Executors类里面提供了一些静态工厂，生成一些常用的线程池。 **1. newSingleThreadExecutor** 创建一个单线程的线程池。这个线程池只有一个线程在工作，也就是相当于单线程串行执行所有任务。如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它。此线程池保证所有任务的执行顺序按照任务的提交顺序执行。 2.**newFixedThreadPool** 创建固定大小的线程池。每次提交一个任务就创建一个线程，直到线程达到线程池的最大大小。线程池的大小一旦达到最大值就会保持不变，如果某个线程因为执行异常而结束，那么线程池会补充一个新线程。 **3. newCachedThreadPool** 创建一个可缓存的线程池。如果线程池的大小超过了处理任务所需要的线程， 那么就会回收部分空闲（60秒不执行任务）的线程，当任务数增加时，此线程池又可以智能的添加新线程来处理任务。此线程池不会对线程池大小做限制，线程池大小完全依赖于操作系统（或者说JVM）能够创建的最大线程大小。 4.**newScheduledThreadPool** 创建一个大小无限的线程池。此线程池支持定时以及周期性执行任务的需求。 **实例** **1：newSingleThreadExecutor** MyThread.java **public****class**MyThread **extends** Thread {@Override **public****void** run() { System.*out*.println(Thread.*currentThread*().getName() + \u0026#8220;正在执行。。。\u0026#8221;); } } TestSingleThreadExecutor.java **public****class**TestSingleThreadExecutor {**public****static****void** main(String[] args) { //创建一个可重用固定线程数的线程池 ExecutorService pool = Executors.* newSingleThreadExecutor*(); //创建实现了Runnable接口对象，Thread对象当然也实现了Runnable接口 Thread t1 = **new** MyThread(); Thread t2 = **new** MyThread(); Thread t3 = **new** MyThread(); Thread t4 = **new** MyThread(); Thread t5 = **new** MyThread(); //将线程放入池中进行执行 pool.execute(t1); pool.execute(t2); pool.execute(t3); pool.execute(t4); pool.execute(t5); //关闭线程池 pool.shutdown(); } } **输出结果** pool-1-thread-1正在执行。。。pool-1-thread-1正在执行。。。 pool-1-thread-1正在执行。。。 pool-1-thread-1正在执行。。。 pool-1-thread-1正在执行。。。 **2newFixedThreadPool** TestFixedThreadPool.Java **public****class** TestFixedThreadPool {**public****static****void** main(String[] args) { //创建一个可重用固定线程数的线程池 ExecutorService pool = Executors.*newFixedThreadPool*(2); //创建实现了Runnable接口对象，Thread对象当然也实现了Runnable接口 Thread t1 = **new** MyThread(); Thread t2 = **new** MyThread(); Thread t3 = **new** MyThread(); Thread t4 = **new** MyThread(); Thread t5 = **new** MyThread(); //将线程放入池中进行执行 pool.execute(t1); pool.execute(t2); pool.execute(t3); pool.execute(t4); pool.execute(t5); //关闭线程池 pool.shutdown(); } } **输出结果** pool-1-thread-1正在执行。。。pool-1-thread-2正在执行。。。 pool-1-thread-1正在执行。。。 pool-1-thread-2正在执行。。。 pool-1-thread-1正在执行。。。 3** newCachedThreadPool** TestCachedThreadPool.java **public****class** TestCachedThreadPool {**public****static****void** main(String[] args) { //创建一个可重用固定线程数的线程池 ExecutorService pool = Executors.*newCachedThreadPool*(); //创建实现了Runnable接口对象，Thread对象当然也实现了Runnable接口 Thread t1 = **new** MyThread(); Thread t2 = **new** MyThread(); Thread t3 = **new** MyThread(); Thread t4 = **new** MyThread(); Thread t5 = **new** MyThread(); //将线程放入池中进行执行 pool.execute(t1); pool.execute(t2); pool.execute(t3); pool.execute(t4); pool.execute(t5); //关闭线程池 pool.shutdown(); } } 输出结果： pool-1-thread-2正在执行。。。pool-1-thread-4正在执行。。。 pool-1-thread-3正在执行。。。 pool-1-thread-1正在执行。。。 pool-1-thread-5正在执行。。。 4**newScheduledThreadPool** TestScheduledThreadPoolExecutor.java **public****class** TestScheduledThreadPoolExecutor {**public****static****void** main(String[] args) { ScheduledThreadPoolExecutor exec = **new** ScheduledThreadPoolExecutor(1); exec.scheduleAtFixedRate(**new** Runnable() {//每隔一段时间就触发异常 @Override **public****void** run() { //throw new RuntimeException(); System.*out*.println(\u0026#8220;================\u0026#8221;); } }, 1000, 5000, TimeUnit.*MILLISECONDS*); exec.scheduleAtFixedRate(**new** Runnable() {//每隔一段时间打印系统时间，证明两者是互不影响的 @Override **public****void** run() { System.*out*.println(System.*nanoTime*()); } }, 1000, 2000, TimeUnit.*MILLISECONDS*); } } 输出结果 ================8384644549516 8386643829034 8388643830710 ================ 8390643851383 8392643879319 8400643939383 \u0026nbsp; # 三：ThreadPoolExecutor详解 ThreadPoolExecutor的完整构造方法的签名是：**ThreadPoolExecutor**`(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue\u0026lt;Runnable\u0026gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)` . **maximumPoolSize**-池中允许的最大线程数。 **ThreadPoolExecutor是Executors类的底层实现。** 在JDK帮助文档中，有如此一段话： “强烈建议程序员使用较为方便的`Executors`工厂方法`Executors.newCachedThreadPool()`（无界线程池，可以进行自动线程回收）、`Executors.newFixedThreadPool(int)`（固定大小线程池）`Executors.newSingleThreadExecutor()`（单个后台线程） 它们均为大多数使用场景预定义了设置。” 下面介绍一下几个类的源码： **ExecutorService newFixedThreadPool (int nThreads):固定大小线程池。** 可以看到，corePoolSize和maximumPoolSize的大小是一样的（实际上，后面会介绍，如果使用无界queue的话maximumPoolSize参数是没有意义的），keepAliveTime和unit的设值表名什么？-就是该实现不想keep alive！最后的BlockingQueue选择了LinkedBlockingQueue，该queue有一个特点，他是无界的。 1. public static ExecutorService newFixedThreadPool(int nThreads) {2. return new ThreadPoolExecutor(nThreads, nThreads, 3. 0L, TimeUnit.MILLISECONDS, 4. new LinkedBlockingQueue()); 5. } **ExecutorService newSingleThreadExecutor()：单线程** 1. public static ExecutorService newSingleThreadExecutor() {2. return new FinalizableDelegatedExecutorService 3. (new ThreadPoolExecutor(1, 1, 4. 0L, TimeUnit.MILLISECONDS, 5. new LinkedBlockingQueue())); 6. } **ExecutorService newCachedThreadPool()：无界线程池，可以进行自动线程回收** 这个实现就有意思了。首先是无界的线程池，所以我们可以发现maximumPoolSize为big big。其次BlockingQueue的选择上使用SynchronousQueue。可能对于该BlockingQueue有些陌生，简单说：该QUEUE中，每个插入操作必须等待另一个线程的对应移除操作。 1. public static ExecutorService newCachedThreadPool() {2. return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 3. 60L, TimeUnit.SECONDS, 4. new SynchronousQueue()); - } 先从[BlockingQueue](http://dongxuan.iteye.com/admin/blogs/901659/)\u003c[Runnable](http://dongxuan.iteye.com/admin/blogs/901659/)\u003e workQueue这个入参开始说起。在JDK中，其实已经说得很清楚了，一共有三种类型的queue。 所有BlockingQueue 都可用于传输和保持提交的任务。可以使用此队列与池大小进行交互： 如果运行的线程少于 corePoolSize，则 Executor始终首选添加新的线程，而不进行排队。（如果当前运行的线程小于corePoolSize，则任务根本不会存放，添加到queue中，而是直接抄家伙（thread）开始运行） 如果运行的线程等于或多于 corePoolSize，则 Executor始终首选将请求加入队列，**而不添加新的线程**。 如果无法将请求加入队列，则创建新的线程，除非创建此线程超出 maximumPoolSize，在这种情况下，任务将被拒绝。 **queue上的三种类型。** \u0026nbsp; 排队有三种通用策略： **直接提交。**工作队列的默认选项是 SynchronousQueue，它将任务直接提交给线程而不保持它们。在此，如果不存在可用于立即运行任务的线程，则试图把任务加入队列将失败，因此会构造一个新的线程。此策略可以避免在处理可能具有内部依赖性的请求集时出现锁。直接提交通常要求无界maximumPoolSizes 以避免拒绝新提交的任务。当命令以超过队列所能处理的平均数连续到达时，此策略允许无界线程具有增长的可能性。 **无界队列。**使用无界队列（例如，不具有预定义容量的 LinkedBlockingQueue）将导致在所有 corePoolSize 线程都忙时新任务在队列中等待。这样，创建的线程就不会超过 corePoolSize。（因此，maximumPoolSize的值也就无效了。）当每个任务完全独立于其他任务，即任务执行互不影响时，适合于使用无界队列；例如，在 Web页服务器中。这种排队可用于处理瞬态突发请求，当命令以超过队列所能处理的平均数连续到达时，此策略允许无界线程具有增长的可能性。 **有界队列。**当使用有限的 maximumPoolSizes时，有界队列（如 ArrayBlockingQueue）有助于防止资源耗尽，但是可能较难调整和控制。队列大小和最大池大小可能需要相互折衷：使用大型队列和小型池可以最大限度地降低 CPU 使用率、操作系统资源和上下文切换开销，但是可能导致人工降低吞吐量。如果任务频繁阻塞（例如，如果它们是 I/O边界），则系统可能为超过您许可的更多线程安排时间。使用小型队列通常要求较大的池大小，CPU使用率较高，但是可能遇到不可接受的调度开销，这样也会降低吞吐量。 **BlockingQueue的选择。** **例子一：使用直接提交策略，也即SynchronousQueue。** 首先SynchronousQueue是无界的，也就是说他存数任务的能力是没有限制的，但是由于该Queue本身的特性，**在某次添加元素后必须等待其他线程取走后才能继续添加**。在这里不是核心线程便是新创建的线程，但是我们试想一样下，下面的场景。 我们使用一下参数构造ThreadPoolExecutor： 1. new ThreadPoolExecutor( 2. 2, 3, 30, TimeUnit.SECONDS, 3. new SynchronousQueue(), 4. new RecorderThreadFactory(\u0026#8220;CookieRecorderPool\u0026#8221;), - new ThreadPoolExecutor.CallerRunsPolicy()); new ThreadPoolExecutor( 2, 3, 30, TimeUnit.SECONDS, new SynchronousQueue(), new RecorderThreadFactory(\u0026#8220;CookieRecorderPool\u0026#8221;), new ThreadPoolExecutor.CallerRunsPolicy()); 当核心线程已经有2个正在运行. - 此时继续来了一个任务（A），根据前面介绍的“如果运行的线程等于或多于 corePoolSize，则 Executor始终首选将请求加入队列，**而不添加新的线程**。”,所以A被添加到queue中。 - 又来了一个任务（B），且核心2个线程还没有忙完，OK，接下来首先尝试1中描述，但是由于使用的SynchronousQueue，所以一定无法加入进去。 - 此时便满足了上面提到的“如果无法将请求加入队列，则创建新的线程，除非创建此线程超出maximumPoolSize，在这种情况下，任务将被拒绝。”，所以必然会新建一个线程来运行这个任务。 - 暂时还可以，但是如果这三个任务都还没完成，连续来了两个任务，第一个添加入queue中，后一个呢？queue中无法插入，而线程数达到了maximumPoolSize，所以只好执行异常策略了。 所以在使用SynchronousQueue通常要求maximumPoolSize是无界的，这样就可以避免上述情况发生（如果希望限制就直接使用有界队列）。对于使用SynchronousQueue的作用jdk中写的很清楚：此策略可以避免在处理可能具有内部依赖性的请求集时出现锁。 什么意思？如果你的任务A1，A2有内部关联，A1需要先运行，那么先提交A1，再提交A2，当使用SynchronousQueue我们可以保证，A1必定先被执行，在A1么有被执行前，A2不可能添加入queue中。 **例子二：使用无界队列策略，即LinkedBlockingQueue** 这个就拿**newFixedThreadPool**来说，根据前文提到的规则： 如果运行的线程少于 corePoolSize，则 Executor 始终首选添加新的线程，而不进行排队。那么当任务继续增加，会发生什么呢？ 如果运行的线程等于或多于 corePoolSize，则 Executor 始终首选将请求加入队列，而不添加新的线程。OK，此时任务变加入队列之中了，那什么时候才会添加新线程呢？ 如果无法将请求加入队列，则创建新的线程，除非创建此线程超出 maximumPoolSize，在这种情况下，任务将被拒绝。这里就很有意思了，可能会出现无法加入队列吗？不像SynchronousQueue那样有其自身的特点，对于无界队列来说，总是可以加入的（资源耗尽，当然另当别论）。换句说，永远也不会触发产生新的线程！corePoolSize大小的线程数会一直运行，忙完当前的，就从队列中拿任务开始运行。所以要防止任务疯长，比如任务运行的实行比较长，而添加任务的速度远远超过处理任务的时间，而且还不断增加，不一会儿就爆了。 **例子三：有界队列，使用ArrayBlockingQueue。** 这个是最为复杂的使用，所以JDK不推荐使用也有些道理。与上面的相比，最大的特点便是可以防止资源耗尽的情况发生。 举例来说，请看如下构造方法： 1. new ThreadPoolExecutor( 2. 2, 4, 30, TimeUnit.SECONDS, 3. new ArrayBlockingQueue(2), 4. new RecorderThreadFactory(\u0026#8220;CookieRecorderPool\u0026#8221;), 5. new ThreadPoolExecutor.CallerRunsPolicy()); new ThreadPoolExecutor( 2, 4, 30, TimeUnit.SECONDS, new ArrayBlockingQueue(2), new RecorderThreadFactory(\u0026#8220;CookieRecorderPool\u0026#8221;), new ThreadPoolExecutor.CallerRunsPolicy()); 假设，所有的任务都永远无法执行完。 对于首先来的A,B来说直接运行，接下来，如果来了C,D，他们会被放到queue中，如果接下来再来E,F，则增加线程运行E，F。但是如果再来任务，队列无法再接受了，线程数也到达最大的限制了，所以就会使用拒绝策略来处理。 **keepAliveTime** jdk中的解释是：当线程数大于核心时，此为终止前多余的空闲线程等待新任务的最长时间。 有点拗口，其实这个不难理解，在使用了“池”的应用中，大多都有类似的参数需要配置。比如数据库连接池，DBCP中的maxIdle，minIdle参数。 什么意思？接着上面的解释，后来向老板派来的工人始终是“借来的”，俗话说“有借就有还”，但这里的问题就是什么时候还了，如果借来的工人刚完成一个任务就还回去，后来发现任务还有，那岂不是又要去借？这一来一往，老板肯定头也大死了。 \u0026nbsp; 合理的策略：既然借了，那就多借一会儿。直到“某一段”时间后，发现再也用不到这些工人时，便可以还回去了。这里的某一段时间便是keepAliveTime的含义，TimeUnit为keepAliveTime值的度量。 \u0026nbsp; **RejectedExecutionHandler** 另一种情况便是，即使向老板借了工人，但是任务还是继续过来，还是忙不过来，这时整个队伍只好拒绝接受了。 RejectedExecutionHandler接口提供了对于拒绝任务的处理的自定方法的机会。在ThreadPoolExecutor中已经默认包含了4中策略，因为源码非常简单，这里直接贴出来。 **CallerRunsPolicy**：线程调用运行该任务的 execute 本身。此策略提供简单的反馈控制机制，能够减缓新任务的提交速度。 1. public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { 2. if (!e.isShutdown()) { 3. r.run(); 4. } 5. } public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { if (!e.isShutdown()) { r.run(); } } 这个策略显然不想放弃执行任务。但是由于池中已经没有任何资源了，那么就直接使用调用该execute的线程本身来执行。 **AbortPolicy：**处理程序遭到拒绝将抛出运行时RejectedExecutionException 1. public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { 2. throw new RejectedExecutionException(); 3. } public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { throw new RejectedExecutionException(); } 这种策略直接抛出异常，丢弃任务。 **DiscardPolicy：**不能执行的任务将被删除 1. public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { 2. } public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { } 这种策略和AbortPolicy几乎一样，也是丢弃任务，只不过他不抛出异常。 **DiscardOldestPolicy：**如果执行程序尚未关闭，则位于工作队列头部的任务将被删除，然后重试执行程序（如果再次失败，则重复此过程） 1. public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { 2. if (!e.isShutdown()) { 3. e.getQueue().poll(); 4. e.execute(r); 5. } - } public void rejectedExecution(Runnable r, ThreadPoolExecutor e) { if (!e.isShutdown()) { e.getQueue().poll(); e.execute(r); } } 该策略就稍微复杂一些，在pool没有关闭的前提下首先丢掉缓存在队列中的最早的任务，然后重新尝试运行该任务。这个策略需要适当小心。 设想:如果其他线程都还在运行，那么新来任务踢掉旧任务，缓存在queue中，再来一个任务又会踢掉queue中最老任务。 总结： keepAliveTime和maximumPoolSize及BlockingQueue的类型均有关系。如果BlockingQueue是无界的，那么永远不会触发maximumPoolSize，自然keepAliveTime也就没有了意义。 反之，如果核心数较小，有界BlockingQueue数值又较小，同时keepAliveTime又设的很小，如果任务频繁，那么系统就会频繁的申请回收线程。 public static ExecutorService newFixedThreadPool(int nThreads) { return new ThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue()); } ","wordCount":"766","inLanguage":"zh","datePublished":"2015-06-15T06:46:31Z","dateModified":"2015-06-15T06:46:31Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/java%E8%87%AA%E5%B8%A6%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%92%8C%E9%98%9F%E5%88%97%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3android%E4%B8%AD%E9%80%82%E7%94%A8/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">java自带线程池和队列详细讲解，android中适用</h1><div class=post-description>- [一简介](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_1) - [二：线程池](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_2) - [三：ThreadPoolExecutor详...</div><div class=post-meta><span title='2015-06-15 06:46:31 +0000 UTC'>2015年6月15日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e4%b8%80%e7%ae%80%e4%bb%8b aria-label=一简介>一简介</a></li><li><a href=#%e4%ba%8c%e7%ba%bf%e7%a8%8b%e6%b1%a0 aria-label=二：线程池>二：线程池</a></li></ul></div></details><div class="post-content md-content"><div class=BlogAnchor><div id=AnchorContent class=AnchorContent><pre><code>  - [一简介](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_1)
+  
+  - [二：线程池](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_2)
+  
+  - [三：ThreadPoolExecutor详解](http://my.oschina.net/u/1424386/blog/336087#OSC_h1_3)
+</code></pre></div></div><div class=BlogContent><pre><code> Java线程池使用说明
+
+
+
+
+
+&amp;nbsp;
+</code></pre><h1 id=一简介><a rel=nofollow name=t0></a>一简介<a hidden class=anchor aria-hidden=true href=#一简介>#</a></h1><pre><code>线程的使用在java中占有极其重要的地位，在jdk1.4极其之前的jdk版本中，关于线程池的使用是极其简陋的。在jdk1.5之后这一情况有了很大的改观。Jdk1.5之后加入了java.util.concurrent包，这个包中主要介绍java中线程以及线程池的使用。为我们在开发中处理线程的问题提供了非常大的帮助。
+
+
+
+
+
+&amp;nbsp;
+</code></pre><h1 id=二线程池><a rel=nofollow name=t1></a>二：线程池<a hidden class=anchor aria-hidden=true href=#二线程池>#</a></h1><pre><code>**线程池的作用：**
+
+
+
+
+
+线程池作用就是限制系统中执行线程的数量。
+</code></pre><p>根据系统的环境情况，可以自动或手动设置线程数量，达到运行的最佳效果；少了浪费了系统资源，多了造成系统拥挤效率不高。用线程池控制线程数量，其他线程排队等候。一个任务执行完毕，再从队列的中取最前面的任务开始执行。若队列中没有等待进程，线程池的这一资源处于等待。当一个新任务需要运行时，如果线程池中有等待的工作线程，就可以开始运行了；否则进入等待队列。</p><pre><code>**为什么要用线程池:**
+
+
+
+
+
+1.减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。
+
+
+
+
+
+2.可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)。
+
+
+
+
+
+Java里面线程池的顶级接口是Executor，但是严格意义上讲Executor并不是一个线程池，而只是一个执行线程的工具。真正的线程池接口是ExecutorService。
+
+
+
+
+
+比较重要的几个类：
+</code></pre><table border=1 cellspacing=0 cellpadding=0><tr><td>ExecutorService</td><pre><code>  &lt;td&gt;
+    真正的线程池接口。
+  &lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+  &lt;td&gt;
+    ScheduledExecutorService
+  &lt;/td&gt;
+  
+  &lt;td&gt;
+    能和Timer/TimerTask类似，解决那些需要任务重复执行的问题。
+  &lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+  &lt;td&gt;
+    ThreadPoolExecutor
+  &lt;/td&gt;
+  
+  &lt;td&gt;
+    ExecutorService的默认实现。
+  &lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+  &lt;td&gt;
+    ScheduledThreadPoolExecutor
+  &lt;/td&gt;
+  
+  &lt;td&gt;
+    继承ThreadPoolExecutor的ScheduledExecutorService接口实现，周期性任务调度的类实现。
+  &lt;/td&gt;
+&lt;/tr&gt;
+</code></pre></table><pre><code>要配置一个线程池是比较复杂的，尤其是对于线程池的原理不是很清楚的情况下，很有可能配置的线程池不是较优的，因此在Executors类里面提供了一些静态工厂，生成一些常用的线程池。
+
+
+
+
+
+**1. newSingleThreadExecutor**
+
+
+
+
+
+创建一个单线程的线程池。这个线程池只有一个线程在工作，也就是相当于单线程串行执行所有任务。如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它。此线程池保证所有任务的执行顺序按照任务的提交顺序执行。
+
+
+
+
+
+2.**newFixedThreadPool**
+
+
+
+
+
+创建固定大小的线程池。每次提交一个任务就创建一个线程，直到线程达到线程池的最大大小。线程池的大小一旦达到最大值就会保持不变，如果某个线程因为执行异常而结束，那么线程池会补充一个新线程。
+
+
+
+
+
+**3. newCachedThreadPool**
+
+
+
+
+
+创建一个可缓存的线程池。如果线程池的大小超过了处理任务所需要的线程，
+
+
+
+
+
+那么就会回收部分空闲（60秒不执行任务）的线程，当任务数增加时，此线程池又可以智能的添加新线程来处理任务。此线程池不会对线程池大小做限制，线程池大小完全依赖于操作系统（或者说JVM）能够创建的最大线程大小。
+
+
+
+
+
+4.**newScheduledThreadPool**
+
+
+
+
+
+创建一个大小无限的线程池。此线程池支持定时以及周期性执行任务的需求。
+
+
+
+
+
+**实例**
+
+
+
+
+
+**1：newSingleThreadExecutor**
+
+
+
+
+
+MyThread.java
+</code></pre><table border=1 cellspacing=0 cellpadding=0><tr><td>**public****class**MyThread **extends** Thread {@Override<pre><code>      **public****void** run() {
+    
+
+    
+    
+
+      System.*out*.println(Thread.*currentThread*().getName() + &amp;#8220;正在执行。。。&amp;#8221;);
+    
+
+    
+    
+
+      }
+    
+
+    
+    
+
+      }&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+      
+      
+
+        TestSingleThreadExecutor.java
+      
+
+      
+      &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+        &lt;tr&gt;
+          &lt;td&gt;
+            **public****class**TestSingleThreadExecutor {**public****static****void** main(String[] args) {
+
+            
+            
+
+              //创建一个可重用固定线程数的线程池
+            
+
+            
+            
+
+              ExecutorService pool = Executors.* newSingleThreadExecutor*();
+            
+
+            
+            
+
+              //创建实现了Runnable接口对象，Thread对象当然也实现了Runnable接口
+            
+
+            
+            
+
+              Thread t1 = **new** MyThread();
+            
+
+            
+            
+
+              Thread t2 = **new** MyThread();
+            
+
+            
+            
+
+              Thread t3 = **new** MyThread();
+            
+
+            
+            
+
+              Thread t4 = **new** MyThread();
+            
+
+            
+            
+
+              Thread t5 = **new** MyThread();
+            
+
+            
+            
+
+              //将线程放入池中进行执行
+            
+
+            
+            
+
+              pool.execute(t1);
+            
+
+            
+            
+
+              pool.execute(t2);
+            
+
+            
+            
+
+              pool.execute(t3);
+            
+
+            
+            
+
+              pool.execute(t4);
+            
+
+            
+            
+
+              pool.execute(t5);
+            
+
+            
+            
+
+              //关闭线程池
+            
+
+            
+            
+
+              pool.shutdown();
+            
+
+            
+            
+
+              }
+            
+
+            
+            
+
+              }&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+              
+              
+
+                **输出结果**
+              
+
+              
+              &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;
+                    pool-1-thread-1正在执行。。。pool-1-thread-1正在执行。。。
+
+                    
+                    
+
+                      pool-1-thread-1正在执行。。。
+                    
+
+                    
+                    
+
+                      pool-1-thread-1正在执行。。。
+                    
+
+                    
+                    
+
+                      pool-1-thread-1正在执行。。。&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                      
+                      
+
+                        **2newFixedThreadPool**
+                      
+
+                      
+                      
+
+                        TestFixedThreadPool.Java
+                      
+
+                      
+                      &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                        &lt;tr&gt;
+                          &lt;td&gt;
+                            **public****class** TestFixedThreadPool {**public****static****void** main(String[] args) {
+
+                            
+                            
+
+                              //创建一个可重用固定线程数的线程池
+                            
+
+                            
+                            
+
+                              ExecutorService pool = Executors.*newFixedThreadPool*(2);
+                            
+
+                            
+                            
+
+                              //创建实现了Runnable接口对象，Thread对象当然也实现了Runnable接口
+                            
+
+                            
+                            
+
+                              Thread t1 = **new** MyThread();
+                            
+
+                            
+                            
+
+                              Thread t2 = **new** MyThread();
+                            
+
+                            
+                            
+
+                              Thread t3 = **new** MyThread();
+                            
+
+                            
+                            
+
+                              Thread t4 = **new** MyThread();
+                            
+
+                            
+                            
+
+                              Thread t5 = **new** MyThread();
+                            
+
+                            
+                            
+
+                              //将线程放入池中进行执行
+                            
+
+                            
+                            
+
+                              pool.execute(t1);
+                            
+
+                            
+                            
+
+                              pool.execute(t2);
+                            
+
+                            
+                            
+
+                              pool.execute(t3);
+                            
+
+                            
+                            
+
+                              pool.execute(t4);
+                            
+
+                            
+                            
+
+                              pool.execute(t5);
+                            
+
+                            
+                            
+
+                              //关闭线程池
+                            
+
+                            
+                            
+
+                              pool.shutdown();
+                            
+
+                            
+                            
+
+                              }
+                            
+
+                            
+                            
+
+                              }&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                              
+                              
+
+                                **输出结果**
+                              
+
+                              
+                              &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                &lt;tr&gt;
+                                  &lt;td&gt;
+                                    pool-1-thread-1正在执行。。。pool-1-thread-2正在执行。。。
+
+                                    
+                                    
+
+                                      pool-1-thread-1正在执行。。。
+                                    
+
+                                    
+                                    
+
+                                      pool-1-thread-2正在执行。。。
+                                    
+
+                                    
+                                    
+
+                                      pool-1-thread-1正在执行。。。&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                                      
+                                      
+
+                                        3** newCachedThreadPool**
+                                      
+
+                                      
+                                      
+
+                                        TestCachedThreadPool.java
+                                      
+
+                                      
+                                      &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                        &lt;tr&gt;
+                                          &lt;td&gt;
+                                            **public****class** TestCachedThreadPool {**public****static****void** main(String[] args) {
+
+                                            
+                                            
+
+                                              //创建一个可重用固定线程数的线程池
+                                            
+
+                                            
+                                            
+
+                                              ExecutorService pool = Executors.*newCachedThreadPool*();
+                                            
+
+                                            
+                                            
+
+                                              //创建实现了Runnable接口对象，Thread对象当然也实现了Runnable接口
+                                            
+
+                                            
+                                            
+
+                                              Thread t1 = **new** MyThread();
+                                            
+
+                                            
+                                            
+
+                                              Thread t2 = **new** MyThread();
+                                            
+
+                                            
+                                            
+
+                                              Thread t3 = **new** MyThread();
+                                            
+
+                                            
+                                            
+
+                                              Thread t4 = **new** MyThread();
+                                            
+
+                                            
+                                            
+
+                                              Thread t5 = **new** MyThread();
+                                            
+
+                                            
+                                            
+
+                                              //将线程放入池中进行执行
+                                            
+
+                                            
+                                            
+
+                                              pool.execute(t1);
+                                            
+
+                                            
+                                            
+
+                                              pool.execute(t2);
+                                            
+
+                                            
+                                            
+
+                                              pool.execute(t3);
+                                            
+
+                                            
+                                            
+
+                                              pool.execute(t4);
+                                            
+
+                                            
+                                            
+
+                                              pool.execute(t5);
+                                            
+
+                                            
+                                            
+
+                                              //关闭线程池
+                                            
+
+                                            
+                                            
+
+                                              pool.shutdown();
+                                            
+
+                                            
+                                            
+
+                                              }
+                                            
+
+                                            
+                                            
+
+                                              }&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                                              
+                                              
+
+                                                输出结果：
+                                              
+
+                                              
+                                              &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                                &lt;tr&gt;
+                                                  &lt;td&gt;
+                                                    pool-1-thread-2正在执行。。。pool-1-thread-4正在执行。。。
+
+                                                    
+                                                    
+
+                                                      pool-1-thread-3正在执行。。。
+                                                    
+
+                                                    
+                                                    
+
+                                                      pool-1-thread-1正在执行。。。
+                                                    
+
+                                                    
+                                                    
+
+                                                      pool-1-thread-5正在执行。。。&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                                                      
+                                                      
+
+                                                        4**newScheduledThreadPool**
+                                                      
+
+                                                      
+                                                      
+
+                                                        TestScheduledThreadPoolExecutor.java
+                                                      
+
+                                                      
+                                                      &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                                        &lt;tr&gt;
+                                                          &lt;td&gt;
+                                                            **public****class** TestScheduledThreadPoolExecutor {**public****static****void** main(String[] args) {
+
+                                                            
+                                                            
+
+                                                              ScheduledThreadPoolExecutor exec = **new** ScheduledThreadPoolExecutor(1);
+                                                            
+
+                                                            
+                                                            
+
+                                                              exec.scheduleAtFixedRate(**new** Runnable() {//每隔一段时间就触发异常
+                                                            
+
+                                                            
+                                                            
+
+                                                              @Override
+                                                            
+
+                                                            
+                                                            
+
+                                                              **public****void** run() {
+                                                            
+
+                                                            
+                                                            
+
+                                                              //throw new RuntimeException();
+                                                            
+
+                                                            
+                                                            
+
+                                                              System.*out*.println(&amp;#8220;================&amp;#8221;);
+                                                            
+
+                                                            
+                                                            
+
+                                                              }
+                                                            
+
+                                                            
+                                                            
+
+                                                              }, 1000, 5000, TimeUnit.*MILLISECONDS*);
+                                                            
+
+                                                            
+                                                            
+
+                                                              exec.scheduleAtFixedRate(**new** Runnable() {//每隔一段时间打印系统时间，证明两者是互不影响的
+                                                            
+
+                                                            
+                                                            
+
+                                                              @Override
+                                                            
+
+                                                            
+                                                            
+
+                                                              **public****void** run() {
+                                                            
+
+                                                            
+                                                            
+
+                                                              System.*out*.println(System.*nanoTime*());
+                                                            
+
+                                                            
+                                                            
+
+                                                              }
+                                                            
+
+                                                            
+                                                            
+
+                                                              }, 1000, 2000, TimeUnit.*MILLISECONDS*);
+                                                            
+
+                                                            
+                                                            
+
+                                                              }
+                                                            
+
+                                                            
+                                                            
+
+                                                              }&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                                                              
+                                                              
+
+                                                                输出结果
+                                                              
+
+                                                              
+                                                              &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                                                &lt;tr&gt;
+                                                                  &lt;td&gt;
+                                                                    ================8384644549516
+
+                                                                    
+                                                                    
+
+                                                                      8386643829034
+                                                                    
+
+                                                                    
+                                                                    
+
+                                                                      8388643830710
+                                                                    
+
+                                                                    
+                                                                    
+
+                                                                      ================
+                                                                    
+
+                                                                    
+                                                                    
+
+                                                                      8390643851383
+                                                                    
+
+                                                                    
+                                                                    
+
+                                                                      8392643879319
+                                                                    
+
+                                                                    
+                                                                    
+
+                                                                      8400643939383&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                                                                      
+                                                                      
+
+                                                                        &amp;nbsp;
+                                                                      
+
+                                                                      
+                                                                      # &lt;a rel=&quot;nofollow&quot; name=&quot;t2&quot;&gt;&lt;/a&gt;三：ThreadPoolExecutor详解
+                                                                      
+                                                                      
+
+                                                                        ThreadPoolExecutor的完整构造方法的签名是：**ThreadPoolExecutor**`(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue&amp;lt;Runnable&amp;gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)` .
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        **maximumPoolSize**-池中允许的最大线程数。
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        **ThreadPoolExecutor是Executors类的底层实现。**
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        在JDK帮助文档中，有如此一段话：
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        “强烈建议程序员使用较为方便的`Executors`工厂方法`Executors.newCachedThreadPool()`（无界线程池，可以进行自动线程回收）、`Executors.newFixedThreadPool(int)`（固定大小线程池）`Executors.newSingleThreadExecutor()`（单个后台线程）
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        它们均为大多数使用场景预定义了设置。”
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        下面介绍一下几个类的源码：
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        **ExecutorService  newFixedThreadPool (int nThreads):固定大小线程池。**
+                                                                      
+
+                                                                      
+                                                                      
+
+                                                                        可以看到，corePoolSize和maximumPoolSize的大小是一样的（实际上，后面会介绍，如果使用无界queue的话maximumPoolSize参数是没有意义的），keepAliveTime和unit的设值表名什么？-就是该实现不想keep alive！最后的BlockingQueue选择了LinkedBlockingQueue，该queue有一个特点，他是无界的。
+                                                                      
+
+                                                                      
+                                                                      &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                                                        &lt;tr&gt;
+                                                                          &lt;td&gt;
+                                                                            1.     public static ExecutorService newFixedThreadPool(int nThreads) {2.             return new ThreadPoolExecutor(nThreads, nThreads,
+
+                                                                            
+                                                                            
+
+                                                                              3.                                           0L, TimeUnit.MILLISECONDS,
+                                                                            
+
+                                                                            
+                                                                            
+
+                                                                              4.                                           new LinkedBlockingQueue&lt;Runnable&gt;());
+                                                                            
+
+                                                                            
+                                                                            
+
+                                                                              5.         }&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                                                                              
+                                                                              
+
+                                                                                **ExecutorService  newSingleThreadExecutor()：单线程**
+                                                                              
+
+                                                                              
+                                                                              &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                                                                &lt;tr&gt;
+                                                                                  &lt;td&gt;
+                                                                                    1.     public static ExecutorService newSingleThreadExecutor() {2.             return new FinalizableDelegatedExecutorService
+
+                                                                                    
+                                                                                    
+
+                                                                                      3.                 (new ThreadPoolExecutor(1, 1,
+                                                                                    
+
+                                                                                    
+                                                                                    
+
+                                                                                      4.                                         0L, TimeUnit.MILLISECONDS,
+                                                                                    
+
+                                                                                    
+                                                                                    
+
+                                                                                      5.                                         new LinkedBlockingQueue&lt;Runnable&gt;()));
+                                                                                    
+
+                                                                                    
+                                                                                    
+
+                                                                                      6.         }&lt;/td&gt; &lt;/tr&gt; &lt;/tbody&gt; &lt;/table&gt; 
+                                                                                      
+                                                                                      
+
+                                                                                        **ExecutorService newCachedThreadPool()：无界线程池，可以进行自动线程回收**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        这个实现就有意思了。首先是无界的线程池，所以我们可以发现maximumPoolSize为big big。其次BlockingQueue的选择上使用SynchronousQueue。可能对于该BlockingQueue有些陌生，简单说：该QUEUE中，每个插入操作必须等待另一个线程的对应移除操作。
+                                                                                      
+
+                                                                                      
+                                                                                      &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                                                                        &lt;tr&gt;
+                                                                                          &lt;td&gt;
+                                                                                            1.     public static ExecutorService newCachedThreadPool() {2.             return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+
+                                                                                            
+                                                                                            
+
+                                                                                              3.                                           60L, TimeUnit.SECONDS,
+                                                                                            
+
+                                                                                            
+                                                                                            
+
+                                                                                              4.                                           new SynchronousQueue&lt;Runnable&gt;());
+                                                                                            
+
+                                                                                            
+                                                                                            
+                                                                                              - }
+                                                                                              
+                                                                                            
+                                                                                          &lt;/td&gt;
+                                                                                        &lt;/tr&gt;
+                                                                                      &lt;/table&gt;
+                                                                                      
+                                                                                      
+
+                                                                                        先从[BlockingQueue](http://dongxuan.iteye.com/admin/blogs/901659/)&lt;[Runnable](http://dongxuan.iteye.com/admin/blogs/901659/)&gt; workQueue这个入参开始说起。在JDK中，其实已经说得很清楚了，一共有三种类型的queue。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        所有BlockingQueue 都可用于传输和保持提交的任务。可以使用此队列与池大小进行交互：
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        如果运行的线程少于 corePoolSize，则 Executor始终首选添加新的线程，而不进行排队。（如果当前运行的线程小于corePoolSize，则任务根本不会存放，添加到queue中，而是直接抄家伙（thread）开始运行）
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        如果运行的线程等于或多于 corePoolSize，则 Executor始终首选将请求加入队列，**而不添加新的线程**。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        如果无法将请求加入队列，则创建新的线程，除非创建此线程超出 maximumPoolSize，在这种情况下，任务将被拒绝。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **queue上的三种类型。**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        &amp;nbsp;
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        排队有三种通用策略：
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **直接提交。**工作队列的默认选项是 SynchronousQueue，它将任务直接提交给线程而不保持它们。在此，如果不存在可用于立即运行任务的线程，则试图把任务加入队列将失败，因此会构造一个新的线程。此策略可以避免在处理可能具有内部依赖性的请求集时出现锁。直接提交通常要求无界maximumPoolSizes 以避免拒绝新提交的任务。当命令以超过队列所能处理的平均数连续到达时，此策略允许无界线程具有增长的可能性。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **无界队列。**使用无界队列（例如，不具有预定义容量的 LinkedBlockingQueue）将导致在所有 corePoolSize 线程都忙时新任务在队列中等待。这样，创建的线程就不会超过 corePoolSize。（因此，maximumPoolSize的值也就无效了。）当每个任务完全独立于其他任务，即任务执行互不影响时，适合于使用无界队列；例如，在 Web页服务器中。这种排队可用于处理瞬态突发请求，当命令以超过队列所能处理的平均数连续到达时，此策略允许无界线程具有增长的可能性。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **有界队列。**当使用有限的 maximumPoolSizes时，有界队列（如 ArrayBlockingQueue）有助于防止资源耗尽，但是可能较难调整和控制。队列大小和最大池大小可能需要相互折衷：使用大型队列和小型池可以最大限度地降低 CPU 使用率、操作系统资源和上下文切换开销，但是可能导致人工降低吞吐量。如果任务频繁阻塞（例如，如果它们是 I/O边界），则系统可能为超过您许可的更多线程安排时间。使用小型队列通常要求较大的池大小，CPU使用率较高，但是可能遇到不可接受的调度开销，这样也会降低吞吐量。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **BlockingQueue的选择。**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **例子一：使用直接提交策略，也即SynchronousQueue。**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        首先SynchronousQueue是无界的，也就是说他存数任务的能力是没有限制的，但是由于该Queue本身的特性，**在某次添加元素后必须等待其他线程取走后才能继续添加**。在这里不是核心线程便是新创建的线程，但是我们试想一样下，下面的场景。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        我们使用一下参数构造ThreadPoolExecutor：
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        1.     new ThreadPoolExecutor(
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2.                 2, 3, 30, TimeUnit.SECONDS,
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        3.                 new  SynchronousQueue&lt;Runnable&gt;(),
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        4.                 new RecorderThreadFactory(&amp;#8220;CookieRecorderPool&amp;#8221;),
+                                                                                      
+
+                                                                                      
+                                                                                      
+                                                                                        - new ThreadPoolExecutor.CallerRunsPolicy());
+                                                                                        
+                                                                                      
+                                                                                      
+                                                                                      
+
+                                                                                        new ThreadPoolExecutor(
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2, 3, 30, TimeUnit.SECONDS,
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new SynchronousQueue&lt;Runnable&gt;(),
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new RecorderThreadFactory(&amp;#8220;CookieRecorderPool&amp;#8221;),
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new ThreadPoolExecutor.CallerRunsPolicy());
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        当核心线程已经有2个正在运行.
+                                                                                      
+
+                                                                                      
+                                                                                      
+                                                                                        - 此时继续来了一个任务（A），根据前面介绍的“如果运行的线程等于或多于 corePoolSize，则 Executor始终首选将请求加入队列，**而不添加新的线程**。”,所以A被添加到queue中。
+                                                                                        
+                                                                                        - 又来了一个任务（B），且核心2个线程还没有忙完，OK，接下来首先尝试1中描述，但是由于使用的SynchronousQueue，所以一定无法加入进去。
+                                                                                        
+                                                                                        - 此时便满足了上面提到的“如果无法将请求加入队列，则创建新的线程，除非创建此线程超出maximumPoolSize，在这种情况下，任务将被拒绝。”，所以必然会新建一个线程来运行这个任务。
+                                                                                        
+                                                                                        - 暂时还可以，但是如果这三个任务都还没完成，连续来了两个任务，第一个添加入queue中，后一个呢？queue中无法插入，而线程数达到了maximumPoolSize，所以只好执行异常策略了。
+                                                                                        
+                                                                                      
+                                                                                      
+                                                                                      
+
+                                                                                        所以在使用SynchronousQueue通常要求maximumPoolSize是无界的，这样就可以避免上述情况发生（如果希望限制就直接使用有界队列）。对于使用SynchronousQueue的作用jdk中写的很清楚：此策略可以避免在处理可能具有内部依赖性的请求集时出现锁。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        什么意思？如果你的任务A1，A2有内部关联，A1需要先运行，那么先提交A1，再提交A2，当使用SynchronousQueue我们可以保证，A1必定先被执行，在A1么有被执行前，A2不可能添加入queue中。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **例子二：使用无界队列策略，即LinkedBlockingQueue**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        这个就拿**newFixedThreadPool**来说，根据前文提到的规则：
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        如果运行的线程少于 corePoolSize，则 Executor 始终首选添加新的线程，而不进行排队。那么当任务继续增加，会发生什么呢？
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        如果运行的线程等于或多于 corePoolSize，则 Executor 始终首选将请求加入队列，而不添加新的线程。OK，此时任务变加入队列之中了，那什么时候才会添加新线程呢？
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        如果无法将请求加入队列，则创建新的线程，除非创建此线程超出 maximumPoolSize，在这种情况下，任务将被拒绝。这里就很有意思了，可能会出现无法加入队列吗？不像SynchronousQueue那样有其自身的特点，对于无界队列来说，总是可以加入的（资源耗尽，当然另当别论）。换句说，永远也不会触发产生新的线程！corePoolSize大小的线程数会一直运行，忙完当前的，就从队列中拿任务开始运行。所以要防止任务疯长，比如任务运行的实行比较长，而添加任务的速度远远超过处理任务的时间，而且还不断增加，不一会儿就爆了。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **例子三：有界队列，使用ArrayBlockingQueue。**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        这个是最为复杂的使用，所以JDK不推荐使用也有些道理。与上面的相比，最大的特点便是可以防止资源耗尽的情况发生。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        举例来说，请看如下构造方法：
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        1.     new ThreadPoolExecutor(
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2.                 2, 4, 30, TimeUnit.SECONDS,
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        3.                 new ArrayBlockingQueue&lt;Runnable&gt;(2),
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        4.                 new RecorderThreadFactory(&amp;#8220;CookieRecorderPool&amp;#8221;),
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        5.                 new ThreadPoolExecutor.CallerRunsPolicy());
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new ThreadPoolExecutor(
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2, 4, 30, TimeUnit.SECONDS,
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new ArrayBlockingQueue&lt;Runnable&gt;(2),
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new RecorderThreadFactory(&amp;#8220;CookieRecorderPool&amp;#8221;),
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new ThreadPoolExecutor.CallerRunsPolicy());
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        假设，所有的任务都永远无法执行完。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        对于首先来的A,B来说直接运行，接下来，如果来了C,D，他们会被放到queue中，如果接下来再来E,F，则增加线程运行E，F。但是如果再来任务，队列无法再接受了，线程数也到达最大的限制了，所以就会使用拒绝策略来处理。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **keepAliveTime**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        jdk中的解释是：当线程数大于核心时，此为终止前多余的空闲线程等待新任务的最长时间。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        有点拗口，其实这个不难理解，在使用了“池”的应用中，大多都有类似的参数需要配置。比如数据库连接池，DBCP中的maxIdle，minIdle参数。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        什么意思？接着上面的解释，后来向老板派来的工人始终是“借来的”，俗话说“有借就有还”，但这里的问题就是什么时候还了，如果借来的工人刚完成一个任务就还回去，后来发现任务还有，那岂不是又要去借？这一来一往，老板肯定头也大死了。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        &amp;nbsp;
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        合理的策略：既然借了，那就多借一会儿。直到“某一段”时间后，发现再也用不到这些工人时，便可以还回去了。这里的某一段时间便是keepAliveTime的含义，TimeUnit为keepAliveTime值的度量。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        &amp;nbsp;
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **RejectedExecutionHandler**
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        另一种情况便是，即使向老板借了工人，但是任务还是继续过来，还是忙不过来，这时整个队伍只好拒绝接受了。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        RejectedExecutionHandler接口提供了对于拒绝任务的处理的自定方法的机会。在ThreadPoolExecutor中已经默认包含了4中策略，因为源码非常简单，这里直接贴出来。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **CallerRunsPolicy**：线程调用运行该任务的 execute 本身。此策略提供简单的反馈控制机制，能够减缓新任务的提交速度。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        1.     public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2.                 if (!e.isShutdown()) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        3.                     r.run();
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        4.                 }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        5.             }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        if (!e.isShutdown()) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        r.run();
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        这个策略显然不想放弃执行任务。但是由于池中已经没有任何资源了，那么就直接使用调用该execute的线程本身来执行。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **AbortPolicy：**处理程序遭到拒绝将抛出运行时RejectedExecutionException
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        1.     public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2.                 throw new RejectedExecutionException();
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        3.             }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        throw new RejectedExecutionException();
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        这种策略直接抛出异常，丢弃任务。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **DiscardPolicy：**不能执行的任务将被删除
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        1.     public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2.             }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        这种策略和AbortPolicy几乎一样，也是丢弃任务，只不过他不抛出异常。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        **DiscardOldestPolicy：**如果执行程序尚未关闭，则位于工作队列头部的任务将被删除，然后重试执行程序（如果再次失败，则重复此过程）
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        1.     public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        2.                 if (!e.isShutdown()) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        3.                     e.getQueue().poll();
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        4.                     e.execute(r);
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        5.                 }
+                                                                                      
+
+                                                                                      
+                                                                                      
+                                                                                        - }
+                                                                                        
+                                                                                      
+                                                                                      
+                                                                                      
+
+                                                                                        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        if (!e.isShutdown()) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        e.getQueue().poll();
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        e.execute(r);
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        }
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        该策略就稍微复杂一些，在pool没有关闭的前提下首先丢掉缓存在队列中的最早的任务，然后重新尝试运行该任务。这个策略需要适当小心。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        设想:如果其他线程都还在运行，那么新来任务踢掉旧任务，缓存在queue中，再来一个任务又会踢掉queue中最老任务。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        总结：
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        keepAliveTime和maximumPoolSize及BlockingQueue的类型均有关系。如果BlockingQueue是无界的，那么永远不会触发maximumPoolSize，自然keepAliveTime也就没有了意义。
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        反之，如果核心数较小，有界BlockingQueue数值又较小，同时keepAliveTime又设的很小，如果任务频繁，那么系统就会频繁的申请回收线程。
+                                                                                      
+
+                                                                                      
+                                                                                      &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+                                                                                        &lt;tr&gt;
+                                                                                          &lt;td&gt;
+                                                                                          &lt;/td&gt;
+                                                                                        &lt;/tr&gt;
+                                                                                      &lt;/table&gt;
+                                                                                      
+                                                                                      
+
+                                                                                        public static ExecutorService newFixedThreadPool(int nThreads) {
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        return new ThreadPoolExecutor(nThreads, nThreads,
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        0L, TimeUnit.MILLISECONDS,
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        new LinkedBlockingQueue&lt;Runnable&gt;());
+                                                                                      
+
+                                                                                      
+                                                                                      
+
+                                                                                        }
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E7%BE%8E%E5%9B%A2android-dex%E8%87%AA%E5%8A%A8%E6%8B%86%E5%8C%85%E5%8F%8A%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%AE%80%E4%BB%8B/><span class=title>« 上一页</span>
+<span>美团Android DEX自动拆包及动态加载简介</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E8%AE%A9android-support-v4%E4%B8%AD%E7%9A%84swiperefreshlayout%E6%94%AF%E6%8C%81%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%9B%B4%E5%A4%9A/><span class=title>下一页 »</span>
+<span>让Android Support V4中的SwipeRefreshLayout支持上拉加载更多</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

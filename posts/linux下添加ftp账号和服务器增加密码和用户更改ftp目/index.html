@@ -1,0 +1,146 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录 | ZDL Tech Blog</title>
+<meta name=keywords content="linux,php,web开发"><meta name=description content="**1、 启动VSFTP服务器** A:cenos下运行:yum install vsftpd B. 登录Linux主机后，运行命令：”service vsftpd start” C. 要让FTP每次开机自动启动，运行命令: “chkconfig &amp;#8211;level 35 vsftpd on”..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0ftp%E8%B4%A6%E5%8F%B7%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A2%9E%E5%8A%A0%E5%AF%86%E7%A0%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%9B%B4%E6%94%B9ftp%E7%9B%AE/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0ftp%E8%B4%A6%E5%8F%B7%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A2%9E%E5%8A%A0%E5%AF%86%E7%A0%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%9B%B4%E6%94%B9ftp%E7%9B%AE/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0ftp%E8%B4%A6%E5%8F%B7%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A2%9E%E5%8A%A0%E5%AF%86%E7%A0%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%9B%B4%E6%94%B9ftp%E7%9B%AE/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录"><meta property="og:description" content="**1、 启动VSFTP服务器** A:cenos下运行:yum install vsftpd B. 登录Linux主机后，运行命令：”service vsftpd start” C. 要让FTP每次开机自动启动，运行命令: “chkconfig –level 35 vsftpd on”..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-09-16T14:15:38+00:00"><meta property="article:modified_time" content="2014-09-16T14:15:38+00:00"><meta property="article:tag" content="Linux"><meta property="article:tag" content="Php"><meta property="article:tag" content="Web开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录"><meta name=twitter:description content="**1、 启动VSFTP服务器** A:cenos下运行:yum install vsftpd B. 登录Linux主机后，运行命令：”service vsftpd start” C. 要让FTP每次开机自动启动，运行命令: “chkconfig –level 35 vsftpd on”..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录","item":"https://blog.zdltech.com/posts/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0ftp%E8%B4%A6%E5%8F%B7%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A2%9E%E5%8A%A0%E5%AF%86%E7%A0%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%9B%B4%E6%94%B9ftp%E7%9B%AE/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录","name":"Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录","description":"**1、 启动VSFTP服务器** A:cenos下运行:yum install vsftpd B. 登录Linux主机后，运行命令：”service vsftpd start” C. 要让FTP每次开机自动启动，运行命令: “chkconfig \u0026#8211;level 35 vsftpd on”...","keywords":["linux","php","web开发"],"articleBody":" **1、 启动VSFTP服务器** A:cenos下运行:yum install vsftpd\nB. 登录Linux主机后，运行命令：”service vsftpd start” C. 要让FTP每次开机自动启动，运行命令: “chkconfig \u0026#8211;level 35 vsftpd on” ** 2、设置FTP权限** **A. 编辑VSFTP配置文件，运行命令：”vi /etc/vsftpd/vsftpd.conf “ B. 将配置文件中”anonymous_enable=YES “改为 “anonymous_enable=NO” C. 保存修改，按ESC键，运行命令：“：wq” 这样关闭了匿名登录功能。 3、添加FTP账号** A. 登录Linux主机后，运行命令：”useradd ftpadmin -s /sbin/nologin “。该账户路径默认指向/home/ftpadmin目录；如果需要将用户指向其他目录，请运行命令：useradd ftpadmin -s /sbin/nologin –d /www(其他目录) B. 设置ftpadmin用户密码，运行命令：”passwd ftpadmin” ; 输入两次密码，匹配成功后，就设置好了ftpadmin用户的密码了。 C.测试连接，您可以在“我的电脑”地址栏中输入** ftp://IP **来连接FTP服务器，根据提示输入账户密码。 ** 4、FTP数据传输注意事项** A. 尽量把文件打包后上传。Linux无法识别RAR压缩包，可以使用ZIP压缩。 B.上传数据时请选择二进制编码，如果选择其他编码，可能会导致上传的压缩包无法打开。 以上内容是否已经解决了您的问题？ \u0026nbsp; FTP服务器的默认目录是/var/ftp，而且当用户以匿名方式登录的时候，访问就是此目录。如果用户以其它的用户名登录的话，访问的则是那个用户名的工作目录。如果想要更改非匿名用户的默认FTP目录，可以采用如下方式进行更改： 1、进入/etc目录，打开passwd文件 2、转到想要更改的那个用户的行，编辑其工作目录为想要的目录即可 一般采用此种方式带来的一个影响就是，shell的提示符不会再显示目录信息，如果想要变回原来的样子，可以采用如下简便的方法：把那个用户原来的工作目录下的所有与shell配置相关的文件复制到更改后的目录。 \u0026nbsp; 最后重启服务: service vsftpd restart ","wordCount":"116","inLanguage":"zh","datePublished":"2014-09-16T14:15:38Z","dateModified":"2014-09-16T14:15:38Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0ftp%E8%B4%A6%E5%8F%B7%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A2%9E%E5%8A%A0%E5%AF%86%E7%A0%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%9B%B4%E6%94%B9ftp%E7%9B%AE/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录</h1><div class=post-description>**1、 启动VSFTP服务器** A:cenos下运行:yum install vsftpd B. 登录Linux主机后，运行命令：”service vsftpd start” C. 要让FTP每次开机自动启动，运行命令: “chkconfig &amp;#8211;level 35 vsftpd on”...</div><div class=post-meta><span title='2014-09-16 14:15:38 +0000 UTC'>2014年9月16日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><div class=text style=color:#362e2b>**1、 启动VSFTP服务器**</div><p><span style=color:#362e2b>A:cenos下运行:yum  install  vsftpd</span></p><pre><code>B. 登录Linux主机后，运行命令：”service vsftpd start”
+
+
+
+
+
+C. 要让FTP每次开机自动启动，运行命令:  “chkconfig &amp;#8211;level 35 vsftpd on”
+</code></pre><p>**<div class=quote style=color:#999></div></p><pre><code>&lt;div class=&quot;text&quot;&gt;
+  &lt;strong&gt;2、设置FTP权限**
+&lt;/div&gt;
+</code></pre></blockquote><pre><code>**&lt;span style=&quot;color: #362e2b;&quot;&gt;A. 编辑VSFTP配置文件，运行命令：”vi /etc/vsftpd/vsftpd.conf “
+
+
+
+
+  B. 将配置文件中”anonymous_enable=YES “改为 “anonymous_enable=NO”
+
+
+
+
+
+  C. 保存修改，按ESC键，运行命令：“：wq”&lt;/span&gt;&lt;br style=&quot;color: #362e2b;&quot; /&gt;&lt;span style=&quot;color: #362e2b;&quot;&gt; &lt;/span&gt;
+
+
+
+&lt;div style=&quot;color: #362e2b;&quot;&gt;
+  这样关闭了匿名登录功能。
+
+  
+  &lt;blockquote class=&quot;blockquote&quot;&gt;
+    &lt;div class=&quot;quote&quot; style=&quot;color: #999999;&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&quot;text&quot;&gt;
+      &lt;strong&gt;3、添加FTP账号**
+    &lt;/div&gt;
+  &lt;/blockquote&gt;
+  
+  
+
+    A. 登录Linux主机后，运行命令：”useradd ftpadmin -s /sbin/nologin “。该账户路径默认指向/home/ftpadmin目录；如果需要将用户指向其他目录，请运行命令：useradd ftpadmin -s /sbin/nologin –d /www(其他目录)
+  
+
+  
+  
+
+    B. 设置ftpadmin用户密码，运行命令：”passwd ftpadmin” ; 输入两次密码，匹配成功后，就设置好了ftpadmin用户的密码了。
+  
+
+  
+  
+
+    C.测试连接，您可以在“我的电脑”地址栏中输入** ftp://IP **来连接FTP服务器，根据提示输入账户密码。&lt;/div&gt; 
+    
+    &lt;div style=&quot;color: #362e2b;&quot;&gt;
+    &lt;/div&gt;
+    
+    &lt;div style=&quot;color: #362e2b;&quot;&gt;
+      **
+        &lt;div class=&quot;quote&quot; style=&quot;color: #999999;&quot;&gt;
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;text&quot;&gt;
+          &lt;strong&gt;4、FTP数据传输注意事项**
+        &lt;/div&gt;
+      &lt;/blockquote&gt;
+      
+      
+
+        A. 尽量把文件打包后上传。Linux无法识别RAR压缩包，可以使用ZIP压缩。
+      
+
+      
+      
+
+        B.上传数据时请选择二进制编码，如果选择其他编码，可能会导致上传的压缩包无法打开。
+      
+
+    &lt;/div&gt;
+    
+    
+
+      
+
+        &lt;div class=&quot;help-section&quot; style=&quot;color: #362e2b;&quot;&gt;
+          
+
+            以上内容是否已经解决了您的问题？
+          
+
+        &lt;/div&gt;
+        
+        
+
+          &amp;nbsp;
+        
+
+        
+        
+
+          
+
+            FTP服务器的默认目录是/var/ftp，而且当用户以匿名方式登录的时候，访问就是此目录。如果用户以其它的用户名登录的话，访问的则是那个用户名的工作目录。如果想要更改非匿名用户的默认FTP目录，可以采用如下方式进行更改：
+          
+
+          
+          
+
+            1、进入/etc目录，打开passwd文件
+          
+
+          
+          
+
+            2、转到想要更改的那个用户的行，编辑其工作目录为想要的目录即可
+          
+
+          
+          
+
+            
+
+              &lt;span style=&quot;color: #362e2b;&quot;&gt;一般采用此种方式带来的一个影响就是，shell的提示符不会再显示目录信息，如果想要变回原来的样子，可以采用如下简便的方法：把那个用户原来的工作目录下的所有与shell配置相关的文件复制到更改后的目录。&lt;/span&gt;
+            
+
+            
+            
+
+              &amp;nbsp;
+            
+
+            
+            
+
+              &lt;span style=&quot;color: #000000;&quot;&gt;最后重启服务:   service  vsftpd restart&lt;/span&gt;
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/linux/>Linux</a></li><li><a href=https://blog.zdltech.com/tags/php/>Php</a></li><li><a href=https://blog.zdltech.com/tags/web%E5%BC%80%E5%8F%91/>Web开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android%E4%B9%8B%E5%B8%B8%E7%94%A8tools%E4%BB%8B%E7%BB%8D%E5%8F%8A%E4%BD%BF%E7%94%A8/><span class=title>« 上一页</span>
+<span>Android之常用Tools【介绍及使用】</span>
+</a><a class=next href=https://blog.zdltech.com/posts/thinkphp%E5%8E%BB%E6%8E%89url%E4%B8%ADindex-php/><span class=title>下一页 »</span>
+<span>thinkphp去掉url中index.php</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

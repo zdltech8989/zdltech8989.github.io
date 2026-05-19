@@ -1,0 +1,191 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta name=generator content="Hugo 0.147.4"><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>ZDL Tech Blog</title>
+<meta name=description content="技术博客 - Linux · DevOps · 开发"><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/index.xml title=rss><link rel=alternate type=application/json href=https://blog.zdltech.com/index.json title=json><link rel=alternate hreflang=zh href=https://blog.zdltech.com/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="ZDL Tech Blog"><meta property="og:description" content="技术博客 - Linux · DevOps · 开发"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="ZDL Tech Blog"><meta name=twitter:description content="技术博客 - Linux · DevOps · 开发"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"ZDL Tech Blog","url":"https://blog.zdltech.com/","description":"技术博客 - Linux · DevOps · 开发","logo":"https://blog.zdltech.com/favicon.ico","sameAs":["https://github.com/zhangMt"]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>推荐！国外程序员整理的Java资源大全</h2></header><div class=entry-content><p>构建 这里搜集了用来构建应用程序的工具。
+Apache Maven：Maven使用声明进行构建并进行依赖管理，偏向于使用约定而不是配置进行构建。Maven优于Apache Ant。后者采用了一种过程化的方式进行配置，所以维护起来相当困难。 Gradle：Gradle采用增量构建。Gradle通过Groovy编程而不是传统的XML声明进行配置。Gradle可以很好地配合Maven进行依赖管理，并且把Ant脚本当作头等公民。 字节码操作 编程操作Java字节码的函数库。
+ASM：通用底层字节码操作及分析。 Javassist：尝试简化字节码编辑。 Byte Buddy：使用“流式API”进一步简化字节码生成。 代码分析 软件度量和质量评估工具。
+Checkstyle：对编程规范和标准进行静态分析。 FindBugs：通过字节码静态分析找出潜在Bug。 PMD：对源代码中不良编程习惯进行分析。 SonarQube：通过插件集成其它分析组件，提供评估最终结果报告。 编译器 创建分析器、解释器和编译器的框架。
+ANTLR：功能完备的自顶向下分析复杂框架。 JavaCC：相对ANTLR更具体，上手略为简单。支持语法语法超前预测（syntactic lookahead）。 持续集成 支持持续集成、测试和应用发布的工具。
+Bamboo：Atlassian的持续集成（CI）解决方案，包含很多其它产品。 CircleCI：提供托管服务，可免费试用。 Codeship：提供托管服务，提供有限免费计划。 Go：ThoughtWork开源持续集成解决方案。 Jenkins：提供基于服务器的部署服务。 TeamCity：JetBrain持续集成方案，提供免费版。 Travis：提供托管服务，常用于开源项目。 数据库 简化数据库交互的工具、库。
+Flyway：使用Java API轻松完成数据库迁移。 H2：小型SQL数据库，以内存操作著称。 JDBI：便捷的JDBC抽象。 jOOQ：基于SQL schema生成类型安全代码。 Presto：针对大数据的分布式SQL查询引擎。 Querydsl：针对Java的类型安全统一查询。 日期和时间 处理日期和时间的函数库。
+Joda-Time：Java 8出现之前，它是日期、时间处理的标准函数库。 Time4J：Java高级日期、时间函数库。 依赖注入 帮助代码实现控制反转模式的函数库。
+Dagger ：编译期的注入框架，没有使用反射，主要用于Android开发。 Guice：轻量级注入框架，功能强大可与Dagger媲美。 开发库 从基础层次上改进开发流程。
+AspectJ：面向切面编程扩展，与程序无缝连接。 Auto：源代码生成器集合。 DCEVM：通过修改JVM，在运行时可无限次重定义已加载的类。OpenJDK 7、8已提供支持，详情可查看这个分支（fork）。 JRebel：商用软件，无需重新部署可即时重新加载代码及配置。 Lombok：代码生成器，旨在减少Java冗余代码。 RxJava：使用JVM中可观察序列，创建异步、基于事件应用程序的函数库。 Spring Loaded：另一个JVM类重载代理。 vert.x：JVM多语言事件驱动应用框架。 分布式应用 用来开发分布式、具有容错性应用程序的函数库和框架。
+Akka：构建并发、分布式和具有容错功能的事件驱动应用程序所需的工具包和运行时。 Apache Storm：分布式实时计算系统。 Apache ZooKeeper：为大型分布式系统，使用分布式配置、同步和命名注册提供协调服务。 Hazelcast：分布式、高可扩展性内存网格。 Hystrix：为分布式系统提供延迟和容错处理。 JGroups：一组提供可靠消息传输的工具包，可用来创建集群。集群中的节点可互相发送消息。 Quasar：为JVM提供轻量级线程和Actor。 发布 使用本机格式分发Java应用程序的工具。
+...</p></div><footer class=entry-footer><span title='2016-08-18 06:48:07 +0000 UTC'>2016年8月18日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to 推荐！国外程序员整理的Java资源大全" href=https://blog.zdltech.com/posts/%E6%8E%A8%E8%8D%90%E5%9B%BD%E5%A4%96%E7%A8%8B%E5%BA%8F%E5%91%98%E6%95%B4%E7%90%86%E7%9A%84java%E8%B5%84%E6%BA%90%E5%A4%A7%E5%85%A8/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>CentOS+Nginx一步一步开始配置负载均衡</h2></header><div class=entry-content><p>Nginx负载均衡的理解
+Nginx是一个轻量级的、高性能的WebServer，他主要可以干下面两件事：
+作为http服务器（和apache的效果一样）
+作为反向代理服务器实现负载均衡
+现在Nginx到处都可以见到，经常会看到宕机后的网页会显示nginx的字样，这也说明Nginx由于高性能、使用配置简、开源单这些特点被越来越多的用户所接受，所使用。
+其中第一种作为http服务器，结合php-fpm进程，对发来的请求进行处理，nginx本身并不会解析php，他只是作为一个服务器，接受客户端发来的请求，如果是php请求，则交给php进程处理，并将php处理完成之后的结果发送给客户端。这个很简单，安装好nginx+php-fpm之后配置好各自的配置文件，启动就可以实现。运行原理可以看下面这段解释：
+Nginx不支持对外部程序的直接调用或者解析，所有的外部程序（包括PHP）必须通过FastCGI接口来调用。FastCGI接口在Linux下是socket（这个socket可以是文件socket，也可以是ip socket）。为了调用CGI程序，还需要一个FastCGI的wrapper（wrapper可以理解为用于启动另一个程序的程序），这个wrapper绑定在某个固定socket上，如端口或者文件socket。当Nginx将CGI请求发送给这个socket的时候，通过FastCGI接口，wrapper接收到请求，然后派生出一个新的线程，这个线程调用解释器或者外部程序处理脚本并读取返回数据；接着，wrapper再将返回的数据通过FastCGI接口，沿着固定的socket传递给Nginx；最后，Nginx将返回的数据发送给客户端。这就是Nginx+FastCGI的整个运作过程，如图下图所示。
+[][1]
+上面这段话解释了nginx+fastcgi的运行机制，在nginx配置文件中会对请求进行匹配，并作做出相应的处理，比如说直接返回错误文件（这里和上面说的有点区别，我估计是nginx内部对html等这些静态文件可以做类似上图的解析），使用php进程对php请求进行处理（这里的php进程可以是多个）。
+第二种是用反向代理事项负载均衡，这个其实其实很简单，说起来就是自己定义一组server，对请求进行匹配，并将请求转给server中的任意一个处理，来减轻每个server的压力，先看看网上对反向向代理的定义：
+反向代理（Reverse Proxy）方式是指以代理服务器来接受internet上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器。
+反向代理是和正向代理（或者叫代理） 相反的，代理大家定听过吧，为了更方便的访问B资源，通过A资源间接的访问B资源，特点就是用户知道自己最终要访问的网站是什么，但是反向代理用户是不知道代理服务器后边做了什么处理的，反向代理中服务真正的处理服务器放在内网，对外网而言只可以访问反向代理服务器，这也大大提高了安全性。
+安装软件
+nginx安装很简单
+1、安装nginx需要的环境，pcre（作用rewrite）、zlib（作用压缩）、ssl，这个也可以自己下载编译安装
+yum -y install zlib;
+yum –y install pcre;
+yum –y install openssl;
+2、下载安装nginx-*.tar.gz。
+tar –zxvf nginx-1.2.8.tar.gz –C ./;
+cd nginx-1.2.8;
+./congigure –prefix=/usr/local/nginx;
+make && make install;
+3、配置
+这里配置的时候只需要修改http{}之间的内容就行了，修改的第一个地方就是设置服务器组，在http节点之间添加
+upstream myServer{
+server www.88181.com:80; #这里是你自己要做负载均衡的服务器地址1
+server www.linux.com:8080; #这里是要参与负载均衡的地址2
+}
+nginx中的upstream支持下面几种方式：轮询（默认，按照时间顺序对所有服务器一个一个的访问，如果有服务器宕机，会自动剔除）、weight（服务器的方位几率和weight成正比，这个可以在服务器配置不均的时候进行配置）、ip_hash（对每个请求的ip进行hash计算，并按照一定的规则分配对应的服务器）、fair（按照每台服务器的响应时间（rt）来分配请求，rt晓得优先分配）、url_hash（按照访问url的hash值来分配请求），我这里使用了默认的轮训方式。
+将请求指向myServer
+location / {
+proxy_pass http://myServer;
+}
+完整的文件（删除注释）如下：
+worker_processes 1;
+events {
+worker_connections 1024;
+}
+http {
+include mime.types;
+default_type application/octet-stream;
+sendfile on;
+keepalive_timeout 65;
+upstream myServer{
+server www.linux.com:80;
+server www.88181.com:8080;
+}
+server {
+listen 80;
+server_name my22;
+location / {
+proxy_pass http://myServer;
+}
+}
+}
+设置反向代理后端作为负载均衡的两个服务器
+...</p></div><footer class=entry-footer><span title='2016-08-18 02:50:45 +0000 UTC'>2016年8月18日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to CentOS+Nginx一步一步开始配置负载均衡" href=https://blog.zdltech.com/posts/centosnginx%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E5%BC%80%E5%A7%8B%E9%85%8D%E7%BD%AE%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Java文件下载ContentType设置</h2></header><div class=entry-content><p>String filePath=””;
+File file=new File(filePath);
+//解决乱码问题
+String filename=URLEncoder.encode(file.getName(),”utf-8″);
+//重置输出流
+response.reset();
+Response.AddHeader(“Content-Disposition”, “attachment;filename=”+filename);//设置文件名
+response.addHeader(“Content-Length”,file.length);//设置下载文件大小
+response.setContentType(“application/octet-stream”);//设置文件类型
+OutputStream toClient=new BufferedOuntputStream( response.getOutputStream() );//获取二进制输出流
+//读取文件数据
+InputStream fis=new BufferedInputStream(new FileInputStream(filePath));
+byte[] buffer=new byte[file.length()];
+fis.read(buffer);
+fis.close();
+//输出文件数据
+toClient.write(buffer);
+toClient.close();
+文件类型如下:
+“.*”=”application/octet-stream”
+“.001″=”application/x-001”
+“.301″=”application/x-301”
+“.323″=”text/h323”
+“.906″=”application/x-906”
+“.907″=”drawing/907”
+“.a11″=”application/x-a11”
+“.acp”=”audio/x-mei-aac”
+“.ai”=”application/postscript”
+“.aif”=”audio/aiff”
+“.aifc”=”audio/aiff”
+“.aiff”=”audio/aiff”
+“.anv”=”application/x-anv”
+“.asa”=”text/asa”
+“.asf”=”video/x-ms-asf”
+“.asp”=”text/asp”
+“.asx”=”video/x-ms-asf”
+“.au”=”audio/basic”
+“.avi”=”video/avi”
+“.awf”=”application/vnd.adobe.workflow”
+“.biz”=”text/xml”
+“.bmp”=”application/x-bmp”
+“.bot”=”application/x-bot”
+“.c4t”=”application/x-c4t”
+“.c90″=”application/x-c90”
+“.cal”=”application/x-cals”
+“.cat”=”application/vnd.ms-pki.seccat”
+“.cdf”=”application/x-netcdf”
+“.cdr”=”application/x-cdr”
+“.cel”=”application/x-cel”
+“.cer”=”application/x-x509-ca-cert”
+“.cg4″=”application/x-g4”
+“.cgm”=”application/x-cgm”
+“.cit”=”application/x-cit”
+“.class”=”java/*”
+“.cml”=”text/xml”
+“.cmp”=”application/x-cmp”
+...</p></div><footer class=entry-footer><span title='2016-08-18 02:37:26 +0000 UTC'>2016年8月18日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Java文件下载ContentType设置" href=https://blog.zdltech.com/posts/java%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BDcontenttype%E8%AE%BE%E7%BD%AE/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>SQLite清空表并将自增列归零</h2></header><div class=entry-content><p>SQL标准中有**TRUNCATE TABLE**语句，用来清空表的所有内容。但SQLite不支持这个语句。在SQLite中直接使用“**DELETE FROM TableName**”就可以了。对于大多数DBMS来说，用DELETE不如用TRUNCATE 速度快，因为TRUNCATE 不用访问整个表，不用记录数据的变动。 SQLite虽然不支持TRUNCATE，但它对DELETE做了优化：“When the WHERE is omitted(略去) from a DELETE statement and the table being deleted has no triggers(触发器), SQLite uses an optimization(优化) to erase the entire table content without having to visit each row of the table individually. **This “truncate” optimization makes the delete run much faster**.” 通常在清空表的时候，还需要把自增列归零。在SQLite中定义自增列的方法如下： &lt;div id="crayon-51c50d9e7aa71" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes"> &lt;div class="crayon-plain-wrap"> &lt;/div> &lt;div class="crayon-main"> &lt;table class="crayon-table "> &lt;tr class="crayon-row"> &lt;td class="crayon-nums "> &lt;div class="crayon-nums-content"> &lt;div class="crayon-num"> 1 &lt;/div> &lt;/div> &lt;/td> &lt;td class="crayon-code"> &lt;div class="crayon-pre"> &lt;div id="crayon-51c50d9e7aa71-1" class="crayon-line"> &lt;span class="k">CREATE&lt;/span> &lt;span class="k">TABLE&lt;/span> &lt;span class="e">TableName &lt;/span>&lt;span class="sy">(&lt;/span> &lt;span class="i">id&lt;/span> &lt;span class="k">INTEGER&lt;/span> &lt;span class="k">PRIMARY&lt;/span> &lt;span class="k">KEY&lt;/span> &lt;span class="i">AUTOINCREMENT&lt;/span>&lt;span class="sy">,&lt;/span> &lt;span class="sy">.&lt;/span>&lt;span class="sy">.&lt;/span>&lt;span class="sy">.&lt;/span> &lt;span class="sy">)&lt;/span>&lt;span class="sy">;&lt;/span> &lt;/div> &lt;/div> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;/div> 当SQLite数据库中包含自增列时，会自动建立一个名为 sqlite_sequence 的表。这个表包含两个列：name和seq。name记录自增列所在的表，seq记录当前序号（下一条记录的编号就是当前序号加1）。如果想把某个自增列的序号归零，只需要修改 sqlite_sequence表就可以了。 &lt;div id="crayon-51c50d9e7aa8a" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes"> &lt;div class="crayon-plain-wrap"> &lt;/div> &lt;div class="crayon-main"> &lt;table class="crayon-table "> &lt;tr class="crayon-row"> &lt;td class="crayon-nums "> &lt;div class="crayon-nums-content"> &lt;div class="crayon-num"> 1 &lt;/div> &lt;/div> &lt;/td> &lt;td class="crayon-code"> &lt;div class="crayon-pre"> &lt;div id="crayon-51c50d9e7aa8a-1" class="crayon-line"> &lt;span class="k">UPDATE&lt;/span> &lt;span class="i">sqlite_sequence&lt;/span> &lt;span class="k">SET&lt;/span> &lt;span class="i">seq&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="cn">&lt;/span> &lt;span class="k">WHERE&lt;/span> &lt;span class="i">name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#8216;TableName&amp;#8217;&lt;/span>&lt;span class="sy">;&lt;/span> &lt;/div> &lt;/div> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;/div> 也可以直接把该记录删掉： &lt;div id="crayon-51c50d9e7aab0" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes"> &lt;div class="crayon-plain-wrap"> &lt;/div> &lt;div class="crayon-main"> &lt;table class="crayon-table "> &lt;tr class="crayon-row"> &lt;td class="crayon-nums "> &lt;div class="crayon-nums-content"> &lt;div class="crayon-num"> 1 &lt;/div> &lt;/div> &lt;/td> &lt;td class="crayon-code"> &lt;div class="crayon-pre"> &lt;div id="crayon-51c50d9e7aab0-1" class="crayon-line"> &lt;span class="k">DELETE&lt;/span> &lt;span class="k">FROM&lt;/span> &lt;span class="i">sqlite_sequence&lt;/span> &lt;span class="k">WHERE&lt;/span> &lt;span class="i">name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#8216;TableName&amp;#8217;&lt;/span>&lt;span class="sy">;&lt;/span> &lt;/div> &lt;/div> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;/div> 要想将所有表的自增列都归零，直接清空sqlite_sequence表就可以了： &lt;div id="crayon-51c50d9e7aac0" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes"> &lt;div class="crayon-toolbar"> &lt;div class="crayon-tools"> &lt;span class="crayon-language">Transact-SQL&lt;/span> &lt;/div> &lt;/div> &lt;div class="crayon-plain-wrap"> &lt;/div> &lt;div class="crayon-main"> &lt;table class="crayon-table "> &lt;tr class="crayon-row"> &lt;td class="crayon-nums "> &lt;div class="crayon-nums-content"> &lt;div class="crayon-num"> 1 &lt;/div> &lt;/div> &lt;/td> &lt;td class="crayon-code"> &lt;div class="crayon-pre"> &lt;div id="crayon-51c50d9e7aac0-1" class="crayon-line"> &lt;span class="k">DELETE&lt;/span> &lt;span class="k">FROM&lt;/span> &lt;span class="i">sqlite_sequence&lt;/span>&lt;span class="sy">;&lt;/span> &lt;/div> &lt;/div> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;/div> &amp;nbsp; &lt;/div> 来自：http://zhuyanfeng.com/archives/516
+...</p></div><footer class=entry-footer><span title='2016-08-15 03:09:49 +0000 UTC'>2016年8月15日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to SQLite清空表并将自增列归零" href=https://blog.zdltech.com/posts/sqlite%E6%B8%85%E7%A9%BA%E8%A1%A8%E5%B9%B6%E5%B0%86%E8%87%AA%E5%A2%9E%E5%88%97%E5%BD%92%E9%9B%B6/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>IntelliJ IDEA 14.1上JFinal开发环境搭建手册</h2></header><div class=entry-content><p>JFinal官方的教程都是使用Eclipse进行开发的，而使用Intellij IDEA来做开发，不少地方和Eclipse区别还是很大的。
+本文参考了网上不少文章，主要沿用了网友的内容，一步一步做了尝试后记录下来，感谢万能的互联网。
+分别做了两个Module，分别使用Jetty和tomcat来运行。均测试均可正常跑起来。
+本文看起来虽然很长，但实际上步骤不多，为便于初学者了解Intellij IDEA,所以细节写的非常完善，每一步都有截图。
+本文使用的开发环境是Intellij IDEA 14.1.4版本。JFinal是2.0版。
+请大家注意：不是Intellij IDEA配置繁琐，而是我为了便于入门初学者少走弯路，写得非常细，凡是每一个出现的界面，我都截了图，而且文章里面包含了jetty和tomcat的两个项目。所以看起来比Eclipse好像复杂，其实不是的。简单地说，就五个步骤：建项目(类比于Eclipse的Workspace)，建模块(类比于Eclipse的Project)，引入Jar包，建Artifacts，写代码。就可以运行了。
+一、新建项目 新建一个项目，可以是空项目，也可以是连模块一起建的项目，本文为了演示Jetty和tomcat均能运行的效果，所以先建一个空项目，再分别建两个不同的module，以便区分。
+如果项目和模块一起建，可以把Web Application选上，其他的默认就行。
+因为我们要分别测试jetty和tomcat的效果，要建两个模块，所以先建一个空项目。
+点击“Next”进入下一步。
+输入项目名称和项目所在目录，点击“Finish”即可。
+二、项目参数配置 1．新建Module 如果新建一个空项目，会立即出来一个Project Structure的配置窗口。如果是连模块一起建的，请从【File】-【Project Structure】中选择，对项目参数进行配置。
+首先指定项目所使用的JDK版本：
+如果要单独为每个模块指定JDK版本，也可以在模块中进行配置(要在下面的新建模块步骤之后才能操作)。
+下面开始新建模块。
+选择Modules，准备新建Module。
+2．建Jetty运行模块 （1）新建模块 我们先新建一个module，用于使用jetty来运行。
+选上“Web Application”后，点击Next。
+在出现的窗口中，直接在Module name中输入想要新建的module名字，下面的Content root和Module file location中会自动把路径填进去。
+为了便于区分，我们把jetty运行的module命名为jf_jt。
+点击“Finish”。
+此时会出现如下界面；
+选择“Paths”选项卡，选中“Use module compile output path”后，在“Output path”和“Test output path”中均写上类输出的路径。按照一般常规写法，我把这个目录放在module下，web\WEB-INF路径下的classes目录下。
+点击“Apply”，把配置启用起来；
+（2）导入类库 然后点击左侧的Libraries选项卡；
+在做这一步之前，我们先要把需要的类库分别拷贝到我们建立的类库目录中。
+这个模块是需要jetty来运行的，所以需要JFinal的类库和jetty的类库，事先准备好这几个类库。
+Jfinal-2.0-all目录下有需要的类库文件。
+“jfinal-2.0-bin.jar”或“jfinal-2.0-bin-with-src.jar”是jfinal本身的jar包，任选一个都可以，为了方便调试，可以选择“jfinal-2.0-bin-with-src.jar”。
+目前这个项目是为了Jetty而建的，所以要把“jetty-server-8.1.8.jar”也要包含进去。
+在电脑中找到项目目录，进入到Module路径中，新建文件夹；
+...</p></div><footer class=entry-footer><span title='2016-08-14 09:38:52 +0000 UTC'>2016年8月14日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to IntelliJ IDEA 14.1上JFinal开发环境搭建手册" href=https://blog.zdltech.com/posts/intellij-idea-14-1%E4%B8%8Ajfinal%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%89%8B%E5%86%8C/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>我的Android进阶之旅——>Android关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类</h2></header><div class=entry-content><p>下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确
+import Java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.io.OutputStream; import java.io.UnsupportedEncodingException; import java.net.HttpURLConnection; import java.net.URL; import java.net.URLEncoder; import java.security.KeyManagementException; import java.security.NoSuchAlgorithmException; import java.security.NoSuchProviderException; import java.security.cert.CertificateException; import java.security.cert.X509Certificate; import java.util.Map; import java.util.Map.Entry; import javax.net.ssl.HostnameVerifier; import javax.net.ssl.HttpsURLConnection; import javax.net.ssl.SSLContext; import javax.net.ssl.SSLSession; import javax.net.ssl.SSLSocketFactory; import javax.net.ssl.TrustManager; import javax.net.ssl.X509TrustManager; /** * 忽略Https证书是否正确的Https Post请求工具类 * &amp;lt;p/&amp;gt; * created by OuyangPeng on 2016/1/17. */ public class HttpUtil { private static final String DEFAULT_CHARSET = "UTF-8"; // 默认字符集 private static final String _GET = "GET"; // GET private static final String _POST = "POST";// POST /** * 初始化http请求参数 */ private static HttpURLConnection initHttp(String url, String method, Map&amp;lt;String, String&amp;gt; headers) throws IOException { URL _url = new URL(url); HttpURLConnection http = (HttpURLConnection) _url.openConnection(); // 连接超时 http.setConnectTimeout(25000); // 读取超时 --服务器响应比较慢，增大时间 http.setReadTimeout(25000); http.setRequestMethod(method); http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); http.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) [chrome](http://www.07net01.com/tags-chrome-0.html)/33.0.1750.146 Safari/537.36"); if (null != headers && !headers.isEmpty()) { for (Entry&amp;lt;String, String&amp;gt; entry : headers.entrySet()) { http.setRequestProperty(entry.getKey(), entry.getValue()); } } http.setDoOutput(true); http.setDoInput(true); http.connect(); return http; } /** * 初始化http请求参数 */ private static HttpsURLConnection initHttps(String url, String method, Map&amp;lt;String, String&amp;gt; headers) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException { TrustManager[] tm = {new MyX509TrustManager()}; SSLContext sslContext = SSLContext.getInstance("SSL"); sslContext.init(null, tm, new java.security.SecureRandom()); // 从上述SSLContext对象中得到SSLSocketFactory对象 SSLSocketFactory ssf = sslContext.getSocketFactory(); URL _url = new URL(url); HttpsURLConnection http = (HttpsURLConnection) _url.openConnection(); // 设置域名校验 http.setHostnameVerifier(new TrustAnyHostnameVerifier()); http.setSSLSocketFactory(ssf); // 连接超时 http.setConnectTimeout(25000); // 读取超时 --服务器响应比较慢，增大时间 http.setReadTimeout(25000); http.setRequestMethod(method); http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); http.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36"); if (null != headers && !headers.isEmpty()) { for (Entry&amp;lt;String, String&amp;gt; entry : headers.entrySet()) { http.setRequestProperty(entry.getKey(), entry.getValue()); } } http.setDoOutput(true); http.setDoInput(true); http.connect(); return http; } /** * get请求 */ public static String get(String url, Map&amp;lt;String, String&amp;gt; params, Map&amp;lt;String, String&amp;gt; headers) { StringBuffer bufferRes = null; try { HttpURLConnection http = null; if (isHttps(url)) { http = initHttps(initParams(url, params), _GET, headers); } else { http = initHttp(initParams(url, params), _GET, headers); } InputStream in = http.getInputStream(); BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET)); String valueString = null; bufferRes = new StringBuffer(); while ((valueString = read.readLine()) != null) { bufferRes.append(valueString); } in.close(); if (http != null) { http.disconnect();// 关闭连接 } return bufferRes.toString(); } catch (Exception e) { e.printStackTrace(); return null; } } /** * get请求 */ public static String get(String url) { return get(url, null); } /** * get请求 */ public static String get(String url, Map&amp;lt;String, String&amp;gt; params) { return get(url, params, null); } /** * post请求 */ public static String post(String url, String params, Map&amp;lt;String, String&amp;gt; headers) { StringBuffer bufferRes = null; try { HttpURLConnection http = null; if (isHttps(url)) { http = initHttps(url, _POST, headers); } else { http = initHttp(url, _POST, headers); } OutputStream out = http.getOutputStream(); out.write(params.getBytes(DEFAULT_CHARSET)); out.flush(); out.close(); InputStream in = http.getInputStream(); BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET)); String valueString = null; bufferRes = new StringBuffer(); while ((valueString = read.readLine()) != null) { bufferRes.append(valueString); } in.close(); if (http != null) { http.disconnect();// 关闭连接 } return bufferRes.toString(); } catch (Exception e) { e.printStackTrace(); return null; } } /** * post请求 */ public static String post(String url, Map&amp;lt;String, String&amp;gt; params) { return post(url, map2Url(params), null); } /** * post请求 */ public static String post(String url, Map&amp;lt;String, String&amp;gt; params, Map&amp;lt;String, String&amp;gt; headers) { return post(url, map2Url(params), headers); } /** * 初始化参数 */ public static String initParams(String url, Map&amp;lt;String, String&amp;gt; params) { if (null == params || params.isEmpty()) { return url; } StringBuilder sb = new StringBuilder(url); if (url.indexOf("?") == -1) { sb.append("?"); } sb.append(map2Url(params)); return sb.toString(); } /** * map转url参数 */ public static String map2Url(Map&amp;lt;String, String&amp;gt; paramToMap) { if (null == paramToMap || paramToMap.isEmpty()) { return null; } StringBuffer url = new StringBuffer(); boolean isfist = true; for (Entry&amp;lt;String, String&amp;gt; entry : paramToMap.entrySet()) { if (isfist) { isfist = false; } else { url.append("&"); } url.append(entry.getKey()).append("="); String value = http://blog.csdn.net/ouyang_peng/article/details/entry.getValue(); if (null == value || "".equals(value.trim())) { try { url.append(URLEncoder.encode(value, DEFAULT_CHARSET)); } catch (UnsupportedEncodingException e) { e.printStackTrace(); } } } return url.toString(); } /** * 检测是否https */ private static boolean isHttps(String url) { return url.startsWith("https"); } /** * 不进行主机名确认 */ private static class TrustAnyHostnameVerifier implements HostnameVerifier { public boolean verify(String hostname, SSLSession session) { return true; } } /** * 信任所有主机 对于任何证书都不做SSL检测 * 安全验证机制，而Android采用的是X509验证 */ private static class MyX509TrustManager implements X509TrustManager { public X509Certificate[] getAcceptedIssuers() { return null; } @Override public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException { } @Override public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException { } } } ...</p></div><footer class=entry-footer><span title='2016-08-10 08:31:51 +0000 UTC'>2016年8月10日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to 我的Android进阶之旅——>Android关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类" href=https://blog.zdltech.com/posts/%E6%88%91%E7%9A%84android%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%97%85-android%E5%85%B3%E4%BA%8Ehttpsurlconnection%E4%B8%80%E4%B8%AA%E5%BF%BD%E7%95%A5https%E8%AF%81%E4%B9%A6%E6%98%AF%E5%90%A6%E6%AD%A3/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>ButterKnife：8.1.0的使用</h2></header><div class=entry-content><p>https://github.com/JakeWharton/butterknife
+最近使用的新版的ButterKnife，跟之前有点不一样的地方。记录一下!
+导入依赖项：Project Structure→app→Dependencies→add→Library Dependence然后搜索ButterKnife导入对应的依赖。 需要添加的一些插件 Project的build.gradle文件中增加classpath内容： ``` buildscript { repositories { jcenter() } dependencies { classpath &amp;lt;span class="hljs-symbol">'com&amp;lt;/span>.android.tools.build:gradle:&amp;lt;span class="hljs-number">2.0&amp;lt;/span>&amp;lt;span class="hljs-number">.0&amp;lt;/span>' classpath &amp;lt;span class="hljs-symbol">'com&amp;lt;/span>.neenbedankt.gradle.plugins:android-apt:&amp;lt;span class="hljs-number">1.8&amp;lt;/span>' &amp;lt;span class="hljs-comment">//增加这一句&amp;lt;/span> } } allprojects { repositories { jcenter() } } task clean(&amp;lt;span class="hljs-class">&amp;lt;span class="hljs-keyword">type&amp;lt;/span>:&amp;lt;/span> &amp;lt;span class="hljs-type">Delete&amp;lt;/span>) { delete rootProject.buildDir } 2. app的build.gradle文件中增加classpath内容： ``` `apply plugin: &amp;lt;span class="hljs-string">'com.neenbedankt.android-apt'&amp;lt;/span>&amp;lt;span class="hljs-comment">//增加这一句&amp;lt;/span> dependencies { compile fileTree(&amp;lt;span class="hljs-keyword">include&amp;lt;/span>: [&amp;lt;span class="hljs-string">'*.jar'&amp;lt;/span>], dir: &amp;lt;span class="hljs-string">'libs'&amp;lt;/span>) testCompile &amp;lt;span class="hljs-string">'junit:junit:4.12'&amp;lt;/span> compile &amp;lt;span class="hljs-string">'com.android.support:appcompat-v7:23.4.0'&amp;lt;/span> compile &amp;lt;span class="hljs-string">'com.jakewharton:butterknife:8.1.0'&amp;lt;/span> apt &amp;lt;span class="hljs-string">'com.jakewharton:butterknife-compiler:8.1.0'&amp;lt;/span>&amp;lt;span class="hljs-comment">//增加这一句&amp;lt;/span> }` 代码中的使用，具体就是之前的inject变成了现在的bind，其他变化不大： ``` `public &lt;span class=“hljs-class”>&lt;span class=“hljs-keyword”>class&lt;/span> &lt;span class=“hljs-title”>MainActivity&lt;/span> &lt;span class=“hljs-keyword”>&lt;span class=“hljs-keyword”>extends&lt;/span>&lt;/span> &lt;span class=“hljs-title”>AppCompatActivity&lt;/span> {&lt;/span> &lt;span class=“hljs-annotation”>@BindView&lt;/span>(&lt;span class=“hljs-type”>R&lt;/span>.id.btn_qq) &lt;span class=“hljs-type”>Button&lt;/span> qqBtn; &lt;span class=“hljs-annotation”>@Override&lt;/span> &lt;span class=“hljs-keyword”>protected&lt;/span> void onCreate(&lt;span class=“hljs-type”>Bundle&lt;/span> savedInstanceState) { &lt;span class=“hljs-keyword”>super&lt;/span>.onCreate(savedInstanceState); setContentView(&lt;span class=“hljs-type”>R&lt;/span>.layout.activity_main);
+...</p></div><footer class=entry-footer><span title='2016-08-10 06:38:15 +0000 UTC'>2016年8月10日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to ButterKnife：8.1.0的使用" href=https://blog.zdltech.com/posts/butterknife8-1-0%E7%9A%84%E4%BD%BF%E7%94%A8/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>10大H5前端框架</h2></header><div class=entry-content><p>作为一名做为在前端死缠烂打6年并且懒到不行的攻城士，这几年我还是阅过很多同门从知名到很知名的各种前端框架，本来想拿15-20个框架来分享一下，但在跟几个前辈讨教写文章的技巧时果断被无情的打击了，所以这里我还是低调的只拿出10个框架来个大锅乱炖来简单介绍，凑够字数也就全剧终了。
+原本写这篇文章想围绕着 CSS 框架来的，但因为目前界内比较流行并遍地开花的主要还是 JS+CSS 模式的框架，并且自己靠着一点 JS 功底，就想专门针对 CSS，所以最后来个大锅乱炖都大致聊聊。下面的框架也没有什么先后顺序之分，我想到啥就写啥啦( 作为前端，我一向都这么的任性 ^_^ )。
+Bootstrap
+首先说 Bootstrap，估计你也猜到会先说或者一定会有这个( 呵呵了 )，这是说明它的强大之处，拥有框架一壁江山的势气。自己刚入道的时候本着代码任何一个字母都得自己敲出来挡我者废的决心，来让自己成长。结果受到周围各种基友的引诱开始了 Bootstrap 旅程。本人虽然是个设计+前端的万里有一的人才，但是老天只让我会用 PS 和各种设计工具却不给我跟设计妹子一样的审美，所以这也是我最初选择 Bootstrap 的原因之一，它让我做出来的东西好歹能在妹子面前装个逼，不过时间长了难免觉得 Bootstrap 美的让人烦躁， 但好在它的每个版本都会有很大的改变，不会让人觉得自己做的网站会跟很多网站撞脸。Bootstrap 的用法及其简单( 这也可能就是 Bootstrap 作者阅攻城士无数，了解他们痛的结果 )，以至于是个小前端都可以快速上手，几乎没什么学习成本。
+官网：http://getbootstrap.com/
+Github：https://github.com/twbs/bootstrap/
+作者：Mark Otto 和Jacob Thornton Star：93,112
+总结：Bootstrap 最大的优势就是它非常流行，流行就代表你有问题就有很多人帮你解决问题，就代表装逼它就是利器，还有就是界面比较和谐，容易上手，关注它的童鞋应该发现最新 V4 版也开始支持 FlexBox 布局，这是非常好的升级体验。 劣势是 class 命名不够语义化，并且各种缩写，以至于我离了文档就是个菜，最近开始整混合 APP，选框架的时候首选就是它，但之前搞 PC 一直没注意，后来搞混合右键属性看它的时候，瞬间一阵凉风袭来，Bootstrap 好小，小到我只好选择别的框架。
+AUI
+第三个是最近刚起来的AUI，虽然作者声称是专为APICloud开发者设计的一套UI框架，但实际它还是解决了很多移动前端开发的普遍问题，是主要面向混合开发的 CSS 框架。看起来作者比较猖狂，各种高级 CSS3 遍地使用，这让我也不得不去查查这些个 CSS3 的兼容性。不负众望果然选的都是兼容不错的属性，哈哈了一顿激动从前辈手上大胆认识了几个好东西，并且框架还提供了聊天界面、计数列表等组件，解决了很多复杂的让我骂娘的布局，现在可以直接拿走就用。
+Github：https://github.com/liulangnan/aui
+官网：http://www.auicss.com/
+作者：流浪男 Star：92
+总结：这个框架对我来说有个优点就是纯 CSS 框架，自己以前也就用过 Pure，自己有点 JS 能力，如果不是复杂的效果，找个纯 CSS 框架自己随便改改就可以，而现在 CSS3 也已经能够做到动画，效率、质量、高效全兼顾，所以还是选择了这种 CSS 框架。有一点觉得不满的是这框架的文档真的好那什么，说好的高大上呢。
+...</p></div><footer class=entry-footer><span title='2016-08-04 02:08:01 +0000 UTC'>2016年8月4日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to 10大H5前端框架" href=https://blog.zdltech.com/posts/10%E5%A4%A7h5%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>隐藏弹出键盘，Edittext有光标实现方式</h2></header><div class=entry-content><p>1、第一种方式
+edittext.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE); edittext.setTextIsSelectable(true); 2、第二种方式 /** * 禁止Edittext弹出软件盘，光标依然正常显示。 */ public void disableShowSoftInput(EditText editText) { if (android.os.Build.VERSION.SDK_INT &amp;lt;= 10) { // editText.setInputType(InputType.TYPE_NULL); editText.setRawInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE); editText.setTextIsSelectable(true); } else { Class&amp;lt;EditText&amp;gt; cls = EditText.class; Method method; try { method = cls.getMethod("setShowSoftInputOnFocus",boolean.class); method.setAccessible(true); method.invoke(editText, false); }catch (Exception e) { // TODO: handle exception } try { method = cls.getMethod("setSoftInputShownOnFocus",boolean.class); method.setAccessible(true); method.invoke(editText, false); }catch (Exception e) { // TODO: handle exception } } }</p></div><footer class=entry-footer><span title='2016-08-03 08:16:26 +0000 UTC'>2016年8月3日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to 隐藏弹出键盘，Edittext有光标实现方式" href=https://blog.zdltech.com/posts/%E9%9A%90%E8%97%8F%E5%BC%B9%E5%87%BA%E9%94%AE%E7%9B%98edittext%E6%9C%89%E5%85%89%E6%A0%87%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android 监听锁屏/开屏事件</h2></header><div class=entry-content><p>1. 两种方案 （1） 监听BroadcastReceiver
+（2）获取PowerManager事件
+### 2. BroadcastReceiver {#articleHeader1}
+#### 2.1. 事件
+总共有3个事件：
+Intent.ACTION_SCREEN_ON ： 屏幕点亮 Intent.ACTION_SCREEN_OFF ：屏幕关闭 Intent.ACTION_USER_PRESENT： 用户解锁 #### 2.2. 权限
+监听用户解锁需要在AndroidManifest中注册权限
+&amp;lt;uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" /&amp;gt; #### 2.3. IntentFilter代码
+if (mContext != null) { IntentFilter filter = new IntentFilter(); filter.addAction(Intent.ACTION_SCREEN_ON); filter.addAction(Intent.ACTION_SCREEN_OFF); filter.addAction(Intent.ACTION_USER_PRESENT); mContext.registerReceiver(mScreenReceiver, filter); } ### 3. PowerManager {#articleHeader2}
+PowerManager manager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE); if (manager.isScreenOn()) { if (mScreenStateListener != null) { mScreenStateListener.onScreenOn(); } } else { if (mScreenStateListener != null) { mScreenStateListener.onScreenOff(); } } ...</p></div><footer class=entry-footer><span title='2016-08-02 08:07:20 +0000 UTC'>2016年8月2日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Android 监听锁屏/开屏事件" href=https://blog.zdltech.com/posts/android-%E7%9B%91%E5%90%AC%E9%94%81%E5%B1%8F%E5%BC%80%E5%B1%8F%E4%BA%8B%E4%BB%B6/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/page/17/>«&nbsp;上一页&nbsp;
+</a><a class=next href=https://blog.zdltech.com/page/19/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

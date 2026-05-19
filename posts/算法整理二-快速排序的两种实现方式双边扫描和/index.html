@@ -1,0 +1,313 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>算法整理(二)—快速排序的两种实现方式:双边扫描和单边扫描 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="首先简单谈下快速排序的特点，时间复杂度O(nLog n)，最差时间复杂度O(n^2)，平均时间O(nLog n).因为用到了函数栈，空间复杂度为O(lg n),最差为O(n).是一种不稳定的排序方法。基本思想是分治法，这位大大的[http://blog.csdn.net/morewindows/ar..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86%E4%BA%8C-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E5%8F%8C%E8%BE%B9%E6%89%AB%E6%8F%8F%E5%92%8C/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86%E4%BA%8C-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E5%8F%8C%E8%BE%B9%E6%89%AB%E6%8F%8F%E5%92%8C/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86%E4%BA%8C-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E5%8F%8C%E8%BE%B9%E6%89%AB%E6%8F%8F%E5%92%8C/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="算法整理(二)—快速排序的两种实现方式:双边扫描和单边扫描"><meta property="og:description" content="首先简单谈下快速排序的特点，时间复杂度O(nLog n)，最差时间复杂度O(n^2)，平均时间O(nLog n).因为用到了函数栈，空间复杂度为O(lg n),最差为O(n).是一种不稳定的排序方法。基本思想是分治法，这位大大的[http://blog.csdn.net/morewindows/ar..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-10-27T14:19:44+00:00"><meta property="article:modified_time" content="2014-10-27T14:19:44+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="算法整理(二)—快速排序的两种实现方式:双边扫描和单边扫描"><meta name=twitter:description content="首先简单谈下快速排序的特点，时间复杂度O(nLog n)，最差时间复杂度O(n^2)，平均时间O(nLog n).因为用到了函数栈，空间复杂度为O(lg n),最差为O(n).是一种不稳定的排序方法。基本思想是分治法，这位大大的[http://blog.csdn.net/morewindows/ar..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"算法整理(二)—快速排序的两种实现方式:双边扫描和单边扫描","item":"https://blog.zdltech.com/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86%E4%BA%8C-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E5%8F%8C%E8%BE%B9%E6%89%AB%E6%8F%8F%E5%92%8C/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"算法整理(二)—快速排序的两种实现方式:双边扫描和单边扫描","name":"算法整理(二)—快速排序的两种实现方式:双边扫描和单边扫描","description":"首先简单谈下快速排序的特点，时间复杂度O(nLog n)，最差时间复杂度O(n^2)，平均时间O(nLog n).因为用到了函数栈，空间复杂度为O(lg n),最差为O(n).是一种不稳定的排序方法。基本思想是分治法，这位大大的[http://blog.csdn.net/morewindows/ar...","keywords":["android","移动开发"],"articleBody":"首先简单谈下快速排序的特点，时间复杂度O(nLog n)，最差时间复杂度O(n^2)，平均时间O(nLog n).因为用到了函数栈，空间复杂度为O(lg n),最差为O(n).是一种不稳定的排序方法。基本思想是分治法，这位大大的http://blog.csdn.net/morewindows/article/details/6684558 讲的非常清楚了，分治法+挖坑法，我就不多说了。就是以某个数为参照，使得左边的都小于他，右边的数都大于他。然后对他的左右两个区间采取同样的方法进行递归。\n就其整体实现而言，有两大种思路，一是双边扫描，二是单边扫描。下面分别来上程序:\n一、双边扫描 双边扫描是谭浩强书中的方法，个人觉得比下面的单边扫描更好理解，也是博文里采用的方法。下面看程序:\n**[cpp]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[copy](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[print](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[?](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/412329)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/412329/fork) - \u0026#8220;font-family:Comic Sans MS;font-size:18px;\u0026#8221;\u003evoid quickSort1(int* x, int l, int r){ - - if(l \u003c r){ - int i = l, j = r, key = x[l]; - while(i \u003c j){ - while( i \u003c j \u0026\u0026 x[j] \u003e= key){ - j\u0026#8211;; - } - if(i \u003c j){ - x[i++] = x[j]; - } - while(i \u003c j \u0026\u0026 x[i] \u003c= key){ - i++; - } - if(i \u003c j){ - x[j\u0026#8211;] = x[i]; - } - } - cout\u003c\u003c\u0026#8220;i = \u0026#8220; \u003c","wordCount":"1732","inLanguage":"zh","datePublished":"2014-10-27T14:19:44Z","dateModified":"2014-10-27T14:19:44Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86%E4%BA%8C-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E5%8F%8C%E8%BE%B9%E6%89%AB%E6%8F%8F%E5%92%8C/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">算法整理(二)—快速排序的两种实现方式:双边扫描和单边扫描</h1><div class=post-description>首先简单谈下快速排序的特点，时间复杂度O(nLog n)，最差时间复杂度O(n^2)，平均时间O(nLog n).因为用到了函数栈，空间复杂度为O(lg n),最差为O(n).是一种不稳定的排序方法。基本思想是分治法，这位大大的[http://blog.csdn.net/morewindows/ar...</div><div class=post-meta><span title='2014-10-27 14:19:44 +0000 UTC'>2014年10月27日</span>&nbsp;·&nbsp;<span>9 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e4%b8%80%e5%8f%8c%e8%be%b9%e6%89%ab%e6%8f%8f aria-label=一、双边扫描>一、双边扫描</a></li><li><a href=#%e4%ba%8c%e5%8d%95%e8%be%b9%e6%89%ab%e6%8f%8f aria-label=二、单边扫描>二、单边扫描</a></li></ul></div></details><div class="post-content md-content"><p>首先简单谈下快速排序的特点，时间复杂度O(nLog n)，最差时间复杂度O(n^2)，平均时间O(nLog n).因为用到了函数栈，空间复杂度为O(lg n),最差为O(n).是一种不稳定的排序方法。基本思想是分治法，这位大大的<a href=http://blog.csdn.net/morewindows/article/details/6684558>http://blog.csdn.net/morewindows/article/details/6684558</a> 讲的非常清楚了，分治法+挖坑法，我就不多说了。就是以某个数为参照，使得左边的都小于他，右边的数都大于他。然后对他的左右两个区间采取同样的方法进行递归。</p><p>就其整体实现而言，有两大种思路，一是双边扫描，二是单边扫描。下面分别来上程序:</p><h1 id=一双边扫描><a style=color:#369 name=t0></a>一、双边扫描<a hidden class=anchor aria-hidden=true href=#一双边扫描>#</a></h1><p>双边扫描是谭浩强书中的方法，个人觉得比下面的单边扫描更好理解，也是<a href=http://blog.csdn.net/morewindows/article/details/6684558>博文</a>里采用的方法。下面看程序:</p><p> </p><div class="dp-highlighter bg_cpp"><div class=bar><div class=tools style=color:silver>**[cpp]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[copy](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[print](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[?](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/412329)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/412329/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;&lt;span style=&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;font-family:Comic Sans MS;font-size:18px;&amp;#8221;&lt;/span&gt;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; quickSort1(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt;* x, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; r){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(l &lt; r){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; i = l, j = r, key = x[l];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(i &lt; j){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;( i &lt; j &amp;&amp; x[j] &gt;= key){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                j&amp;#8211;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(i &lt; j){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                x[i++] = x[j];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(i &lt; j &amp;&amp; x[i] &lt;= key){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                i++;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(i &lt; j){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                x[j&amp;#8211;] = x[i];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        cout&lt;&lt;&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;i = &amp;#8220;&lt;/span&gt; &lt;&lt;i&lt;&lt;&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8221; j = &amp;#8220;&lt;/span&gt;&lt;&lt;j&lt;&lt;endl;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        x[i] = key;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        quickSort1(x, l, i-1);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        quickSort1(x, i+1, r);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><p>双边扫描非常直观，首先进到程序里判断是否l&lt;r,当满足条件才进去。这也是用递归的一个必要条件，一定要让函数有尽头，有边界。然后进入大while循环，接着进入小while循环，先从右边找，只要满足数字大于key就一直让j往左移。直到第一个不满足条件的，就是第一个小于key的数跳出while循环，将它放在左边挖的“坑”上。同时让坑的索引+1，接着从左边开始扫描，找到第一个大于key的数，再将它填到右边的坑上。右边的坑索引-1，接着再从右边扫描。直到最后跳出大while循环，此时i = j。也就是完成了一次快速排序的扫描。之后将最初的key放到x[i]，其实放到x[j]也是一样的。因为i等于j么，此时！然后进行递归，对区间[l, i – 1], [i+1, r]进行同样的操作。</p><p> </p><p>双边排序的要点: <strong><span style=color:red>1、最初的if一定要有，这是最后递归出来的标志位。2，为了找到一个数使它的左边都大于它，右边都小于它，要多次循环，这个循环就是大while循环。3、双边排序不需要swap，即无需交换。</span></strong></p><p> </p><h1 id=二单边扫描><a style=color:#369 name=t1></a>二、单边扫描<a hidden class=anchor aria-hidden=true href=#二单边扫描>#</a></h1><p>上面的双边排序，出来一次大while循环，要从两边进行多次。单边扫描，则只需从左走到右就能完成一次 快排。</p><p> </p><div class="dp-highlighter bg_cpp"><div class=bar><div class=tools style=color:silver>**[cpp]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[copy](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[print](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[?](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/412329)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/412329/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;&lt;span style=&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;font-family:Comic Sans MS;font-size:18px;&amp;#8221;&lt;/span&gt;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; quickSort2(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; x[], &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; r){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(l &gt;= r)  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; m = l;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; i = l + l; i &lt;= r; i++ ){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(x[i] &lt; x[l]){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            swap2(x[++m], x[i]);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    swap2(x[l], x[m]);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    quickSort2(x, l, m &amp;#8211; 1);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    quickSort2(x, m + 1, r);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; swap2(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; &amp;a,&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; &amp;b){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(a==b) &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt;;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//对同一地址的数据交换，会使其结果为0&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    a=a^b;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    b=a^b;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    a=a^b;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><p>代码是不是更简单了？程序先进行判断，如果l>=r直接return，这点跟双边扫描的if一个意思，都是为递归创造结束的标志。然后用m记录最左边的那个的索引，这里默认的是第一个，即x[l]的索引。[<strong><span style=color:red>注，m的初始值不一定指向key！，仅仅是指向最左边的。</span></strong>]然后进入扫描，直接从l + 1开始，如果右边的小于key，就让x[++m]和x[i]交换。如果右边的大于key，则不进行任何操作。这里有个特例，如果l = 0， 则m = 0.如果x[1]小于x[0]，则让x[1] 和x[1]进行交换，也就等于没交换。如果数组是5 4 3 2 1，则这里的交换就失效了。 再往后看，直到for循环结束，走出循环，让最后m指的位置的数和最初的key进行交换。如上面 5 4 3 2 1,则第一次快排的结果是 1 4 3 2 5，只有for出来后的那次swap才起作用。这里的m有个特殊含义，即指向小于key的最右边的那个数。所以出来后才用它(x[m])和key(即x[l])进行交换。</p><p> </p><p><span style=color:red><strong>单边扫描的特点:</strong></span></p><p><span style=color:red><strong>1、程序需要交换；</strong></span></p><p><span style=color:red><strong>2、更有冒泡法的色彩；冒泡的目的不是让最大的数沉到最右边，而是让小于key的都左移，找到分界索引m。使之和key进行交换。</strong></span></p><p><span style=color:red><strong>3、此版本的的单边扫描属于最基础的，还可以优化。</strong></span></p><p>本想测出两个算法的时间 消耗差异，遗憾的是c++获得程序运行时间太费劲了，弄半天没弄成。下面附上完整程序:</p><p> </p><div class="dp-highlighter bg_cpp"><div class=bar><div class=tools style=color:silver>**[cpp]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[copy](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[print](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[?](http://blog.csdn.net/yanzi1225627/article/details/36045001#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/412329)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/412329/fork)<pre><code>  &lt;div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span style=&quot;color: black;&quot;&gt;&lt;span style=&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;font-family:Comic Sans MS;font-size:18px;&amp;#8221;&lt;/span&gt;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//============================================================================&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// Name        : QuikSort.cpp&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// Author      : YanZi&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// Version     :&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// Copyright   : Your copyright notice&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// Description : Hello World in C++, Ansi-style&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//============================================================================&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;preprocessor&quot; style=&quot;color: gray;&quot;&gt;#include &lt;iostream&gt;&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;preprocessor&quot; style=&quot;color: gray;&quot;&gt;#include &lt;malloc.h&gt;&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;namespace&lt;/span&gt; std;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; swap1(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; a, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; b);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; printArray(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt;* in, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; n);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; quickSort1(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt;* x, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; r);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//双边扫描，快速排序&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; quickSort2(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; x[], &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; r);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//单边扫描，快速排序&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; swap2(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; &amp;a,&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; &amp;b); &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//交换，在MinGW上必须采用此方法，swap1无效&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;preprocessor&quot; style=&quot;color: gray;&quot;&gt;#define N 8 //数组的长度&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; main() {  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt;* input = NULL;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    input = (&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt;*)malloc(N * &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;sizeof&lt;/span&gt;(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt;));  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(input == NULL){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        cout&lt;&lt;&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;内存溢出&amp;#8221;&lt;/span&gt;&lt;&lt;endl;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; i = 0; i &lt; N; i++){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        input[i] = rand();  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//  int input[] = {55, 41, 59, 26, 53, 58, 97, 93};&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    cout&lt;&lt;&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;原始数据:&amp;#8221;&lt;/span&gt;&lt;&lt;endl;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    printArray(input, N);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    quickSort2(input, 0, N-1);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    printArray(input, N);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; 0;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; swap1(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; a, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; b){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; temp = a;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    a = b;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    b = temp;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; printArray(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; * in, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; n){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(in == NULL){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; i = 0; i&lt;n; i++){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        cout&lt;&lt;&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8221; &amp;#8220;&lt;/span&gt;&lt;&lt;in[i];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    cout&lt;&lt;endl;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; quickSort1(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt;* x, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; r){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(l &lt; r){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; i = l, j = r, key = x[l];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(i &lt; j){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;( i &lt; j &amp;&amp; x[j] &gt;= key){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                j&amp;#8211;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(i &lt; j){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                x[i++] = x[j];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(i &lt; j &amp;&amp; x[i] &lt;= key){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                i++;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(i &lt; j){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;                x[j&amp;#8211;] = x[i];  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        cout&lt;&lt;&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;i = &amp;#8220;&lt;/span&gt; &lt;&lt;i&lt;&lt;&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8221; j = &amp;#8220;&lt;/span&gt;&lt;&lt;j&lt;&lt;endl;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        x[i] = key;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        quickSort1(x, l, i-1);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        quickSort1(x, i+1, r);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; quickSort2(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; x[], &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; r){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(l &gt;= r)  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt;;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; m = l;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; i = l + l; i &lt;= r; i++ ){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(x[i] &lt; x[l]){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;            swap2(x[++m], x[i]);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    swap2(x[l], x[m]);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    quickSort2(x, l, m &amp;#8211; 1);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    quickSort2(x, m + 1, r);  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; swap2(&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; &amp;a,&lt;span class=&quot;datatypes&quot; style=&quot;font-weight: bold; color: #2e8b57;&quot;&gt;int&lt;/span&gt; &amp;b){  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(a==b) &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt;;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//对同一地址的数据交换，会使其结果为0&lt;/span&gt;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    a=a^b;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    b=a^b;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;    a=a^b;  &lt;/span&gt;
+
+- &lt;span style=&quot;color: black;&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
+
+- 
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/mark%E8%B5%B0%E8%B5%B7ios%E5%BC%80%E5%8F%91%E6%9C%80%E5%B8%B8%E7%94%A8%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93/><span class=title>« 上一页</span>
+<span>Mark走起！iOS开发最常用的第三方库</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E7%8E%A9%E8%BD%ACandroid-camera%E5%BC%80%E5%8F%91%E4%B8%89%E5%9B%BD%E5%86%85%E9%A6%96%E5%8F%91-%E4%BD%BF%E7%94%A8glsurfaceview%E9%A2%84%E8%A7%88camera-%E5%9F%BA%E7%A1%80%E6%8B%8D%E7%85%A7demo/><span class=title>下一页 »</span>
+<span>玩转Android Camera开发(三):国内首发—使用GLSurfaceView预览Camera 基础拍照demo</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

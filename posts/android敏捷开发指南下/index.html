@@ -1,0 +1,267 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android敏捷开发指南（下） | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="本文延续上期话题，深入到测试、持续集成和部署等环节，紧密结合移动开发方法和技术，围绕Android平台的开发讨论提供更高质量移动产品的解决方案。 **通过清晰的架构实现测试驱动** 通过[《程序员》杂志9月刊文章](http://www.programmer.com.cn/13757/)的分析，我们..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E4%B8%8B/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E4%B8%8B/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E4%B8%8B/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android敏捷开发指南（下）"><meta property="og:description" content="本文延续上期话题，深入到测试、持续集成和部署等环节，紧密结合移动开发方法和技术，围绕Android平台的开发讨论提供更高质量移动产品的解决方案。 **通过清晰的架构实现测试驱动** 通过[《程序员》杂志9月刊文章](http://www.programmer.com.cn/13757/)的分析，我们..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-10-24T03:39:05+00:00"><meta property="article:modified_time" content="2014-10-24T03:39:05+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android敏捷开发指南（下）"><meta name=twitter:description content="本文延续上期话题，深入到测试、持续集成和部署等环节，紧密结合移动开发方法和技术，围绕Android平台的开发讨论提供更高质量移动产品的解决方案。 **通过清晰的架构实现测试驱动** 通过[《程序员》杂志9月刊文章](http://www.programmer.com.cn/13757/)的分析，我们..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android敏捷开发指南（下）","item":"https://blog.zdltech.com/posts/android%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E4%B8%8B/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android敏捷开发指南（下）","name":"Android敏捷开发指南（下）","description":"本文延续上期话题，深入到测试、持续集成和部署等环节，紧密结合移动开发方法和技术，围绕Android平台的开发讨论提供更高质量移动产品的解决方案。 **通过清晰的架构实现测试驱动** 通过[《程序员》杂志9月刊文章](http://www.programmer.com.cn/13757/)的分析，我们...","keywords":["android","移动开发"],"articleBody":"本文延续上期话题，深入到测试、持续集成和部署等环节，紧密结合移动开发方法和技术，围绕Android平台的开发讨论提供更高质量移动产品的解决方案。\n**通过清晰的架构实现测试驱动** 通过[《程序员》杂志9月刊文章](http://www.programmer.com.cn/13757/)的分析，我们可以看到，每一种工具都很难从完全意义上解决工程当中追求快速和高质量的要求。那么就需要通过整体架构实践，更好地解决这方面的问题。以下两种结构方法可供参考。 **平台和领域的分层结构** 如图1所示，这是一种最基础的分层结构。它将和Android平台相关的内容都包裹在了平台层，而将领域、状态、逻辑等和平台无关的内容完全隔离开来。创建项目时，将平台层和测试层分别对领域层产生依赖，以这样的方式达成对项目和对测试的独立构建。 这样做的好处是，领域层可以通过Java的JUnit进行完全测试，而项目各个类之间的因为有明显的项目级别分层，使得代码的考量更加清晰，方便于检验最核心关键的业务逻辑。且测试速度非常快，便于快速迭代。 但其带来的不便之处就是，随着项目代码的日益复杂，其与Android内部结合就越紧密，这时往往越难将业务逻辑很清晰的剥离。部分的业务逻辑将被分片散落在一些平台相关的调用当中。因此我们认为这样的一种层次逻辑更多地适用于简单的项目之中。 ![](http://ipad-cms.csdn.net/cms/attachment/201210/5061286bc38e9.jpg) 图1 平台和领域的分层结构 **MVP（Passive View）架构** 许多文章对Passive View是属于MVP还是MVC有各种不同角度的争论。这里我并不想过多地在词语上做过多纠缠，主要是希望通过描述这样的一种结构来树立比较好的对于Android开发的架构模型。 具体到Passive View的实现，如图2所示，描述了一个基本的原理。 随着项目的不断扩大复杂化，我们需要更加清晰化的代码架构。所以，Passive View对平台和领域的分层结构的层次结构有了更深层次的改进。引入Passive View模式的意义实际上还是从测试出发。出于对JUnit快速性能的青睐，所以依然尽量把层次划分为依赖Android内核的部分和非依赖部分。对于前 半部分，可以用基于Roboletric的上层测试完成，相对应的后半部分则可以使用标准Java进行单元测试。这样做既加快了测试速度，又得以保障测试的覆盖率。 ![](http://ipad-cms.csdn.net/cms/attachment/201210/5061290a0cd3f.jpg) 图2 Passive View架构实现原理图 更多详细的架构资料，请大家参考《GUI Architecture》一文，相信会得到许多很好的想法。 **测试驱动开发的实现** 之所以要强调代码框架结构，最重要的原因就是寻找快捷方便的途径进行TDD开发。在上一篇文章中已提到了Android常见的集中单元测试工具。之所以将框 架设计方式引入测试驱动开发过程，目的是将应用代码分开处理、分而治之。最大限度让各工具间扬长避短。最终实现高效率测试驱动的目的。 事实上，在目前的开发领域，我们也看到了许多正在应运而生的开发框架，例如Android Spring框架。这些都是下一步需要努力和完善的目标。 **业务行为驱动的功能测试方案** 如果说单元测试驱动开发帮助我们从开发角度完成了对代码质量的控制，那么基于业务行为的功能测试则为从业务到实现的统一、软件质量的保障提供了重要的解决方法。 功能（验收）测试：就功能测试而言，所指基本上就是测试科目中常提到的黑盒测试。只不过这里加上了更多具有上下文的信息，使得一次完整的黑盒测试更具有实质上的功能意义。 在 Android的开发中，通常是模拟真机或模拟器的用户操作（例如点击或滑动），来检测操作的结果是否符合预期。这个过程可以很好地代替人工的操作，更快 速和大量完成重复性的测试工作，特别是在发展较快、平台和系统版本覆盖较广的项目中，可以起到节约人力成本、提高测试覆盖与准确性的作用。 在常用的工具中，可以选取上一篇文章中介绍过的Robotium或Native Driver来实现。 前者社区发展速度快，实现功能相对更加完善，例如实现了一些手势操作效果等。不过问题是Robotium的组织目前正在倾向闭源化，有些最好的新功能已无法在开源版本中寻找到。 后者的原理是通过植入应用后门的方式，实现对应用的发出指令和进行资源获取。其物理模型比较适合不能再目标设备安装测试应用，或者希望远程控制的情况。开源状况良好，只是近一年，Native Driver的团队把重点发在其他平台上，对Android的更新比较慢。 基于场景的的跨平台验收测试：基于场景的验收测试，好处是可以在业务人员和开发人员之间建立验收机制。通过一系列关于场景的自然语言描述，完成测试的原始编 码。Cucumber是一个在行为驱动开发（BDD）领域比较常见的工具。其基本方法是通过执行文字形功能描述语言来实现对软件的自动化测试。图3展示了 一个常见的Cucumber测试场景。在Android开发中，通常是解析Cucumber，根据内容分情况拆分正具体的操作步骤。将这些步骤用基于 NativeDriver的Java代码进行实现，通过NativeDriver从指令端到设备端的Android自动测试框架完成控制与校验的自动化测 试。 ![](http://ipad-cms.csdn.net/cms/attachment/201210/50612a3536eaf.jpg) 图3 常见的Cucumber测试场景 当然，这些步骤也可以通过Robotium的远程控制（RC）调用来实现。其原理类似，如图4所示。 该方案还有额外的好处—用同样的方法，通过Cucumber可以实现对UIAutomation等其他平台自动化测试工具的控制。实现一份用例，多个平台的测试解决方案。图5给出了一个iOS平台上的基于Cucumber的跨平台测试实例。 ![](http://ipad-cms.csdn.net/cms/attachment/201210/50612a618a4e3.jpg) 图4 Cucumber测试实例 ![](http://ipad-cms.csdn.net/cms/attachment/201210/50612aa72955d.jpg) 图5 iOS平台上基于Cucumber的跨平台测试实例 **从持续集成到部署** **Jenkins最基本的持续集成** 在做好了各种测试实践后，需要考虑如何保证这种实践在每一次提交都产生效果，并且提供对代码库的不断保护。这里引入常用敏捷实践中持续集成的概念。 持 续集成主要是为了能够更好为产品在整个开发过程中提供交付保障。相对比传统服务器领域，移动开发中，碰到最多的问题是环境的不同与测试包的相对封闭。以前 通过改一个配置实现服务器实时测试修改的方法，很难直接应用于移动开发。此外，作为整个服务边缘的移动应用，往往会遇到大量不同的测试环境。 所以如图6所描述的，需要在持续集成服务器上部署相关的应用包，完成对不同环境的开发与测试。这样的测试通常是由持续集成服务器引导的不同物理移动设备来完成，以保证最终测试包的可交付性。尤其适用于对于网络和性能等相关的测试。 ![](http://ipad-cms.csdn.net/cms/attachment/201210/50612ae03a67e.jpg) 图6 利用相关应用包完成对不同环境的开发与测试 当然，如果细心的话，也可以看出图6中对于产品版本与配置管理的一些端倪。 **OTA自动化部署** 持续集成帮助我们有了稳定的应用包。有了这些包，我们现在就差最后的一步—自动化部署。在移动的真实交付中，由于安装包需要下载到移动终端完成。所以自动化部署也必须要模拟这一过程完成交付。 这里我们推荐使用持续集成服务器关于邮件服务推送的应用插件来完成。具体的过程通常为，在完成编译并顺利通过测试后，持续集成服务器会根据制定终端列表，推送测试内容以供安装。推送者收到请求后，可以根据需要自行安装相应apk文件，达到部署效果。 这样做打通了移动开发最后一步的障碍。并有效沟通了管理、设计、业务与测试的各个部门人员。持续集成管理员还可以通过管理安装邮件列表的形式，自行选择不同版本，环境安装包对不同相关人员的推送。 **让调试可持续化** 有 了开发，有了一系列持续化集成作业，有了作业完成的自动化打包部署，貌似可以休息了。但正如DevOps概念所说，虽然做了许多努力，但我们依然承认会有 错误的出现，那么如何尽早发现错误并准确定位，最终完成就显得尤为重要。在不同阶段，我们尝试使用不同的方法来进行调试。下面介绍我们的两个实践方法。 开发后调试。旧有的logcat是一个很好的调试工具，它在开发中起到了重要的作用，但对于做探索测试的QA们而言，大量繁琐的Debug信息往往令人看得眼花缭乱。 这 时我们就需要一个更好的工具进行错误栈的准确定位，因此我们引入了Acra。这是一个开源工具包，其功能是自动化地将Android应用的错误报告发送到 GoogleDoc或着Email等的可记录文本中。它的目的是为了帮助Android应用开发者在错误发生时收集行为和技术数据。 上线后的持续关注当然在上线后，Google Play也为我们提供了一个非常有好的平台用以收集各种来自用户的反馈信息。其中包括下载量、评价、应用异常报告等。 \u0026nbsp; ![](http://ipad-cms.csdn.net/cms/attachment/201210/50612b2c496ca.jpg) \u0026nbsp; \u0026nbsp; ![](http://ipad-cms.csdn.net/cms/attachment/201210/50612b2d5d71a.jpg) \u0026nbsp; ![](http://ipad-cms.csdn.net/cms/attachment/201210/50612b35d1eac.jpg) 图7 移动循环开发流程 在 应用异常报告中，详细记录了整个错误堆栈的信息，更包括错误信息的总数量、周发生次数，以及版本时间等信息。因为Android平台设备性能、具体型号等 多方面内容，并不一定所有的错误信息都一定去进行处理，但这个平台提供了一个持续关注上线情况的基础，为产品的紧急处理、故障修复和在开发提供了重要的信 息来源。 这里还要强调，测试优先的TDD实践，在每一个错误修复前，都应该把测试补好，这是同样错误不会再次出现的最重要保障。 **总结** 本文提出了移动开发过程中常见的问题，并分析了基于开发与维护过程中的一些具体实践方法，尝试从移动应用的开发技术角度提供解决方案。 除此之外，事实上和常见的软件开发一样，还有诸如配置管理、发布管理等也是必不可少的。我们总结了如图7所示的一个移动开发循环。通过对不同方面的配置技术实现，完成移动的全流程开发，供读者做更深的思考和方法演进。 转自：http://www.yidin.net/?p=6821 ","wordCount":"101","inLanguage":"zh","datePublished":"2014-10-24T03:39:05Z","dateModified":"2014-10-24T03:39:05Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E4%B8%8B/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android敏捷开发指南（下）</h1><div class=post-description>本文延续上期话题，深入到测试、持续集成和部署等环节，紧密结合移动开发方法和技术，围绕Android平台的开发讨论提供更高质量移动产品的解决方案。 **通过清晰的架构实现测试驱动** 通过[《程序员》杂志9月刊文章](http://www.programmer.com.cn/13757/)的分析，我们...</div><div class=post-meta><span title='2014-10-24 03:39:05 +0000 UTC'>2014年10月24日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>本文延续上期话题，深入到测试、持续集成和部署等环节，紧密结合移动开发方法和技术，围绕Android平台的开发讨论提供更高质量移动产品的解决方案。</p><div style=color:#000><pre><code>**通过清晰的架构实现测试驱动**
+
+
+
+
+
+通过[《程序员》杂志9月刊文章](http://www.programmer.com.cn/13757/)的分析，我们可以看到，每一种工具都很难从完全意义上解决工程当中追求快速和高质量的要求。那么就需要通过整体架构实践，更好地解决这方面的问题。以下两种结构方法可供参考。
+
+
+
+
+
+**平台和领域的分层结构**
+
+
+
+
+
+如图1所示，这是一种最基础的分层结构。它将和Android平台相关的内容都包裹在了平台层，而将领域、状态、逻辑等和平台无关的内容完全隔离开来。创建项目时，将平台层和测试层分别对领域层产生依赖，以这样的方式达成对项目和对测试的独立构建。
+
+
+
+
+
+这样做的好处是，领域层可以通过Java的JUnit进行完全测试，而项目各个类之间的因为有明显的项目级别分层，使得代码的考量更加清晰，方便于检验最核心关键的业务逻辑。且测试速度非常快，便于快速迭代。
+
+
+
+
+
+但其带来的不便之处就是，随着项目代码的日益复杂，其与Android内部结合就越紧密，这时往往越难将业务逻辑很清晰的剥离。部分的业务逻辑将被分片散落在一些平台相关的调用当中。因此我们认为这样的一种层次逻辑更多地适用于简单的项目之中。
+</code></pre><div><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/5061286bc38e9.jpg)</div><pre><code>  图1 平台和领域的分层结构
+</code></pre></div><pre><code>**MVP（Passive View）架构**
+
+
+
+
+
+许多文章对Passive View是属于MVP还是MVC有各种不同角度的争论。这里我并不想过多地在词语上做过多纠缠，主要是希望通过描述这样的一种结构来树立比较好的对于Android开发的架构模型。
+
+
+
+
+
+具体到Passive View的实现，如图2所示，描述了一个基本的原理。
+
+
+
+
+
+随着项目的不断扩大复杂化，我们需要更加清晰化的代码架构。所以，Passive View对平台和领域的分层结构的层次结构有了更深层次的改进。引入Passive View模式的意义实际上还是从测试出发。出于对JUnit快速性能的青睐，所以依然尽量把层次划分为依赖Android内核的部分和非依赖部分。对于前 半部分，可以用基于Roboletric的上层测试完成，相对应的后半部分则可以使用标准Java进行单元测试。这样做既加快了测试速度，又得以保障测试的覆盖率。
+</code></pre><div><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/5061290a0cd3f.jpg)</div><pre><code>  图2 Passive View架构实现原理图
+</code></pre></div><pre><code>更多详细的架构资料，请大家参考《GUI Architecture》一文，相信会得到许多很好的想法。
+
+
+
+
+
+**测试驱动开发的实现**
+
+
+
+
+
+之所以要强调代码框架结构，最重要的原因就是寻找快捷方便的途径进行TDD开发。在上一篇文章中已提到了Android常见的集中单元测试工具。之所以将框 架设计方式引入测试驱动开发过程，目的是将应用代码分开处理、分而治之。最大限度让各工具间扬长避短。最终实现高效率测试驱动的目的。
+
+
+
+
+
+事实上，在目前的开发领域，我们也看到了许多正在应运而生的开发框架，例如Android Spring框架。这些都是下一步需要努力和完善的目标。
+
+
+
+
+
+**业务行为驱动的功能测试方案**
+
+
+
+
+
+如果说单元测试驱动开发帮助我们从开发角度完成了对代码质量的控制，那么基于业务行为的功能测试则为从业务到实现的统一、软件质量的保障提供了重要的解决方法。
+
+
+
+
+
+功能（验收）测试：就功能测试而言，所指基本上就是测试科目中常提到的黑盒测试。只不过这里加上了更多具有上下文的信息，使得一次完整的黑盒测试更具有实质上的功能意义。
+
+
+
+
+
+在 Android的开发中，通常是模拟真机或模拟器的用户操作（例如点击或滑动），来检测操作的结果是否符合预期。这个过程可以很好地代替人工的操作，更快 速和大量完成重复性的测试工作，特别是在发展较快、平台和系统版本覆盖较广的项目中，可以起到节约人力成本、提高测试覆盖与准确性的作用。
+
+
+
+
+
+在常用的工具中，可以选取上一篇文章中介绍过的Robotium或Native Driver来实现。
+
+
+
+
+
+前者社区发展速度快，实现功能相对更加完善，例如实现了一些手势操作效果等。不过问题是Robotium的组织目前正在倾向闭源化，有些最好的新功能已无法在开源版本中寻找到。
+
+
+
+
+
+后者的原理是通过植入应用后门的方式，实现对应用的发出指令和进行资源获取。其物理模型比较适合不能再目标设备安装测试应用，或者希望远程控制的情况。开源状况良好，只是近一年，Native Driver的团队把重点发在其他平台上，对Android的更新比较慢。
+
+
+
+
+
+基于场景的的跨平台验收测试：基于场景的验收测试，好处是可以在业务人员和开发人员之间建立验收机制。通过一系列关于场景的自然语言描述，完成测试的原始编 码。Cucumber是一个在行为驱动开发（BDD）领域比较常见的工具。其基本方法是通过执行文字形功能描述语言来实现对软件的自动化测试。图3展示了 一个常见的Cucumber测试场景。在Android开发中，通常是解析Cucumber，根据内容分情况拆分正具体的操作步骤。将这些步骤用基于 NativeDriver的Java代码进行实现，通过NativeDriver从指令端到设备端的Android自动测试框架完成控制与校验的自动化测 试。
+</code></pre><div><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/50612a3536eaf.jpg)</div><pre><code>  图3 常见的Cucumber测试场景
+</code></pre></div><pre><code>当然，这些步骤也可以通过Robotium的远程控制（RC）调用来实现。其原理类似，如图4所示。
+
+
+
+
+
+该方案还有额外的好处—用同样的方法，通过Cucumber可以实现对UIAutomation等其他平台自动化测试工具的控制。实现一份用例，多个平台的测试解决方案。图5给出了一个iOS平台上的基于Cucumber的跨平台测试实例。
+</code></pre><div><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/50612a618a4e3.jpg)</div><pre><code>  图4 Cucumber测试实例
+</code></pre></div><div><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/50612aa72955d.jpg)</div><pre><code>  图5 iOS平台上基于Cucumber的跨平台测试实例
+</code></pre></div><pre><code>**从持续集成到部署**
+
+
+
+
+
+**Jenkins最基本的持续集成**
+
+
+
+
+
+在做好了各种测试实践后，需要考虑如何保证这种实践在每一次提交都产生效果，并且提供对代码库的不断保护。这里引入常用敏捷实践中持续集成的概念。
+
+
+
+
+
+持 续集成主要是为了能够更好为产品在整个开发过程中提供交付保障。相对比传统服务器领域，移动开发中，碰到最多的问题是环境的不同与测试包的相对封闭。以前 通过改一个配置实现服务器实时测试修改的方法，很难直接应用于移动开发。此外，作为整个服务边缘的移动应用，往往会遇到大量不同的测试环境。
+
+
+
+
+
+所以如图6所描述的，需要在持续集成服务器上部署相关的应用包，完成对不同环境的开发与测试。这样的测试通常是由持续集成服务器引导的不同物理移动设备来完成，以保证最终测试包的可交付性。尤其适用于对于网络和性能等相关的测试。
+</code></pre><div><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/50612ae03a67e.jpg)</div><pre><code>  图6 利用相关应用包完成对不同环境的开发与测试
+</code></pre></div><pre><code>当然，如果细心的话，也可以看出图6中对于产品版本与配置管理的一些端倪。
+
+
+
+
+
+**OTA自动化部署**
+
+
+
+
+
+持续集成帮助我们有了稳定的应用包。有了这些包，我们现在就差最后的一步—自动化部署。在移动的真实交付中，由于安装包需要下载到移动终端完成。所以自动化部署也必须要模拟这一过程完成交付。
+
+
+
+
+
+这里我们推荐使用持续集成服务器关于邮件服务推送的应用插件来完成。具体的过程通常为，在完成编译并顺利通过测试后，持续集成服务器会根据制定终端列表，推送测试内容以供安装。推送者收到请求后，可以根据需要自行安装相应apk文件，达到部署效果。
+
+
+
+
+
+这样做打通了移动开发最后一步的障碍。并有效沟通了管理、设计、业务与测试的各个部门人员。持续集成管理员还可以通过管理安装邮件列表的形式，自行选择不同版本，环境安装包对不同相关人员的推送。
+
+
+
+
+
+**让调试可持续化**
+
+
+
+
+
+有 了开发，有了一系列持续化集成作业，有了作业完成的自动化打包部署，貌似可以休息了。但正如DevOps概念所说，虽然做了许多努力，但我们依然承认会有 错误的出现，那么如何尽早发现错误并准确定位，最终完成就显得尤为重要。在不同阶段，我们尝试使用不同的方法来进行调试。下面介绍我们的两个实践方法。
+
+
+
+
+
+开发后调试。旧有的logcat是一个很好的调试工具，它在开发中起到了重要的作用，但对于做探索测试的QA们而言，大量繁琐的Debug信息往往令人看得眼花缭乱。
+
+
+
+
+
+这 时我们就需要一个更好的工具进行错误栈的准确定位，因此我们引入了Acra。这是一个开源工具包，其功能是自动化地将Android应用的错误报告发送到 GoogleDoc或着Email等的可记录文本中。它的目的是为了帮助Android应用开发者在错误发生时收集行为和技术数据。
+
+
+
+
+
+上线后的持续关注当然在上线后，Google Play也为我们提供了一个非常有好的平台用以收集各种来自用户的反馈信息。其中包括下载量、评价、应用异常报告等。
+
+
+
+
+
+&amp;nbsp;
+</code></pre><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/50612b2c496ca.jpg)</div><pre><code>&amp;nbsp;
+
+
+
+
+
+&amp;nbsp;
+</code></pre><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/50612b2d5d71a.jpg)</div><pre><code>&amp;nbsp;
+</code></pre><div><div class=jiathis_shareimg>![](http://ipad-cms.csdn.net/cms/attachment/201210/50612b35d1eac.jpg)</div><pre><code>  图7 移动循环开发流程
+</code></pre></div><pre><code>在 应用异常报告中，详细记录了整个错误堆栈的信息，更包括错误信息的总数量、周发生次数，以及版本时间等信息。因为Android平台设备性能、具体型号等 多方面内容，并不一定所有的错误信息都一定去进行处理，但这个平台提供了一个持续关注上线情况的基础，为产品的紧急处理、故障修复和在开发提供了重要的信 息来源。
+
+
+
+
+
+这里还要强调，测试优先的TDD实践，在每一个错误修复前，都应该把测试补好，这是同样错误不会再次出现的最重要保障。
+
+
+
+
+
+**总结**
+
+
+
+
+
+本文提出了移动开发过程中常见的问题，并分析了基于开发与维护过程中的一些具体实践方法，尝试从移动应用的开发技术角度提供解决方案。
+
+
+
+
+
+除此之外，事实上和常见的软件开发一样，还有诸如配置管理、发布管理等也是必不可少的。我们总结了如图7所示的一个移动开发循环。通过对不同方面的配置技术实现，完成移动的全流程开发，供读者做更深的思考和方法演进。
+
+
+
+
+
+转自：http://www.yidin.net/?p=6821
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6%E7%9A%84%E9%80%89%E6%8B%A9/><span class=title>« 上一页</span>
+<span>Android 网络开发框架的选择</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97%E4%B8%8A/><span class=title>下一页 »</span>
+<span>Android敏捷开发指南（上）</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,140 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>AlarmManager类的应用（实现闹钟功能） | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="**1、AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，可以实现从指定时间开始，以一个固定的间隔时间执行某项操作，所以常常与广播（Broadcast）连用，实现闹钟等提示功能** **2、AlarmManager的常用方法有三个：** **（1）se..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/alarmmanager%E7%B1%BB%E7%9A%84%E5%BA%94%E7%94%A8%E5%AE%9E%E7%8E%B0%E9%97%B9%E9%92%9F%E5%8A%9F%E8%83%BD/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/alarmmanager%E7%B1%BB%E7%9A%84%E5%BA%94%E7%94%A8%E5%AE%9E%E7%8E%B0%E9%97%B9%E9%92%9F%E5%8A%9F%E8%83%BD/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/alarmmanager%E7%B1%BB%E7%9A%84%E5%BA%94%E7%94%A8%E5%AE%9E%E7%8E%B0%E9%97%B9%E9%92%9F%E5%8A%9F%E8%83%BD/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="AlarmManager类的应用（实现闹钟功能）"><meta property="og:description" content="**1、AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，可以实现从指定时间开始，以一个固定的间隔时间执行某项操作，所以常常与广播（Broadcast）连用，实现闹钟等提示功能** **2、AlarmManager的常用方法有三个：** **（1）se..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-08-28T08:21:38+00:00"><meta property="article:modified_time" content="2014-08-28T08:21:38+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="AlarmManager类的应用（实现闹钟功能）"><meta name=twitter:description content="**1、AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，可以实现从指定时间开始，以一个固定的间隔时间执行某项操作，所以常常与广播（Broadcast）连用，实现闹钟等提示功能** **2、AlarmManager的常用方法有三个：** **（1）se..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"AlarmManager类的应用（实现闹钟功能）","item":"https://blog.zdltech.com/posts/alarmmanager%E7%B1%BB%E7%9A%84%E5%BA%94%E7%94%A8%E5%AE%9E%E7%8E%B0%E9%97%B9%E9%92%9F%E5%8A%9F%E8%83%BD/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"AlarmManager类的应用（实现闹钟功能）","name":"AlarmManager类的应用（实现闹钟功能）","description":"**1、AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，可以实现从指定时间开始，以一个固定的间隔时间执行某项操作，所以常常与广播（Broadcast）连用，实现闹钟等提示功能** **2、AlarmManager的常用方法有三个：** **（1）se...","keywords":["android","移动开发"],"articleBody":"1、AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，可以实现从指定时间开始，以一个固定的间隔时间执行某项操作，所以常常与广播（Broadcast）连用，实现闹钟等提示功能\n2、AlarmManager的常用方法有三个：\n（1）set(int type，long startTime，PendingIntent pi)；\n该方法用于设置一次性闹钟，第一个参数表示闹钟类型，第二个参数表示闹钟执行时间，第三个参数表示闹钟响应动作。\n（2）setRepeating(int type，long startTime，long intervalTime，PendingIntent pi)；\n该方法用于设置重复闹钟，第一个参数表示闹钟类型，第二个参数表示闹钟首次执行时间，第三个参数表示闹钟两次执行的间隔时间，第三个参数表示闹钟响应动作。\n（3）setInexactRepeating（int type，long startTime，long intervalTime，PendingIntent pi）；\n该方法也用于设置重复闹钟，与第二个方法相似，不过其两个闹钟执行的间隔时间不是固定的而已。\n3、三个方法各个参数详悉：\n（1）int type：闹钟的类型，常用的有5个值：AlarmManager.ELAPSED_REALTIME、AlarmManager.ELAPSED_REALTIME_WAKEUP、AlarmManager.RTC、AlarmManager.RTC_WAKEUP、AlarmManager.POWER_OFF_WAKEUP。\nAlarmManager.ELAPSED_REALTIME表示闹钟在手机睡眠状态下不可用，该状态下闹钟使用相对时间（相对于系统启动开始），状态值为3；\nAlarmManager.ELAPSED_REALTIME_WAKEUP表示闹钟在睡眠状态下会唤醒系统并执行提示功能，该状态下闹钟也使用相对时间，状态值为2；\nAlarmManager.RTC表示闹钟在睡眠状态下不可用，该状态下闹钟使用绝对时间，即当前系统时间，状态值为1；\nAlarmManager.RTC_WAKEUP表示闹钟在睡眠状态下会唤醒系统并执行提示功能，该状态下闹钟使用绝对时间，状态值为0；\nAlarmManager.POWER_OFF_WAKEUP表示闹钟在手机关机状态下也能正常进行提示功能，所以是5个状态中用的最多的状态之一，该状态下闹钟也是用绝对时间，状态值为4；不过本状态好像受SDK版本影响，某些版本并不支持；\n（2）long startTime：闹钟的第一次执行时间，以毫秒为单位，可以自定义时间，不过一般使用当前时间。需要注意的是，本属性与第一个属性（type）密切相关，如果第一个参数对应的闹钟使用的是相对时间（ELAPSED_REALTIME和ELAPSED_REALTIME_WAKEUP），那么本属性就得使用相对时间（相对于系统启动时间来说），比如当前时间就表示为：SystemClock.elapsedRealtime()；如果第一个参数对应的闹钟使用的是绝对时间（RTC、RTC_WAKEUP、POWER_OFF_WAKEUP），那么本属性就得使用绝对时间，比如当前时间就表示为：System.currentTimeMillis()。\n（3）long intervalTime：对于后两个方法来说，存在本属性，表示两次闹钟执行的间隔时间，也是以毫秒为单位。\n（4）PendingIntent pi：是闹钟的执行动作，比如发送一个广播、给出提示等等。PendingIntent是Intent的封装类。需要注意的是，如果是通过启动服务来实现闹钟提示的话，PendingIntent对象的获取就应该采用Pending.getService(Context c,int i,Intent intent,int j)方法；如果是通过广播来实现闹钟提示的话，PendingIntent对象的获取就应该采用PendingIntent.getBroadcast(Context c,int i,Intent intent,int j)方法；如果是采用Activity的方式来实现闹钟提示的话，PendingIntent对象的获取就应该采用PendingIntent.getActivity(Context c,int i,Intent intent,int j)方法。如果这三种方法错用了的话，虽然不会报错，但是看不到闹钟提示效果。\n4、 AlarmManager使用示例：利用用户自定义广播实现闹钟功能，从当前时间开始，每隔10分钟提示一次\n（1）实现原理：在SendActivity.java中定义一个AlarmManager对象，指定该对象从当前时间开始，每隔10分钟向名为“MYALARMRECEIVER”的广播接收器发出一条广播，附加消息内容为“你该打酱油了”；创建一个名为MyReceiver的广播接收器，在其onReceive方法中获取Intent对象传过来的值（“你该打酱油了”）并用一个Toast组件显示出来；在AndroidManifest.xml文件中注册SendActivity类和广播接收器类MyReceiver，设置MyReceiver的action的值为“MYALARMRECEIVER”\n（2）代码实现：\n第一步：创建广播接收类MyReceiver.java，在其onReceive方法中获取Intent的附加信息msg，并用Toast组件显示\n**[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#) - public void onReceive(Context context,Intent intent){ - String msg = intent.getStringExtra(\u0026#8220;msg\u0026#8221;); - Toast.makeText(context,msg,Toast.LENGTH_SHORT).show(); - } **第二步：在AndroidManifest.xml中注册广播接收类MyReceiver.java，设置其action值为“MYALARMRECEIVER”** **[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#) - \u0026#8220;.MyReceiver\u0026#8221;\u003e - - \u0026#8220;MYALARMRECEIVER\u0026#8221; /\u003e - - **第三步：创建SendActivity.java，用于设置闹钟，定时发出广播** **[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#) - //创建Intent对象，action指向广播接收类，附加信息为字符串“你该打酱油了” - - Intent intent = new Intent(\u0026#8220;MYALARMRECEIVER\u0026#8221;); - - intent.putExtra(\u0026#8220;msg\u0026#8221;,\u0026#8220;你该打酱油了\u0026#8221;); - - //创建PendingIntent对象封装Intent，由于是使用广播，注意使用getBroadcast方法 - - PendingIntent pi = PendingIntent.getBroadcast(this,,intent,); - - //获取AlarmManager对象 - - AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE); - - //设置闹钟从当前时间开始，每隔10分钟执行一次PendingIntent对象，注意第一个参数与第二个参数的关系 - - am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentMillis(),600*1000,pi); **第四步：在AndroidManifest中为SendActivity.java注册** **[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#) - \u0026#8220;.SendActivity\u0026#8221; /\u003e ","wordCount":"350","inLanguage":"zh","datePublished":"2014-08-28T08:21:38Z","dateModified":"2014-08-28T08:21:38Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/alarmmanager%E7%B1%BB%E7%9A%84%E5%BA%94%E7%94%A8%E5%AE%9E%E7%8E%B0%E9%97%B9%E9%92%9F%E5%8A%9F%E8%83%BD/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">AlarmManager类的应用（实现闹钟功能）</h1><div class=post-description>**1、AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，可以实现从指定时间开始，以一个固定的间隔时间执行某项操作，所以常常与广播（Broadcast）连用，实现闹钟等提示功能** **2、AlarmManager的常用方法有三个：** **（1）se...</div><div class=post-meta><span title='2014-08-28 08:21:38 +0000 UTC'>2014年8月28日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p><strong><span style=color:#1f7099>1、AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，可以实现从指定时间开始，以一个固定的间隔时间执行某项操作，所以常常与广播（Broadcast）连用，实现闹钟等提示功能</span></strong></p><p><strong><span style=color:#1f7099>2、AlarmManager的常用方法有三个：</span></strong></p><p><strong><span style=color:#1f7099>（1）<span style=color:#0f9932>set(int type，long startTime，PendingIntent pi)</span>；</span></strong></p><p><strong><span style=color:#1f7099>该方法用于设置一次性闹钟，第一个参数表示闹钟类型，第二个参数表示闹钟执行时间，第三个参数表示闹钟响应动作。</span></strong></p><p><strong><span style=color:#1f7099>（2）<span style=color:#0f9932>setRepeating(int type，long startTime，long intervalTime，PendingIntent pi)；</span></span></strong></p><p><strong><span style=color:#1f7099>该方法用于设置重复闹钟，第一个参数表示闹钟类型，第二个参数表示闹钟首次执行时间，第三个参数表示闹钟两次执行的间隔时间，第三个参数表示闹钟响应动作。</span></strong></p><p><strong><span style=color:#1f7099>（3）<span style=color:#0f9932>setInexactRepeating（int type，long startTime，long intervalTime，PendingIntent pi）；</span></span></strong></p><p><strong><span style=color:#1f7099>该方法也用于设置重复闹钟，与第二个方法相似，不过其两个闹钟执行的间隔时间不是固定的而已。</span></strong></p><p><strong><span style=color:#1f7099>3、三个方法各个参数详悉：</span></strong></p><p><strong><span style=color:#1f7099>（1）<span style=color:#0f9932>int type</span>：闹钟的类型，常用的有5个值：AlarmManager.ELAPSED_REALTIME、AlarmManager.ELAPSED_REALTIME_WAKEUP、AlarmManager.RTC、AlarmManager.RTC_WAKEUP、AlarmManager.POWER_OFF_WAKEUP。</span></strong></p><p><strong><span style=color:#1f7099>AlarmManager.ELAPSED_REALTIME表示闹钟在手机睡眠状态下不可用，该状态下闹钟使用相对时间（相对于系统启动开始），状态值为3；</span></strong></p><p><strong><span style=color:#1f7099>AlarmManager.ELAPSED_REALTIME_WAKEUP表示闹钟在睡眠状态下会唤醒系统并执行提示功能，该状态下闹钟也使用相对时间，状态值为2；</span></strong></p><p><strong><span style=color:#1f7099>AlarmManager.RTC表示闹钟在睡眠状态下不可用，该状态下闹钟使用绝对时间，即当前系统时间，状态值为1；</span></strong></p><p><strong><span style=color:#1f7099>AlarmManager.RTC_WAKEUP表示闹钟在睡眠状态下会唤醒系统并执行提示功能，该状态下闹钟使用绝对时间，状态值为0；</span></strong></p><p><strong><span style=color:#1f7099>AlarmManager.POWER_OFF_WAKEUP表示闹钟在手机关机状态下也能正常进行提示功能，所以是5个状态中用的最多的状态之一，该状态下闹钟也是用绝对时间，状态值为4；不过本状态好像受SDK版本影响，某些版本并不支持；</span></strong></p><p><strong><span style=color:#1f7099>（2）<span style=color:#0f9932>long startTime</span>：闹钟的第一次执行时间，以毫秒为单位，可以自定义时间，不过一般使用当前时间。需要注意的是，本属性与第一个属性（type）密切相关，如果第一个参数对应的闹钟使用的是相对时间（ELAPSED_REALTIME和ELAPSED_REALTIME_WAKEUP），那么本属性就得使用相对时间（相对于系统启动时间来说），比如当前时间就表示为：SystemClock.elapsedRealtime()；如果第一个参数对应的闹钟使用的是绝对时间（RTC、RTC_WAKEUP、POWER_OFF_WAKEUP），那么本属性就得使用绝对时间，比如当前时间就表示为：System.currentTimeMillis()。</span></strong></p><p><strong><span style=color:#1f7099>（3）<span style=color:#0f9932>long intervalTime</span>：对于后两个方法来说，存在本属性，表示两次闹钟执行的间隔时间，也是以毫秒为单位。</span></strong></p><p><strong><span style=color:#1f7099>（4）<span style=color:#0f9932>PendingIntent pi</span>：是闹钟的执行动作，比如发送一个广播、给出提示等等。PendingIntent是Intent的封装类。需要注意的是，如果是通过启动服务来实现闹钟提示的话，PendingIntent对象的获取就应该采用Pending.getService(Context c,int i,Intent intent,int j)方法；如果是通过广播来实现闹钟提示的话，PendingIntent对象的获取就应该采用PendingIntent.getBroadcast(Context c,int i,Intent intent,int j)方法；如果是采用Activity的方式来实现闹钟提示的话，PendingIntent对象的获取就应该采用PendingIntent.getActivity(Context c,int i,Intent intent,int j)方法。如果这三种方法错用了的话，虽然不会报错，但是看不到闹钟提示效果。</span></strong></p><p><strong><span style=color:#1f7099>4、 AlarmManager使用示例：利用用户自定义广播实现闹钟功能，从当前时间开始，每隔10分钟提示一次</span></strong></p><p><strong><span style=color:#1f7099>（1）实现原理：在SendActivity.java中定义一个AlarmManager对象，指定该对象从当前时间开始，每隔10分钟向名为“MYALARMRECEIVER”的广播接收器发出一条广播，附加消息内容为“你该打酱油了”；创建一个名为MyReceiver的广播接收器，在其onReceive方法中获取Intent对象传过来的值（“你该打酱油了”）并用一个Toast组件显示出来；在AndroidManifest.xml文件中注册SendActivity类和广播接收器类MyReceiver，设置MyReceiver的action的值为“MYALARMRECEIVER”</span></strong></p><p><strong><span style=color:#1f7099>（2）代码实现：</span></strong></p><p><strong><span style=color:#1f7099>第一步：创建广播接收类MyReceiver.java，在其onReceive方法中获取Intent的附加信息msg，并用Toast组件显示</span></strong></p><div class="dp-highlighter bg_java" style=color:#000><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;void&lt;/span&gt; onReceive(Context context,Intent intent){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;     String msg = intent.getStringExtra(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;msg&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;     Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+</code></pre></div><pre><code>  **&lt;span style=&quot;color: #1f7099;&quot;&gt;第二步：在AndroidManifest.xml中注册广播接收类MyReceiver.java，设置其action值为“MYALARMRECEIVER”&lt;/span&gt;**
+
+
+
+
+
+  &lt;div class=&quot;dp-highlighter bg_java&quot; style=&quot;color: #000000;&quot;&gt;
+    &lt;div class=&quot;bar&quot;&gt;
+      &lt;div class=&quot;tools&quot; style=&quot;color: silver;&quot;&gt;
+        **[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#)
+
+        
+        &lt;div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    
+      - &lt;span style=&quot;color: black;&quot;&gt;&lt;receiver android:name=&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;.MyReceiver&amp;#8221;&lt;/span&gt;&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;   &lt;intent-filter&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;      &lt;action android:name=&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;MYALARMRECEIVER&amp;#8221;&lt;/span&gt; /&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;   &lt;/intent-filter&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;&lt;/receiver&gt;  &lt;/span&gt;
+      
+    
+  &lt;/div&gt;
+  
+  
+
+    
+
+      **&lt;span style=&quot;color: #1f7099;&quot;&gt;第三步：创建SendActivity.java，用于设置闹钟，定时发出广播&lt;/span&gt;**
+    
+
+    
+    
+
+      &lt;div class=&quot;dp-highlighter bg_java&quot; style=&quot;color: #000000;&quot;&gt;
+        &lt;div class=&quot;bar&quot;&gt;
+          &lt;div class=&quot;tools&quot; style=&quot;color: silver;&quot;&gt;
+            **[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#)
+
+            
+            &lt;div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        
+        
+          - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//创建Intent对象，action指向广播接收类，附加信息为字符串“你该打酱油了”&lt;/span&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;Intent intent = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;new&lt;/span&gt; Intent(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;MYALARMRECEIVER&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;intent.putExtra(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;msg&amp;#8221;&lt;/span&gt;,&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;你该打酱油了&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//创建PendingIntent对象封装Intent，由于是使用广播，注意使用getBroadcast方法&lt;/span&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;PendingIntent pi = PendingIntent.getBroadcast(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #006699;&quot;&gt;this&lt;/span&gt;,&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;,intent,&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//获取AlarmManager对象&lt;/span&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//设置闹钟从当前时间开始，每隔10分钟执行一次PendingIntent对象，注意第一个参数与第二个参数的关系&lt;/span&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+          
+          - &lt;span style=&quot;color: black;&quot;&gt;am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentMillis(),&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;600&lt;/span&gt;*&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1000&lt;/span&gt;,pi);  &lt;/span&gt;
+          
+        
+      &lt;/div&gt;
+      
+      
+
+        
+
+          **&lt;span style=&quot;color: #1f7099;&quot;&gt;第四步：在AndroidManifest中为SendActivity.java注册&lt;/span&gt;**
+        
+
+        
+        
+
+          &lt;div class=&quot;dp-highlighter bg_java&quot; style=&quot;color: #000000;&quot;&gt;
+            &lt;div class=&quot;bar&quot;&gt;
+              &lt;div class=&quot;tools&quot; style=&quot;color: silver;&quot;&gt;
+                **[java]** [view plain](http://blog.csdn.net/jeethongfei/article/details/6767826#)[copy](http://blog.csdn.net/jeethongfei/article/details/6767826#)
+
+                
+                &lt;div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            
+            
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;activity android:name=&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;.SendActivity&amp;#8221;&lt;/span&gt; /&gt;  &lt;/span&gt;
+              
+            
+          &lt;/div&gt;
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E5%80%BC%E5%BE%97%E6%8E%A8%E8%8D%90%E7%9A%84%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/><span class=title>« 上一页</span>
+<span>微信开发值得推荐的开源项目</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android-%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87%E6%88%96%E6%8B%8D%E7%85%A7%E6%97%B6%E6%97%8B%E8%BD%AC%E4%BA%8690%E5%BA%A6%E9%97%AE%E9%A2%98/><span class=title>下一页 »</span>
+<span>android 选择图片或拍照时旋转了90度问题</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

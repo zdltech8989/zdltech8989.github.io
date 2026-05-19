@@ -1,0 +1,82 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Spring | ZDL Tech Blog</title>
+<meta name=keywords content><meta name=description content="技术博客 - Linux · DevOps · 开发"><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/tags/spring/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/tags/spring/index.xml title=rss><link rel=alternate hreflang=zh href=https://blog.zdltech.com/tags/spring/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/tags/spring/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Spring"><meta property="og:description" content="技术博客 - Linux · DevOps · 开发"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="Spring"><meta name=twitter:description content="技术博客 - Linux · DevOps · 开发"></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><header class=page-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/tags/>Tags</a></nav><h1>Spring</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>SpringBoot消失的Web.xml</h2></header><div class=entry-content><p>Filter 过滤器作为web.xml中重要的一部分，有着相当高的出场率，SpringBoot会默认注册几个Filter
+ApplicationContextHeaderFilter
+CharacterEncodingFilter
+如果添加了Security依赖的话会加入SpringSecurityFilterChain
+如果加入Actuator依赖的话就会加入WebRequestTraceFilter
+实现自己的Filter JavaConfig注册Bean 我们如果自己要实现自己的Filter的话，需要实现Filter并实现其中的方法
+同时要利用JavaConfig的方法来配置，一般情况下需要编写@Bean注解的返回值为FilterRegistrationBean的方法来实现JavaBean的注册
+具体实现如下
+需要注意的是此方法需要在被@Configuration注解的配置类中
+@WebFilter+@ServletComponentScan 如果觉得Java代码的方式比较繁琐的话可以采用注解方式注册Filter，具体实现方式是在Filter实现类加入@WebFilter注解
+例如
+然后在SpringBootApplication类上添加@ServletComponentScan
+Filter的注册原理 我们采用JavaConfig的形式实现了Filter的注册，通过向上追溯得知FilterRegistrationBean的层级结构如下
+ServletContextInitializer
+RegistrationBean
+AbstractFilterRegistrationBean
+FilterRegistrationBean
+经查阅SpringBoot文档发现针对ServletContextInitializer的描述如下
+Interface used to configure a Servlet 3.0+ context programmatically. Unlike WebApplicationInitializer, classes that implement this interface (and do not implement WebApplicationInitializer) will not be detected by SpringServletContainerInitializer and hence will not be automatically bootstrapped by the Servlet container.
+This interface is primarily designed to allow ServletContextInitializers to be managed by Spring and not the Servlet container.
+...</p></div><footer class=entry-footer><span title='2019-03-19 05:38:19 +0000 UTC'>2019年3月19日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to SpringBoot消失的Web.xml" href=https://blog.zdltech.com/posts/springboot%E6%B6%88%E5%A4%B1%E7%9A%84web-xml/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>SpringBoot 学习网站收藏</h2></header><div class=entry-content><p>Spring Boot加载配置文件 https://my.oschina.net/wangyuefive/blog/704615#h3_4 问题3：如何根据线上环境和线下环境加载不同的配置？如何加载多个配置文件？ 1、Profiles： Spring Profiles提供了一种隔离应用程序配置的方式，并让这些配置只能在特定的环境下生效。在配置文件中，用spring.profiles.active属性来指定特定环境的配置文件。在Spring Boot中多环境配置文件名需要满足application-{profile}.properties的格式，其中{profile}对应你的环境标识，比如：
+application-dev.properties：开发环境 application-test.properties：测试环境 application-prod.properties：生产环境 至于哪个具体的配置文件会被加载，需要在application.properties文件中通过spring.profiles.active属性来设置，其值对应{profile}值。例如：
+application.properties配置：spring.profiles.active = dev即指定application-dev.properties会被加载。
+2、通过启动参数指定运行环境。 通过命令行启动：
+` java -jar xxxxx.jar &amp;lt;span class="hljs-comment">--spring.profiles.active=prod。&amp;lt;/span>` 上述指定为prod环境，则spring application会自动根据application-{profile}.properties的格式找到application-prod.properties文件加载。
+3、加载多个自定义文件。 例如：
+` spring.profiles.active = dev,database` 等于告诉Spring Boot加载application-dev.properties和application-database.properties文件，从而实现多个配置文件的加载。
+四种读取properties文件的方式 http://www.imooc.com/article/18252
+集成Mybatis http://www.imooc.com/article/15406
+开启定时任务 http://www.imooc.com/article/15612
+spring-boot上传文件MultiPartFile获取不到文件问题解决
+http://blog.csdn.net/happy_cheng/article/details/54178392
+Spring boot上传文件时MultipartFile为空问题 http://blog.csdn.net/tanga842428/article/details/72773773
+spring boot默认日志配置，以及改用log4j日志配置学习使用排出多余的依赖
+http://blog.csdn.net/yanweihpu/article/details/54139382
+http://blog.csdn.net/loongshawn/article/details/50951329</p></div><footer class=entry-footer><span title='2017-09-20 09:03:10 +0000 UTC'>2017年9月20日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to SpringBoot 学习网站收藏" href=https://blog.zdltech.com/posts/springboot-%E5%AD%A6%E4%B9%A0%E7%BD%91%E7%AB%99%E6%94%B6%E8%97%8F/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>spring-boot–使用thymeleaf模板</h2></header><div class=entry-content><p>参考：http://blog.csdn.net/u014695188/article/details/52347318
+参考：http://blog.csdn.net/u012706811/article/details/52185345
+整体步骤：
+（1） 在pom.xml中引入thymeleaf;
+（2） 如何关闭thymeleaf缓存
+（3） 编写模板文件.html
+Spring Boot默认就是使用thymeleaf模板引擎的，所以只需要在pom.xml加入依赖即可：
+«/span>dependency>
+«/span>groupId>org.springframework.boot&lt;/groupId>
+«/span>artifactId>spring-boot-starter-thymeleaf&lt;/artifactId>
+&lt;/dependency>
+Thymeleaf缓存在开发过程中，肯定是不行的，那么就要在开发的时候把缓存关闭，只需要在application.properties进行配置即可：
+[html] view plain copy
+########################################################
+###THYMELEAF (ThymeleafAutoConfiguration)
+########################################################
+#spring.thymeleaf.prefix=classpath:/templates/
+#spring.thymeleaf.suffix=.html
+#spring.thymeleaf.mode=HTML5
+#spring.thymeleaf.encoding=UTF-8
+# ;charset= is added
+#spring.thymeleaf.content-type=text/html
+# set to false for hot refresh
+spring.thymeleaf.cache=false
+编写模板文件src/main/resouces/templates/helloHtml.html
+[html] view plain copy
+编写访问路径(com.kfit.test.web.TemplateController):
+[html] view plain copy
+package com.kfit.test.web;
+import java.util.Map;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+/**
+模板测试.
+@author Administrator
+*/
+@Controller
+publicclass TemplateController {
+/**
+...</p></div><footer class=entry-footer><span title='2017-09-19 10:24:29 +0000 UTC'>2017年9月19日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to spring-boot–使用thymeleaf模板" href=https://blog.zdltech.com/posts/spring-boot-%E4%BD%BF%E7%94%A8thymeleaf%E6%A8%A1%E6%9D%BF/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/tags/spring/>«&nbsp;上一页&nbsp;</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

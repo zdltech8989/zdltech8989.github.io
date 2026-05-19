@@ -1,0 +1,107 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>使用Android Studio阅读整个Android源码 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="之前一直在windows下用source insight阅读android源码，效果非常好。 后来远程异地服务器，网络限制，一直用ssh + vim，现在主要还是以这种方式。 最近发现一个不错的东西（早就有了），在android源码中有这么一个目录development/tools/idegen。 ..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8android-studio%E9%98%85%E8%AF%BB%E6%95%B4%E4%B8%AAandroid%E6%BA%90%E7%A0%81/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8android-studio%E9%98%85%E8%AF%BB%E6%95%B4%E4%B8%AAandroid%E6%BA%90%E7%A0%81/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8android-studio%E9%98%85%E8%AF%BB%E6%95%B4%E4%B8%AAandroid%E6%BA%90%E7%A0%81/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="使用Android Studio阅读整个Android源码"><meta property="og:description" content="之前一直在windows下用source insight阅读android源码，效果非常好。 后来远程异地服务器，网络限制，一直用ssh + vim，现在主要还是以这种方式。 最近发现一个不错的东西（早就有了），在android源码中有这么一个目录development/tools/idegen。 ..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-04-29T07:58:39+00:00"><meta property="article:modified_time" content="2015-04-29T07:58:39+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="使用Android Studio阅读整个Android源码"><meta name=twitter:description content="之前一直在windows下用source insight阅读android源码，效果非常好。 后来远程异地服务器，网络限制，一直用ssh + vim，现在主要还是以这种方式。 最近发现一个不错的东西（早就有了），在android源码中有这么一个目录development/tools/idegen。 ..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"使用Android Studio阅读整个Android源码","item":"https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8android-studio%E9%98%85%E8%AF%BB%E6%95%B4%E4%B8%AAandroid%E6%BA%90%E7%A0%81/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用Android Studio阅读整个Android源码","name":"使用Android Studio阅读整个Android源码","description":"之前一直在windows下用source insight阅读android源码，效果非常好。 后来远程异地服务器，网络限制，一直用ssh + vim，现在主要还是以这种方式。 最近发现一个不错的东西（早就有了），在android源码中有这么一个目录development/tools/idegen。 ...","keywords":["android","移动开发"],"articleBody":"之前一直在windows下用source insight阅读android源码，效果非常好。\n后来远程异地服务器，网络限制，一直用ssh + vim，现在主要还是以这种方式。\n最近发现一个不错的东西（早就有了），在android源码中有这么一个目录development/tools/idegen。\n顾名思义，是生成ide的project文件，主要是生成intellij的project文件，当然也可用于android studio。\n使用之后，发现效果超棒，所以这里专门撰文推荐。\n1、效果图\n2、编译idegen模块\n源码要编过，不然idegen没法生成。\n提示：\n1 2 3 4 5 `// 找不到idegen，需要全局编译一下` `/*` `ubuntu:~/Data/cyanogenmod$ . development/tools/idegen/idegen.sh` `Couldn't find idegen.jar. Please run make first.` `*/` 但是我相信很多看源码的人是不需要编译的，所以只要我上传一个idegen.jar:\nhttp://jayfeng-files.stor.sinaapp.com/idegen.jar\n把这个文件copy到out/host/linux-x86/framework/目录下：\n1 `$ cp idegen.jar ../cyanogenmod/out/host/linux-x86/framework/idegen.jar` 然后在cyanogenmod目录下执行：\n1 2 3 4 5 `/*` `$ . development/tools/idegen/idegen.sh` `Read excludes: 21ms` `Traversed tree: 54700ms` `*/` 在我的电脑上花了54s多生成完毕，查看目录，多了2个文件：android.ipr和android.iml。\n3、导入到android studio\n打开Android studio，点击File \u003e Open，选择刚刚生成的android.ipr就好了。\n过一会儿可以在android studio完美打开了，如前面的截图\n4、小结\n可以结合android studio，界面，智能提示都比source insight要好，超赞！\n转自：http://www.cnblogs.com/qianxudetianxia/p/3721202.html\n整个源码肯定分模块的，默认使用framework.jar没有源码，但是可以通过相应的模块attach source到当前源码的方式现实源码，比如阅读framework源码：\n这样再在framework中就可以再源码中跳转了\n","wordCount":"217","inLanguage":"zh","datePublished":"2015-04-29T07:58:39Z","dateModified":"2015-04-29T07:58:39Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8android-studio%E9%98%85%E8%AF%BB%E6%95%B4%E4%B8%AAandroid%E6%BA%90%E7%A0%81/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">使用Android Studio阅读整个Android源码</h1><div class=post-description>之前一直在windows下用source insight阅读android源码，效果非常好。 后来远程异地服务器，网络限制，一直用ssh + vim，现在主要还是以这种方式。 最近发现一个不错的东西（早就有了），在android源码中有这么一个目录development/tools/idegen。 ...</div><div class=post-meta><span title='2015-04-29 07:58:39 +0000 UTC'>2015年4月29日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>之前一直在windows下用source insight阅读android源码，效果非常好。<br>后来远程异地服务器，网络限制，一直用ssh + vim，现在主要还是以这种方式。<br>最近发现一个不错的东西（早就有了），在android源码中有这么一个目录development/tools/idegen。<br>顾名思义，是生成ide的project文件，主要是生成intellij的project文件，当然也可用于android studio。<br>使用之后，发现效果超棒，所以这里专门撰文推荐。</p><p><strong>1、效果图</strong><br><img loading=lazy src=http://images.cnitblog.com/i/31770/201405/102313274955502.png></p><p><strong>2、编译idegen模块</strong><br>源码要编过，不然idegen没法生成。<br>提示：</p><div class="cnblogs_Highlighter sh-gutter"><div><div id=highlighter_542160 class="syntaxhighlighter java"><table border=0 cellspacing=0 cellpadding=0><tr><td class=gutter><div class="line number1 index0 alt2">1</div><pre><code>        &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+          2
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+          3
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number4 index3 alt1&quot;&gt;
+          4
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number5 index4 alt2&quot;&gt;
+          5
+        &lt;/div&gt;
+      &lt;/td&gt;
+      
+      &lt;td class=&quot;code&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;div class=&quot;line number1 index0 alt2&quot;&gt;
+            `// 找不到idegen，需要全局编译一下`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+            `/*`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+            `ubuntu:~/Data/cyanogenmod$ . development/tools/idegen/idegen.sh`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number4 index3 alt1&quot;&gt;
+            `Couldn't find idegen.jar. Please run make first.`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number5 index4 alt2&quot;&gt;
+            `*/`
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+</code></pre></div></div><p>但是我相信很多看源码的人是不需要编译的，所以只要我上传一个idegen.jar:<br><a href=http://jayfeng-files.stor.sinaapp.com/idegen.jar>http://jayfeng-files.stor.sinaapp.com/idegen.jar</a><br>把这个文件copy到out/host/linux-x86/framework/目录下：</p><div class="cnblogs_Highlighter sh-gutter"><div><div id=highlighter_642823 class="syntaxhighlighter java"><table border=0 cellspacing=0 cellpadding=0><tr><td class=gutter><div class="line number1 index0 alt2">1</div></td><pre><code>      &lt;td class=&quot;code&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;div class=&quot;line number1 index0 alt2&quot;&gt;
+            `$ cp idegen.jar ../cyanogenmod/out/host/linux-x86/framework/idegen.jar`
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+</code></pre></div></div><p>然后在cyanogenmod目录下执行：</p><div class="cnblogs_Highlighter sh-gutter"><div><div id=highlighter_442420 class="syntaxhighlighter java"><table border=0 cellspacing=0 cellpadding=0><tr><td class=gutter><div class="line number1 index0 alt2">1</div><pre><code>        &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+          2
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+          3
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number4 index3 alt1&quot;&gt;
+          4
+        &lt;/div&gt;
+        
+        &lt;div class=&quot;line number5 index4 alt2&quot;&gt;
+          5
+        &lt;/div&gt;
+      &lt;/td&gt;
+      
+      &lt;td class=&quot;code&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+          &lt;div class=&quot;line number1 index0 alt2&quot;&gt;
+            `/*`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number2 index1 alt1&quot;&gt;
+            `$ . development/tools/idegen/idegen.sh`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number3 index2 alt2&quot;&gt;
+            `Read excludes: 21ms`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number4 index3 alt1&quot;&gt;
+            `Traversed tree: 54700ms`
+          &lt;/div&gt;
+          
+          &lt;div class=&quot;line number5 index4 alt2&quot;&gt;
+            `*/`
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+</code></pre></div></div><p>在我的电脑上花了54s多生成完毕，查看目录，多了2个文件：android.ipr和android.iml。</p><p><strong>3、导入到android studio</strong><br>打开Android studio，点击File > Open，选择刚刚生成的android.ipr就好了。<br>过一会儿可以在android studio完美打开了，如前面的截图</p><p><strong>4、小结</strong><br>可以结合android studio，界面，智能提示都比source insight要好，超赞！</p><p> </p><p>转自：http://www.cnblogs.com/qianxudetianxia/p/3721202.html</p><p> </p><p>整个源码肯定分模块的，默认使用framework.jar没有源码，但是可以通过相应的模块attach source到当前源码的方式现实源码，比如阅读framework源码：<br><a href=http://images.cnitblog.com/blog/31770/201409/271326582959291.png><img loading=lazy src=http://images.cnitblog.com/blog/31770/201409/271326582959291.png></a><br>这样再在framework中就可以再源码中跳转了</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-studio-%E4%BF%AE%E6%94%B9module%E5%90%8D/><span class=title>« 上一页</span>
+<span>Android Studio 修改module名</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android-staticlayout%E4%BD%BF%E7%94%A8%E8%AE%B2%E8%A7%A3/><span class=title>下一页 »</span>
+<span>android staticlayout使用讲解</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

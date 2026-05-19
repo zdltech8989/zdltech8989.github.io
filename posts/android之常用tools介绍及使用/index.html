@@ -1,0 +1,649 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android之常用Tools【介绍及使用】 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="Android Tools - draw9patch - lint - hierarchyviewer - traceView - monkey 工具存放路径：sdk/tools/ draw9patch 介绍： 所谓&amp;#8221;*.9.png&amp;#8221;这是Android os里所支持的一种特殊..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E4%B9%8B%E5%B8%B8%E7%94%A8tools%E4%BB%8B%E7%BB%8D%E5%8F%8A%E4%BD%BF%E7%94%A8/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E4%B9%8B%E5%B8%B8%E7%94%A8tools%E4%BB%8B%E7%BB%8D%E5%8F%8A%E4%BD%BF%E7%94%A8/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E4%B9%8B%E5%B8%B8%E7%94%A8tools%E4%BB%8B%E7%BB%8D%E5%8F%8A%E4%BD%BF%E7%94%A8/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android之常用Tools【介绍及使用】"><meta property="og:description" content="Android Tools - draw9patch - lint - hierarchyviewer - traceView - monkey 工具存放路径：sdk/tools/ draw9patch 介绍： 所谓”*.9.png”这是Android os里所支持的一种特殊..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-09-20T12:53:20+00:00"><meta property="article:modified_time" content="2014-09-20T12:53:20+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android之常用Tools【介绍及使用】"><meta name=twitter:description content="Android Tools - draw9patch - lint - hierarchyviewer - traceView - monkey 工具存放路径：sdk/tools/ draw9patch 介绍： 所谓”*.9.png”这是Android os里所支持的一种特殊..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android之常用Tools【介绍及使用】","item":"https://blog.zdltech.com/posts/android%E4%B9%8B%E5%B8%B8%E7%94%A8tools%E4%BB%8B%E7%BB%8D%E5%8F%8A%E4%BD%BF%E7%94%A8/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android之常用Tools【介绍及使用】","name":"Android之常用Tools【介绍及使用】","description":"Android Tools - draw9patch - lint - hierarchyviewer - traceView - monkey 工具存放路径：sdk/tools/ draw9patch 介绍： 所谓\u0026#8221;*.9.png\u0026#8221;这是Android os里所支持的一种特殊...","keywords":["android","移动开发"],"articleBody":"Android Tools\n- draw9patch - lint - hierarchyviewer - traceView - monkey 工具存放路径：sdk/tools/ draw9patch 介绍： 所谓\u0026#8221;*.9.png\u0026#8221;这是Android os里所支持的一种特殊的图片格式,用它可以实现部分拉伸；这种图片是经过”9妹“进行特殊处理过的，如果不处理的话，直接用PNG图就会有失真，拉伸不正常的现象出现。 使用： 双击打开看到 ![](http://img.blog.csdn.net/20140917141621430?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center) 然后将需要拉伸的图片直接拖进去进行拉伸，右侧是拉伸效果 ![](http://img.blog.csdn.net/20140917142108860?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 左侧和上方的黑线交叉的部分即可扩展区域 右侧和下方的黑线交叉的部分即内容显示区域(如做button背景图时，button上文字的显示区域) lint 介绍： Lint 是Android ADT 16引入的优化工具，它可以扫描你的代码，帮助发现潜在的问题，例如： 1.文本国际化（有些文本缺少其它语言版本）例如：layout文件中编写不规范的地方，会给出提示。考虑到国际化，如果直接在xml中写汉字会提醒你把文字写到string配置文件中\n2.Layout的性能问题 3.无用的多余的资源 例如：项目中有哪些资源文件引入了却没有在代码中使用的话，会给提示。既包括图片资源、layout文件，也有定义的String常量和Color常量等。考虑到屏幕适配，如果有些图片只在高分辨率中放置了，会提醒你应该在中低分辨率的文件夹下也应该放置一份。 4.不一致的数组大小（在配置文件中） 5.重复的图标，图片 6.可用性问题（如没有为EditText指定 InputType） 7. Manifest xml配置错误。\n使用： 有两种使用方式： 通过命令运行： lint 检查布局路径 然后返回检测结果 如图： ![](http://img.blog.csdn.net/20140917145229803?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 通过Eclipse直接运行: 选中项目右键-》AndroidTools-》Run Lint ![](http://img.blog.csdn.net/20140917145930984?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 运行之后显示错误： ![](http://img.blog.csdn.net/20140917150320308?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 双击错误，还能跳到指定布局位置，右侧是错误详解。 hierarchyviewer 介绍： HierarchyViewer能够可视化的角度直观地获得UI布局设计结构和各种属性的信息，帮助我们优化布局设计。（也可以查看其他App的布局） 使用： 打开hierarchyviewer显示了一个虚拟器 ![](http://img.blog.csdn.net/20140917155910586?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center) 选中一个进程的界面，点击Load View Hierarchy 这个按钮，以微信个人界面为例： ![](http://img.blog.csdn.net/20140917161701531?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 首先我们可以看到一个主布局，它下面的子布局是以树形的结构展示，看上去结构非常清晰. ![](http://img.blog.csdn.net/20140917162030437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 接下来，我们在看看，子布局,可以从下图看到大家最喜欢的“摇一摇”功能条目，清晰的层级结构，以及控件的名称，还有效果图的展示，我们完全可以通过它给提供出来的数据，自己也实现这个布局，就算不去模仿他人的布局，我们也可以通过这个工具去分析我们自己的工程，这样可以更好及更快的找到我们需要优化的地方，进行布局优化。 ![](http://img.blog.csdn.net/20140917162645592?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 点击左下角的图标回到之前的操作界面界面，然后我们在选中微信进程，点击Inspet Screenshot 这个按钮.我们会看到 ![](http://img.blog.csdn.net/20140917163339212?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 从这个界面我们可以看到，控件的类名都已经一丝不挂了，这个界面，分为3部分，左边以树形结构显示布局类名，中间放大左边选中的区域以及，显示颜色值和坐标值，下面的工具条还能对选中区域进行所发，以及刷新频率。右边则可以通过鼠标随意移动，中间则实时刷新数据。 细心的朋友可以能会发现，左下角，3个按钮现在可以随意切换了，三个按钮功能分别是，主界面，布局分析界面，截屏分析界面。 traceView 介绍： TraceView是AndroidSDK里面自带的工具，用于对Android的应用程序以及Framework层的代码进行性能分析。 TraceView是图形化的工具，最终它会产生一个图表，用于对性能分析进行说明。 TraceView可以跟踪到具体的Method 使用： 限制条件： - 对于Android 1.5及以下的版本：不支持。 - 对于Android 1.5以上2.1下（含2.1）的版本：受限支持。trace文件只能生成到SD卡，且必须在程序中加入代码。 - 对于Android 2.2上（含2.2）的版本：全支持。可以不用SD卡，不用在程序中加代码，直接自己用DDMS就可以进程Traceview。 我先演示一下，低版本的用代码，生成trace文件，然后打开分析。 **[java]** [view plain](http://blog.csdn.net/cym492224103/article/details/39343907#)[copy](http://blog.csdn.net/cym492224103/article/details/39343907#)[print](http://blog.csdn.net/cym492224103/article/details/39343907#)[?](http://blog.csdn.net/cym492224103/article/details/39343907#) - package com.example.traceviewdemo; - - import android.app.Activity; - import android.app.ActionBar; - import android.app.Fragment; - import android.os.Bundle; - import android.os.Debug; - import android.view.LayoutInflater; - import android.view.Menu; - import android.view.MenuItem; - import android.view.View; - import android.view.ViewGroup; - import android.os.Build; - - public class MainActivity extends Activity { - - @Override - protected void onCreate(Bundle savedInstanceState) { - super.onCreate(savedInstanceState); - // 开始 - Debug.startMethodTracing(\u0026#8220;mytrace\u0026#8221;); - setContentView(R.layout.activity_main); - action(); - } - @Override - protected void onDestroy() { - super.onDestroy(); - // 停止 - Debug.stopMethodTracing(); - } - private void action(){ - for (int i = ; i \u003c 100000; i++) { - System.out.println(\u0026#8220;模拟耗时\u0026#8221;); - } - } - - } 需要添加权限： **[html]** [view plain](http://blog.csdn.net/cym492224103/article/details/39343907#)[copy](http://blog.csdn.net/cym492224103/article/details/39343907#)[print](http://blog.csdn.net/cym492224103/article/details/39343907#)[?](http://blog.csdn.net/cym492224103/article/details/39343907#) - \u003cuses-permission android:name=\u0026#8220;android.permission.WRITE_EXTERNAL_STORAGE\u0026#8221; /\u003e 执行完后，会在sd卡生成一个mytrace.trace文件 ![](http://img.blog.csdn.net/20140917173106006?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 我们把它导出，然后使用命令行执行分析该文件：traceView 文件地址 ![](http://img.blog.csdn.net/20140917173247017?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 显示下图： ![](http://img.blog.csdn.net/20140917175000815?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 从上图我们可以看到，MainActivity的action（）是最耗时的方法，占用了95%的时候。如果在真实项目中，我们首先就是找到消耗性能的方法，然后对其优化， 还有很多属性大家可以看一下 ![](http://img.blog.csdn.net/20140917175451646?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast) 我们在看看，高版本不用代码如何使用traceView的做法 使用DDMS 打开devices窗口，选择某个进程，点击右上角的start method profiling \u0026nbsp; \u0026nbsp; 运行app一段时间后，再点击已变成stop method profiling的该按钮。eclipse会自动弹出debug的标签（可通过菜单File-\u003esave as保存数据）。界面同上 面。 \u0026nbsp; \u0026nbsp; \u0026nbsp; 这种方式不需要修改代码，所以对于没有源码的程序同样可以进行排查。同时可以方便的进行全局性能排查 \u0026nbsp; monkey 介绍： Monkey是Android中的一个命令行工具，可以运行在模拟器里或实际设备中。它向系统发送伪随机的用户事件流(如按键输入、触摸屏输入、手势输入等)，实现对正在开发的应用程序进行压力测试。Monkey测试是一种为了测试软件的稳定性、健壮性的快速有效的方法。 使用： \u0026nbsp; 基本语法如下： \u0026nbsp; adb shell monkey [options] \u0026nbsp; 如果不指定options，Monkey将以无反馈模式启动，并把事件任意发送到安装在目标环境中的全部包。下面是一个更为典型的命令行示例，它启动指定的应用程序，并向其发送500个伪随机事件： \u0026nbsp; adb shell monkey -p your.package.name -v 500 \u0026nbsp; ## 命令选项参考 ","wordCount":"671","inLanguage":"zh","datePublished":"2014-09-20T12:53:20Z","dateModified":"2014-09-20T12:53:20Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E4%B9%8B%E5%B8%B8%E7%94%A8tools%E4%BB%8B%E7%BB%8D%E5%8F%8A%E4%BD%BF%E7%94%A8/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android之常用Tools【介绍及使用】</h1><div class=post-description>Android Tools - draw9patch - lint - hierarchyviewer - traceView - monkey 工具存放路径：sdk/tools/ draw9patch 介绍： 所谓&amp;#8221;*.9.png&amp;#8221;这是Android os里所支持的一种特殊...</div><div class=post-meta><span title='2014-09-20 12:53:20 +0000 UTC'>2014年9月20日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>Android Tools</p><pre><code>- draw9patch
+
+- lint
+
+- hierarchyviewer
+
+- traceView
+
+- monkey
+
+
+
+
+
+
+
+  工具存放路径：sdk/tools/
+
+
+
+
+
+  draw9patch
+
+
+
+
+
+  
+
+    介绍：
+  
+
+  
+  
+
+    所谓&amp;#8221;*.9.png&amp;#8221;这是Android os里所支持的一种特殊的图片格式,用它可以实现部分拉伸；这种图片是经过”9妹“进行特殊处理过的，如果不处理的话，直接用PNG图就会有失真，拉伸不正常的现象出现。
+  
+
+  
+  
+
+    使用：
+  
+
+  
+  
+
+    双击打开看到
+  
+
+  
+  
+
+    ![](http://img.blog.csdn.net/20140917141621430?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+  
+
+  
+  
+
+    然后将需要拉伸的图片直接拖进去进行拉伸，右侧是拉伸效果
+  
+
+  
+  
+
+    ![](http://img.blog.csdn.net/20140917142108860?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+  
+
+  
+  
+
+    左侧和上方的黑线交叉的部分即可扩展区域
+  
+
+  
+  
+
+    右侧和下方的黑线交叉的部分即内容显示区域(如做button背景图时，button上文字的显示区域)
+  
+
+  
+  
+
+    
+
+      lint
+    
+
+    
+    
+
+      介绍：
+    
+
+    
+    
+
+      Lint 是Android ADT 16引入的优化工具，它可以扫描你的代码，帮助发现潜在的问题，例如：
+</code></pre><p>1.文本国际化（有些文本缺少其它语言版本）例如：layout文件中编写不规范的地方，会给出提示。考虑到国际化，如果直接在xml中写汉字会提醒你把文字写到string配置文件中</p><pre><code>           2.Layout的性能问题
+    
+
+    
+    
+
+           3.无用的多余的资源 例如：项目中有哪些资源文件引入了却没有在代码中使用的话，会给提示。既包括图片资源、layout文件，也有定义的String常量和Color常量等。考虑到屏幕适配，如果有些图片只在高分辨率中放置了，会提醒你应该在中低分辨率的文件夹下也应该放置一份。
+</code></pre><p>4.不一致的数组大小（在配置文件中）
+5.重复的图标，图片
+6.可用性问题（如没有为EditText指定 InputType）
+7. Manifest xml配置错误。</p><pre><code>      使用：
+    
+
+    
+    
+
+      有两种使用方式：
+    
+
+    
+    
+
+      通过命令运行：
+    
+
+    
+    
+
+      lint 检查布局路径
+    
+
+    
+    
+
+      然后返回检测结果
+    
+
+    
+    
+
+      如图：
+    
+
+    
+    
+
+      ![](http://img.blog.csdn.net/20140917145229803?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+    
+
+    
+    
+
+      通过Eclipse直接运行:
+    
+
+    
+    
+
+      选中项目右键-》AndroidTools-》Run Lint
+    
+
+    
+    
+
+      ![](http://img.blog.csdn.net/20140917145930984?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+    
+
+    
+    
+
+      运行之后显示错误：
+    
+
+    
+    
+
+      ![](http://img.blog.csdn.net/20140917150320308?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+    
+
+    
+    
+
+      双击错误，还能跳到指定布局位置，右侧是错误详解。
+    
+
+    
+    
+
+      
+
+        hierarchyviewer
+      
+
+      
+      
+
+        介绍：
+      
+
+      
+      
+
+        &lt;span style=&quot;color: #2c2c2c;&quot;&gt;HierarchyViewer能够&lt;/span&gt;可视化的角度直观地获得&lt;span lang=&quot;en-us&quot;&gt;UI&lt;/span&gt;布局设计结构和各种属性的信息，帮助我们优化布局设计。（也可以查看其他App的布局）
+      
+
+      
+      
+
+        使用：
+      
+
+      
+      
+
+        打开hierarchyviewer显示了一个虚拟器
+      
+
+      
+      
+
+        ![](http://img.blog.csdn.net/20140917155910586?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+      
+
+      
+      
+
+          选中一个进程的界面，点击Load View Hierarchy 这个按钮，以微信个人界面为例：
+      
+
+      
+      
+
+        ![](http://img.blog.csdn.net/20140917161701531?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+      
+
+      
+      
+
+        首先我们可以看到一个主布局，它下面的子布局是以树形的结构展示，看上去结构非常清晰.
+      
+
+      
+      
+
+        ![](http://img.blog.csdn.net/20140917162030437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+      
+
+      
+      
+
+        接下来，我们在看看，子布局,可以从下图看到大家最喜欢的“摇一摇”功能条目，清晰的层级结构，以及控件的名称，还有效果图的展示，我们完全可以通过它给提供出来的数据，自己也实现这个布局，就算不去模仿他人的布局，我们也可以通过这个工具去分析我们自己的工程，这样可以更好及更快的找到我们需要优化的地方，进行布局优化。
+      
+
+      
+      
+
+        ![](http://img.blog.csdn.net/20140917162645592?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+      
+
+      
+      
+
+        点击左下角的图标回到之前的操作界面界面，然后我们在选中微信进程，点击Inspet Screenshot 这个按钮.我们会看到
+      
+
+      
+      
+
+        ![](http://img.blog.csdn.net/20140917163339212?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+      
+
+      
+      
+
+        从这个界面我们可以看到，控件的类名都已经一丝不挂了，这个界面，分为3部分，左边以树形结构显示布局类名，中间放大左边选中的区域以及，显示颜色值和坐标值，下面的工具条还能对选中区域进行所发，以及刷新频率。右边则可以通过鼠标随意移动，中间则实时刷新数据。
+      
+
+      
+      
+
+        细心的朋友可以能会发现，左下角，3个按钮现在可以随意切换了，三个按钮功能分别是，主界面，布局分析界面，截屏分析界面。
+      
+
+      
+      
+
+        traceView
+      
+
+      
+      
+
+        介绍：
+      
+
+      
+      
+
+        TraceView是AndroidSDK里面自带的工具，用于对Android的应用程序以及Framework层的代码进行性能分析。
+      
+
+      
+      
+
+              TraceView是图形化的工具，最终它会产生一个图表，用于对性能分析进行说明。
+      
+
+      
+      
+
+        TraceView可以跟踪到具体的Method
+      
+
+      
+      
+
+        使用：
+      
+
+      
+      
+
+        限制条件：
+      
+
+      
+      
+
+        
+          - 对于Android 1.5及以下的版本：不支持。
+          
+          - 对于Android 1.5以上2.1下（含2.1）的版本：受限支持。trace文件只能生成到SD卡，且必须在程序中加入代码。
+          
+          - 对于Android 2.2上（含2.2）的版本：全支持。可以不用SD卡，不用在程序中加代码，直接自己用DDMS就可以进程Traceview。
+          
+        
+        
+        &lt;div style=&quot;color: #362e2b;&quot;&gt;
+          我先演示一下，低版本的用代码，生成trace文件，然后打开分析。
+        &lt;/div&gt;
+        
+        &lt;div style=&quot;color: #362e2b;&quot;&gt;
+          &lt;div class=&quot;dp-highlighter bg_java&quot;&gt;
+            &lt;div class=&quot;bar&quot;&gt;
+              &lt;div class=&quot;tools&quot; style=&quot;color: silver;&quot;&gt;
+                **[java]** [view plain](http://blog.csdn.net/cym492224103/article/details/39343907#)[copy](http://blog.csdn.net/cym492224103/article/details/39343907#)[print](http://blog.csdn.net/cym492224103/article/details/39343907#)[?](http://blog.csdn.net/cym492224103/article/details/39343907#)
+
+                
+                &lt;div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            
+            
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;package&lt;/span&gt; com.example.traceviewdemo;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.app.Activity;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.app.ActionBar;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.app.Fragment;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.os.Bundle;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.os.Debug;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.LayoutInflater;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.Menu;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.MenuItem;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.View;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.os.Build;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;extends&lt;/span&gt; Activity {  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 开始&lt;/span&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        Debug.startMethodTracing(&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;mytrace&amp;#8221;&lt;/span&gt;);   &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        setContentView(R.layout.activity_main);  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        action();  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onDestroy() {  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;super&lt;/span&gt;.onDestroy();  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 停止&lt;/span&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        Debug.stopMethodTracing();    &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; action(){  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;; i &lt; &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;100000&lt;/span&gt;; i++) {  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;                System.out.println(&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;模拟耗时&amp;#8221;&lt;/span&gt;);  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+              
+              - &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+              
+            
+          &lt;/div&gt;
+          
+          
+
+            需要添加权限：
+          
+
+        &lt;/div&gt;
+        
+        &lt;div style=&quot;color: #362e2b;&quot;&gt;
+          &lt;div class=&quot;dp-highlighter bg_html&quot;&gt;
+            &lt;div class=&quot;bar&quot;&gt;
+              &lt;div class=&quot;tools&quot; style=&quot;color: silver;&quot;&gt;
+                **[html]** [view plain](http://blog.csdn.net/cym492224103/article/details/39343907#)[copy](http://blog.csdn.net/cym492224103/article/details/39343907#)[print](http://blog.csdn.net/cym492224103/article/details/39343907#)[?](http://blog.csdn.net/cym492224103/article/details/39343907#)
+
+                
+                &lt;div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            
+            
+              - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;uses-permission&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;android.permission.WRITE_EXTERNAL_STORAGE&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+              
+            
+          &lt;/div&gt;
+          
+          
+
+            执行完后，会在sd卡生成一个mytrace.trace文件
+          
+
+        &lt;/div&gt;
+        
+        &lt;div style=&quot;color: #362e2b;&quot;&gt;
+          ![](http://img.blog.csdn.net/20140917173106006?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+        &lt;/div&gt;
+        
+        &lt;div style=&quot;color: #362e2b;&quot;&gt;
+          &lt;span style=&quot;color: #4b4b4b;&quot;&gt;我们把它导出，然后使用命令行执行分析该文件：&lt;/span&gt;&lt;span style=&quot;color: #4b4b4b;&quot;&gt;traceView 文件地址&lt;/span&gt;
+        &lt;/div&gt;
+        
+        
+
+          
+
+            &lt;div&gt;
+              ![](http://img.blog.csdn.net/20140917173247017?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              显示下图：
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              ![](http://img.blog.csdn.net/20140917175000815?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+            &lt;/div&gt;
+            
+            &lt;div style=&quot;color: #4b4b4b;&quot;&gt;
+              从上图我们可以看到，MainActivity的action（）是最耗时的方法，占用了95%的时候。如果在真实项目中，我们首先就是找到消耗性能的方法，然后对其优化， 还有很多属性大家可以看一下
+            &lt;/div&gt;
+            
+            &lt;div style=&quot;color: #4b4b4b;&quot;&gt;
+              ![](http://img.blog.csdn.net/20140917175451646?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY3ltNDkyMjI0MTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+            &lt;/div&gt;
+            
+            &lt;div style=&quot;color: #4b4b4b;&quot;&gt;
+            &lt;/div&gt;
+            
+            &lt;div style=&quot;color: #4b4b4b;&quot;&gt;
+              我们在看看，高版本不用代码如何使用traceView的做法
+            &lt;/div&gt;
+            
+            &lt;div style=&quot;color: #362e2b;&quot;&gt;
+              使用DDMS
+            &lt;/div&gt;
+            
+            &lt;div style=&quot;color: #362e2b;&quot;&gt;
+              打开devices窗口，选择某个进程，点击右上角的start method profiling
+            &lt;/div&gt;
+            
+            
+
+              &lt;blockquote style=&quot;color: #362e2b;&quot;&gt;
+                
+
+                  &amp;nbsp;
+                
+
+                
+                
+
+                  &amp;nbsp;
+                
+
+                
+                &lt;div&gt;
+                  
+
+                    运行app一段时间后，再点击已变成stop method profiling的该按钮。eclipse会自动弹出debug的标签（可通过菜单File-&gt;save as保存数据）。界面同上 面。
+                  
+
+                &lt;/div&gt;
+                
+                
+
+                  &amp;nbsp;
+                
+
+                
+                
+
+                  &amp;nbsp;
+                
+
+                
+                
+
+                  &amp;nbsp;
+                
+
+                
+                &lt;div&gt;
+                  
+
+                    这种方式不需要修改代码，所以对于没有源码的程序同样可以进行排查。同时可以方便的进行全局性能排查
+                  
+
+                &lt;/div&gt;
+                
+                
+
+                  &amp;nbsp;
+                
+
+              &lt;/blockquote&gt;
+              
+              
+
+                monkey
+              
+
+              
+              
+
+                介绍：
+              
+
+              
+              
+
+                Monkey是Android中的一个命令行工具，可以运行在模拟器里或实际设备中。它向系统发送伪随机的用户事件流(如按键输入、触摸屏输入、手势输入等)，实现对正在开发的应用程序进行压力测试。Monkey测试是一种为了测试软件的稳定性、健壮性的快速有效的方法。
+              
+
+              
+              
+
+                使用：
+              
+
+              
+              &lt;blockquote style=&quot;color: #362e2b;&quot;&gt;
+                
+
+                  &amp;nbsp;
+                
+
+                
+                
+
+                  基本语法如下：
+                
+
+                
+                
+
+                  &amp;nbsp;
+                
+
+                
+                
+
+                  &lt;span class=&quot;katex math inline&quot;&gt;adb shell monkey [options]
+
+                  
+                  
+
+                    &amp;nbsp;
+                  
+
+                  
+                  
+
+                    如果不指定options，Monkey将以无反馈模式启动，并把事件任意发送到安装在目标环境中的全部包。下面是一个更为典型的命令行示例，它启动指定的应用程序，并向其发送500个伪随机事件：
+                  
+
+                  
+                  
+
+                    &amp;nbsp;&lt;/span&gt; adb shell monkey -p your.package.name -v 500
+                  
+
+                  
+                  
+
+                    &amp;nbsp;
+                  
+
+                  
+                  ## 命令选项参考 &lt;wbr /&gt;
+</code></pre></blockquote></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6/><span class=title>« 上一页</span>
+<span>Android常用组件</span>
+</a><a class=next href=https://blog.zdltech.com/posts/linux%E4%B8%8B%E6%B7%BB%E5%8A%A0ftp%E8%B4%A6%E5%8F%B7%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A2%9E%E5%8A%A0%E5%AF%86%E7%A0%81%E5%92%8C%E7%94%A8%E6%88%B7%E6%9B%B4%E6%94%B9ftp%E7%9B%AE/><span class=title>下一页 »</span>
+<span>Linux下添加FTP账号和服务器、增加密码和用户，更改FTP目录</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

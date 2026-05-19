@@ -1,0 +1,412 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>[Publish AAR To Maven] 使用 Gradle 发布 AAR 到 Maven 仓库 | ZDL Tech Blog</title>
+<meta name=keywords content="android,gradle,maven,移动开发"><meta name=description content="======================================================== 作者：qiujuer 博客：[blog.csdn.net/qiujuer](http://blog.csdn.net/qiujuer) 网站：[www.qiujuer.net](http..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/publish-aar-to-maven-%E4%BD%BF%E7%94%A8-gradle-%E5%8F%91%E5%B8%83-aar-%E5%88%B0-maven-%E4%BB%93%E5%BA%93/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/publish-aar-to-maven-%E4%BD%BF%E7%94%A8-gradle-%E5%8F%91%E5%B8%83-aar-%E5%88%B0-maven-%E4%BB%93%E5%BA%93/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/publish-aar-to-maven-%E4%BD%BF%E7%94%A8-gradle-%E5%8F%91%E5%B8%83-aar-%E5%88%B0-maven-%E4%BB%93%E5%BA%93/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="[Publish AAR To Maven] 使用 Gradle 发布 AAR 到 Maven 仓库"><meta property="og:description" content="======================================================== 作者：qiujuer 博客：[blog.csdn.net/qiujuer](http://blog.csdn.net/qiujuer) 网站：[www.qiujuer.net](http..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-03-16T03:06:54+00:00"><meta property="article:modified_time" content="2016-03-16T03:06:54+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="Gradle"><meta property="article:tag" content="Maven"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="[Publish AAR To Maven] 使用 Gradle 发布 AAR 到 Maven 仓库"><meta name=twitter:description content="======================================================== 作者：qiujuer 博客：[blog.csdn.net/qiujuer](http://blog.csdn.net/qiujuer) 网站：[www.qiujuer.net](http..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"[Publish AAR To Maven] 使用 Gradle 发布 AAR 到 Maven 仓库","item":"https://blog.zdltech.com/posts/publish-aar-to-maven-%E4%BD%BF%E7%94%A8-gradle-%E5%8F%91%E5%B8%83-aar-%E5%88%B0-maven-%E4%BB%93%E5%BA%93/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"[Publish AAR To Maven] 使用 Gradle 发布 AAR 到 Maven 仓库","name":"[Publish AAR To Maven] 使用 Gradle 发布 AAR 到 Maven 仓库","description":"======================================================== 作者：qiujuer 博客：[blog.csdn.net/qiujuer](http://blog.csdn.net/qiujuer) 网站：[www.qiujuer.net](http...","keywords":["android","gradle","maven","移动开发"],"articleBody":" ======================================================== 作者：qiujuer 博客：blog.csdn.net/qiujuer 网站：www.qiujuer.net 开源库：github.com/qiujuer/Genius-Android 转载请注明出处：http://blog.csdn.net/qiujuer/article/details/44195131 ——学之开源，用于开源；初学者的心态，与君共勉！\n======================================================== 有一个好的库想与世界的伙伴分享，于是共享到GitHub上，于是有人看到了，但是要使用却发现配置非常难。但是发现别人的库只需要一行代码却能使用；于是我想知道为什么能这么简单。 在这篇文章中将带你了解如何发布你的库到远程仓库Maven中，又如何使用。\n# 准备 开始之前我们有一定的准备工作，如果准备好了那么后面将会非常顺畅。 - [注册 https://issues.sonatype.org 账户](http://blog.csdn.net/qiujuer/article/details/44195199)，并创建你的 Group Id - 学会GPGTools的使用，并生成你的密钥对；见：[使用GPG对文件进行签名加密](http://blog.csdn.net/qiujuer/article/details/44173611) - 编写你的库，并准备好发布，工具：[Android-Studio](http://blog.csdn.net/qiujuer/article/details/41843095) - 添加发布Maven的Gradle文件 - 添加你的个人信息，如你的发布地址、库版本信息等 - 开发发布快照、以及正式版本，审核 # 开始 前面的两项工作由于篇幅较大，单独开篇了，欢迎大家去看~~，我们从第三的地方开始。 ## 编写Lib 编写库，这里我采用的是Android-Studio；至于其使用建立过程以及简单使用大家可见：[环境配置之正式版Android Studio 1.0](http://blog.csdn.net/qiujuer/article/details/41843095) 在这里我使用 [Genius-Android](https://github.com/qiujuer/Genius-Android) 开源库进行演示。 在本次项目中我们尝试发布 UI 部分，图中圈起来部分为我们需要的文件。\n## 编写发布文件 发布文件就是其中的 **maven_push.gradle** 。由于代码较长就不贴代码了，大家可以去GitHub上查看。 代码已经发布到 BeFoot 开源项目中. 该代码运行在 Gradle 中，作用是按照配置进行打包代码文件，然后签名文件，最后发布你的文件到仓库。\n在该代码中可以看见许多的方法与参数，如： ``` def isReleaseBuild() { \u0026lt;span class=\"hljs-keyword\"\u003ereturn\u0026lt;/span\u003e VERSION_NAME.contains(\u0026lt;span class=\"hljs-string\"\u003e\"SNAPSHOT\"\u0026lt;/span\u003e) == \u0026lt;span class=\"hljs-keyword\"\u003efalse\u0026lt;/span\u003e }\n- 1 - 2 - 3 这个方法的作用是判断版本名称是否含有 **“SNAPSHOT”**字段，也就是判断当前是否发布的是快照版本，以便传输到不同的服务器地址。 但是其中的 **“VERSION_NAME”** 哪里来的呢？往下看~~ ## gradle.properties 在 **“maven_push”** 文件中所有的字段都是访问的你的 **“gradle.properties”** 文件。 ![这里写图片描述](http://img.blog.csdn.net/20150311174414025) 可以看见我们的项目中有两个这样的文件，两个文件中的内容都可以全部写到一个文件中。之所以写出两个，下面那个代表的是本项目中的全局变量，至于 UILib 中的那个则只局限于 UILib 中使用。 现在我们分别打开看看，首先打开下面那个全局的文件。 ![这里写图片描述](http://img.blog.csdn.net/20150311174954526) 在这里我们需要更改的地方有如下几个地方： ![这里写图片描述](http://img.blog.csdn.net/20150311182302469) 再来看看库中的文件： ![这里写图片描述](http://img.blog.csdn.net/20150311175830185) ** 这里相对简单的多了，无非就是名称，ID，类型，版本等信息。 有必要说明的是，上面的POM_GROUP_ID+POM_ARTIFACT_ID+VERSION_NAME** 将会得到如下的使用方式： ``` `dependencies \u0026lt;span class=\"hljs-cell\"\u003e{ compile \u0026lt;span class=\"hljs-string\"\u003e'com.github.qiujuer:genius-ui:3.0.0-SNAPSHOT'\u0026lt;/span\u003e }\u0026lt;/span\u003e` - 1 - 2 - 3 完了？没~还有一个至关重要的地方，在”Maven_Push”的代码中我们会找到： 以及其中的 signing 部分，但是你会发现你找遍了上面的所有的文件都没有发现这些字段，那么这些字段在哪里呢？\n很简单，在[Android-Studio 缓存文件夹配置](http://blog.csdn.net/qiujuer/article/details/44160127) 中有讲解**“.gradle”**目录对吧？那么现在我们去看看 这个目录中有什么。 可以看见其中也有一个 “gradle.properties”文件，这个文件不在项目中，但是在项目中却可以访问，这是一个全局的文件，任何项目都可以访问该文件，如果你没有，那么可以自己创建一个就OK。\n** 为什么要存储到这里？我们都知道项目中的 “gradle.properties”** 文件一般来说都是会提交到 Git 上面去的，所以项目中的文件不应该包含私密的东西，比如密钥对，密钥密码，以及你的 Maven 的账户信息。 打开该文件我们能看见： - 密钥的相关东西请见：[使用GPG对文件进行签名加密](http://blog.csdn.net/qiujuer/article/details/44173611) - Sonatype 用户名密码详见：[注册 Maven 仓库 sonatype.org 账户](http://blog.csdn.net/qiujuer/article/details/44195199) ## build.gradle 现在还需要修改你的项目中的 build 文件，需要更改的地方如下： ``` android { \u0026lt;span class=\"hljs-built_in\"\u003esource\u0026lt;/span\u003eSets { main { manifest.srcFile \u0026lt;span class=\"hljs-string\"\u003e'src/main/AndroidManifest.xml'\u0026lt;/span\u003e java.srcDirs = [\u0026lt;span class=\"hljs-string\"\u003e'src/main/java'\u0026lt;/span\u003e] res.srcDirs = [\u0026lt;span class=\"hljs-string\"\u003e'src/main/res'\u0026lt;/span\u003e] } } lintOptions { abortOnError \u0026lt;span class=\"hljs-literal\"\u003efalse\u0026lt;/span\u003e } } apply from: \u0026lt;span class=\"hljs-string\"\u003e'https://raw.github.com/qiujuer/BeFoot/master/blog/gradle-mvn-push/gradle-mvn-push.gradle'\u0026lt;/span\u003e\n- 1 - 2 - 3 - 4 - 5 - 6 - 7 - 8 - 9 - 10 - 11 - 12 - 13 # 发布 如果你上面的都做到了，那么现在进入发布的地段了~~ ## 执行发布命令 Android-Studio进入项目中，打开**“Terminal”**窗口，进入你的项目中，执行命令： ``` `\u0026lt;span class=\"hljs-variable\"\u003e$ \u0026lt;/span\u003egradle clean build uploadArchives` - 1 ![这里写图片描述](http://img.blog.csdn.net/20150311213106249) 第一次操作的时候将会下载一大堆的依赖。 最后出现成功提示则OK。 ## 检查快照版本 在这里我们进入：[https://oss.sonatype.org/content/groups/public/](https://oss.sonatype.org/content/groups/public/) 找到你的项目地址，我本次的是： https://oss.sonatype.org/content/groups/public/com/github/qiujuer/genius-ui/3.0.0-SNAPSHOT/ 可以看出其中有着原始文件以及签名等验证文件。 如果你的没有**“asc”文件，那么发布“Release”**版本时将无法通过审核。\n**也不是说快照版本就无法使用，同样可以，其使用方式为：** ``` dependencies { repositories { maven { url \u0026lt;span class=\"hljs-string\"\u003e\"https://oss.sonatype.org/content/repositories/snapshots/\"\u0026lt;/span\u003e } } compile \u0026lt;span class=\"hljs-string\"\u003e'com.github.qiujuer:genius-ui:3.0.0-SNAPSHOT'\u0026lt;/span\u003e }\n- 1 - 2 - 3 - 4 - 5 - 6 **如果发布了过个快照版本，那么就为：** ``` `compile \u0026lt;span class=\"hljs-string\"\u003e'com.github.qiujuer:genius-ui:3.0.0-SNAPSHOT-2'\u0026lt;/span\u003e ` - 1 ## 发布“Release” 该发布方法操作命令行的方式与快照版本一样，完全一样；只需要更改你的库中的：**gradle.properties** 文件中的 **VERSION_NAME** ，删除掉后面的 **“”-SNAPSHOT”“** 就OK。 之后执行命令行命令；然后你会发现你在： https://oss.sonatype.org/content/groups/public/ 中无法找到你发布的 “Release”版本；这是正常的；如果现在找到了反而不正常。\n## 操作仓库发布 要完成“Release”版本的发布还需要登陆到后台中进行一些简单的操作。 网站：https://oss.sonatype.org/ 登陆：用户名与密码与https://issues.sonatype.org/中的完全一样。 登陆成功后点击左边导航中的：“Staging Repositories” 在其中根据你的GroupId去找你对应的一行。比如我的Id：“com.github.qiujuer”那么就是： 找到后点击他，如果不是你的或者你没有找到那么看看是不是你上面根本就没有上传成功。 选中后点击上面的**“Close”**按钮，填写描述信息；然后等待一段时间；在这个过程中你可以点击刷新按钮。 在下面可以看见发送了邮件提醒，然后上面的 “Release” 按钮可以点击了，此时点击该按钮，填写描述信息，不必太多。然后等待；当下面同样出现发送了邮件提醒的时候那么恭喜你发布成功了。\n** 如果在上面你上传的文件中没有签名文件那么将无法操作成功；此时你应该重新上传有签名的版本。 发布成功后你的使用方式为（你并不能立即就能使用，一般需要10分钟及其以上的时间）： ``` dependencies \u0026lt;span class=\"hljs-cell\"\u003e{ compile \u0026lt;span class=\"hljs-string\"\u003e'com.github.qiujuer:genius-ui:3.0.0'\u0026lt;/span\u003e }\u0026lt;/span\u003e\n- 1 - 2 - 3 # 附件 本次操作中需要的文件我都上传到 [GitHub](https://github.com/qiujuer/BeFoot) 上了。 地址：[https://github.com/qiujuer/BeFoot/tree/master/blog/gradle-mvn-push](https://github.com/qiujuer/BeFoot/tree/master/blog/gradle-mvn-push) # 一些问题 该地方，暂时就不写了，太长了~~ 说一个简单的吧：如果执行发布命令时出现：401** 错误，代表你的账户登录失败，也就是你的账户名或者密码错误。 其他问题，大家如果遇到了可以提出来我会一一回答的。 ==============追加=============== ## 仓库唯一 发布项目到Maven 仓库 ，必须要使用sonatype.org么？sonatype.org是一个载体？还有其他选择？ 答案是：有其他的选择~ 如果 Gradle 没有内置你的仓库地址你也可以指定，甚至可以使用自己部署的服务器来发布。比如： ![这里写图片描述](http://img.blog.csdn.net/20150312100018050) 这个就是发布到 快照 仓库，但是快照仓库地址 Gradle 并不知道，所以需要指定。 # 一些题外话 说实话这篇文章，很早以前就想写了；但是大概想了一下感觉篇幅会比较大，所以一直没有写。 这次也是有朋友在问这方面的情况，所以就花了几天时间写了，真的是花了几天时间，不是空闲时间。也许你们看只需要10分钟，或许10分钟都要不到，可我却花了你的100倍甚至更多的时候来写的。 由于是使用的 MarkDown 编辑器（出现BUG意外死掉的情况少）写的，所以没有像以前一样加上高亮等操作，不是不加，而是编辑器还不支持。 ======================================================== 作者：qiujuer 博客：[blog.csdn.net/qiujuer](http://blog.csdn.net/qiujuer) 网站：[www.qiujuer.net](http://www.qiujuer.net/) 开源库：[github.com/qiujuer/Genius-Android](https://github.com/qiujuer/Genius-Android) 转载请注明出处：[http://blog.csdn.net/qiujuer/article/details/44195131](http://blog.csdn.net/qiujuer/article/details/44195131) ——学之开源，用于开源；初学者的心态，与君共勉！ ======================================================== ","wordCount":"383","inLanguage":"zh","datePublished":"2016-03-16T03:06:54Z","dateModified":"2016-03-16T03:06:54Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/publish-aar-to-maven-%E4%BD%BF%E7%94%A8-gradle-%E5%8F%91%E5%B8%83-aar-%E5%88%B0-maven-%E4%BB%93%E5%BA%93/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">[Publish AAR To Maven] 使用 Gradle 发布 AAR 到 Maven 仓库</h1><div class=post-description>======================================================== 作者：qiujuer 博客：[blog.csdn.net/qiujuer](http://blog.csdn.net/qiujuer) 网站：[www.qiujuer.net](http...</div><div class=post-meta><span title='2016-03-16 03:06:54 +0000 UTC'>2016年3月16日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><div id=article_content class=article_content><div class=markdown_views><pre><code>  ========================================================
+</code></pre><p>作者：qiujuer
+博客：<a href=http://blog.csdn.net/qiujuer>blog.csdn.net/qiujuer</a>
+网站：<a href=http://www.qiujuer.net/>www.qiujuer.net</a>
+开源库：<a href=https://github.com/qiujuer/Genius-Android>github.com/qiujuer/Genius-Android</a>
+转载请注明出处：<a href=http://blog.csdn.net/qiujuer/article/details/44195131>http://blog.csdn.net/qiujuer/article/details/44195131</a>
+——学之开源，用于开源；初学者的心态，与君共勉！</p><pre><code>  ========================================================
+
+
+
+
+
+  有一个好的库想与世界的伙伴分享，于是共享到GitHub上，于是有人看到了，但是要使用却发现配置非常难。但是发现别人的库只需要一行代码却能使用；于是我想知道为什么能这么简单。
+</code></pre><p>在这篇文章中将带你了解如何发布你的库到远程仓库Maven中，又如何使用。</p><pre><code># &lt;a name=&quot;t0&quot;&gt;&lt;/a&gt;准备
+
+
+
+  开始之前我们有一定的准备工作，如果准备好了那么后面将会非常顺畅。
+
+
+
+
+  - [注册 https://issues.sonatype.org 账户](http://blog.csdn.net/qiujuer/article/details/44195199)，并创建你的 Group Id
+  
+  - 学会GPGTools的使用，并生成你的密钥对；见：[使用GPG对文件进行签名加密](http://blog.csdn.net/qiujuer/article/details/44173611)
+  
+  - 编写你的库，并准备好发布，工具：[Android-Studio](http://blog.csdn.net/qiujuer/article/details/41843095)
+  
+  - 添加发布Maven的Gradle文件
+  
+  - 添加你的个人信息，如你的发布地址、库版本信息等
+  
+  - 开发发布快照、以及正式版本，审核
+  
+
+
+# &lt;a name=&quot;t1&quot;&gt;&lt;/a&gt;开始
+
+
+
+  前面的两项工作由于篇幅较大，单独开篇了，欢迎大家去看~~，我们从第三的地方开始。
+
+
+
+## &lt;a name=&quot;t2&quot;&gt;&lt;/a&gt;编写Lib
+
+
+
+  编写库，这里我采用的是Android-Studio；至于其使用建立过程以及简单使用大家可见：[环境配置之正式版Android Studio 1.0](http://blog.csdn.net/qiujuer/article/details/41843095)
+
+
+
+
+
+  在这里我使用 [Genius-Android](https://github.com/qiujuer/Genius-Android) 开源库进行演示。
+</code></pre><p><img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311171742276>
+在本次项目中我们尝试发布 UI 部分，图中圈起来部分为我们需要的文件。</p><pre><code>## &lt;a name=&quot;t3&quot;&gt;&lt;/a&gt;编写发布文件
+
+
+
+  发布文件就是其中的 **maven_push.gradle** 。由于代码较长就不贴代码了，大家可以去GitHub上查看。
+</code></pre><p><img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311211325120>
+代码已经发布到 <a href=https://github.com/qiujuer/BeFoot>BeFoot</a> 开源项目中.
+该代码运行在 Gradle 中，作用是按照配置进行打包代码文件，然后签名文件，最后发布你的文件到仓库。</p><pre><code>  在该代码中可以看见许多的方法与参数，如：
+
+
+
+```
+</code></pre><p><code>def isReleaseBuild() { &amp;lt;span class="hljs-keyword">return&amp;lt;/span> VERSION_NAME.contains(&amp;lt;span class="hljs-string">"SNAPSHOT"&amp;lt;/span>) == &amp;lt;span class="hljs-keyword">false&amp;lt;/span> }</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - 1
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 2
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 3
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      这个方法的作用是判断版本名称是否含有 **“SNAPSHOT”**字段，也就是判断当前是否发布的是快照版本，以便传输到不同的服务器地址。
+</span></span><span style=display:flex><span> 但是其中的 **“VERSION_NAME”** 哪里来的呢？往下看~~
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ## &lt;a name=&#34;t4&#34;&gt;&lt;/a&gt;gradle.properties
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      在 **“maven_push”** 文件中所有的字段都是访问的你的 **“gradle.properties”** 文件。
+</span></span><span style=display:flex><span> ![这里写图片描述](http://img.blog.csdn.net/20150311174414025)
+</span></span><span style=display:flex><span> 可以看见我们的项目中有两个这样的文件，两个文件中的内容都可以全部写到一个文件中。之所以写出两个，下面那个代表的是本项目中的全局变量，至于 UILib 中的那个则只局限于 UILib 中使用。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      现在我们分别打开看看，首先打开下面那个全局的文件。
+</span></span><span style=display:flex><span> ![这里写图片描述](http://img.blog.csdn.net/20150311174954526)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      在这里我们需要更改的地方有如下几个地方：
+</span></span><span style=display:flex><span> ![这里写图片描述](http://img.blog.csdn.net/20150311182302469)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      再来看看库中的文件：
+</span></span><span style=display:flex><span> ![这里写图片描述](http://img.blog.csdn.net/20150311175830185)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    **
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        这里相对简单的多了，无非就是名称，ID，类型，版本等信息。
+</span></span><span style=display:flex><span> 有必要说明的是，上面的&lt;strong&gt;POM_GROUP_ID+POM_ARTIFACT_ID+VERSION_NAME** 将会得到如下的使用方式：
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    &lt;/blockquote&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span>`dependencies &amp;lt;span class=&#34;hljs-cell&#34;&gt;{
+</span></span><span style=display:flex><span>    compile &amp;lt;span class=&#34;hljs-string&#34;&gt;&#39;com.github.qiujuer:genius-ui:3.0.0-SNAPSHOT&#39;&amp;lt;/span&gt;
+</span></span><span style=display:flex><span>}&amp;lt;/span&gt;`
+</span></span></code></pre></div><pre><code>  - 1
+  
+  - 2
+  
+  - 3
+  
+
+
+
+
+  完了？没~还有一个至关重要的地方，在”Maven_Push”的代码中我们会找到：
+</code></pre><p><img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311180422918>
+以及其中的 <strong>signing</strong> 部分，但是你会发现你找遍了上面的所有的文件都没有发现这些字段，那么这些字段在哪里呢？</p><pre><code>  很简单，在[Android-Studio 缓存文件夹配置](http://blog.csdn.net/qiujuer/article/details/44160127) 中有讲解**“.gradle”**目录对吧？那么现在我们去看看 这个目录中有什么。
+</code></pre><p><img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311181023371>
+可以看见其中也有一个 “gradle.properties”文件，这个文件不在项目中，但是在项目中却可以访问，这是一个全局的文件，任何项目都可以访问该文件，如果你没有，那么可以自己创建一个就OK。</p><pre><code>**
+  
+
+    为什么要存储到这里？我们都知道项目中的 &lt;strong&gt;“gradle.properties”** 文件一般来说都是会提交到 Git 上面去的，所以项目中的文件不应该包含私密的东西，比如密钥对，密钥密码，以及你的 Maven 的账户信息。
+  
+
+&lt;/blockquote&gt;
+
+
+
+  打开该文件我们能看见：
+</code></pre><p><img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311181612609></p><pre><code>  - 密钥的相关东西请见：[使用GPG对文件进行签名加密](http://blog.csdn.net/qiujuer/article/details/44173611)
+  
+  - Sonatype 用户名密码详见：[注册 Maven 仓库 sonatype.org 账户](http://blog.csdn.net/qiujuer/article/details/44195199)
+  
+
+
+## &lt;a name=&quot;t5&quot;&gt;&lt;/a&gt;build.gradle
+
+
+
+  现在还需要修改你的项目中的 build 文件，需要更改的地方如下：
+</code></pre><p><img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311182718903></p><pre><code>```
+</code></pre><p><code>android { &amp;lt;span class="hljs-built_in">source&amp;lt;/span>Sets { main { manifest.srcFile &amp;lt;span class="hljs-string">'src/main/AndroidManifest.xml'&amp;lt;/span> java.srcDirs = [&amp;lt;span class="hljs-string">'src/main/java'&amp;lt;/span>] res.srcDirs = [&amp;lt;span class="hljs-string">'src/main/res'&amp;lt;/span>] } } lintOptions { abortOnError &amp;lt;span class="hljs-literal">false&amp;lt;/span> } } apply from: &amp;lt;span class="hljs-string">'https://raw.github.com/qiujuer/BeFoot/master/blog/gradle-mvn-push/gradle-mvn-push.gradle'&amp;lt;/span></code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>1</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>2</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>3</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>4</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>5</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>6</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>7</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>8</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>9</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>10</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>11</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>12</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>13</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#6272a4># &lt;a name=&#34;t6&#34;&gt;&lt;/a&gt;发布</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      如果你上面的都做到了，那么现在进入发布的地段了<span style=color:#ff79c6>~~</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#6272a4>## &lt;a name=&#34;t7&#34;&gt;&lt;/a&gt;执行发布命令</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      Android<span style=color:#ff79c6>-</span>Studio进入项目中，打开<span style=color:#ff79c6>**</span>“Terminal”<span style=color:#ff79c6>**</span>窗口，进入你的项目中，执行命令：
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span>`<span style=color:#ff79c6>&amp;</span>lt;span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;hljs-variable&#34;</span><span style=color:#ff79c6>&gt;$</span> <span style=color:#ff79c6>&amp;</span>lt;<span style=color:#ff79c6>/</span>span<span style=color:#ff79c6>&gt;</span>gradle clean build uploadArchives`
+</span></span></code></pre></div><pre><code>  - 1
+  
+
+
+
+
+  ![这里写图片描述](http://img.blog.csdn.net/20150311213106249)
+</code></pre><p>第一次操作的时候将会下载一大堆的依赖。
+<img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311213223486>
+最后出现成功提示则OK。
+<img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311221737266></p><pre><code>## &lt;a name=&quot;t8&quot;&gt;&lt;/a&gt;检查快照版本
+
+
+
+  在这里我们进入：[https://oss.sonatype.org/content/groups/public/](https://oss.sonatype.org/content/groups/public/)
+</code></pre><p>找到你的项目地址，我本次的是：
+<a href=https://oss.sonatype.org/content/groups/public/com/github/qiujuer/genius-ui/3.0.0-SNAPSHOT/>https://oss.sonatype.org/content/groups/public/com/github/qiujuer/genius-ui/3.0.0-SNAPSHOT/</a>
+<img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311221812429>
+可以看出其中有着原始文件以及签名等验证文件。
+如果你的没有**“asc”<strong>文件，那么发布</strong>“Release”**版本时将无法通过审核。</p><pre><code>  **也不是说快照版本就无法使用，同样可以，其使用方式为：**
+
+
+
+```
+</code></pre><p><code>dependencies { repositories { maven { url &amp;lt;span class="hljs-string">"https://oss.sonatype.org/content/repositories/snapshots/"&amp;lt;/span> } } compile &amp;lt;span class="hljs-string">'com.github.qiujuer:genius-ui:3.0.0-SNAPSHOT'&amp;lt;/span> }</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - 1
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 2
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 3
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 4
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 5
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 6
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      **如果发布了过个快照版本，那么就为：**
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span>`compile &amp;lt;span class=&#34;hljs-string&#34;&gt;&#39;com.github.qiujuer:genius-ui:3.0.0-SNAPSHOT-2&#39;&amp;lt;/span&gt; `
+</span></span></code></pre></div><pre><code>  - 1
+  
+
+
+## &lt;a name=&quot;t9&quot;&gt;&lt;/a&gt;发布“Release”
+
+
+
+  该发布方法操作命令行的方式与快照版本一样，完全一样；只需要更改你的库中的：**gradle.properties** 文件中的 **VERSION_NAME** ，删除掉后面的 **“”-SNAPSHOT”“** 就OK。
+</code></pre><p><img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311222338018>
+之后执行命令行命令；然后你会发现你在：
+<a href=https://oss.sonatype.org/content/groups/public/>https://oss.sonatype.org/content/groups/public/</a>
+中无法找到你发布的 “Release”版本；这是正常的；如果现在找到了反而不正常。</p><pre><code>## &lt;a name=&quot;t10&quot;&gt;&lt;/a&gt;操作仓库发布
+
+
+
+  要完成“Release”版本的发布还需要登陆到后台中进行一些简单的操作。
+</code></pre><p>网站：<a href=https://oss.sonatype.org/>https://oss.sonatype.org/</a>
+登陆：用户名与密码与<a href=https://issues.sonatype.org/>https://issues.sonatype.org/</a>中的完全一样。
+登陆成功后点击左边导航中的：<strong>“Staging Repositories”</strong>
+<img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311222845867>
+在其中根据你的<strong>GroupId</strong>去找你对应的一行。比如我的Id：“com.github.qiujuer”那么就是：
+<img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311222950952>
+找到后点击他，如果不是你的或者你没有找到那么看看是不是你上面根本就没有上传成功。
+<img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311223314985>
+选中后点击上面的**“Close”**按钮，填写描述信息；然后等待一段时间；在这个过程中你可以点击刷新按钮。
+<img alt=这里写图片描述 loading=lazy src=http://img.blog.csdn.net/20150311223511829>
+在下面可以看见发送了邮件提醒，然后上面的 <strong>“Release”</strong> 按钮可以点击了，此时点击该按钮，填写描述信息，不必太多。然后等待；当下面同样出现发送了邮件提醒的时候那么恭喜你发布成功了。</p><pre><code>**
+  
+
+    如果在上面你上传的文件中没有签名文件那么将无法操作成功；此时你应该重新上传有签名的版本。
+  
+
+&lt;/blockquote&gt;
+
+
+
+  发布成功后你的使用方式为（你并不能立即就能使用，一般需要10分钟及其以上的时间）：
+
+
+
+```
+</code></pre><p><code>dependencies &amp;lt;span class="hljs-cell">{ compile &amp;lt;span class="hljs-string">'com.github.qiujuer:genius-ui:3.0.0'&amp;lt;/span> }&amp;lt;/span></code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - 1
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 2
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      - 3
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    # &lt;a name=&#34;t11&#34;&gt;&lt;/a&gt;附件
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      本次操作中需要的文件我都上传到 [GitHub](https://github.com/qiujuer/BeFoot) 上了。
+</span></span><span style=display:flex><span> 地址：[https://github.com/qiujuer/BeFoot/tree/master/blog/gradle-mvn-push](https://github.com/qiujuer/BeFoot/tree/master/blog/gradle-mvn-push)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    # &lt;a name=&#34;t12&#34;&gt;&lt;/a&gt;一些问题
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      该地方，暂时就不写了，太长了~~
+</span></span><span style=display:flex><span> 说一个简单的吧：如果执行发布命令时出现：&lt;strong&gt;401** 错误，代表你的账户登录失败，也就是你的账户名或者密码错误。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      其他问题，大家如果遇到了可以提出来我会一一回答的。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      ==============追加===============
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ## &lt;a name=&#34;t13&#34;&gt;&lt;/a&gt;仓库唯一
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      发布项目到Maven 仓库 ，必须要使用sonatype.org么？sonatype.org是一个载体？还有其他选择？
+</span></span><span style=display:flex><span> 答案是：有其他的选择~
+</span></span><span style=display:flex><span> 如果 Gradle 没有内置你的仓库地址你也可以指定，甚至可以使用自己部署的服务器来发布。比如：
+</span></span><span style=display:flex><span> ![这里写图片描述](http://img.blog.csdn.net/20150312100018050)
+</span></span><span style=display:flex><span> 这个就是发布到 快照 仓库，但是快照仓库地址 Gradle 并不知道，所以需要指定。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    # &lt;a name=&#34;t14&#34;&gt;&lt;/a&gt;一些题外话
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      说实话这篇文章，很早以前就想写了；但是大概想了一下感觉篇幅会比较大，所以一直没有写。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      这次也是有朋友在问这方面的情况，所以就花了几天时间写了，真的是花了几天时间，不是空闲时间。也许你们看只需要10分钟，或许10分钟都要不到，可我却花了你的100倍甚至更多的时候来写的。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      由于是使用的 MarkDown 编辑器（出现BUG意外死掉的情况少）写的，所以没有像以前一样加上高亮等操作，不是不加，而是编辑器还不支持。
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      ========================================================
+</span></span><span style=display:flex><span> 作者：qiujuer
+</span></span><span style=display:flex><span> 博客：[blog.csdn.net/qiujuer](http://blog.csdn.net/qiujuer)
+</span></span><span style=display:flex><span> 网站：[www.qiujuer.net](http://www.qiujuer.net/)
+</span></span><span style=display:flex><span> 开源库：[github.com/qiujuer/Genius-Android](https://github.com/qiujuer/Genius-Android)
+</span></span><span style=display:flex><span> 转载请注明出处：[http://blog.csdn.net/qiujuer/article/details/44195131](http://blog.csdn.net/qiujuer/article/details/44195131)
+</span></span><span style=display:flex><span> ——学之开源，用于开源；初学者的心态，与君共勉！
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      ========================================================
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>&lt;/div&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;div class=&#34;bdsharebuttonbox tracking-ad bdshare-button-style0-16&#34; data-mod=&#34;popu_172&#34; data-bd-bind=&#34;1458097570578&#34;&gt;
+</span></span><span style=display:flex><span>&lt;/div&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;div id=&#34;digg&#34;&gt;
+</span></span><span style=display:flex><span>&lt;/div&gt;
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/gradle/>Gradle</a></li><li><a href=https://blog.zdltech.com/tags/maven/>Maven</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8gradle%E5%8F%91%E5%B8%83android%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%88%B0jcenter/><span class=title>« 上一页</span>
+<span>使用Gradle发布Android开源项目到JCenter</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8gradle%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE%E5%88%B0jcenter%E4%BB%93%E5%BA%93/><span class=title>下一页 »</span>
+<span>使用Gradle发布项目到JCenter仓库</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,1689 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android下拉刷新上拉加载控件，对所有View通用！ | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="转载请声明出处[http://blog.csdn.net/zhongkejingwang/article/details/38868463](http://blog.csdn.net/zhongkejingwang/article/details/38868463) 前面写过一篇关于下拉刷新控件的博..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%8E%A7%E4%BB%B6%E5%AF%B9%E6%89%80%E6%9C%89view%E9%80%9A%E7%94%A8/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%8E%A7%E4%BB%B6%E5%AF%B9%E6%89%80%E6%9C%89view%E9%80%9A%E7%94%A8/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%8E%A7%E4%BB%B6%E5%AF%B9%E6%89%80%E6%9C%89view%E9%80%9A%E7%94%A8/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android下拉刷新上拉加载控件，对所有View通用！"><meta property="og:description" content="转载请声明出处[http://blog.csdn.net/zhongkejingwang/article/details/38868463](http://blog.csdn.net/zhongkejingwang/article/details/38868463) 前面写过一篇关于下拉刷新控件的博..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-03-04T02:34:10+00:00"><meta property="article:modified_time" content="2015-03-04T02:34:10+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android下拉刷新上拉加载控件，对所有View通用！"><meta name=twitter:description content="转载请声明出处[http://blog.csdn.net/zhongkejingwang/article/details/38868463](http://blog.csdn.net/zhongkejingwang/article/details/38868463) 前面写过一篇关于下拉刷新控件的博..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android下拉刷新上拉加载控件，对所有View通用！","item":"https://blog.zdltech.com/posts/android%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%8E%A7%E4%BB%B6%E5%AF%B9%E6%89%80%E6%9C%89view%E9%80%9A%E7%94%A8/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android下拉刷新上拉加载控件，对所有View通用！","name":"Android下拉刷新上拉加载控件，对所有View通用！","description":"转载请声明出处[http://blog.csdn.net/zhongkejingwang/article/details/38868463](http://blog.csdn.net/zhongkejingwang/article/details/38868463) 前面写过一篇关于下拉刷新控件的博...","keywords":["android","移动开发"],"articleBody":"转载请声明出处http://blog.csdn.net/zhongkejingwang/article/details/38868463\n前面写过一篇关于下拉刷新控件的博客下拉刷新控件终结者：PullToRefreshLayout，后来看到好多人还有上拉加载更多的需求，于是就在前面下拉刷新控件的基础上进行了改进，加了上拉加载的功能。不仅如此，我已经把它改成了对所有View都通用！可以随心所欲使用这两个功能~~\n我做了一个大集合的demo，实现了ListView、GridView、ExpandableListView、ScrollView、WebView、ImageView、TextView的下拉刷新和上拉加载。后面会提供demo的下载地址。（csdn上的demo有小bug，最新代码已上传到github：https://github.com/jingchenUSTC/PullToRefreshAndLoad)\n依照惯例，下面将会是一大波效果图：\ndemo首页也是可下拉的ListView，在底下可以加入table：\nListView：\nGridView：\nExpandableListView：\nScrollView：\nWebView：\nImageView：\nTextView：\n很不错吧？最后的ImageView和TextView是最简单的，直接在下面的接口方法里返回true。\n增加上拉加载很简单，和管理下拉头一样，再多管理一个上拉头，也不费事；至于把它改成通用的就需要统一一下View的行为了，为此，我定义了这样一个接口：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#) - package com.jingchen.pulltorefresh.pullableview; - - public interface Pullable - { - /** - * 判断是否可以下拉，如果不需要下拉功能可以直接return false - * - * @return true如果可以下拉否则返回false - */ - boolean canPullDown(); - - /** - * 判断是否可以上拉，如果不需要上拉功能可以直接return false - * - * @return true如果可以上拉否则返回false - */ - boolean canPullUp(); - } 从接口名就可以看出它是一个提供判断是否可拉的方法的接口。这个接口的两个方法，canPullDown()是判断何时可以下拉的方法，canPullUp()则是判断何时可以上拉，我在demo中的判断是滑到顶部的时候可以下拉，滑到底部的时候可以上拉。所有需要上拉和下拉的View都需要实现这个接口。后面会给出一些View的实现。先来看看改进后的自定义的布局PullToRefreshLayout，增加了一个上拉头，下拉头和上拉头之间的View是实现了Pullable接口的pullableView。相比前面的版本，这里有改动的需要注意的地方如下：\n1、增加了上拉头，相应的也增加了控制变量。\n2、拉动时消除content_view事件防止误触发不再使用反射，直接设置 event.setAction(MotionEvent.ACTION_CANCEL)。\n3、消除了拉动过程中的多点触碰导致的剧变。\n4、不再设置content_view的onTouListener，让使用者可以更加自由的设置监听器。\n这个PullToRefreshLayout只负责管理三个控件，如果一个View需要有上拉下拉功能则只需实现接口就行了。下面看PullToRefreshLayout的代码，注释写了好多：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#) - package com.jingchen.pulltorefresh; - - import java.util.Timer; - import java.util.TimerTask; - - import android.content.Context; - import android.graphics.Canvas; - import android.graphics.LinearGradient; - import android.graphics.Paint; - import android.graphics.Paint.Style; - import android.graphics.RectF; - import android.graphics.Shader.TileMode; - import android.os.Handler; - import android.os.Message; - import android.util.AttributeSet; - import android.util.Log; - import android.view.MotionEvent; - import android.view.View; - import android.view.ViewGroup; - import android.view.animation.AnimationUtils; - import android.view.animation.LinearInterpolator; - import android.view.animation.RotateAnimation; - import android.widget.RelativeLayout; - import android.widget.TextView; - - import com.jingchen.pulltorefresh.pullableview.Pullable; - - /** - * 自定义的布局，用来管理三个子控件，其中一个是下拉头，一个是包含内容的pullableView（可以是实现Pullable接口的的任何View）， - * 还有一个上拉头 - * - * @author 陈靖 - */ - public class PullToRefreshLayout extends RelativeLayout - { - public static final String TAG = \u0026#8220;PullToRefreshLayout\u0026#8221;; - // 初始状态 - public static final int INIT = ; - // 释放刷新 - public static final int RELEASE_TO_REFRESH = 1; - // 正在刷新 - public static final int REFRESHING = 2; - // 释放加载 - public static final int RELEASE_TO_LOAD = 3; - // 正在加载 - public static final int LOADING = 4; - // 操作完毕 - public static final int DONE = 5; - // 当前状态 - private int state = INIT; - // 刷新回调接口 - private OnRefreshListener mListener; - // 刷新成功 - public static final int SUCCEED = ; - // 刷新失败 - public static final int FAIL = 1; - // 按下Y坐标，上一个事件点Y坐标 - private float downY, lastY; - - // 下拉的距离。注意：pullDownY和pullUpY不可能同时不为0 - public float pullDownY = ; - // 上拉的距离 - private float pullUpY = ; - - // 释放刷新的距离 - private float refreshDist = 200; - // 释放加载的距离 - private float loadmoreDist = 200; - - private MyTimer timer; - // 回滚速度 - public float MOVE_SPEED = 8; - // 第一次执行布局 - private boolean isLayout = false; - // 在刷新过程中滑动操作 - private boolean isTouch = false; - // 手指滑动距离与下拉头的滑动距离比，中间会随正切函数变化 - private float radio = 2; - - // 下拉箭头的转180°动画 - private RotateAnimation rotateAnimation; - // 均匀旋转动画 - private RotateAnimation refreshingAnimation; - - // 下拉头 - private View refreshView; - // 下拉的箭头 - private View pullView; - // 正在刷新的图标 - private View refreshingView; - // 刷新结果图标 - private View refreshStateImageView; - // 刷新结果：成功或失败 - private TextView refreshStateTextView; - - // 上拉头 - private View loadmoreView; - // 上拉的箭头 - private View pullUpView; - // 正在加载的图标 - private View loadingView; - // 加载结果图标 - private View loadStateImageView; - // 加载结果：成功或失败 - private TextView loadStateTextView; - - // 实现了Pullable接口的View - private View pullableView; - // 过滤多点触碰 - private int mEvents; - // 这两个变量用来控制pull的方向，如果不加控制，当情况满足可上拉又可下拉时没法下拉 - private boolean canPullDown = true; - private boolean canPullUp = true; - - /** - * 执行自动回滚的handler - */ - Handler updateHandler = new Handler() - { - - @Override - public void handleMessage(Message msg) - { - // 回弹速度随下拉距离moveDeltaY增大而增大 - MOVE_SPEED = (float) (8 + 5 * Math.tan(Math.PI / 2 - / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY)))); - if (!isTouch) - { - // 正在刷新，且没有往上推的话则悬停，显示\u0026#8221;正在刷新\u0026#8230;\u0026#8221; - if (state == REFRESHING \u0026\u0026 pullDownY \u003c= refreshDist) - { - pullDownY = refreshDist; - timer.cancel(); - } else if (state == LOADING \u0026\u0026 -pullUpY \u003c= loadmoreDist) - { - pullUpY = -loadmoreDist; - timer.cancel(); - } - - } - if (pullDownY \u003e ) - pullDownY -= MOVE_SPEED; - else if (pullUpY \u003c ) - pullUpY += MOVE_SPEED; - if (pullDownY \u003c ) - { - // 已完成回弹 - pullDownY = ; - pullView.clearAnimation(); - // 隐藏下拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态 - if (state != REFRESHING \u0026\u0026 state != LOADING) - changeState(INIT); - timer.cancel(); - } - if (pullUpY \u003e ) - { - // 已完成回弹 - pullUpY = ; - pullUpView.clearAnimation(); - // 隐藏下拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态 - if (state != REFRESHING \u0026\u0026 state != LOADING) - changeState(INIT); - timer.cancel(); - } - // 刷新布局,会自动调用onLayout - requestLayout(); - } - - }; - - public void setOnRefreshListener(OnRefreshListener listener) - { - mListener = listener; - } - - public PullToRefreshLayout(Context context) - { - super(context); - initView(context); - } - - public PullToRefreshLayout(Context context, AttributeSet attrs) - { - super(context, attrs); - initView(context); - } - - public PullToRefreshLayout(Context context, AttributeSet attrs, int defStyle) - { - super(context, attrs, defStyle); - initView(context); - } - - private void initView(Context context) - { - timer = new MyTimer(updateHandler); - rotateAnimation = (RotateAnimation) AnimationUtils.loadAnimation( - context, R.anim.reverse_anim); - refreshingAnimation = (RotateAnimation) AnimationUtils.loadAnimation( - context, R.anim.rotating); - // 添加匀速转动动画 - LinearInterpolator lir = new LinearInterpolator(); - rotateAnimation.setInterpolator(lir); - refreshingAnimation.setInterpolator(lir); - } - - private void hide() - { - timer.schedule(5); - } - - /** - * 完成刷新操作，显示刷新结果。注意：刷新完成后一定要调用这个方法 - */ - /** - * @param refreshResult - * PullToRefreshLayout.SUCCEED代表成功，PullToRefreshLayout.FAIL代表失败 - */ - public void refreshFinish(int refreshResult) - { - refreshingView.clearAnimation(); - refreshingView.setVisibility(View.GONE); - switch (refreshResult) - { - case SUCCEED: - // 刷新成功 - refreshStateImageView.setVisibility(View.VISIBLE); - refreshStateTextView.setText(R.string.refresh_succeed); - refreshStateImageView - .setBackgroundResource(R.drawable.refresh_succeed); - break; - case FAIL: - default: - // 刷新失败 - refreshStateImageView.setVisibility(View.VISIBLE); - refreshStateTextView.setText(R.string.refresh_fail); - refreshStateImageView - .setBackgroundResource(R.drawable.refresh_failed); - break; - } - // 刷新结果停留1秒 - new Handler() - { - @Override - public void handleMessage(Message msg) - { - changeState(DONE); - hide(); - } - }.sendEmptyMessageDelayed(, 1000); - } - - /** - * 加载完毕，显示加载结果。注意：加载完成后一定要调用这个方法 - * - * @param refreshResult - * PullToRefreshLayout.SUCCEED代表成功，PullToRefreshLayout.FAIL代表失败 - */ - public void loadmoreFinish(int refreshResult) - { - loadingView.clearAnimation(); - loadingView.setVisibility(View.GONE); - switch (refreshResult) - { - case SUCCEED: - // 加载成功 - loadStateImageView.setVisibility(View.VISIBLE); - loadStateTextView.setText(R.string.load_succeed); - loadStateImageView.setBackgroundResource(R.drawable.load_succeed); - break; - case FAIL: - default: - // 加载失败 - loadStateImageView.setVisibility(View.VISIBLE); - loadStateTextView.setText(R.string.load_fail); - loadStateImageView.setBackgroundResource(R.drawable.load_failed); - break; - } - // 刷新结果停留1秒 - new Handler() - { - @Override - public void handleMessage(Message msg) - { - changeState(DONE); - hide(); - } - }.sendEmptyMessageDelayed(, 1000); - } - - private void changeState(int to) - { - state = to; - switch (state) - { - case INIT: - // 下拉布局初始状态 - refreshStateImageView.setVisibility(View.GONE); - refreshStateTextView.setText(R.string.pull_to_refresh); - pullView.clearAnimation(); - pullView.setVisibility(View.VISIBLE); - // 上拉布局初始状态 - loadStateImageView.setVisibility(View.GONE); - loadStateTextView.setText(R.string.pullup_to_load); - pullUpView.clearAnimation(); - pullUpView.setVisibility(View.VISIBLE); - break; - case RELEASE_TO_REFRESH: - // 释放刷新状态 - refreshStateTextView.setText(R.string.release_to_refresh); - pullView.startAnimation(rotateAnimation); - break; - case REFRESHING: - // 正在刷新状态 - pullView.clearAnimation(); - refreshingView.setVisibility(View.VISIBLE); - pullView.setVisibility(View.INVISIBLE); - refreshingView.startAnimation(refreshingAnimation); - refreshStateTextView.setText(R.string.refreshing); - break; - case RELEASE_TO_LOAD: - // 释放加载状态 - loadStateTextView.setText(R.string.release_to_load); - pullUpView.startAnimation(rotateAnimation); - break; - case LOADING: - // 正在加载状态 - pullUpView.clearAnimation(); - loadingView.setVisibility(View.VISIBLE); - pullUpView.setVisibility(View.INVISIBLE); - loadingView.startAnimation(refreshingAnimation); - loadStateTextView.setText(R.string.loading); - break; - case DONE: - // 刷新或加载完毕，啥都不做 - break; - } - } - - /** - * 不限制上拉或下拉 - */ - private void releasePull() - { - canPullDown = true; - canPullUp = true; - } - - /* - * （非 Javadoc）由父控件决定是否分发事件，防止事件冲突 - * - * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent) - */ - @Override - public boolean dispatchTouchEvent(MotionEvent ev) - { - switch (ev.getActionMasked()) - { - case MotionEvent.ACTION_DOWN: - downY = ev.getY(); - lastY = downY; - timer.cancel(); - mEvents = ; - releasePull(); - break; - case MotionEvent.ACTION_POINTER_DOWN: - case MotionEvent.ACTION_POINTER_UP: - // 过滤多点触碰 - break; - case MotionEvent.ACTION_MOVE: - if (mEvents == ) - { - if (((Pullable) pullableView).canPullDown() \u0026\u0026 canPullDown - \u0026\u0026 state != LOADING) - { - // 可以下拉，正在加载时不能下拉 - // 对实际滑动距离做缩小，造成用力拉的感觉 - if (pullDownY \u003c ) - { - pullDownY = ; - canPullDown = false; - canPullUp = true; - } - if (pullDownY \u003e getMeasuredHeight()) - pullDownY = getMeasuredHeight(); - if (state == REFRESHING) - { - // 正在刷新的时候触摸移动 - isTouch = true; - } - } else if (((Pullable) pullableView).canPullUp() \u0026\u0026 canPullUp - \u0026\u0026 state != REFRESHING) - { - // 可以上拉，正在刷新时不能上拉 - if (pullUpY \u003e ) - { - pullUpY = ; - canPullDown = true; - canPullUp = false; - } - if (pullUpY \u003c -getMeasuredHeight()) - pullUpY = -getMeasuredHeight(); - if (state == LOADING) - { - // 正在加载的时候触摸移动 - isTouch = true; - } - } else - releasePull(); - } else - mEvents = ; - lastY = ev.getY(); - // 根据下拉距离改变比例 - radio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight() - * (pullDownY + Math.abs(pullUpY)))); - requestLayout(); - if (pullDownY \u003c= refreshDist - \u0026#8220;white-space:pre\u0026#8221;\u003e \u0026\u0026 (state == RELEASE_TO_REFRESH || state == DONE)) { - \u0026#8220;white-space:pre\u0026#8221;\u003e // 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新 - \u0026#8220;white-space:pre\u0026#8221;\u003e changeState(INIT); - \u0026#8220;white-space:pre\u0026#8221;\u003e } - \u0026#8220;white-space:pre\u0026#8221;\u003e if (pullDownY \u003e= refreshDist \u0026\u0026 (state == INIT || state == DONE)) { - \u0026#8220;white-space:pre\u0026#8221;\u003e // 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新 - \u0026#8220;white-space:pre\u0026#8221;\u003e changeState(RELEASE_TO_REFRESH); - \u0026#8220;white-space:pre\u0026#8221;\u003e } - \u0026#8220;white-space:pre\u0026#8221;\u003e // 下面是判断上拉加载的，同上，注意pullUpY是负值 - \u0026#8220;white-space:pre\u0026#8221;\u003e if (-pullUpY \u003c= loadmoreDist - \u0026#8220;white-space:pre\u0026#8221;\u003e \u0026\u0026 (state == RELEASE_TO_LOAD || state == DONE)) { - \u0026#8220;white-space:pre\u0026#8221;\u003e changeState(INIT); - \u0026#8220;white-space:pre\u0026#8221;\u003e } - \u0026#8220;white-space:pre\u0026#8221;\u003e if (-pullUpY \u003e= loadmoreDist \u0026\u0026 (state == INIT || state == DONE)) { - \u0026#8220;white-space:pre\u0026#8221;\u003e changeState(RELEASE_TO_LOAD); - \u0026#8220;white-space:pre\u0026#8221;\u003e } - // 因为刷新和加载操作不能同时进行，所以pullDownY和pullUpY不会同时不为0，因此这里用(pullDownY + - // Math.abs(pullUpY))就可以不对当前状态作区分了 - if ((pullDownY + Math.abs(pullUpY)) \u003e 8) - { - // 防止下拉过程中误触发长按事件和点击事件 - ev.setAction(MotionEvent.ACTION_CANCEL); - } - break; - case MotionEvent.ACTION_UP: - if (pullDownY \u003e refreshDist || -pullUpY \u003e loadmoreDist) - // 正在刷新时往下拉（正在加载时往上拉），释放后下拉头（上拉头）不隐藏 - isTouch = false; - if (state == RELEASE_TO_REFRESH) - { - changeState(REFRESHING); - // 刷新操作 - if (mListener != null) - mListener.onRefresh(this); - } else if (state == RELEASE_TO_LOAD) - { - changeState(LOADING); - // 加载操作 - if (mListener != null) - mListener.onLoadMore(this); - } - hide(); - default: - break; - } - // 事件分发交给父类 - super.dispatchTouchEvent(ev); - return true; - } - - private void initView() - { - // 初始化下拉布局 - pullView = refreshView.findViewById(R.id.pull_icon); - refreshStateTextView = (TextView) refreshView - .findViewById(R.id.state_tv); - refreshingView = refreshView.findViewById(R.id.refreshing_icon); - refreshStateImageView = refreshView.findViewById(R.id.state_iv); - // 初始化上拉布局 - pullUpView = loadmoreView.findViewById(R.id.pullup_icon); - loadStateTextView = (TextView) loadmoreView - .findViewById(R.id.loadstate_tv); - loadingView = loadmoreView.findViewById(R.id.loading_icon); - loadStateImageView = loadmoreView.findViewById(R.id.loadstate_iv); - } - - @Override - protected void onLayout(boolean changed, int l, int t, int r, int b) - { - if (!isLayout) - { - // 这里是第一次进来的时候做一些初始化 - refreshView = getChildAt(); - pullableView = getChildAt(1); - loadmoreView = getChildAt(2); - isLayout = true; - initView(); - refreshDist = ((ViewGroup) refreshView).getChildAt() - .getMeasuredHeight(); - loadmoreDist = ((ViewGroup) loadmoreView).getChildAt() - .getMeasuredHeight(); - } - // 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分 - refreshView.layout(, - refreshView.getMeasuredWidth(), (int) (pullDownY + pullUpY)); - pullableView.layout(, (int) (pullDownY + pullUpY), - pullableView.getMeasuredWidth(), (int) (pullDownY + pullUpY) - + pullableView.getMeasuredHeight()); - loadmoreView.layout(, - (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight(), - loadmoreView.getMeasuredWidth(), - (int) (pullDownY + pullUpY) + pullableView.getMeasuredHeight() - + loadmoreView.getMeasuredHeight()); - } - - class MyTimer - { - private Handler handler; - private Timer timer; - private MyTask mTask; - - public MyTimer(Handler handler) - { - this.handler = handler; - timer = new Timer(); - } - - public void schedule(long period) - { - if (mTask != null) - { - mTask.cancel(); - mTask = null; - } - mTask = new MyTask(handler); - timer.schedule(mTask, , period); - } - - public void cancel() - { - if (mTask != null) - { - mTask.cancel(); - mTask = null; - } - } - - class MyTask extends TimerTask - { - private Handler handler; - - public MyTask(Handler handler) - { - this.handler = handler; - } - - @Override - public void run() - { - handler.obtainMessage().sendToTarget(); - } - - } - } - - /** - * 刷新加载回调接口 - * - * @author chenjing - * - */ - public interface OnRefreshListener - { - /** - * 刷新操作 - */ - void onRefresh(PullToRefreshLayout pullToRefreshLayout); - - /** - * 加载操作 - */ - void onLoadMore(PullToRefreshLayout pullToRefreshLayout); - } - - } 上面就是整个布局的代码，并不是很难。\n下面看各个View对Pullable接口的实现，ListView和GridView还有ExpandableListView的判断方法是一样的：\nPullableListView：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#) - package com.jingchen.pulltorefresh.pullableview; - - import android.content.Context; - import android.util.AttributeSet; - import android.util.Log; - import android.widget.ListView; - - public class PullableListView extends ListView implements Pullable - { - - public PullableListView(Context context) - { - super(context); - } - - public PullableListView(Context context, AttributeSet attrs) - { - super(context, attrs); - } - - public PullableListView(Context context, AttributeSet attrs, int defStyle) - { - super(context, attrs, defStyle); - } - - @Override - public boolean canPullDown() - { - if (getCount() == ) - { - // 没有item的时候也可以下拉刷新 - return true; - } else if (getFirstVisiblePosition() == - \u0026\u0026 getChildAt().getTop() \u003e= ) - { - // 滑到ListView的顶部了 - return true; - } else - return false; - } - - @Override - public boolean canPullUp() - { - if (getCount() == ) - { - // 没有item的时候也可以上拉加载 - return true; - { - // 滑到底部了 - \u0026\u0026 getChildAt( - getLastVisiblePosition() - return true; - } - return false; - } - } PullableExpandableListView：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#) - package com.jingchen.pulltorefresh.pullableview; - - import android.content.Context; - import android.util.AttributeSet; - import android.widget.ExpandableListView; - - public class PullableExpandableListView extends ExpandableListView implements - Pullable - { - - public PullableExpandableListView(Context context) - { - super(context); - } - - public PullableExpandableListView(Context context, AttributeSet attrs) - { - super(context, attrs); - } - - public PullableExpandableListView(Context context, AttributeSet attrs, - int defStyle) - { - super(context, attrs, defStyle); - } - - @Override - public boolean canPullDown() - { - if (getCount() == ) - { - // 没有item的时候也可以下拉刷新 - return true; - } else if (getFirstVisiblePosition() == - \u0026\u0026 getChildAt().getTop() \u003e= ) - { - // 滑到顶部了 - return true; - } else - return false; - } - - @Override - public boolean canPullUp() - { - if (getCount() == ) - { - // 没有item的时候也可以上拉加载 - return true; - { - // 滑到底部了 - \u0026\u0026 getChildAt( - getLastVisiblePosition() - return true; - } - return false; - } - - } PullableGridView：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#) - package com.jingchen.pulltorefresh.pullableview; - - import android.content.Context; - import android.util.AttributeSet; - import android.widget.GridView; - - public class PullableGridView extends GridView implements Pullable - { - - public PullableGridView(Context context) - { - super(context); - } - - public PullableGridView(Context context, AttributeSet attrs) - { - super(context, attrs); - } - - public PullableGridView(Context context, AttributeSet attrs, int defStyle) - { - super(context, attrs, defStyle); - } - - @Override - public boolean canPullDown() - { - if (getCount() == ) - { - // 没有item的时候也可以下拉刷新 - return true; - } else if (getFirstVisiblePosition() == - \u0026\u0026 getChildAt().getTop() \u003e= ) - { - // 滑到顶部了 - return true; - } else - return false; - } - - @Override - public boolean canPullUp() - { - if (getCount() == ) - { - // 没有item的时候也可以上拉加载 - return true; - { - // 滑到底部了 - \u0026\u0026 getChildAt( - getLastVisiblePosition() - return true; - } - return false; - } - - } PullableScrollView：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#) - package com.jingchen.pulltorefresh.pullableview; - - import android.content.Context; - import android.util.AttributeSet; - import android.widget.ScrollView; - - public class PullableScrollView extends ScrollView implements Pullable - { - - public PullableScrollView(Context context) - { - super(context); - } - - public PullableScrollView(Context context, AttributeSet attrs) - { - super(context, attrs); - } - - public PullableScrollView(Context context, AttributeSet attrs, int defStyle) - { - super(context, attrs, defStyle); - } - - @Override - public boolean canPullDown() - { - if (getScrollY() == ) - return true; - else - return false; - } - - @Override - public boolean canPullUp() - { - return true; - else - return false; - } - - } PullableWebView：\n**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#) - package com.jingchen.pulltorefresh.pullableview; - - import android.content.Context; - import android.util.AttributeSet; - import android.webkit.WebView; - - public class PullableWebView extends WebView implements Pullable - { - - public PullableWebView(Context context) - { - super(context); - } - - public PullableWebView(Context context, AttributeSet attrs) - { - super(context, attrs); - } - - public PullableWebView(Context context, AttributeSet attrs, int defStyle) - { - super(context, attrs, defStyle); - } - - @Override - public boolean canPullDown() - { - if (getScrollY() == ) - return true; - else - return false; - } - - @Override - public boolean canPullUp() - { - if (getScrollY() \u003e= getContentHeight() * getScale() - return true; - else - return false; - } - } ImageView和TextView就不贴了，我直接在方法里返回了true。\nOK了，整个demo的代码有点多，就不贴了。\n源码下载\n","wordCount":"3501","inLanguage":"zh","datePublished":"2015-03-04T02:34:10Z","dateModified":"2015-03-04T02:34:10Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%8E%A7%E4%BB%B6%E5%AF%B9%E6%89%80%E6%9C%89view%E9%80%9A%E7%94%A8/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android下拉刷新上拉加载控件，对所有View通用！</h1><div class=post-description>转载请声明出处[http://blog.csdn.net/zhongkejingwang/article/details/38868463](http://blog.csdn.net/zhongkejingwang/article/details/38868463) 前面写过一篇关于下拉刷新控件的博...</div><div class=post-meta><span title='2015-03-04 02:34:10 +0000 UTC'>2015年3月4日</span>&nbsp;·&nbsp;<span>17 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>转载请声明出处<a href=http://blog.csdn.net/zhongkejingwang/article/details/38868463>http://blog.csdn.net/zhongkejingwang/article/details/38868463</a></p><p>前面写过一篇关于下拉刷新控件的博客<a href=http://blog.csdn.net/zhongkejingwang/article/details/38340701>下拉刷新控件终结者：PullToRefreshLayout</a>，后来看到好多人还有上拉加载更多的需求，于是就在前面下拉刷新控件的基础上进行了改进，加了上拉加载的功能。不仅如此，我已经把它改成了对所有View都通用！可以随心所欲使用这两个功能~~</p><p>我做了一个大集合的demo，实现了ListView、GridView、ExpandableListView、ScrollView、WebView、ImageView、TextView的下拉刷新和上拉加载。后面会提供demo的下载地址。（csdn上的demo有小bug，最新代码已上传到github：<a href=https://github.com/jingchenUSTC/PullToRefreshAndLoad>https://github.com/jingchenUSTC/PullToRefreshAndLoad</a>)</p><p>依照惯例，下面将会是一大波效果图：</p><p>demo首页也是可下拉的ListView，在底下可以加入table：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827132732390?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>ListView：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827133113883?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>GridView：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827133157922?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>ExpandableListView：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827133245580?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>ScrollView：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827134146109?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>WebView：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827134443946?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>ImageView：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827135142900?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>TextView：</p><p><img loading=lazy src="http://img.blog.csdn.net/20140827135212228?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvemhvbmdrZWppbmd3YW5n/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p>很不错吧？最后的ImageView和TextView是最简单的，直接在下面的接口方法里返回true。</p><p>增加上拉加载很简单，和管理下拉头一样，再多管理一个上拉头，也不费事；至于把它改成通用的就需要统一一下View的行为了，为此，我定义了这样一个接口：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.pulltorefresh.pullableview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; Pullable
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 判断是否可以下拉，如果不需要下拉功能可以直接return false&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return true如果可以下拉否则返回false&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown();
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 判断是否可以上拉，如果不需要上拉功能可以直接return false&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return true如果可以上拉否则返回false&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp();
+
+- }
+</code></pre></div><p>从接口名就可以看出它是一个提供判断是否可拉的方法的接口。这个接口的两个方法，canPullDown()是判断何时可以下拉的方法，canPullUp()则是判断何时可以上拉，我在demo中的判断是滑到顶部的时候可以下拉，滑到底部的时候可以上拉。所有需要上拉和下拉的View都需要实现这个接口。后面会给出一些View的实现。先来看看改进后的自定义的布局PullToRefreshLayout，增加了一个上拉头，下拉头和上拉头之间的View是实现了Pullable接口的pullableView。相比前面的版本，这里有改动的需要注意的地方如下：</p><p>1、增加了上拉头，相应的也增加了控制变量。</p><p>2、拉动时消除content_view事件防止误触发不再使用反射，直接设置                       event.setAction(MotionEvent.ACTION_CANCEL)。</p><p>3、消除了拉动过程中的多点触碰导致的剧变。</p><p>4、不再设置content_view的onTouListener，让使用者可以更加自由的设置监听器。</p><p>这个PullToRefreshLayout只负责管理三个控件，如果一个View需要有上拉下拉功能则只需实现接口就行了。下面看PullToRefreshLayout的代码，注释写了好多：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.pulltorefresh;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.Timer;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.TimerTask;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Canvas;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.LinearGradient;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Paint;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Paint.Style;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.RectF;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Shader.TileMode;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Handler;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Message;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.Log;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.MotionEvent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.animation.AnimationUtils;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.animation.LinearInterpolator;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.animation.RotateAnimation;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.RelativeLayout;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.TextView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.jingchen.pulltorefresh.pullableview.Pullable;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 自定义的布局，用来管理三个子控件，其中一个是下拉头，一个是包含内容的pullableView（可以是实现Pullable接口的的任何View），&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 还有一个上拉头&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author 陈靖&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PullToRefreshLayout &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; RelativeLayout
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String TAG = &lt;span class=&quot;string&quot;&gt;&amp;#8220;PullToRefreshLayout&amp;#8221;&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 初始状态&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; INIT = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 释放刷新&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; RELEASE_TO_REFRESH = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在刷新&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; REFRESHING = &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 释放加载&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; RELEASE_TO_LOAD = &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在加载&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; LOADING = &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 操作完毕&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; DONE = &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 当前状态&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; state = INIT;
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新回调接口&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; OnRefreshListener mListener;
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新成功&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; SUCCEED = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新失败&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; FAIL = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 按下Y坐标，上一个事件点Y坐标&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; downY, lastY;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 下拉的距离。注意：pullDownY和pullUpY不可能同时不为0&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; pullDownY = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 上拉的距离&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; pullUpY = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 释放刷新的距离&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; refreshDist = &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 释放加载的距离&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; loadmoreDist = &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; MyTimer timer;
+
+- &lt;span class=&quot;comment&quot;&gt;// 回滚速度&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; MOVE_SPEED = &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 第一次执行布局&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isLayout = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 在刷新过程中滑动操作&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isTouch = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;// 手指滑动距离与下拉头的滑动距离比，中间会随正切函数变化&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; radio = &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 下拉箭头的转180°动画&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; RotateAnimation rotateAnimation;
+
+- &lt;span class=&quot;comment&quot;&gt;// 均匀旋转动画&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; RotateAnimation refreshingAnimation;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 下拉头&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View refreshView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 下拉的箭头&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View pullView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在刷新的图标&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View refreshingView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新结果图标&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View refreshStateImageView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新结果：成功或失败&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; TextView refreshStateTextView;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 上拉头&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View loadmoreView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 上拉的箭头&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View pullUpView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在加载的图标&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View loadingView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 加载结果图标&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View loadStateImageView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 加载结果：成功或失败&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; TextView loadStateTextView;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 实现了Pullable接口的View&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View pullableView;
+
+- &lt;span class=&quot;comment&quot;&gt;// 过滤多点触碰&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mEvents;
+
+- &lt;span class=&quot;comment&quot;&gt;// 这两个变量用来控制pull的方向，如果不加控制，当情况满足可上拉又可下拉时没法下拉&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 执行自动回滚的handler&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- Handler updateHandler = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Handler()
+
+- {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; handleMessage(Message msg)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 回弹速度随下拉距离moveDeltaY增大而增大&lt;/span&gt;
+
+- MOVE_SPEED = (&lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;) (&lt;span class=&quot;number&quot;&gt;8&lt;/span&gt; + &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt; * Math.tan(Math.PI / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;
+
+- / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY))));
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!isTouch)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在刷新，且没有往上推的话则悬停，显示&amp;#8221;正在刷新&amp;#8230;&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == REFRESHING &amp;&amp; pullDownY &lt;= refreshDist)
+
+- {
+
+- pullDownY = refreshDist;
+
+- timer.cancel();
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == LOADING &amp;&amp; -pullUpY &lt;= loadmoreDist)
+
+- {
+
+- pullUpY = -loadmoreDist;
+
+- timer.cancel();
+
+- }
+
+- 
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullDownY &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- pullDownY -= MOVE_SPEED;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullUpY &lt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- pullUpY += MOVE_SPEED;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullDownY &lt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 已完成回弹&lt;/span&gt;
+
+- pullDownY = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- pullView.clearAnimation();
+
+- &lt;span class=&quot;comment&quot;&gt;// 隐藏下拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state != REFRESHING &amp;&amp; state != LOADING)
+
+- changeState(INIT);
+
+- timer.cancel();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullUpY &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 已完成回弹&lt;/span&gt;
+
+- pullUpY = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- pullUpView.clearAnimation();
+
+- &lt;span class=&quot;comment&quot;&gt;// 隐藏下拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state != REFRESHING &amp;&amp; state != LOADING)
+
+- changeState(INIT);
+
+- timer.cancel();
+
+- }
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新布局,会自动调用onLayout&lt;/span&gt;
+
+- requestLayout();
+
+- }
+
+- 
+- };
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setOnRefreshListener(OnRefreshListener listener)
+
+- {
+
+- mListener = listener;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullToRefreshLayout(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- initView(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullToRefreshLayout(Context context, AttributeSet attrs)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- initView(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullToRefreshLayout(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- initView(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; initView(Context context)
+
+- {
+
+- timer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyTimer(updateHandler);
+
+- rotateAnimation = (RotateAnimation) AnimationUtils.loadAnimation(
+
+- context, R.anim.reverse_anim);
+
+- refreshingAnimation = (RotateAnimation) AnimationUtils.loadAnimation(
+
+- context, R.anim.rotating);
+
+- &lt;span class=&quot;comment&quot;&gt;// 添加匀速转动动画&lt;/span&gt;
+
+- LinearInterpolator lir = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; LinearInterpolator();
+
+- rotateAnimation.setInterpolator(lir);
+
+- refreshingAnimation.setInterpolator(lir);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; hide()
+
+- {
+
+- timer.schedule(&lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 完成刷新操作，显示刷新结果。注意：刷新完成后一定要调用这个方法&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param refreshResult&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     *            PullToRefreshLayout.SUCCEED代表成功，PullToRefreshLayout.FAIL代表失败&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; refreshFinish(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; refreshResult)
+
+- {
+
+- refreshingView.clearAnimation();
+
+- refreshingView.setVisibility(View.GONE);
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (refreshResult)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; SUCCEED:
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新成功&lt;/span&gt;
+
+- refreshStateImageView.setVisibility(View.VISIBLE);
+
+- refreshStateTextView.setText(R.string.refresh_succeed);
+
+- refreshStateImageView
+
+- .setBackgroundResource(R.drawable.refresh_succeed);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; FAIL:
+
+- &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新失败&lt;/span&gt;
+
+- refreshStateImageView.setVisibility(View.VISIBLE);
+
+- refreshStateTextView.setText(R.string.refresh_fail);
+
+- refreshStateImageView
+
+- .setBackgroundResource(R.drawable.refresh_failed);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新结果停留1秒&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Handler()
+
+- {
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; handleMessage(Message msg)
+
+- {
+
+- changeState(DONE);
+
+- hide();
+
+- }
+
+- }.sendEmptyMessageDelayed(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 加载完毕，显示加载结果。注意：加载完成后一定要调用这个方法&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param refreshResult&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     *            PullToRefreshLayout.SUCCEED代表成功，PullToRefreshLayout.FAIL代表失败&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; loadmoreFinish(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; refreshResult)
+
+- {
+
+- loadingView.clearAnimation();
+
+- loadingView.setVisibility(View.GONE);
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (refreshResult)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; SUCCEED:
+
+- &lt;span class=&quot;comment&quot;&gt;// 加载成功&lt;/span&gt;
+
+- loadStateImageView.setVisibility(View.VISIBLE);
+
+- loadStateTextView.setText(R.string.load_succeed);
+
+- loadStateImageView.setBackgroundResource(R.drawable.load_succeed);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; FAIL:
+
+- &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:
+
+- &lt;span class=&quot;comment&quot;&gt;// 加载失败&lt;/span&gt;
+
+- loadStateImageView.setVisibility(View.VISIBLE);
+
+- loadStateTextView.setText(R.string.load_fail);
+
+- loadStateImageView.setBackgroundResource(R.drawable.load_failed);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新结果停留1秒&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Handler()
+
+- {
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; handleMessage(Message msg)
+
+- {
+
+- changeState(DONE);
+
+- hide();
+
+- }
+
+- }.sendEmptyMessageDelayed(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; changeState(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; to)
+
+- {
+
+- state = to;
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (state)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; INIT:
+
+- &lt;span class=&quot;comment&quot;&gt;// 下拉布局初始状态&lt;/span&gt;
+
+- refreshStateImageView.setVisibility(View.GONE);
+
+- refreshStateTextView.setText(R.string.pull_to_refresh);
+
+- pullView.clearAnimation();
+
+- pullView.setVisibility(View.VISIBLE);
+
+- &lt;span class=&quot;comment&quot;&gt;// 上拉布局初始状态&lt;/span&gt;
+
+- loadStateImageView.setVisibility(View.GONE);
+
+- loadStateTextView.setText(R.string.pullup_to_load);
+
+- pullUpView.clearAnimation();
+
+- pullUpView.setVisibility(View.VISIBLE);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; RELEASE_TO_REFRESH:
+
+- &lt;span class=&quot;comment&quot;&gt;// 释放刷新状态&lt;/span&gt;
+
+- refreshStateTextView.setText(R.string.release_to_refresh);
+
+- pullView.startAnimation(rotateAnimation);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; REFRESHING:
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在刷新状态&lt;/span&gt;
+
+- pullView.clearAnimation();
+
+- refreshingView.setVisibility(View.VISIBLE);
+
+- pullView.setVisibility(View.INVISIBLE);
+
+- refreshingView.startAnimation(refreshingAnimation);
+
+- refreshStateTextView.setText(R.string.refreshing);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; RELEASE_TO_LOAD:
+
+- &lt;span class=&quot;comment&quot;&gt;// 释放加载状态&lt;/span&gt;
+
+- loadStateTextView.setText(R.string.release_to_load);
+
+- pullUpView.startAnimation(rotateAnimation);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; LOADING:
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在加载状态&lt;/span&gt;
+
+- pullUpView.clearAnimation();
+
+- loadingView.setVisibility(View.VISIBLE);
+
+- pullUpView.setVisibility(View.INVISIBLE);
+
+- loadingView.startAnimation(refreshingAnimation);
+
+- loadStateTextView.setText(R.string.loading);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; DONE:
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新或加载完毕，啥都不做&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 不限制上拉或下拉&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; releasePull()
+
+- {
+
+- canPullDown = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- canPullUp = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * （非 Javadoc）由父控件决定是否分发事件，防止事件冲突&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; dispatchTouchEvent(MotionEvent ev)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (ev.getActionMasked())
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_DOWN:
+
+- downY = ev.getY();
+
+- lastY = downY;
+
+- timer.cancel();
+
+- mEvents = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- releasePull();
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_POINTER_DOWN:
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_POINTER_UP:
+
+- &lt;span class=&quot;comment&quot;&gt;// 过滤多点触碰&lt;/span&gt;
+
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_MOVE:
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mEvents == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (((Pullable) pullableView).canPullDown() &amp;&amp; canPullDown
+
+- &amp;&amp; state != LOADING)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 可以下拉，正在加载时不能下拉&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;// 对实际滑动距离做缩小，造成用力拉的感觉&lt;/span&gt;
+
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullDownY &lt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- pullDownY = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- canPullDown = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- canPullUp = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullDownY &gt; getMeasuredHeight())
+
+- pullDownY = getMeasuredHeight();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == REFRESHING)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在刷新的时候触摸移动&lt;/span&gt;
+
+- isTouch = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (((Pullable) pullableView).canPullUp() &amp;&amp; canPullUp
+
+- &amp;&amp; state != REFRESHING)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 可以上拉，正在刷新时不能上拉&lt;/span&gt;
+
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullUpY &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- pullUpY = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- canPullDown = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- canPullUp = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullUpY &lt; -getMeasuredHeight())
+
+- pullUpY = -getMeasuredHeight();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == LOADING)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在加载的时候触摸移动&lt;/span&gt;
+
+- isTouch = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- releasePull();
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- mEvents = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+
+- lastY = ev.getY();
+
+- &lt;span class=&quot;comment&quot;&gt;// 根据下拉距离改变比例&lt;/span&gt;
+
+- radio = (&lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt;) (&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; + &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; * Math.tan(Math.PI / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; / getMeasuredHeight()
+
+- * (pullDownY + Math.abs(pullUpY))));
+
+- requestLayout();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullDownY &lt;= refreshDist
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                    &lt;/span&gt;&amp;&amp; (state == RELEASE_TO_REFRESH || state == DONE)) {
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                &lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;// 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新&lt;/span&gt;
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                &lt;/span&gt;changeState(INIT);
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;}
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullDownY &gt;= refreshDist &amp;&amp; (state == INIT || state == DONE)) {
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                &lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;// 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新&lt;/span&gt;
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                &lt;/span&gt;changeState(RELEASE_TO_REFRESH);
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;}
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;// 下面是判断上拉加载的，同上，注意pullUpY是负值&lt;/span&gt;
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (-pullUpY &lt;= loadmoreDist
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                    &lt;/span&gt;&amp;&amp; (state == RELEASE_TO_LOAD || state == DONE)) {
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                &lt;/span&gt;changeState(INIT);
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;}
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (-pullUpY &gt;= loadmoreDist &amp;&amp; (state == INIT || state == DONE)) {
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;                &lt;/span&gt;changeState(RELEASE_TO_LOAD);
+
+- &lt;span style=&lt;span class=&quot;string&quot;&gt;&amp;#8220;white-space:pre&amp;#8221;&lt;/span&gt;&gt;            &lt;/span&gt;}
+
+- &lt;span class=&quot;comment&quot;&gt;// 因为刷新和加载操作不能同时进行，所以pullDownY和pullUpY不会同时不为0，因此这里用(pullDownY +&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;// Math.abs(pullUpY))就可以不对当前状态作区分了&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; ((pullDownY + Math.abs(pullUpY)) &gt; &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 防止下拉过程中误触发长按事件和点击事件&lt;/span&gt;
+
+- ev.setAction(MotionEvent.ACTION_CANCEL);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_UP:
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pullDownY &gt; refreshDist || -pullUpY &gt; loadmoreDist)
+
+- &lt;span class=&quot;comment&quot;&gt;// 正在刷新时往下拉（正在加载时往上拉），释放后下拉头（上拉头）不隐藏&lt;/span&gt;
+
+- isTouch = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == RELEASE_TO_REFRESH)
+
+- {
+
+- changeState(REFRESHING);
+
+- &lt;span class=&quot;comment&quot;&gt;// 刷新操作&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mListener != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- mListener.onRefresh(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (state == RELEASE_TO_LOAD)
+
+- {
+
+- changeState(LOADING);
+
+- &lt;span class=&quot;comment&quot;&gt;// 加载操作&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mListener != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- mListener.onLoadMore(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- }
+
+- hide();
+
+- &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;comment&quot;&gt;// 事件分发交给父类&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.dispatchTouchEvent(ev);
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; initView()
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 初始化下拉布局&lt;/span&gt;
+
+- pullView = refreshView.findViewById(R.id.pull_icon);
+
+- refreshStateTextView = (TextView) refreshView
+
+- .findViewById(R.id.state_tv);
+
+- refreshingView = refreshView.findViewById(R.id.refreshing_icon);
+
+- refreshStateImageView = refreshView.findViewById(R.id.state_iv);
+
+- &lt;span class=&quot;comment&quot;&gt;// 初始化上拉布局&lt;/span&gt;
+
+- pullUpView = loadmoreView.findViewById(R.id.pullup_icon);
+
+- loadStateTextView = (TextView) loadmoreView
+
+- .findViewById(R.id.loadstate_tv);
+
+- loadingView = loadmoreView.findViewById(R.id.loading_icon);
+
+- loadStateImageView = loadmoreView.findViewById(R.id.loadstate_iv);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onLayout(&lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; changed, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; t, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; r, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; b)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!isLayout)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 这里是第一次进来的时候做一些初始化&lt;/span&gt;
+
+- refreshView = getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+
+- pullableView = getChildAt(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+- loadmoreView = getChildAt(&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);
+
+- isLayout = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- initView();
+
+- refreshDist = ((ViewGroup) refreshView).getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- .getMeasuredHeight();
+
+- loadmoreDist = ((ViewGroup) loadmoreView).getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- .getMeasuredHeight();
+
+- }
+
+- &lt;span class=&quot;comment&quot;&gt;// 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分&lt;/span&gt;
+
+- refreshView.layout(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;,
+
+
+- refreshView.getMeasuredWidth(), (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) (pullDownY + pullUpY));
+
+- pullableView.layout(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) (pullDownY + pullUpY),
+
+- pullableView.getMeasuredWidth(), (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) (pullDownY + pullUpY)
+
+- + pullableView.getMeasuredHeight());
+
+- loadmoreView.layout(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;,
+
+- (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) (pullDownY + pullUpY) + pullableView.getMeasuredHeight(),
+
+- loadmoreView.getMeasuredWidth(),
+
+- (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) (pullDownY + pullUpY) + pullableView.getMeasuredHeight()
+
+- + loadmoreView.getMeasuredHeight());
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MyTimer
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Handler handler;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Timer timer;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; MyTask mTask;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyTimer(Handler handler)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.handler = handler;
+
+- timer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Timer();
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; schedule(&lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; period)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mTask != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- mTask.cancel();
+
+- mTask = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- }
+
+- mTask = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyTask(handler);
+
+- timer.schedule(mTask, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, period);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; cancel()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mTask != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- mTask.cancel();
+
+- mTask = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MyTask &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; TimerTask
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Handler handler;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyTask(Handler handler)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.handler = handler;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; run()
+
+- {
+
+- handler.obtainMessage().sendToTarget();
+
+- }
+
+- 
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 刷新加载回调接口&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @author chenjing&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; OnRefreshListener
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         * 刷新操作&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onRefresh(PullToRefreshLayout pullToRefreshLayout);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         * 加载操作&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;         */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onLoadMore(PullToRefreshLayout pullToRefreshLayout);
+
+- }
+
+- 
+- }
+</code></pre></div><p>上面就是整个布局的代码，并不是很难。</p><p>下面看各个View对Pullable接口的实现，ListView和GridView还有ExpandableListView的判断方法是一样的：</p><p>PullableListView：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.pulltorefresh.pullableview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.Log;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ListView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PullableListView &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; ListView &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; Pullable
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableListView(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableListView(Context context, AttributeSet attrs)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableListView(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getCount() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 没有item的时候也可以下拉刷新&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getFirstVisiblePosition() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;
+
+- &amp;&amp; getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;).getTop() &gt;= &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 滑到ListView的顶部了&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getCount() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 没有item的时候也可以上拉加载&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 滑到底部了&lt;/span&gt;
+
+
+- &amp;&amp; getChildAt(
+
+- getLastVisiblePosition()
+
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+</code></pre></div><p> </p><p>PullableExpandableListView：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.pulltorefresh.pullableview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ExpandableListView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PullableExpandableListView &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; ExpandableListView &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt;
+
+- Pullable
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableExpandableListView(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableExpandableListView(Context context, AttributeSet attrs)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableExpandableListView(Context context, AttributeSet attrs,
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getCount() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 没有item的时候也可以下拉刷新&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getFirstVisiblePosition() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;
+
+- &amp;&amp; getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;).getTop() &gt;= &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 滑到顶部了&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getCount() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 没有item的时候也可以上拉加载&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 滑到底部了&lt;/span&gt;
+
+
+- &amp;&amp; getChildAt(
+
+- getLastVisiblePosition()
+
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- }
+</code></pre></div><p> </p><p>PullableGridView：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_5&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_5&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.pulltorefresh.pullableview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.GridView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PullableGridView &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; GridView &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; Pullable
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableGridView(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableGridView(Context context, AttributeSet attrs)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableGridView(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getCount() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 没有item的时候也可以下拉刷新&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getFirstVisiblePosition() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;
+
+- &amp;&amp; getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;).getTop() &gt;= &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 滑到顶部了&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getCount() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 没有item的时候也可以上拉加载&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+
+- {
+
+- &lt;span class=&quot;comment&quot;&gt;// 滑到底部了&lt;/span&gt;
+
+
+- &amp;&amp; getChildAt(
+
+- getLastVisiblePosition()
+
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- }
+</code></pre></div><p>PullableScrollView：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_6&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_6&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.pulltorefresh.pullableview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ScrollView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PullableScrollView &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; ScrollView &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; Pullable
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableScrollView(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableScrollView(Context context, AttributeSet attrs)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableScrollView(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getScrollY() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp()
+
+- {
+
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- }
+</code></pre></div><p>PullableWebView：</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)[copy](http://blog.csdn.net/zhongkejingwang/article/details/38868463#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_7&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_7&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.jingchen.pulltorefresh.pullableview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.webkit.WebView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; PullableWebView &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; WebView &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; Pullable
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableWebView(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableWebView(Context context, AttributeSet attrs)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; PullableWebView(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullDown()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getScrollY() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canPullUp()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (getScrollY() &gt;= getContentHeight() * getScale()
+
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+</code></pre></div><p>ImageView和TextView就不贴了，我直接在方法里返回了true。</p><p>OK了，整个demo的代码有点多，就不贴了。</p><p><a href=http://download.csdn.net/detail/zhongkejingwang/7828061>源码下载</a></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-%E5%AF%B9scrollview%E6%BB%9A%E5%8A%A8%E7%9B%91%E5%90%AC%E5%AE%9E%E7%8E%B0%E7%BE%8E%E5%9B%A2%E5%A4%A7%E4%BC%97%E7%82%B9%E8%AF%84%E7%9A%84%E8%B4%AD%E4%B9%B0%E6%82%AC%E6%B5%AE/><span class=title>« 上一页</span>
+<span>Android 带你从源码的角度解析Scroller的滚动实现原理</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%A7%E4%BB%B6%E5%AE%9E%E6%88%98-%E4%BB%BF%E5%A4%9A%E7%9C%8B%E9%98%85%E8%AF%BB%E5%B9%B3%E7%A7%BB%E7%BF%BB%E9%A1%B5/><span class=title>下一页 »</span>
+<span>Android自定义控件实战——仿多看阅读平移翻页</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

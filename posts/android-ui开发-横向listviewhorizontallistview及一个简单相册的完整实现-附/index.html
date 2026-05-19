@@ -1,0 +1,1391 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android UI开发: 横向ListView(HorizontalListView)及一个简单相册的完整实现 (附源码下载) | ZDL Tech Blog</title>
+<meta name=keywords content="android,列表控件,移动开发"><meta name=description content="## 本文内容： 1、横向ListView的所有实现思路; 2、其中一个最通用的思路HorizontalListView，并基于横向ListView开发一个简单的相册； 3、实现的横向ListView在点击、浏览时item背景会变色，并解决了listview里setSelected造成item的选择..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-ui%E5%BC%80%E5%8F%91-%E6%A8%AA%E5%90%91listviewhorizontallistview%E5%8F%8A%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9B%B8%E5%86%8C%E7%9A%84%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0-%E9%99%84/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-ui%E5%BC%80%E5%8F%91-%E6%A8%AA%E5%90%91listviewhorizontallistview%E5%8F%8A%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9B%B8%E5%86%8C%E7%9A%84%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0-%E9%99%84/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-ui%E5%BC%80%E5%8F%91-%E6%A8%AA%E5%90%91listviewhorizontallistview%E5%8F%8A%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9B%B8%E5%86%8C%E7%9A%84%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0-%E9%99%84/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android UI开发: 横向ListView(HorizontalListView)及一个简单相册的完整实现 (附源码下载)"><meta property="og:description" content="## 本文内容： 1、横向ListView的所有实现思路; 2、其中一个最通用的思路HorizontalListView，并基于横向ListView开发一个简单的相册； 3、实现的横向ListView在点击、浏览时item背景会变色，并解决了listview里setSelected造成item的选择..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-06-27T02:02:53+00:00"><meta property="article:modified_time" content="2014-06-27T02:02:53+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="列表控件"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android UI开发: 横向ListView(HorizontalListView)及一个简单相册的完整实现 (附源码下载)"><meta name=twitter:description content="## 本文内容： 1、横向ListView的所有实现思路; 2、其中一个最通用的思路HorizontalListView，并基于横向ListView开发一个简单的相册； 3、实现的横向ListView在点击、浏览时item背景会变色，并解决了listview里setSelected造成item的选择..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android UI开发: 横向ListView(HorizontalListView)及一个简单相册的完整实现 (附源码下载)","item":"https://blog.zdltech.com/posts/android-ui%E5%BC%80%E5%8F%91-%E6%A8%AA%E5%90%91listviewhorizontallistview%E5%8F%8A%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9B%B8%E5%86%8C%E7%9A%84%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0-%E9%99%84/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android UI开发: 横向ListView(HorizontalListView)及一个简单相册的完整实现 (附源码下载)","name":"Android UI开发: 横向ListView(HorizontalListView)及一个简单相册的完整实现 (附源码下载)","description":"## 本文内容： 1、横向ListView的所有实现思路; 2、其中一个最通用的思路HorizontalListView，并基于横向ListView开发一个简单的相册； 3、实现的横向ListView在点击、浏览时item背景会变色，并解决了listview里setSelected造成item的选择...","keywords":["android","列表控件","移动开发"],"articleBody":"本文内容： 1、横向ListView的所有实现思路;\n2、其中一个最通用的思路HorizontalListView，并基于横向ListView开发一个简单的相册；\n3、实现的横向ListView在点击、浏览时item背景会变色，并解决了listview里setSelected造成item的选择状态混乱的问题。\n众所周知，ListView默认的方向是垂直的，但有些时候人们更喜欢横向ListView。纵观整个网络，横向ListView的实现思路如下:\n1、在布局里用HorizontalScrollView包含一个ListView，参考这里;\n2、利用GridView，把它的行数设为1行；\n3、有人继承ListView构造了一个HorizontalScrollListView，参见：这里\n4、国外一位大牛继承AdapterView构造的HorizontalListView，这是以上所有方法里本人认为最正统的方法，本文即基于此方法，参见:这里\n下面看源码： 这是Activity的布局文件:activity_main.xml **[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork) - \u003cspan style=\u0026#8220;font-family: \u0026#8216;Comic Sans MS\u0026#8217;; font-size: 18px;\u0026#8221;\u003e\u003cRelativeLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - xmlns:tools=\u0026#8220;http://schemas.android.com/tools\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:paddingBottom=\u0026#8220;@dimen/activity_vertical_margin\u0026#8221; - android:paddingLeft=\u0026#8220;@dimen/activity_horizontal_margin\u0026#8221; - android:paddingRight=\u0026#8220;@dimen/activity_horizontal_margin\u0026#8221; - android:paddingTop=\u0026#8220;@dimen/activity_vertical_margin\u0026#8221; - tools:context=\u0026#8220;.MainActivity\u0026#8221; - \u003e - - \u003corg.yanzi.ui.HorizontalListView - android:id=\u0026#8220;@+id/horizon_listview\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;150dip\u0026#8221; - android:layout_alignParentTop=\u0026#8220;true\u0026#8221; - \u003e - \u003c/org.yanzi.ui.HorizontalListView\u003e - \u003cImageView - android:id=\u0026#8220;@+id/image_preview\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_below=\u0026#8220;@id/horizon_listview\u0026#8221; - android:layout_centerInParent=\u0026#8220;true\u0026#8221; - android:clickable=\u0026#8220;true\u0026#8221; - android:background=\u0026#8220;@drawable/selector_imageview_background\u0026#8221; - /\u003e - \u003c!\u0026#8211; android:background=\u0026#8221;@android:drawable/ic_menu_gallery\u0026#8221; \u0026#8211;\u003e - - \u003c/RelativeLayout\u003e\u003c/span\u003e 这是横向listview的每个item的布局，图片+文字，horizontal_list_item.xml **[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork) - \u003cspan style=\u0026#8220;font-family: \u0026#8216;Comic Sans MS\u0026#8217;; font-size: 18px;\u0026#8221;\u003e\u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cLinearLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:paddingLeft=\u0026#8220;2dip\u0026#8221; - android:paddingRight=\u0026#8220;2dip\u0026#8221; - android:paddingTop=\u0026#8220;2dip\u0026#8221; - android:paddingBottom=\u0026#8220;2dip\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; - android:gravity=\u0026#8220;center\u0026#8221; - android:clickable=\u0026#8220;true\u0026#8221; - android:background=\u0026#8220;@drawable/selector_item_background\u0026#8221;\u003e - \u003cImageView - android:id=\u0026#8220;@+id/img_list_item\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221;/\u003e - \u003cTextView - android:id=\u0026#8220;@+id/text_list_item\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:gravity=\u0026#8220;center\u0026#8221;/\u003e - - \u003c/LinearLayout\u003e - \u003c/span\u003e 下面文件是selector_imageview_background.xml，这是大图片你点击浏览时背景发生变化的selector，没有啥实际作用。 **[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork) - \u003cspan style=\u0026#8220;font-family: \u0026#8216;Comic Sans MS\u0026#8217;; font-size: 18px;\u0026#8221;\u003e\u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cselector xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221;\u003e - - \u003citem android:drawable=\u0026#8220;@android:color/holo_green_light\u0026#8221; android:state_pressed=\u0026#8220;true\u0026#8221;/\u003e - \u003citem android:drawable=\u0026#8220;@android:color/holo_green_light\u0026#8221; android:state_focused=\u0026#8220;true\u0026#8221;/\u003e - \u003citem android:drawable=\u0026#8220;@drawable/image_background\u0026#8221;\u003e\u003c/item\u003e - \u003c!\u0026#8211; android:drawable=\u0026#8221;@android:color/transparent\u0026#8221; \u0026#8211;\u003e - \u003c/selector\u003e\u003c/span\u003e 下面是每个item的selector，在focus和select时颜色会发生变化:selector_item_background.xml **[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork) - \u003cspan style=\u0026#8220;font-family: \u0026#8216;Comic Sans MS\u0026#8217;; font-size: 18px;\u0026#8221;\u003e\u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cselector xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221;\u003e - - \u003citem android:drawable=\u0026#8220;@android:color/holo_red_light\u0026#8221; android:state_selected=\u0026#8220;true\u0026#8221;/\u003e - \u003citem android:drawable=\u0026#8220;@android:color/holo_green_dark\u0026#8221; android:state_pressed=\u0026#8220;true\u0026#8221;/\u003e - \u003citem android:drawable=\u0026#8220;@android:color/transparent\u0026#8221;/\u003e - - \u003c/selector\u003e\u003c/span\u003e 主程序:MainActivity.java **[java]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork) - \u0026#8220;font-family: \u0026#8216;Comic Sans MS\u0026#8217;; font-size: 18px;\u0026#8221;\u003epackage org.yanzi.testhorizontallistview; - - import org.yanzi.ui.HorizontalListView; - import org.yanzi.ui.HorizontalListViewAdapter; - - import android.app.Activity; - import android.os.Bundle; - import android.view.Menu; - import android.view.View; - import android.widget.AdapterView; - import android.widget.AdapterView.OnItemClickListener; - import android.widget.ImageView; - - public class MainActivity extends Activity { - HorizontalListView hListView; - HorizontalListViewAdapter hListViewAdapter; - ImageView previewImg; - View olderSelectView = null; - @Override - protected void onCreate(Bundle savedInstanceState) { - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_main); - initUI(); - } - - @Override - public boolean onCreateOptionsMenu(Menu menu) { - // Inflate the menu; this adds items to the action bar if it is present. - getMenuInflater().inflate(R.menu.main, menu); - return true; - } - public void initUI(){ - hListView = (HorizontalListView)findViewById(R.id.horizon_listview); - previewImg = (ImageView)findViewById(R.id.image_preview); - String[] titles = {\u0026#8220;怀师\u0026#8221;, \u0026#8220;南怀瑾军校\u0026#8221;, \u0026#8220;闭关\u0026#8221;, \u0026#8220;南怀瑾\u0026#8221;, \u0026#8220;南公庄严照\u0026#8221;, \u0026#8220;怀师法相\u0026#8221;}; - final int[] ids = {R.drawable.nanhuaijin_miss, R.drawable.nanhuaijin_school, - R.drawable.nanhuaijin_biguan, R.drawable.nanhuaijin, - R.drawable.nanhuaijin_zhuangyan, R.drawable.nanhuaijin_faxiang}; - hListViewAdapter = new HorizontalListViewAdapter(getApplicationContext(),titles,ids); - hListView.setAdapter(hListViewAdapter); - // hListView.setOnItemSelectedListener(new OnItemSelectedListener() { - // - // @Override - // public void onItemSelected(AdapterView\u003c?\u003e parent, View view, - // int position, long id) { - // // TODO Auto-generated method stub - // if(olderSelected != null){ - // olderSelected.setSelected(false); //上一个选中的View恢复原背景 - // } - // olderSelected = view; - // view.setSelected(true); - // } - // - // @Override - // public void onNothingSelected(AdapterView\u003c?\u003e parent) { - // // TODO Auto-generated method stub - // - // } - // }); - hListView.setOnItemClickListener(new OnItemClickListener() { - - @Override - public void onItemClick(AdapterView\u003c?\u003e parent, View view, - int position, long id) { - // TODO Auto-generated method stub - // if(olderSelectView == null){ - // olderSelectView = view; - // }else{ - // olderSelectView.setSelected(false); - // olderSelectView = null; - // } - // olderSelectView = view; - // view.setSelected(true); - previewImg.setImageResource(ids[position]); - hListViewAdapter.setSelectIndex(position); - hListViewAdapter.notifyDataSetChanged(); - - } - }); - - } - - } - HorizontalListView.java 这就是自定义的横向listview **[java]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork) - \u0026#8220;font-family: \u0026#8216;Comic Sans MS\u0026#8217;; font-size: 18px;\u0026#8221;\u003epackage org.yanzi.ui; - - /* - * HorizontalListView.java v1.5 - * - * - * The MIT License - * Copyright (c) 2011 Paul Soucy (paul@dev-smart.com) - * - * Permission is hereby granted, free of charge, to any person obtaining a copy - * of this software and associated documentation files (the \u0026#8220;Software\u0026#8221;), to deal - * in the Software without restriction, including without limitation the rights - * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell - * copies of the Software, and to permit persons to whom the Software is - * furnished to do so, subject to the following conditions: - * - * The above copyright notice and this permission notice shall be included in - * all copies or substantial portions of the Software. - * - * THE SOFTWARE IS PROVIDED \u0026#8220;AS IS\u0026#8221;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, - * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE - * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER - * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, - * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN - * THE SOFTWARE. - * - */ - - - import java.util.LinkedList; - import java.util.Queue; - - import android.content.Context; - import android.database.DataSetObserver; - import android.graphics.Rect; - import android.util.AttributeSet; - import android.view.GestureDetector; - import android.view.GestureDetector.OnGestureListener; - import android.view.MotionEvent; - import android.view.View; - import android.widget.AdapterView; - import android.widget.ListAdapter; - import android.widget.Scroller; - - public class HorizontalListView extends AdapterView { - - public boolean mAlwaysOverrideTouch = true; - protected ListAdapter mAdapter; - private int mLeftViewIndex = \u0026#8211;1; - private int mRightViewIndex = ; - protected int mCurrentX; - protected int mNextX; - private int mMaxX = Integer.MAX_VALUE; - private int mDisplayOffset = ; - protected Scroller mScroller; - private GestureDetector mGesture; - private Queue mRemovedViewQueue = new LinkedList(); - private OnItemSelectedListener mOnItemSelected; - private OnItemClickListener mOnItemClicked; - private OnItemLongClickListener mOnItemLongClicked; - private boolean mDataChanged = false; - - - public HorizontalListView(Context context, AttributeSet attrs) { - super(context, attrs); - initView(); - } - - private synchronized void initView() { - mLeftViewIndex = \u0026#8211;1; - mRightViewIndex = ; - mDisplayOffset = ; - mCurrentX = ; - mNextX = ; - mMaxX = Integer.MAX_VALUE; - mScroller = new Scroller(getContext()); - mGesture = new GestureDetector(getContext(), mOnGesture); - } - - @Override - public void setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener) { - mOnItemSelected = listener; - } - - @Override - public void setOnItemClickListener(AdapterView.OnItemClickListener listener){ - mOnItemClicked = listener; - } - - @Override - public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) { - mOnItemLongClicked = listener; - } - - private DataSetObserver mDataObserver = new DataSetObserver() { - - @Override - public void onChanged() { - synchronized(HorizontalListView.this){ - mDataChanged = true; - } - invalidate(); - requestLayout(); - } - - @Override - public void onInvalidated() { - reset(); - invalidate(); - requestLayout(); - } - - }; - - @Override - public ListAdapter getAdapter() { - return mAdapter; - } - - @Override - public View getSelectedView() { - //TODO: implement - return null; - } - - @Override - public void setAdapter(ListAdapter adapter) { - if(mAdapter != null) { - mAdapter.unregisterDataSetObserver(mDataObserver); - } - mAdapter = adapter; - mAdapter.registerDataSetObserver(mDataObserver); - reset(); - } - - private synchronized void reset(){ - initView(); - removeAllViewsInLayout(); - requestLayout(); - } - - @Override - public void setSelection(int position) { - //TODO: implement - } - - private void addAndMeasureChild(final View child, int viewPos) { - LayoutParams params = child.getLayoutParams(); - if(params == null) { - params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT); - } - - addViewInLayout(child, viewPos, params, true); - child.measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.AT_MOST), - MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST)); - } - - - - @Override - protected synchronized void onLayout(boolean changed, int left, int top, int right, int bottom) { - super.onLayout(changed, left, top, right, bottom); - - if(mAdapter == null){ - return; - } - - if(mDataChanged){ - int oldCurrentX = mCurrentX; - initView(); - removeAllViewsInLayout(); - mNextX = oldCurrentX; - mDataChanged = false; - } - - if(mScroller.computeScrollOffset()){ - int scrollx = mScroller.getCurrX(); - mNextX = scrollx; - } - - if(mNextX \u003c= ){ - mNextX = ; - mScroller.forceFinished(true); - } - if(mNextX \u003e= mMaxX) { - mNextX = mMaxX; - mScroller.forceFinished(true); - } - - int dx = mCurrentX \u0026#8211; mNextX; - - removeNonVisibleItems(dx); - fillList(dx); - positionItems(dx); - - mCurrentX = mNextX; - - if(!mScroller.isFinished()){ - post(new Runnable(){ - @Override - public void run() { - requestLayout(); - } - }); - - } - } - - private void fillList(final int dx) { - int edge = ; - View child = getChildAt(getChildCount()-1); - if(child != null) { - edge = child.getRight(); - } - fillListRight(edge, dx); - - edge = ; - child = getChildAt(); - if(child != null) { - edge = child.getLeft(); - } - fillListLeft(edge, dx); - - - } - - private void fillListRight(int rightEdge, final int dx) { - while(rightEdge + dx \u003c getWidth() \u0026\u0026 mRightViewIndex \u003c mAdapter.getCount()) { - - View child = mAdapter.getView(mRightViewIndex, mRemovedViewQueue.poll(), this); - addAndMeasureChild(child, \u0026#8211;1); - rightEdge += child.getMeasuredWidth(); - - if(mRightViewIndex == mAdapter.getCount()-1) { - mMaxX = mCurrentX + rightEdge \u0026#8211; getWidth(); - } - - if (mMaxX \u003c ) { - mMaxX = ; - } - mRightViewIndex++; - } - - } - - private void fillListLeft(int leftEdge, final int dx) { - while(leftEdge + dx \u003e \u0026\u0026 mLeftViewIndex \u003e= ) { - View child = mAdapter.getView(mLeftViewIndex, mRemovedViewQueue.poll(), this); - addAndMeasureChild(child, ); - leftEdge -= child.getMeasuredWidth(); - mLeftViewIndex\u0026#8211;; - mDisplayOffset -= child.getMeasuredWidth(); - } - } - - private void removeNonVisibleItems(final int dx) { - View child = getChildAt(); - while(child != null \u0026\u0026 child.getRight() + dx \u003c= ) { - mDisplayOffset += child.getMeasuredWidth(); - mRemovedViewQueue.offer(child); - removeViewInLayout(child); - mLeftViewIndex++; - child = getChildAt(); - - } - - child = getChildAt(getChildCount()-1); - while(child != null \u0026\u0026 child.getLeft() + dx \u003e= getWidth()) { - mRemovedViewQueue.offer(child); - removeViewInLayout(child); - mRightViewIndex\u0026#8211;; - child = getChildAt(getChildCount()-1); - } - } - - private void positionItems(final int dx) { - if(getChildCount() \u003e ){ - mDisplayOffset += dx; - int left = mDisplayOffset; - for(int i=;i","wordCount":"7846","inLanguage":"zh","datePublished":"2014-06-27T02:02:53Z","dateModified":"2014-06-27T02:02:53Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-ui%E5%BC%80%E5%8F%91-%E6%A8%AA%E5%90%91listviewhorizontallistview%E5%8F%8A%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9B%B8%E5%86%8C%E7%9A%84%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0-%E9%99%84/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android UI开发: 横向ListView(HorizontalListView)及一个简单相册的完整实现 (附源码下载)</h1><div class=post-description>## 本文内容： 1、横向ListView的所有实现思路; 2、其中一个最通用的思路HorizontalListView，并基于横向ListView开发一个简单的相册； 3、实现的横向ListView在点击、浏览时item背景会变色，并解决了listview里setSelected造成item的选择...</div><div class=post-meta><span title='2014-06-27 02:02:53 +0000 UTC'>2014年6月27日</span>&nbsp;·&nbsp;<span>37 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e6%9c%ac%e6%96%87%e5%86%85%e5%ae%b9 aria-label=本文内容：>本文内容：</a></li><li><a href=#%e4%b8%8b%e9%9d%a2%e7%9c%8b%e6%ba%90%e7%a0%81 aria-label=下面看源码：>下面看源码：</a></li><li><a href=#%e8%a6%81%e7%82%b9%e5%a6%82%e4%b8%8b aria-label=要点如下:>要点如下:</a></li></ul></div></details><div class="post-content md-content"><h2 id=本文内容>本文内容：<a hidden class=anchor aria-hidden=true href=#本文内容>#</a></h2><p>1、横向ListView的所有实现思路;</p><p>2、其中一个最通用的思路HorizontalListView，并基于横向ListView开发一个简单的相册；</p><p>3、实现的横向ListView在点击、浏览时item背景会变色，并解决了listview里setSelected造成item的选择状态混乱的问题。</p><p>众所周知，ListView默认的方向是垂直的，但有些时候人们更喜欢横向ListView。纵观整个网络，横向ListView的实现思路如下:</p><p>1、在布局里用HorizontalScrollView包含一个ListView，参考<a href=http://www.apkbus.com/android-83011-1-1.html>这里</a>;</p><p>2、利用GridView，把它的行数设为1行；</p><p>3、有人继承ListView构造了一个HorizontalScrollListView，参见：<a href=http://lrc-1986.iteye.com/blog/1848926>这里</a></p><p>4、国外一位大牛继承AdapterView<listadapter>构造的HorizontalListView，这是以上所有方法里本人认为最正统的方法，本文即基于此方法，参见:<a href=http://blog.csdn.net/chen88358323/article/details/8257657>这里</a></p><h2 id=下面看源码><a style=color:#369 name=t1></a>下面看源码：<a hidden class=anchor aria-hidden=true href=#下面看源码>#</a></h2><div>这是Activity的布局文件:activity_main.xml</div><div><div class="dp-highlighter bg_html"><div class=bar><div class=tools style=color:silver>**[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;style&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;RelativeLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;xmlns:tools&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;http://schemas.android.com/tools&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingBottom&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@dimen/activity_vertical_margin&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@dimen/activity_horizontal_margin&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingRight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@dimen/activity_horizontal_margin&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@dimen/activity_vertical_margin&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;tools:context&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;.MainActivity&amp;#8221;&lt;/span&gt;   &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;   &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;org.yanzi.ui.HorizontalListView&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@+id/horizon_listview&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;150dip&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;       &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_alignParentTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;org.yanzi.ui.HorizontalListView&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;ImageView&lt;/span&gt;   &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@+id/image_preview&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_below&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@id/horizon_listview&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_centerInParent&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:clickable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@drawable/selector_imageview_background&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comments&quot; style=&quot;color: #008200;&quot;&gt;&lt;!&amp;#8211; android:background=&amp;#8221;@android:drawable/ic_menu_gallery&amp;#8221; &amp;#8211;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;RelativeLayout&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div></div><div>这是横向listview的每个item的布局，图片+文字，horizontal_list_item.xml</div><div><div class="dp-highlighter bg_html"><div class=bar><div class=tools style=color:silver>**[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;style&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;?&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;2dip&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingRight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;2dip&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;2dip&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:paddingBottom&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;2dip&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt;   &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:clickable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@drawable/selector_item_background&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;ImageView&lt;/span&gt;   &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@+id/img_list_item&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;TextView&lt;/span&gt;   &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@+id/text_list_item&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;    &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><pre><code>下面文件是selector_imageview_background.xml，这是大图片你点击浏览时背景发生变化的selector，没有啥实际作用。
+</code></pre></div><div><div class="dp-highlighter bg_html"><div class=bar><div class=tools style=color:silver>**[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;style&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;?&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;selector&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;item&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:drawable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@android:color/holo_green_light&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:state_pressed&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;item&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:drawable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@android:color/holo_green_light&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:state_focused&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;item&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:drawable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@drawable/image_background&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;item&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comments&quot; style=&quot;color: #008200;&quot;&gt;&lt;!&amp;#8211; android:drawable=&amp;#8221;@android:color/transparent&amp;#8221; &amp;#8211;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><pre><code>下面是每个item的selector，在focus和select时颜色会发生变化:selector_item_background.xml
+</code></pre></div><div><div class="dp-highlighter bg_html"><div class=bar><div class=tools style=color:silver>**[html]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;style&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;?&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;selector&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;item&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:drawable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@android:color/holo_red_light&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:state_selected&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;item&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:drawable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@android:color/holo_green_dark&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:state_pressed&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;item&lt;/span&gt; &lt;span class=&quot;attribute&quot; style=&quot;color: red;&quot;&gt;android:drawable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;@android:color/transparent&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;/&gt;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;selector&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;span&lt;/span&gt;&lt;span class=&quot;tag&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;&gt;&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><pre><code>主程序:MainActivity.java
+</code></pre></div><div><div class="dp-highlighter bg_java"><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span style=&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;package&lt;/span&gt; org.yanzi.testhorizontallistview;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; org.yanzi.ui.HorizontalListView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; org.yanzi.ui.HorizontalListViewAdapter;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.app.Activity;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.os.Bundle;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.Menu;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.View;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.AdapterView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.AdapterView.OnItemClickListener;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.ImageView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;extends&lt;/span&gt; Activity {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    HorizontalListView hListView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    HorizontalListViewAdapter hListViewAdapter;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    ImageView previewImg;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    View olderSelectView = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        setContentView(R.layout.activity_main);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        initUI();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; onCreateOptionsMenu(Menu menu) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// Inflate the menu; this adds items to the action bar if it is present.&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        getMenuInflater().inflate(R.menu.main, menu);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; initUI(){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        hListView = (HorizontalListView)findViewById(R.id.horizon_listview);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        previewImg = (ImageView)findViewById(R.id.image_preview);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        String[] titles = {&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;怀师&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;南怀瑾军校&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;闭关&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;南怀瑾&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;南公庄严照&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;怀师法相&amp;#8221;&lt;/span&gt;};  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;[] ids = {R.drawable.nanhuaijin_miss, R.drawable.nanhuaijin_school,  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                R.drawable.nanhuaijin_biguan, R.drawable.nanhuaijin,  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                R.drawable.nanhuaijin_zhuangyan, R.drawable.nanhuaijin_faxiang};  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        hListViewAdapter = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; HorizontalListViewAdapter(getApplicationContext(),titles,ids);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        hListView.setAdapter(hListViewAdapter);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//      hListView.setOnItemSelectedListener(new OnItemSelectedListener() {&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//          @Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//          public void onItemSelected(AdapterView&lt;?&gt; parent, View view,&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  int position, long id) {&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              // TODO Auto-generated method stub&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              if(olderSelected != null){&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  olderSelected.setSelected(false); //上一个选中的View恢复原背景&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              }&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              olderSelected = view;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              view.setSelected(true);&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//          }&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//          @Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//          public void onNothingSelected(AdapterView&lt;?&gt; parent) {&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              // TODO Auto-generated method stub&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              &lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//          }&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//      });&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        hListView.setOnItemClickListener(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; OnItemClickListener() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onItemClick(AdapterView&lt;?&gt; parent, View view,  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; position, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;long&lt;/span&gt; id) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              if(olderSelectView == null){&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  olderSelectView = view;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              }else{&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  olderSelectView.setSelected(false);&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  olderSelectView = null;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              }&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              olderSelectView = view;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              view.setSelected(true);&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                previewImg.setImageResource(ids[position]);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                hListViewAdapter.setSelectIndex(position);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                hListViewAdapter.notifyDataSetChanged();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        });  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><pre><code>HorizontalListView.java 这就是自定义的横向listview
+</code></pre></div><div><div class="dp-highlighter bg_java"><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span style=&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;package&lt;/span&gt; org.yanzi.ui;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;/*&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * HorizontalListView.java v1.5&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; *&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * &lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * The MIT License&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * Copyright (c) 2011 Paul Soucy (paul@dev-smart.com)&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * &lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * Permission is hereby granted, free of charge, to any person obtaining a copy&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * of this software and associated documentation files (the &amp;#8220;Software&amp;#8221;), to deal&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * in the Software without restriction, including without limitation the rights&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * copies of the Software, and to permit persons to whom the Software is&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * furnished to do so, subject to the following conditions:&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * &lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * The above copyright notice and this permission notice shall be included in&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * all copies or substantial portions of the Software.&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * &lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * THE SOFTWARE IS PROVIDED &amp;#8220;AS IS&amp;#8221;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; * THE SOFTWARE.&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; *&lt;/span&gt; &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt; */&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; java.util.LinkedList;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; java.util.Queue;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.content.Context;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.database.DataSetObserver;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.graphics.Rect;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.GestureDetector;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.GestureDetector.OnGestureListener;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.MotionEvent;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.View;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.AdapterView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.ListAdapter;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.Scroller;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;class&lt;/span&gt; HorizontalListView &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;extends&lt;/span&gt; AdapterView&lt;ListAdapter&gt; {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; mAlwaysOverrideTouch = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; ListAdapter mAdapter;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; mLeftViewIndex = &amp;#8211;&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; mRightViewIndex = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; mCurrentX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; mNextX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; mMaxX = Integer.MAX_VALUE;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; mDisplayOffset = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; Scroller mScroller;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; GestureDetector mGesture;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; Queue&lt;View&gt; mRemovedViewQueue = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; LinkedList&lt;View&gt;();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; OnItemSelectedListener mOnItemSelected;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; OnItemClickListener mOnItemClicked;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; OnItemLongClickListener mOnItemLongClicked;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; mDataChanged = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;false&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; HorizontalListView(Context context, AttributeSet attrs) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;super&lt;/span&gt;(context, attrs);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        initView();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;synchronized&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; initView() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mLeftViewIndex = &amp;#8211;&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mRightViewIndex = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mDisplayOffset = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mCurrentX = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mNextX = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mMaxX = Integer.MAX_VALUE;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mScroller = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; Scroller(getContext());  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mGesture = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; GestureDetector(getContext(), mOnGesture);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mOnItemSelected = listener;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; setOnItemClickListener(AdapterView.OnItemClickListener listener){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mOnItemClicked = listener;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mOnItemLongClicked = listener;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; DataSetObserver mDataObserver = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; DataSetObserver() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onChanged() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;synchronized&lt;/span&gt;(HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                mDataChanged = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            invalidate();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            requestLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onInvalidated() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            reset();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            invalidate();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            requestLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    };  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; ListAdapter getAdapter() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; mAdapter;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; View getSelectedView() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//TODO: implement&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; setAdapter(ListAdapter adapter) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mAdapter != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mAdapter.unregisterDataSetObserver(mDataObserver);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mAdapter = adapter;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mAdapter.registerDataSetObserver(mDataObserver);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        reset();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;synchronized&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; reset(){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        initView();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        removeAllViewsInLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        requestLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; setSelection(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; position) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//TODO: implement&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; addAndMeasureChild(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;final&lt;/span&gt; View child, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; viewPos) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        LayoutParams params = child.getLayoutParams();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(params == &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            params = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        addViewInLayout(child, viewPos, params, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        child.measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.AT_MOST),  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;synchronized&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onLayout(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; changed, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; left, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; top, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; right, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; bottom) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;super&lt;/span&gt;.onLayout(changed, left, top, right, bottom);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mAdapter == &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mDataChanged){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; oldCurrentX = mCurrentX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            initView();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            removeAllViewsInLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mNextX = oldCurrentX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mDataChanged = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;false&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mScroller.computeScrollOffset()){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; scrollx = mScroller.getCurrX();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mNextX = scrollx;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mNextX &lt;= &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mNextX = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mScroller.forceFinished(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mNextX &gt;= mMaxX) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mNextX = mMaxX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mScroller.forceFinished(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; dx = mCurrentX &amp;#8211; mNextX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        removeNonVisibleItems(dx);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        fillList(dx);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        positionItems(dx);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mCurrentX = mNextX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(!mScroller.isFinished()){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            post(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; Runnable(){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; run() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    requestLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            });  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; fillList(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; dx) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; edge = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        View child = getChildAt(getChildCount()-&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(child != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            edge = child.getRight();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        fillListRight(edge, dx);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        edge = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        child = getChildAt(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(child != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            edge = child.getLeft();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        fillListLeft(edge, dx);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; fillListRight(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; rightEdge, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; dx) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(rightEdge + dx &lt; getWidth() &amp;&amp; mRightViewIndex &lt; mAdapter.getCount()) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            View child = mAdapter.getView(mRightViewIndex, mRemovedViewQueue.poll(), &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            addAndMeasureChild(child, &amp;#8211;&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            rightEdge += child.getMeasuredWidth();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mRightViewIndex == mAdapter.getCount()-&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                mMaxX = mCurrentX + rightEdge &amp;#8211; getWidth();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt; (mMaxX &lt; &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                mMaxX = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mRightViewIndex++;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; fillListLeft(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; leftEdge, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; dx) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(leftEdge + dx &gt; &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt; &amp;&amp; mLeftViewIndex &gt;= &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            View child = mAdapter.getView(mLeftViewIndex, mRemovedViewQueue.poll(), &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            addAndMeasureChild(child, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            leftEdge -= child.getMeasuredWidth();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mLeftViewIndex&amp;#8211;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mDisplayOffset -= child.getMeasuredWidth();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; removeNonVisibleItems(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; dx) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        View child = getChildAt(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(child != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt; &amp;&amp; child.getRight() + dx &lt;= &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mDisplayOffset += child.getMeasuredWidth();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mRemovedViewQueue.offer(child);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            removeViewInLayout(child);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mLeftViewIndex++;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            child = getChildAt(&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        child = getChildAt(getChildCount()-&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;while&lt;/span&gt;(child != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt; &amp;&amp; child.getLeft() + dx &gt;= getWidth()) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mRemovedViewQueue.offer(child);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            removeViewInLayout(child);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mRightViewIndex&amp;#8211;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            child = getChildAt(getChildCount()-&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; positionItems(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; dx) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(getChildCount() &gt; &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mDisplayOffset += dx;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; left = mDisplayOffset;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; i=&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;i&lt;getChildCount();i++){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                View child = getChildAt(i);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; childWidth = child.getMeasuredWidth();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                child.layout(left, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, left + childWidth, child.getMeasuredHeight());  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                left += childWidth + child.getPaddingRight();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;synchronized&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; scrollTo(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; x) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mScroller.startScroll(mNextX, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, x &amp;#8211; mNextX, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        requestLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; dispatchTouchEvent(MotionEvent ev) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; handled = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;super&lt;/span&gt;.dispatchTouchEvent(ev);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        handled |= mGesture.onTouchEvent(ev);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; handled;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; onFling(MotionEvent e1, MotionEvent e2, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;float&lt;/span&gt; velocityX,  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;float&lt;/span&gt; velocityY) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;synchronized&lt;/span&gt;(HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            mScroller.fling(mNextX, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;)-velocityX, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, mMaxX, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        requestLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; onDown(MotionEvent e) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mScroller.forceFinished(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; OnGestureListener mOnGesture = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; GestureDetector.SimpleOnGestureListener() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; onDown(MotionEvent e) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;.onDown(e);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; onFling(MotionEvent e1, MotionEvent e2, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;float&lt;/span&gt; velocityX,  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;float&lt;/span&gt; velocityY) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;.onFling(e1, e2, velocityX, velocityY);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; onScroll(MotionEvent e1, MotionEvent e2,  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;float&lt;/span&gt; distanceX, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;float&lt;/span&gt; distanceY) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;synchronized&lt;/span&gt;(HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                mNextX += (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;)distanceX;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            requestLayout();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;              &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; onSingleTapConfirmed(MotionEvent e) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt;(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; i=&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;i&lt;getChildCount();i++){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                View child = getChildAt(i);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt; (isEventWithinView(e, child)) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mOnItemClicked != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                        mOnItemClicked.onItemClick(HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;, child, mLeftViewIndex + &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt; + i, mAdapter.getItemId( mLeftViewIndex + &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt; + i ));  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(mOnItemSelected != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                        mOnItemSelected.onItemSelected(HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;, child, mLeftViewIndex + &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt; + i, mAdapter.getItemId( mLeftViewIndex + &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt; + i ));  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;break&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; onLongPress(MotionEvent e) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; childCount = getChildCount();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;; i &lt; childCount; i++) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                View child = getChildAt(i);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt; (isEventWithinView(e, child)) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt; (mOnItemLongClicked != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                        mOnItemLongClicked.onItemLongClick(HorizontalListView.&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;, child, mLeftViewIndex + &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt; + i, mAdapter.getItemId(mLeftViewIndex + &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt; + i));  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;break&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;boolean&lt;/span&gt; isEventWithinView(MotionEvent e, View child) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            Rect viewRect = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; Rect();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;[] childPosition = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;[&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;2&lt;/span&gt;];  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            child.getLocationOnScreen(childPosition);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; left = childPosition[&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;];  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; right = left + child.getWidth();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; top = childPosition[&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;];  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; bottom = top + child.getHeight();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            viewRect.set(left, top, right, bottom);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; viewRect.contains((&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;) e.getRawX(), (&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;) e.getRawY());  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    };  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;      &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><pre><code>HorizontalListViewAdapter.java 横向listview的适配器，我将他单独写到一个java文件里。
+</code></pre></div><div><div class="dp-highlighter bg_java"><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span style=&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;package&lt;/span&gt; org.yanzi.ui;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; org.yanzi.testhorizontallistview.R;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; org.yanzi.util.BitmapUtil;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.content.Context;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.graphics.Bitmap;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.graphics.drawable.Drawable;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.media.ThumbnailUtils;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.LayoutInflater;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.View;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.BaseAdapter;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.ImageView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;import&lt;/span&gt; android.widget.TextView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;class&lt;/span&gt; HorizontalListViewAdapter &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;extends&lt;/span&gt; BaseAdapter{  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;[] mIconIDs;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; String[] mTitles;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; Context mContext;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; LayoutInflater mInflater;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    Bitmap iconBitmap;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; selectIndex = &amp;#8211;&lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; HorizontalListViewAdapter(Context context, String[] titles, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt;[] ids){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;.mContext = context;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;.mIconIDs = ids;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;this&lt;/span&gt;.mTitles = titles;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        mInflater=(LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//LayoutInflater.from(mContext);&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; getCount() {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; mIconIDs.length;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; Object getItem(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; position) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; position;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;long&lt;/span&gt; getItemId(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; position) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; position;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; View getView(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; position, View convertView, ViewGroup parent) {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        ViewHolder holder;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(convertView==&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            holder = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;new&lt;/span&gt; ViewHolder();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            convertView = mInflater.inflate(R.layout.horizontal_list_item, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;null&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            holder.mImage=(ImageView)convertView.findViewById(R.id.img_list_item);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            holder.mTitle=(TextView)convertView.findViewById(R.id.text_list_item);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            convertView.setTag(holder);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;else&lt;/span&gt;{  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            holder=(ViewHolder)convertView.getTag();  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;if&lt;/span&gt;(position == selectIndex){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            convertView.setSelected(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;true&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;else&lt;/span&gt;{  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;            convertView.setSelected(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;false&lt;/span&gt;);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        holder.mTitle.setText(mTitles[position]);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        iconBitmap = getPropThumnail(mIconIDs[position]);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        holder.mImage.setImageBitmap(iconBitmap);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; convertView;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;class&lt;/span&gt; ViewHolder {  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; TextView mTitle ;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; ImageView mImage;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;private&lt;/span&gt; Bitmap getPropThumnail(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; id){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        Drawable d = mContext.getResources().getDrawable(id);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        Bitmap b = BitmapUtil.drawableToBitmap(d);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//      Bitmap bb = BitmapUtil.getRoundedCornerBitmap(b, 100);&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; w = mContext.getResources().getDimensionPixelOffset(R.dimen.thumnail_default_width);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; h = mContext.getResources().getDimensionPixelSize(R.dimen.thumnail_default_height);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        Bitmap thumBitmap = ThumbnailUtils.extractThumbnail(b, w, h);  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;          &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;return&lt;/span&gt; thumBitmap;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;void&lt;/span&gt; setSelectIndex(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: blue;&quot;&gt;int&lt;/span&gt; i){  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;        selectIndex = i;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><pre><code>下面是效果图：
+</code></pre></div><div>![](http://img.blog.csdn.net/20140315182924656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuemkxMjI1NjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)</div><div></div><div></div><div>下图是一个item被选定后，另一个item获得了焦点:</div><div>![](http://img.blog.csdn.net/20140315183047562?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuemkxMjI1NjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)</div><div>下面是横向时的截图:</div><div></div><div>![](http://img.blog.csdn.net/20140315183137906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWFuemkxMjI1NjI3/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)</div><h2 id=要点如下><a style=color:#369 name=t2></a>要点如下:<a hidden class=anchor aria-hidden=true href=#要点如下>#</a></h2><div>1、可以说这个HorizontalListView是完美的，但美中不足的并不是其他人说的不能点击、晃动、加载不全的问题，而是这个横向Listview的高度，如果你设成wrap_cotent那么将会占据整个屏幕，**<span style=color:red>即使你将它适配器里的view的高度限制死，限制成很小，这个HorizontalListView的高度依然是全屏</span>**。本文代码里，我把图片缩略图弄成100dip，所以把这个HorizontalListView的高度设为了150dip。</div><div>2、在适配器里，我填充了一个图片，下面是文字。为了能让浏览图片时item有反应，搞了一个selector，它的用法详见[这里](http://blog.csdn.net/shakespeare001/article/details/7788400). 但一开始在点击时完全没有反应，参考这里：</div><div>[http://blog.csdn.net/ljz2009y/article/details/18820071](http://blog.csdn.net/ljz2009y/article/details/18820071)   为此我的selector如下：</div><div><selector xmlns:android=&#8221;http://schemas.android.com/apk/res/android&#8221;><item android:drawable=&#8221;@android:color/holo_red_light&#8221; android:state_selected=&#8221;true&#8221;/><item android:drawable=&#8221;@android:color/holo_green_dark&#8221; android:state_pressed=&#8221;true&#8221;/><item android:drawable=&#8221;@android:color/transparent&#8221;/></selector></div><div>将自然状态下的背景放到了最后，但点击浏览时依然没有作用。**<span style=color:red>其实最根本原因是在布局文件里horizontal_list_item.xml要让这个布局能够clickable，即：android:clickable=&#8221;true&#8221;</span>**</div><div>3、上一步完成了，还需要点击即select一个item时，让它变色并且保持住，然后点击另外一个item时，让之前得item恢复默认背景。为了实现这个问题，我曾作如下尝试：</div><div><div class="dp-highlighter bg_java"><div class=bar><div class=tools style=color:silver>**[java]** [view plain](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[copy](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[print](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[?](http://blog.csdn.net/yanzi1225627/article/details/21294553#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/237690)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/237690/fork)<pre><code>    &lt;div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span style=&lt;span class=&quot;string&quot; style=&quot;color: red;&quot;&gt;&amp;#8220;font-family: &amp;#8216;Comic Sans MS&amp;#8217;; font-size: 18px;&amp;#8221;&lt;/span&gt;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//             if(olderSelectView == null){&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  olderSelectView = view;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              }else{&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  olderSelectView.setSelected(false);&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//                  olderSelectView = null;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              }&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              olderSelectView = view;&lt;/span&gt;  &lt;/span&gt;
+  
+  - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//              view.setSelected(true);&lt;/span&gt;&lt;/span&gt;  &lt;/span&gt;
+</code></pre></div><pre><code>即在click监听里，保存上一个选中的view。遗憾的是这种方法会造成item的选中状态造成混乱，比如第一个item选中了，同时第5个item也莫名其妙的被选中了。上述情况发生在滑动时，即一屏显示不完的情况下。当我横屏时，在所有的item都能一次性显示出来情况下，用上述方法么问题。后来我想到，这可以是适配器里的缓存机制造成的，**&lt;span style=&quot;color: #ff0000;&quot;&gt;最好不要再listview适配器外对item作修改，即便修改则一定要调适配器的: hListViewAdapter.notifyDataSetChanged();通知刷新view，毕竟适配器才是view的提供者&lt;/span&gt;**。参考这位大大的文章:[http://longyi-java.iteye.com/blog/976067](http://longyi-java.iteye.com/blog/976067) 在适配器里加了一个接口保存选中的索引，然后再getView函数里进行判断。如果是选中的item，则将布局设为选中状态即可，horizontal_list_item.xml里的Linearlayout就会自动加载那个selector了。而无需像这个参考链接里对每个item的元素分别设置状态。&lt;/div&gt; 
+
+&lt;div&gt;
+  4、BitmapUtil是个工具类，负责将id转成一个bitmap，然后用android自带的ThumbnailUtils去提取缩略图。
+&lt;/div&gt;
+
+&lt;div&gt;
+  5、之所以horizontal_list_item布局里要设置padding是为了选中item时，整个item有种被圈住的感觉，而不是光下面一点变色。
+&lt;/div&gt;
+
+&lt;div&gt;
+  
+
+    源码下载:[http://download.csdn.net/detail/yanzi1225627/7046295](http://download.csdn.net/detail/yanzi1225627/7046295)&lt;/div&gt; 
+    
+    &lt;div&gt;
+      欢迎Android爱好者加群
+
+      
+      &lt;div id=&quot;group_name&quot; class=&quot;group_name usrInputFont&quot;&gt;
+        &lt;span class=&quot;qname&quot; title=&quot;Android您问我讲-2&quot;&gt;**Android您问我讲-2，**&lt;/span&gt;
+      &lt;/div&gt;
+      
+      
+
+        **群号:**&lt;span id=&quot;group_number&quot; class=&quot;group_number&quot;&gt;**19241311,备注：yanzi**&lt;/span&gt;
+      
+
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+       &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;本文系原创，转载请注明作者:yanzi1225627
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+      源码下载:[http://download.csdn.net/detail/yanzi1225627/7046295](http://download.csdn.net/detail/yanzi1225627/7046295)
+    &lt;/div&gt;
+    
+    &lt;div&gt;
+      源码下载:[http://download.csdn.net/detail/yanzi1225627/7046295](http://download.csdn.net/detail/yanzi1225627/7046295)
+    &lt;/div&gt;
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E5%88%97%E8%A1%A8%E6%8E%A7%E4%BB%B6/>列表控件</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E7%90%86%E8%A7%A3android%E7%9A%84%E6%89%8B%E5%8A%BF%E8%AF%86%E5%88%AB/><span class=title>« 上一页</span>
+<span>理解Android的手势识别</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E9%95%BF%E6%8C%89%E6%98%BE%E7%A4%BA%E6%B3%A2%E7%BA%B9%E5%A4%96%E6%89%A9%E5%8A%A8%E7%94%BB/><span class=title>下一页 »</span>
+<span>Android代码实现长按显示波纹外扩动画</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

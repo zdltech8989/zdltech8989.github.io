@@ -1,0 +1,640 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>让Android Support V4中的SwipeRefreshLayout支持上拉加载更多 | ZDL Tech Blog</title>
+<meta name=keywords content="android,elasticsearch,移动开发"><meta name=description content="## 前言 原 来的Android SDK中并没有下拉刷新组件，但是这个组件确实绝大多数APP必备的一个部件。好在google在v4包中出了一个 SwipeRefreshLayout，但是这个组件只支持下拉刷新，不支持上拉加载更多的操作。因此，我们就来简单的扩展一下这个组件以实现上拉下载的 目的。 ..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E8%AE%A9android-support-v4%E4%B8%AD%E7%9A%84swiperefreshlayout%E6%94%AF%E6%8C%81%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%9B%B4%E5%A4%9A/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E8%AE%A9android-support-v4%E4%B8%AD%E7%9A%84swiperefreshlayout%E6%94%AF%E6%8C%81%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%9B%B4%E5%A4%9A/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E8%AE%A9android-support-v4%E4%B8%AD%E7%9A%84swiperefreshlayout%E6%94%AF%E6%8C%81%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%9B%B4%E5%A4%9A/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="让Android Support V4中的SwipeRefreshLayout支持上拉加载更多"><meta property="og:description" content="## 前言 原 来的Android SDK中并没有下拉刷新组件，但是这个组件确实绝大多数APP必备的一个部件。好在google在v4包中出了一个 SwipeRefreshLayout，但是这个组件只支持下拉刷新，不支持上拉加载更多的操作。因此，我们就来简单的扩展一下这个组件以实现上拉下载的 目的。 ..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-06-12T02:36:11+00:00"><meta property="article:modified_time" content="2015-06-12T02:36:11+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="Elasticsearch"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="让Android Support V4中的SwipeRefreshLayout支持上拉加载更多"><meta name=twitter:description content="## 前言 原 来的Android SDK中并没有下拉刷新组件，但是这个组件确实绝大多数APP必备的一个部件。好在google在v4包中出了一个 SwipeRefreshLayout，但是这个组件只支持下拉刷新，不支持上拉加载更多的操作。因此，我们就来简单的扩展一下这个组件以实现上拉下载的 目的。 ..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"让Android Support V4中的SwipeRefreshLayout支持上拉加载更多","item":"https://blog.zdltech.com/posts/%E8%AE%A9android-support-v4%E4%B8%AD%E7%9A%84swiperefreshlayout%E6%94%AF%E6%8C%81%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%9B%B4%E5%A4%9A/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"让Android Support V4中的SwipeRefreshLayout支持上拉加载更多","name":"让Android Support V4中的SwipeRefreshLayout支持上拉加载更多","description":"## 前言 原 来的Android SDK中并没有下拉刷新组件，但是这个组件确实绝大多数APP必备的一个部件。好在google在v4包中出了一个 SwipeRefreshLayout，但是这个组件只支持下拉刷新，不支持上拉加载更多的操作。因此，我们就来简单的扩展一下这个组件以实现上拉下载的 目的。 ...","keywords":["android","elasticsearch","移动开发"],"articleBody":"前言 原 来的Android SDK中并没有下拉刷新组件，但是这个组件确实绝大多数APP必备的一个部件。好在google在v4包中出了一个 SwipeRefreshLayout，但是这个组件只支持下拉刷新，不支持上拉加载更多的操作。因此，我们就来简单的扩展一下这个组件以实现上拉下载的 目的。 基本原理 上 拉加载或者说滚动到底部时自动加载，都是通过判断是否滚动到了ListView或者其他View的底部，然后触发相应的操作，这里我们以ListView 来说明。因此我们需要在监听ListView的滚动事件,当ListView滚动到底部时自动触发加载操作；但是当用户支持手指滑动屏幕，没有滚动时，我 们也需要让它加载，因此这种情形就是上拉加载更多。所以我们需要在触摸事件里面进行判断，如果到了底部，且用户是上拉操作，那么执行加载更多。更多关于下 拉刷新、上拉加载请参考[打造通用的Android下拉刷新组件(适用于ListView、GridView等各类View)](http://blog.csdn.net/bboyfeiyu/article/details/39718861)。 时间有限，直接上代码吧。 实现代码 **[java]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork) - /** - * 继承自SwipeRefreshLayout,从而实现滑动到底部时上拉加载更多的功能. - * - * @author mrsimple - */ - public class RefreshLayout extends SwipeRefreshLayout implements OnScrollListener { - - /** - * 滑动到最下面时的上拉操作 - */ - - private int mTouchSlop; - /** - * listview实例 - */ - private ListView mListView; - - /** - * 上拉监听器, 到了最底部的上拉加载操作 - */ - private OnLoadListener mOnLoadListener; - - /** - * ListView的加载中footer - */ - private View mListViewFooter; - - /** - * 按下时的y坐标 - */ - private int mYDown; - /** - * 抬起时的y坐标, 与mYDown一起用于滑动到底部时判断是上拉还是下拉 - */ - private int mLastY; - /** - * 是否在加载中 ( 上拉加载更多 ) - */ - private boolean isLoading = false; - - /** - * @param context - */ - public RefreshLayout(Context context) { - this(context, null); - } - - public RefreshLayout(Context context, AttributeSet attrs) { - super(context, attrs); - - mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop(); - - mListViewFooter = LayoutInflater.from(context).inflate(R.layout.listview_footer, null, - false); - } - - @Override - protected void onLayout(boolean changed, int left, int top, int right, int bottom) { - super.onLayout(changed, left, top, right, bottom); - - // 初始化ListView对象 - if (mListView == null) { - getListView(); - } - } - - /** - * 获取ListView对象 - */ - private void getListView() { - int childs = getChildCount(); - if (childs \u003e ) { - View childView = getChildAt(); - if (childView instanceof ListView) { - mListView = (ListView) childView; - // 设置滚动监听器给ListView, 使得滚动的情况下也可以自动加载 - mListView.setOnScrollListener(this); - Log.d(VIEW_LOG_TAG, \u0026#8220;### 找到listview\u0026#8221;); - } - } - } - - /* - * (non-Javadoc) - * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent) - */ - @Override - public boolean dispatchTouchEvent(MotionEvent event) { - final int action = event.getAction(); - - switch (action) { - case MotionEvent.ACTION_DOWN: - // 按下 - mYDown = (int) event.getRawY(); - break; - - case MotionEvent.ACTION_MOVE: - // 移动 - mLastY = (int) event.getRawY(); - break; - - case MotionEvent.ACTION_UP: - // 抬起 - if (canLoad()) { - loadData(); - } - break; - default: - break; - } - - return super.dispatchTouchEvent(event); - } - - /** - * 是否可以加载更多, 条件是到了最底部, listview不在加载中, 且为上拉操作. - * - * @return - */ - private boolean canLoad() { - return isBottom() \u0026\u0026 !isLoading \u0026\u0026 isPullUp(); - } - - /** - * 判断是否到了最底部 - */ - private boolean isBottom() { - - if (mListView != null \u0026\u0026 mListView.getAdapter() != null) { - return mListView.getLastVisiblePosition() == (mListView.getAdapter().getCount() \u0026#8211; 1); - } - return false; - } - - /** - * 是否是上拉操作 - * - * @return - */ - private boolean isPullUp() { - return (mYDown \u0026#8211; mLastY) \u003e= mTouchSlop; - } - - /** - * 如果到了最底部,而且是上拉操作.那么执行onLoad方法 - */ - private void loadData() { - if (mOnLoadListener != null) { - // 设置状态 - setLoading(true); - // - mOnLoadListener.onLoad(); - } - } - - /** - * @param loading - */ - public void setLoading(boolean loading) { - isLoading = loading; - if (isLoading) { - mListView.addFooterView(mListViewFooter); - } else { - mListView.removeFooterView(mListViewFooter); - mYDown = ; - mLastY = ; - } - } - - /** - * @param loadListener - */ - public void setOnLoadListener(OnLoadListener loadListener) { - mOnLoadListener = loadListener; - } - - @Override - public void onScrollStateChanged(AbsListView view, int scrollState) { - - } - - @Override - public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, - int totalItemCount) { - // 滚动时到了最底部也可以加载更多 - if (canLoad()) { - loadData(); - } - } - - /** - * 加载更多的监听器 - * - * @author mrsimple - */ - public static interface OnLoadListener { - public void onLoad(); - } - } listview_footer.xml: **[html]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cRelativeLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;@color/umeng_comm_comments_bg\u0026#8221; - android:gravity=\u0026#8220;center\u0026#8221; - android:paddingBottom=\u0026#8220;8dip\u0026#8221; - android:paddingTop=\u0026#8220;5dip\u0026#8221; \u003e - - \u003cProgressBar - android:id=\u0026#8220;@+id/pull_to_refresh_load_progress\u0026#8221; - style=\u0026#8220;@android:style/Widget.ProgressBar.Small.Inverse\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_centerVertical=\u0026#8220;true\u0026#8221; - android:layout_centerHorizontal=\u0026#8220;true\u0026#8221; - android:paddingRight=\u0026#8220;100dp\u0026#8221; - android:indeterminate=\u0026#8220;true\u0026#8221; /\u003e - - \u003cTextView - android:id=\u0026#8220;@+id/pull_to_refresh_loadmore_text\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_gravity=\u0026#8220;center\u0026#8221; - android:gravity=\u0026#8220;center\u0026#8221; - android:paddingTop=\u0026#8220;5dip\u0026#8221; - android:text=\u0026#8220;@string/load\u0026#8221; - android:textAppearance=\u0026#8220;?android:attr/textAppearanceMedium\u0026#8221; - android:textColor=\u0026#8220;@android:color/darker_gray\u0026#8221; - android:textSize=\u0026#8220;14sp\u0026#8221; - android:textStyle=\u0026#8220;bold\u0026#8221; /\u003e - - \u003c/RelativeLayout\u003e 使用示例 refresh.xml布局文件： **[html]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cmyview.RefreshLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:id=\u0026#8220;@+id/swipe_layout\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; \u003e - - \u003cListView - android:id=\u0026#8220;@+id/listview\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; \u003e - \u003c/ListView\u003e - - \u003c/myview.RefreshLayout\u003e activity中的使用 : **[java]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork) - /** - * @author mrsimple - */ - public class MainActivity extends Activity { - - @Override - protected void onCreate(Bundle savedInstanceState) { - super.onCreate(savedInstanceState); - - setContentView(R.layout.refresh); - - // 模拟一些数据 - final List datas = new ArrayList(); - for (int i = ; i \u003c 20; i++) { - datas.add(\u0026#8220;item \u0026#8211; \u0026#8220; + i); - } - - // 构造适配器 - final BaseAdapter adapter = new ArrayAdapter(this, - android.R.layout.simple_list_item_1, - datas); - // 获取listview实例 - ListView listView = (ListView) findViewById(R.id.listview); - listView.setAdapter(adapter); - - // 获取RefreshLayout实例 - final RefreshLayout myRefreshListView = (RefreshLayout) - findViewById(R.id.swipe_layout); - - // 设置下拉刷新时的颜色值,颜色值需要定义在xml中 - myRefreshListView - .setColorScheme(R.color.umeng_comm_text_topic_light_color, - R.color.umeng_comm_yellow, R.color.umeng_comm_green, - R.color.umeng_comm_linked_text); - // 设置下拉刷新监听器 - myRefreshListView.setOnRefreshListener(new OnRefreshListener() { - - @Override - public void onRefresh() { - - Toast.makeText(MainActivity.this, \u0026#8220;refresh\u0026#8221;, Toast.LENGTH_SHORT).show(); - - myRefreshListView.postDelayed(new Runnable() { - - @Override - public void run() { - // 更新数据 - datas.add(new Date().toGMTString()); - adapter.notifyDataSetChanged(); - // 更新完后调用该方法结束刷新 - myRefreshListView.setRefreshing(false); - } - }, 1000); - } - }); - - // 加载监听器 - myRefreshListView.setOnLoadListener(new OnLoadListener() { - - @Override - public void onLoad() { - - Toast.makeText(MainActivity.this, \u0026#8220;load\u0026#8221;, Toast.LENGTH_SHORT).show(); - - myRefreshListView.postDelayed(new Runnable() { - - @Override - public void run() { - datas.add(new Date().toGMTString()); - adapter.notifyDataSetChanged(); - // 加载完后调用该方法 - myRefreshListView.setLoading(false); - } - }, 1500); - - } - }); - } - - } 效果图 ![](http://img.blog.csdn.net/20141009181845718) github链接 : [下拉刷新库](https://github.com/bboyfeiyu/android_my_pull_refresh_view) 。 示例在android_my_pull_demo工程中，进入demo后点击最后一个按钮查看效果即可。注意，在刷新和加载时，需要有一定的延时才能看到效果，这里我们用postDelay来模拟网络请求等延时操作，否则将看不到加载效果。 ","wordCount":"1403","inLanguage":"zh","datePublished":"2015-06-12T02:36:11Z","dateModified":"2015-06-12T02:36:11Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E8%AE%A9android-support-v4%E4%B8%AD%E7%9A%84swiperefreshlayout%E6%94%AF%E6%8C%81%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%9B%B4%E5%A4%9A/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">让Android Support V4中的SwipeRefreshLayout支持上拉加载更多</h1><div class=post-description>## 前言 原 来的Android SDK中并没有下拉刷新组件，但是这个组件确实绝大多数APP必备的一个部件。好在google在v4包中出了一个 SwipeRefreshLayout，但是这个组件只支持下拉刷新，不支持上拉加载更多的操作。因此，我们就来简单的扩展一下这个组件以实现上拉下载的 目的。 ...</div><div class=post-meta><span title='2015-06-12 02:36:11 +0000 UTC'>2015年6月12日</span>&nbsp;·&nbsp;<span>7 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e5%89%8d%e8%a8%80 aria-label=前言>前言</a></li><li><a href=#%e5%9f%ba%e6%9c%ac%e5%8e%9f%e7%90%86 aria-label=基本原理>基本原理</a></li><li><a href=#%e5%ae%9e%e7%8e%b0%e4%bb%a3%e7%a0%81 aria-label=实现代码>实现代码</a></li><li><a href=#%e4%bd%bf%e7%94%a8%e7%a4%ba%e4%be%8b aria-label=使用示例>使用示例</a></li><li><a href=#%e6%95%88%e6%9e%9c%e5%9b%be aria-label=效果图>效果图</a></li></ul></div></details><div class="post-content md-content"><h2 id=前言>前言<a hidden class=anchor aria-hidden=true href=#前言>#</a></h2><div>原 来的Android SDK中并没有下拉刷新组件，但是这个组件确实绝大多数APP必备的一个部件。好在google在v4包中出了一个 SwipeRefreshLayout，但是这个组件只支持下拉刷新，不支持上拉加载更多的操作。因此，我们就来简单的扩展一下这个组件以实现上拉下载的 目的。</div><div></div><h2 id=基本原理><a name=t1></a>基本原理<a hidden class=anchor aria-hidden=true href=#基本原理>#</a></h2><div>上 拉加载或者说滚动到底部时自动加载，都是通过判断是否滚动到了ListView或者其他View的底部，然后触发相应的操作，这里我们以ListView 来说明。因此我们需要在监听ListView的滚动事件,当ListView滚动到底部时自动触发加载操作；但是当用户支持手指滑动屏幕，没有滚动时，我 们也需要让它加载，因此这种情形就是上拉加载更多。所以我们需要在触摸事件里面进行判断，如果到了底部，且用户是上拉操作，那么执行加载更多。更多关于下 拉刷新、上拉加载请参考[打造通用的Android下拉刷新组件(适用于ListView、GridView等各类View)](http://blog.csdn.net/bboyfeiyu/article/details/39718861)。</div><div>时间有限，直接上代码吧。</div><h2 id=实现代码><a name=t2></a>实现代码<a hidden class=anchor aria-hidden=true href=#实现代码>#</a></h2><div><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt; * 继承自SwipeRefreshLayout,从而实现滑动到底部时上拉加载更多的功能.&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt; * @author mrsimple&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; RefreshLayout &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; SwipeRefreshLayout &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; OnScrollListener {
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 滑动到最下面时的上拉操作&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mTouchSlop;
+  
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * listview实例&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ListView mListView;
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 上拉监听器, 到了最底部的上拉加载操作&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; OnLoadListener mOnLoadListener;
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * ListView的加载中footer&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View mListViewFooter;
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 按下时的y坐标&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mYDown;
+  
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 抬起时的y坐标, 与mYDown一起用于滑动到底部时判断是上拉还是下拉&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mLastY;
+  
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 是否在加载中 ( 上拉加载更多 )&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isLoading = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * @param context&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; RefreshLayout(Context context) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;(context, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; RefreshLayout(Context context, AttributeSet attrs) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+  
+  - 
+  - mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+  
+  - 
+  - mListViewFooter = LayoutInflater.from(context).inflate(R.layout.listview_footer, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;,
+  
+  - &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onLayout(&lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; changed, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; left, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; top, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; right, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; bottom) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onLayout(changed, left, top, right, bottom);
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;// 初始化ListView对象&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mListView == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+  
+  - getListView();
+  
+  - }
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 获取ListView对象&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; getListView() {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; childs = getChildCount();
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (childs &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) {
+  
+  - View childView = getChildAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (childView &lt;span class=&quot;keyword&quot;&gt;instanceof&lt;/span&gt; ListView) {
+  
+  - mListView = (ListView) childView;
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 设置滚动监听器给ListView, 使得滚动的情况下也可以自动加载&lt;/span&gt;
+  
+  - mListView.setOnScrollListener(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+  
+  - Log.d(VIEW_LOG_TAG, &lt;span class=&quot;string&quot;&gt;&amp;#8220;### 找到listview&amp;#8221;&lt;/span&gt;);
+  
+  - }
+  
+  - }
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * (non-Javadoc)&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * @see android.view.ViewGroup#dispatchTouchEvent(android.view.MotionEvent)&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; dispatchTouchEvent(MotionEvent event) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; action = event.getAction();
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (action) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_DOWN:
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 按下&lt;/span&gt;
+  
+  - mYDown = (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) event.getRawY();
+  
+  - &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_MOVE:
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 移动&lt;/span&gt;
+  
+  - mLastY = (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) event.getRawY();
+  
+  - &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_UP:
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 抬起&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (canLoad()) {
+  
+  - loadData();
+  
+  - }
+  
+  - &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;default&lt;/span&gt;:
+  
+  - &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.dispatchTouchEvent(event);
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 是否可以加载更多, 条件是到了最底部, listview不在加载中, 且为上拉操作.&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; canLoad() {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; isBottom() &amp;&amp; !isLoading &amp;&amp; isPullUp();
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 判断是否到了最底部&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isBottom() {
+  
+  - 
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mListView != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; &amp;&amp; mListView.getAdapter() != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; mListView.getLastVisiblePosition() == (mListView.getAdapter().getCount() &amp;#8211; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+  
+  - }
+  
+  - &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 是否是上拉操作&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isPullUp() {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (mYDown &amp;#8211; mLastY) &gt;= mTouchSlop;
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 如果到了最底部,而且是上拉操作.那么执行onLoad方法&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; loadData() {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mOnLoadListener != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 设置状态&lt;/span&gt;
+  
+  - setLoading(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+  
+  - &lt;span class=&quot;comment&quot;&gt;//&lt;/span&gt;
+  
+  - mOnLoadListener.onLoad();
+  
+  - }
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * @param loading&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setLoading(&lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; loading) {
+  
+  - isLoading = loading;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (isLoading) {
+  
+  - mListView.addFooterView(mListViewFooter);
+  
+  - } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+  
+  - mListView.removeFooterView(mListViewFooter);
+  
+  - mYDown = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+  
+  - mLastY = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;;
+  
+  - }
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * @param loadListener&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setOnLoadListener(OnLoadListener loadListener) {
+  
+  - mOnLoadListener = loadListener;
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onScrollStateChanged(AbsListView view, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; scrollState) {
+  
+  - 
+  - }
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onScroll(AbsListView view, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; firstVisibleItem, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; visibleItemCount,
+  
+  - &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; totalItemCount) {
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 滚动时到了最底部也可以加载更多&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (canLoad()) {
+  
+  - loadData();
+  
+  - }
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * 加载更多的监听器&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     * @author mrsimple&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; OnLoadListener {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onLoad();
+  
+  - }
+  
+  - }
+</code></pre></div></div><div></div><div>listview_footer.xml:</div><div><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+  
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@color/umeng_comm_comments_bg&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:paddingBottom&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;8dip&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:paddingTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;5dip&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ProgressBar&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/pull_to_refresh_load_progress&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;style&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@android:style/Widget.ProgressBar.Small.Inverse&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_centerVertical&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_centerHorizontal&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:paddingRight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;100dp&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:indeterminate&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/pull_to_refresh_loadmore_text&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:paddingTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;5dip&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@string/load&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:textAppearance&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;?android:attr/textAppearanceMedium&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:textColor&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@android:color/darker_gray&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:textSize&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;14sp&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:textStyle&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;bold&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div></div><h2 id=使用示例><a name=t3></a>使用示例<a hidden class=anchor aria-hidden=true href=#使用示例>#</a></h2><div>refresh.xml布局文件：</div><div><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+  
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;myview.RefreshLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/swipe_layout&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ListView&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/listview&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+  
+  - &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+  
+  - &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ListView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+  
+  - 
+  - &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;myview.RefreshLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><pre><code>activity中的使用 :
+</code></pre></div><div><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[copy](http://blog.csdn.net/bboyfeiyu/article/details/39935329#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/503362)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/503362/fork)<pre><code>    &lt;div&gt;
+      &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+      &lt;/embed&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+  - &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt; * @author mrsimple&lt;/span&gt;
+  
+  - &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity {
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+  
+  - &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+  
+  - 
+  - setContentView(R.layout.refresh);
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;// 模拟一些数据&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; List&lt;String&gt; datas = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&lt;String&gt;();
+  
+  - &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;; i &lt; &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;; i++) {
+  
+  - datas.add(&lt;span class=&quot;string&quot;&gt;&amp;#8220;item &amp;#8211; &amp;#8220;&lt;/span&gt; + i);
+  
+  - }
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;// 构造适配器&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; BaseAdapter adapter = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayAdapter&lt;String&gt;(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;,
+  
+  - android.R.layout.simple_list_item_1,
+  
+  - datas);
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 获取listview实例&lt;/span&gt;
+  
+  - ListView listView = (ListView) findViewById(R.id.listview);
+  
+  - listView.setAdapter(adapter);
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;// 获取RefreshLayout实例&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; RefreshLayout myRefreshListView = (RefreshLayout)
+  
+  - findViewById(R.id.swipe_layout);
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;// 设置下拉刷新时的颜色值,颜色值需要定义在xml中&lt;/span&gt;
+  
+  - myRefreshListView
+  
+  - .setColorScheme(R.color.umeng_comm_text_topic_light_color,
+  
+  - R.color.umeng_comm_yellow, R.color.umeng_comm_green,
+  
+  - R.color.umeng_comm_linked_text);
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 设置下拉刷新监听器&lt;/span&gt;
+  
+  - myRefreshListView.setOnRefreshListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnRefreshListener() {
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onRefresh() {
+  
+  - 
+  - Toast.makeText(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;refresh&amp;#8221;&lt;/span&gt;, Toast.LENGTH_SHORT).show();
+  
+  - 
+  - myRefreshListView.postDelayed(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Runnable() {
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; run() {
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 更新数据&lt;/span&gt;
+  
+  - datas.add(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Date().toGMTString());
+  
+  - adapter.notifyDataSetChanged();
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 更新完后调用该方法结束刷新&lt;/span&gt;
+  
+  - myRefreshListView.setRefreshing(&lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);
+  
+  - }
+  
+  - }, &lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);
+  
+  - }
+  
+  - });
+  
+  - 
+  - &lt;span class=&quot;comment&quot;&gt;// 加载监听器&lt;/span&gt;
+  
+  - myRefreshListView.setOnLoadListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnLoadListener() {
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onLoad() {
+  
+  - 
+  - Toast.makeText(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;load&amp;#8221;&lt;/span&gt;, Toast.LENGTH_SHORT).show();
+  
+  - 
+  - myRefreshListView.postDelayed(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Runnable() {
+  
+  - 
+  - &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+  
+  - &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; run() {
+  
+  - datas.add(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Date().toGMTString());
+  
+  - adapter.notifyDataSetChanged();
+  
+  - &lt;span class=&quot;comment&quot;&gt;// 加载完后调用该方法&lt;/span&gt;
+  
+  - myRefreshListView.setLoading(&lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);
+  
+  - }
+  
+  - }, &lt;span class=&quot;number&quot;&gt;1500&lt;/span&gt;);
+  
+  - 
+  - }
+  
+  - });
+  
+  - }
+  
+  - 
+  - }
+</code></pre></div></div><h2 id=效果图><a name=t4></a>效果图<a hidden class=anchor aria-hidden=true href=#效果图>#</a></h2><div>![](http://img.blog.csdn.net/20141009181845718)</div><div></div><div></div><div></div><div></div><div>github链接 : [下拉刷新库](https://github.com/bboyfeiyu/android_my_pull_refresh_view) 。</div><div>示例在android_my_pull_demo工程中，进入demo后点击最后一个按钮查看效果即可。注意，在刷新和加载时，需要有一定的延时才能看到效果，这里我们用postDelay来模拟网络请求等延时操作，否则将看不到加载效果。</div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/elasticsearch/>Elasticsearch</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/java%E8%87%AA%E5%B8%A6%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%92%8C%E9%98%9F%E5%88%97%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3android%E4%B8%AD%E9%80%82%E7%94%A8/><span class=title>« 上一页</span>
+<span>java自带线程池和队列详细讲解，android中适用</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD%E6%8E%A7%E4%BB%B6%E5%AF%B9%E6%89%80%E6%9C%89view%E9%80%9A%E7%94%A8-2/><span class=title>下一页 »</span>
+<span>Android下拉刷新上拉加载控件，对所有View通用！</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

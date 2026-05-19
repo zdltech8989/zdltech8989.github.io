@@ -1,0 +1,1241 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>android仿通讯录 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="friend.xml **[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[p..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E4%BB%BF%E9%80%9A%E8%AE%AF%E5%BD%95/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E4%BB%BF%E9%80%9A%E8%AE%AF%E5%BD%95/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E4%BB%BF%E9%80%9A%E8%AE%AF%E5%BD%95/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="android仿通讯录"><meta property="og:description" content="friend.xml **[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[p..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-04-14T13:47:29+00:00"><meta property="article:modified_time" content="2015-04-14T13:47:29+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="android仿通讯录"><meta name=twitter:description content="friend.xml **[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[p..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"android仿通讯录","item":"https://blog.zdltech.com/posts/android%E4%BB%BF%E9%80%9A%E8%AE%AF%E5%BD%95/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"android仿通讯录","name":"android仿通讯录","description":"friend.xml **[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[p...","keywords":["android","移动开发"],"articleBody":"friend.xml\n**[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - \u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - \u0026#8220;@+id/list_view\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:scrollbars=\u0026#8220;none\u0026#8221; \u003e - - - \u0026#8220;@+id/my_list_view\u0026#8221; - android:layout_width=\u0026#8220;30dip\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_alignParentRight=\u0026#8220;true\u0026#8221; - /\u003e - - - friend_header.xml\n**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cFrameLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:gravity=\u0026#8220;center_vertical\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;2dip\u0026#8221; - android:paddingRight=\u0026#8220;2dip\u0026#8221; \u003e - - \u003cTextView - android:id=\u0026#8220;@+id/friend_search_head_title\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_gravity=\u0026#8220;center\u0026#8221; - android:clickable=\u0026#8220;true\u0026#8221; - android:textSize=\u0026#8220;20sp\u0026#8221; \u003e - \u003c/TextView\u003e - - \u003cImageView - android:id=\u0026#8220;@+id/friend_center_back\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_gravity=\u0026#8220;right|center\u0026#8221; - android:clickable=\u0026#8220;true\u0026#8221; \u003e - \u003c/ImageView\u003e - \u003c/FrameLayout\u003e list_item.xml\n**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;UTF-8\u0026#8221;?\u003e - \u003cRelativeLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; \u003e - - \u003cTextView - android:id=\u0026#8220;@+id/alpha\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:background=\u0026#8220;#333333\u0026#8221; - android:paddingLeft=\u0026#8220;10dip\u0026#8221; - android:textColor=\u0026#8220;#FFFFFF\u0026#8221; - android:visibility=\u0026#8220;gone\u0026#8221; /\u003e - - \u003cImageView - android:id=\u0026#8220;@+id/imageView\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_alignParentLeft=\u0026#8220;true\u0026#8221; - android:background=\u0026#8220;@drawable/contact_list_icon\u0026#8221; - android:layout_below=\u0026#8220;@id/alpha\u0026#8221; /\u003e - - \u003cView - android:id=\u0026#8220;@+id/divider\u0026#8221; - android:layout_width=\u0026#8220;1.0dip\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_below=\u0026#8220;@id/alpha\u0026#8221; - android:layout_marginRight=\u0026#8220;11.0dip\u0026#8221; - android:layout_toRightOf=\u0026#8220;@id/imageView\u0026#8221; /\u003e - - \u003cTextView - android:id=\u0026#8220;@+id/name\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_alignTop=\u0026#8220;@id/divider\u0026#8221; - android:layout_marginLeft=\u0026#8220;2.0dip\u0026#8221; - android:layout_marginRight=\u0026#8220;5.0dip\u0026#8221; - android:layout_marginTop=\u0026#8220;6.0dip\u0026#8221; - android:layout_toRightOf=\u0026#8220;@id/divider\u0026#8221; - android:singleLine=\u0026#8220;true\u0026#8221; - android:textAppearance=\u0026#8220;?android:textAppearanceMedium\u0026#8221; /\u003e - - \u003cTextView - android:id=\u0026#8220;@+id/number\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_alignLeft=\u0026#8220;@id/name\u0026#8221; - android:layout_alignWithParentIfMissing=\u0026#8220;true\u0026#8221; - android:layout_below=\u0026#8220;@id/name\u0026#8221; - android:ellipsize=\u0026#8220;marquee\u0026#8221; - android:singleLine=\u0026#8220;true\u0026#8221; - android:textAppearance=\u0026#8220;?android:textAppearanceSmall\u0026#8221; /\u003e - - \u003c/RelativeLayout\u003e overlay.xml\n**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cTextView xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - - \u003c/TextView\u003e suspend_search.xml\n**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cImageView xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - \u003c/ImageView\u003e Friend.java\n**[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - package com.example.menu; - - import java.util.ArrayList; - import java.util.HashMap; - import java.util.List; - import java.util.regex.Pattern; - - import com.example.menu.MyLetterListView.OnTouchingLetterChangedListener; - - import android.app.Activity; - import android.content.AsyncQueryHandler; - import android.content.ComponentName; - import android.content.ContentResolver; - import android.content.ContentValues; - import android.content.Context; - import android.content.Intent; - import android.database.Cursor; - import android.graphics.PixelFormat; - import android.net.Uri; - import android.os.Bundle; - import android.os.Handler; - import android.provider.ContactsContract; - import android.util.Log; - import android.view.LayoutInflater; - import android.view.View; - import android.view.View.OnClickListener; - import android.view.ViewGroup; - import android.view.Window; - import android.view.WindowManager; - import android.widget.AbsListView; - import android.widget.AbsListView.OnScrollListener; - import android.widget.BaseAdapter; - import android.widget.ImageView; - import android.widget.ListView; - import android.widget.TextView; - import android.widget.Toast; - - public class Friend extends Activity - { - - private BaseAdapter adapter; - - private ListView listview; - - private TextView overlay; - - private ImageView suspend_search; - - private MyLetterListView letterListView; - - private AsyncQueryHandler asyncQuery; - - private static final String NAME = \u0026#8220;name\u0026#8221;, NUMBER = \u0026#8220;number\u0026#8221;, - SORT_KEY = \u0026#8220;sort_key\u0026#8221;; - - private HashMap alphaIndexer; - - private String[] sections; - - public List list = new ArrayList(); - - private WindowManager windowManager; - - @Override - public void onCreate(Bundle savedInstanceState) - { - super.onCreate(savedInstanceState); - requestWindowFeature(Window.FEATURE_NO_TITLE); - setContentView(R.layout.friend); - windowManager = - (WindowManager) this.getSystemService(Context.WINDOW_SERVICE); - asyncQuery = new MyAsyncQueryHandler(getContentResolver()); - listview = (ListView) findViewById(R.id.list_view); - letterListView = (MyLetterListView) findViewById(R.id.my_list_view); - letterListView - .setOnTouchingLetterChangedListener(new LetterListViewListener()); - - alphaIndexer = new HashMap(); - new Handler(); - new OverlayThread(); - initOverlay(); - initSuSearch(); - if (list.size() \u003e ) - { - } - - listview.setOnScrollListener(new OnScrollListener() - { - - @Override - public void onScrollStateChanged(AbsListView view, int scrollState) - { - suspend_search.setVisibility(View.VISIBLE); - } - - @Override - public void onScroll(AbsListView view, int firstVisibleItem, - int visibleItemCount, int totalItemCount) - { - suspend_search.setVisibility(View.GONE); - } - }); - suspend_search.setOnClickListener(new OnClickListener() - { - - @Override - public void onClick(View v) - { - ComponentName friendcName = - new ComponentName(Friend.this, - \u0026#8220;com.example.test_intent.FriendSearch\u0026#8221;); - Intent friend_viewIntent = new Intent(); - friend_viewIntent.setComponent(friendcName); - startActivity(friend_viewIntent); - Toast.makeText(getApplicationContext(), \u0026#8220;sousuo\u0026#8221;, - Toast.LENGTH_LONG).show(); - // TODO Auto-generated method stub - } - }); - } - - @SuppressWarnings(\u0026#8220;deprecation\u0026#8221;) - public void getContent() - { - Cursor cur = - getContentResolver().query( - ContactsContract.Contacts.CONTENT_URI, null, null, - null, null); - startManagingCursor(cur); - } - - @Override - protected void onResume() - { - super.onResume(); - Uri uri = Uri.parse(\u0026#8220;content://com.android.contacts/data/phones\u0026#8221;); - String[] projection = { \u0026#8220;_id\u0026#8221;, \u0026#8220;display_name\u0026#8221;, \u0026#8220;data1\u0026#8221;, \u0026#8220;sort_key\u0026#8221; }; - asyncQuery.startQuery(, null, uri, projection, null, null, - \u0026#8220;sort_key COLLATE LOCALIZED asc\u0026#8221;); - } - - private class MyAsyncQueryHandler extends AsyncQueryHandler - { - - public MyAsyncQueryHandler(ContentResolver cr) - { - super(cr); - } - - @Override - protected void onQueryComplete(int token, Object cookie, Cursor cursor) - { - - cursor.moveToFirst(); - Log.d(\u0026#8220;ccccc\u0026#8221;, - cursor.getString() + \u0026#8221; 000 \u0026#8220; + cursor.getString(1) - + \u0026#8221; 000 \u0026#8220; + cursor.getString(2) + \u0026#8221; 000 \u0026#8220; - + cursor.getString(3)); - - while (cursor.moveToNext()) - { - ContentValues cv = new ContentValues(); - cv.put(NAME, cursor.getString(1)); - cv.put(NUMBER, cursor.getString(2)); - cv.put(SORT_KEY, cursor.getString(3)); - list.add(cv); - } - if (list.size() \u003e ) - { - setAdapter(list); - } - } - - } - - private void setAdapter(List list) - { - adapter = new ListAdapter(this, list); - listview.setAdapter(adapter); - - } - - private class ListAdapter extends BaseAdapter - { - - private LayoutInflater inflater; - - private List list; - - public ListAdapter(Context context, List list) - { - this.inflater = LayoutInflater.from(context); - this.list = list; - alphaIndexer = new HashMap(); - sections = new String[list.size()]; - - for (int i = ; i \u003c list.size(); i++) - { - String currentStr = getAlpha(list.get(i).getAsString(SORT_KEY)); - String previewStr = - (i \u0026#8211; 1) \u003e= ? getAlpha(list.get(i \u0026#8211; 1).getAsString( - SORT_KEY)) : \u0026#8221; \u0026#8220;; - if (!previewStr.equals(currentStr)) - { - String name = getAlpha(list.get(i).getAsString(SORT_KEY)); - alphaIndexer.put(name, i); - sections[i] = name; - } - } - } - - @Override - public int getCount() - { - return list.size(); - } - - @Override - public Object getItem(int position) - { - return list.get(position); - } - - @Override - public long getItemId(int position) - { - return position; - } - - @Override - public View getView(int position, View convertView, ViewGroup parent) - { - ViewHolder holder; - - if (convertView == null) - { - convertView = inflater.inflate(R.layout.list_item, null); - holder = new ViewHolder(); - holder.alpha = (TextView) convertView.findViewById(R.id.alpha); - holder.name = (TextView) convertView.findViewById(R.id.name); - holder.number = - (TextView) convertView.findViewById(R.id.number); - convertView.setTag(holder); - } - else - { - holder = (ViewHolder) convertView.getTag(); - } - - ContentValues cv = list.get(position); - holder.name.setText(cv.getAsString(NAME)); - holder.number.setText(cv.getAsString(NUMBER)); - String currentStr = - getAlpha(list.get(position).getAsString(SORT_KEY)); - String previewStr = - (position \u0026#8211; 1) \u003e= ? getAlpha(list.get(position \u0026#8211; 1) - .getAsString(SORT_KEY)) : \u0026#8221; \u0026#8220;; - - if (!previewStr.equals(currentStr)) - { - holder.alpha.setVisibility(View.VISIBLE); - holder.alpha.setText(currentStr); - } - else - { - holder.alpha.setVisibility(View.GONE); - } - - return convertView; - } - - private class ViewHolder - { - - TextView alpha; - - TextView name; - - TextView number; - } - } - - private void initSuSearch()// 搜索 - { - LayoutInflater inflater = LayoutInflater.from(this); - suspend_search = - (ImageView) inflater.inflate(R.layout.suspend_search, null); - WindowManager.LayoutParams lp = - new WindowManager.LayoutParams(80, 80, 170, \u0026#8211;280, - WindowManager.LayoutParams.TYPE_APPLICATION, - WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, - PixelFormat.TRANSLUCENT); - windowManager.addView(suspend_search, lp); - } - - private void initOverlay() - { - LayoutInflater inflater = LayoutInflater.from(this); - overlay = (TextView) inflater.inflate(R.layout.overlay, null); - WindowManager.LayoutParams lp = - new WindowManager.LayoutParams( - 120, - 120, - 100, - , - WindowManager.LayoutParams.TYPE_APPLICATION, - WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE - | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, - PixelFormat.TRANSLUCENT); - // WindowManager windowManager = (WindowManager) - // this.getSystemService(Context.WINDOW_SERVICE); - windowManager.addView(overlay, lp); - } - - private class LetterListViewListener implements - OnTouchingLetterChangedListener - { - - @Override - public void onTouchingLetterChanged(final String s, float y, float x) - { - if (alphaIndexer.get(s) != null) - { - int position = alphaIndexer.get(s); - - listview.setSelection(position); - overlay.setText(sections[position]); - overlay.setVisibility(View.VISIBLE); - - } - } - - @Override - public void onTouchingLetterEnd() - { - overlay.setVisibility(View.GONE); - } - } - - private class OverlayThread implements Runnable - { - - @Override - public void run() - { - overlay.setVisibility(View.GONE); - } - } - - private String getAlpha(String str) - { - if (str == null) - { - return \u0026#8220;#\u0026#8221;; - } - - if (str.trim().length() == ) - { - return \u0026#8220;#\u0026#8221;; - } - - char c = str.trim().substring(, 1).charAt(); - - Pattern pattern = Pattern.compile(\u0026#8220;^[A-Za-z]+$\u0026#8221;); - if (pattern.matcher(c + \u0026#8220;\u0026#8221;).matches()) - { - return (c + \u0026#8220;\u0026#8221;).toUpperCase(); - } - else - { - return \u0026#8220;#\u0026#8221;; - } - } - - @Override - protected void onDestroy() - { - if (windowManager != null)// 防止内存泄露 - { - windowManager.removeView(overlay); - windowManager.removeView(suspend_search); - } - super.onDestroy(); - } - - } MyLetterListView.java\n**[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - package com.example.menu; - - import android.content.Context; - import android.graphics.Canvas; - import android.graphics.Color; - import android.graphics.Paint; - import android.graphics.Typeface; - import android.util.AttributeSet; - import android.view.MotionEvent; - import android.view.View; - - public class MyLetterListView extends View - { - - private OnTouchingLetterChangedListener onTouchingLetterChangedListener; - - private String[] b = { \u0026#8220;@\u0026#8221;, \u0026#8220;A\u0026#8221;, \u0026#8220;B\u0026#8221;, \u0026#8220;C\u0026#8221;, \u0026#8220;D\u0026#8221;, \u0026#8220;E\u0026#8221;, \u0026#8220;F\u0026#8221;, \u0026#8220;G\u0026#8221;, \u0026#8220;H\u0026#8221;, \u0026#8220;I\u0026#8221;, \u0026#8220;J\u0026#8221;, \u0026#8220;K\u0026#8221;, - \u0026#8220;L\u0026#8221;, \u0026#8220;M\u0026#8221;, \u0026#8220;N\u0026#8221;, \u0026#8220;O\u0026#8221;, \u0026#8220;P\u0026#8221;, \u0026#8220;Q\u0026#8221;, \u0026#8220;R\u0026#8221;, \u0026#8220;S\u0026#8221;, \u0026#8220;T\u0026#8221;, \u0026#8220;U\u0026#8221;, \u0026#8220;V\u0026#8221;, \u0026#8220;W\u0026#8221;, \u0026#8220;X\u0026#8221;, - \u0026#8220;Y\u0026#8221;, \u0026#8220;Z\u0026#8221;, \u0026#8220;#\u0026#8221; }; - - int choose = \u0026#8211;1; - - private Paint paint = new Paint(); - - boolean showBkg = false; - - public MyLetterListView(Context context, AttributeSet attrs, int defStyle) - { - super(context, attrs, defStyle); - - } - - public MyLetterListView(Context context, AttributeSet attrs) - { - super(context, attrs); - - } - - public MyLetterListView(Context context) - { - super(context); - } - - protected void onDraw(Canvas canvas) - { - super.onDraw(canvas); - if (showBkg) - { - canvas.drawColor(Color.parseColor(\u0026#8220;#40000000\u0026#8221;)); - } - - int height = getHeight(); - int width = getWidth(); - int singleHeight = height / b.length; - for (int i = ; i \u003c b.length; i++) - { - paint.setTextSize(18f); - paint.setColor(Color.BLACK); - paint.setTypeface(Typeface.DEFAULT_BOLD); - paint.setAntiAlias(true); - if (i == choose) - { - paint.setColor(Color.parseColor(\u0026#8220;#3399ff\u0026#8221;)); - paint.setFakeBoldText(true); - } - float xPos = width / 2 \u0026#8211; paint.measureText(b[i]) / 2; - float yPos = singleHeight * i + singleHeight; - - canvas.drawText(b[i], xPos, yPos, paint); - - paint.reset(); - } - - } - - @Override - public boolean dispatchTouchEvent(MotionEvent event) - { - final int action = event.getAction(); - final float y = event.getY(); - final float x = event.getX(); - final int oldChoose = choose; - final OnTouchingLetterChangedListener listener = - onTouchingLetterChangedListener; - final int c = (int) (y / getHeight() * b.length); - - switch (action) - { - case MotionEvent.ACTION_DOWN: - showBkg = true; - if (oldChoose != c \u0026\u0026 listener != null) - { - if (c \u003e \u0026\u0026 c \u003c b.length) - { - listener.onTouchingLetterChanged(b[c], y, x); - choose = c; - invalidate(); - } - } - - break; - case MotionEvent.ACTION_MOVE: - if (oldChoose != c \u0026\u0026 listener != null) - { - if (c \u003e \u0026\u0026 c \u003c b.length) - { - listener.onTouchingLetterChanged(b[c], y, x); - choose = c; - invalidate(); - } - } - break; - case MotionEvent.ACTION_UP: - showBkg = false; - choose = \u0026#8211;1; - listener.onTouchingLetterEnd(); - invalidate(); - break; - } - return true; - } - - @Override - public boolean onTouchEvent(MotionEvent event) - { - return super.onTouchEvent(event); - } - - public void setOnTouchingLetterChangedListener( - OnTouchingLetterChangedListener onTouchingLetterChangedListener) - { - this.onTouchingLetterChangedListener = onTouchingLetterChangedListener; - } - - public interface OnTouchingLetterChangedListener - { - - public void onTouchingLetterEnd(); - - public void onTouchingLetterChanged(String s, float y, float x); - } - } 别忘了加权限：\n**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#) - \u003cuses-permission android:name=\u0026#8220;android.permission.READ_CONTACTS\u0026#8221; /\u003e 效果图：\n转自：http://blog.csdn.net/csh159/article/details/8955029\n","wordCount":"2598","inLanguage":"zh","datePublished":"2015-04-14T13:47:29Z","dateModified":"2015-04-14T13:47:29Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E4%BB%BF%E9%80%9A%E8%AE%AF%E5%BD%95/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">android仿通讯录</h1><div class=post-description>friend.xml **[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[p...</div><div class=post-meta><span title='2015-04-14 13:47:29 +0000 UTC'>2015年4月14日</span>&nbsp;·&nbsp;<span>13 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>friend.xml</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;?xml version=&lt;span class=&quot;string&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; encoding=&lt;span class=&quot;string&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;?&gt;
+
+- &lt;LinearLayout xmlns:android=&lt;span class=&quot;string&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- android:layout_width=&lt;span class=&quot;string&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- android:layout_height=&lt;span class=&quot;string&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- android:orientation=&lt;span class=&quot;string&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &gt;
+
+- &lt;RelativeLayout
+
+- android:layout_width=&lt;span class=&quot;string&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- android:layout_height=&lt;span class=&quot;string&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- android:orientation=&lt;span class=&quot;string&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &gt;
+
+- 
+- &lt;ListView
+
+- android:id=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@+id/list_view&amp;#8221;&lt;/span&gt;
+
+- android:layout_width=&lt;span class=&quot;string&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- android:layout_height=&lt;span class=&quot;string&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- android:scrollbars=&lt;span class=&quot;string&quot;&gt;&amp;#8220;none&amp;#8221;&lt;/span&gt; &gt;
+
+- &lt;/ListView&gt;
+
+- 
+- &lt;com.example.menu.MyLetterListView
+
+- android:id=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@+id/my_list_view&amp;#8221;&lt;/span&gt;
+
+- android:layout_width=&lt;span class=&quot;string&quot;&gt;&amp;#8220;30dip&amp;#8221;&lt;/span&gt;
+
+- android:layout_height=&lt;span class=&quot;string&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- android:layout_alignParentRight=&lt;span class=&quot;string&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+
+- /&gt;
+
+- &lt;/RelativeLayout&gt;
+
+- 
+- &lt;/LinearLayout&gt;
+</code></pre></div><p>friend_header.xml</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;FrameLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center_vertical&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;2dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingRight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;2dip&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/friend_search_head_title&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:clickable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:textSize&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;20sp&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/friend_center_back&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;right|center&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:clickable&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;FrameLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>list_item.xml</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/alpha&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;#333333&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;10dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:textColor&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;#FFFFFF&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:visibility&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;gone&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/imageView&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_alignParentLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:background&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@drawable/contact_list_icon&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_below&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/alpha&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;View&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/divider&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_below&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/alpha&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_marginRight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;11.0dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_toRightOf&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/imageView&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/name&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_alignTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/divider&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_marginLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;2.0dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_marginRight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;5.0dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_marginTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;6.0dip&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_toRightOf&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/divider&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:singleLine&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:textAppearance&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;?android:textAppearanceMedium&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/number&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_alignLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/name&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_alignWithParentIfMissing&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_below&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@id/name&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:ellipsize&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;marquee&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:singleLine&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:textAppearance&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;?android:textAppearanceSmall&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>overlay.xml</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>suspend_search.xml</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_5&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_5&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;ImageView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>Friend.java</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_6&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_6&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.menu;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.ArrayList;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.List;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.regex.Pattern;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.menu.MyLetterListView.OnTouchingLetterChangedListener;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.AsyncQueryHandler;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.ComponentName;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.ContentResolver;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.ContentValues;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.database.Cursor;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.PixelFormat;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.net.Uri;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Handler;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.provider.ContactsContract;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.Log;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.LayoutInflater;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View.OnClickListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.Window;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.WindowManager;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AbsListView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AbsListView.OnScrollListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.BaseAdapter;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ImageView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ListView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.TextView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Toast;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; Friend &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; BaseAdapter adapter;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ListView listview;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; TextView overlay;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ImageView suspend_search;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; MyLetterListView letterListView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; AsyncQueryHandler asyncQuery;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String NAME = &lt;span class=&quot;string&quot;&gt;&amp;#8220;name&amp;#8221;&lt;/span&gt;, NUMBER = &lt;span class=&quot;string&quot;&gt;&amp;#8220;number&amp;#8221;&lt;/span&gt;,
+
+- SORT_KEY = &lt;span class=&quot;string&quot;&gt;&amp;#8220;sort_key&amp;#8221;&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; HashMap&lt;String, Integer&gt; alphaIndexer;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String[] sections;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; List&lt;ContentValues&gt; list = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&lt;ContentValues&gt;();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; WindowManager windowManager;
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+- setContentView(R.layout.friend);
+
+- windowManager =
+
+- (WindowManager) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getSystemService(Context.WINDOW_SERVICE);
+
+- asyncQuery = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyAsyncQueryHandler(getContentResolver());
+
+- listview = (ListView) findViewById(R.id.list_view);
+
+- letterListView = (MyLetterListView) findViewById(R.id.my_list_view);
+
+- letterListView
+
+- .setOnTouchingLetterChangedListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; LetterListViewListener());
+
+- 
+- alphaIndexer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashMap&lt;String, Integer&gt;();
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Handler();
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OverlayThread();
+
+- initOverlay();
+
+- initSuSearch();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (list.size() &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- }
+
+- 
+- listview.setOnScrollListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnScrollListener()
+
+- {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onScrollStateChanged(AbsListView view, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; scrollState)
+
+- {
+
+- suspend_search.setVisibility(View.VISIBLE);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onScroll(AbsListView view, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; firstVisibleItem,
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; visibleItemCount, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; totalItemCount)
+
+- {
+
+- suspend_search.setVisibility(View.GONE);
+
+- }
+
+- });
+
+- suspend_search.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener()
+
+- {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View v)
+
+- {
+
+- ComponentName friendcName =
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ComponentName(Friend.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8220;com.example.test_intent.FriendSearch&amp;#8221;&lt;/span&gt;);
+
+- Intent friend_viewIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent();
+
+- friend_viewIntent.setComponent(friendcName);
+
+- startActivity(friend_viewIntent);
+
+- Toast.makeText(getApplicationContext(), &lt;span class=&quot;string&quot;&gt;&amp;#8220;sousuo&amp;#8221;&lt;/span&gt;,
+
+- Toast.LENGTH_LONG).show();
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- }
+
+- });
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@SuppressWarnings&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;#8220;deprecation&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; getContent()
+
+- {
+
+- Cursor cur =
+
+- getContentResolver().query(
+
+- ContactsContract.Contacts.CONTENT_URI, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;,
+
+- &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- startManagingCursor(cur);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onResume()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onResume();
+
+- Uri uri = Uri.parse(&lt;span class=&quot;string&quot;&gt;&amp;#8220;content://com.android.contacts/data/phones&amp;#8221;&lt;/span&gt;);
+
+- String[] projection = { &lt;span class=&quot;string&quot;&gt;&amp;#8220;_id&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;display_name&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;data1&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;sort_key&amp;#8221;&lt;/span&gt; };
+
+- asyncQuery.startQuery(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, uri, projection, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8220;sort_key COLLATE LOCALIZED asc&amp;#8221;&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MyAsyncQueryHandler &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; AsyncQueryHandler
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyAsyncQueryHandler(ContentResolver cr)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(cr);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onQueryComplete(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; token, Object cookie, Cursor cursor)
+
+- {
+
+- 
+- cursor.moveToFirst();
+
+- Log.d(&lt;span class=&quot;string&quot;&gt;&amp;#8220;ccccc&amp;#8221;&lt;/span&gt;,
+
+- cursor.getString(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;) + &lt;span class=&quot;string&quot;&gt;&amp;#8221; 000 &amp;#8220;&lt;/span&gt; + cursor.getString(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+
+- + &lt;span class=&quot;string&quot;&gt;&amp;#8221; 000 &amp;#8220;&lt;/span&gt; + cursor.getString(&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;) + &lt;span class=&quot;string&quot;&gt;&amp;#8221; 000 &amp;#8220;&lt;/span&gt;
+
+- + cursor.getString(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;));
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (cursor.moveToNext())
+
+- {
+
+- ContentValues cv = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ContentValues();
+
+- cv.put(NAME, cursor.getString(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;));
+
+- cv.put(NUMBER, cursor.getString(&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;));
+
+- cv.put(SORT_KEY, cursor.getString(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;));
+
+- list.add(cv);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (list.size() &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- setAdapter(list);
+
+- }
+
+- }
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setAdapter(List&lt;ContentValues&gt; list)
+
+- {
+
+- adapter = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ListAdapter(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, list);
+
+- listview.setAdapter(adapter);
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; ListAdapter &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; BaseAdapter
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; LayoutInflater inflater;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; List&lt;ContentValues&gt; list;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; ListAdapter(Context context, List&lt;ContentValues&gt; list)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.inflater = LayoutInflater.from(context);
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.list = list;
+
+- alphaIndexer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashMap&lt;String, Integer&gt;();
+
+- sections = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; String[list.size()];
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;; i &lt; list.size(); i++)
+
+- {
+
+- String currentStr = getAlpha(list.get(i).getAsString(SORT_KEY));
+
+- String previewStr =
+
+- (i &amp;#8211; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) &gt;= &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; ? getAlpha(list.get(i &amp;#8211; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;).getAsString(
+
+- SORT_KEY)) : &lt;span class=&quot;string&quot;&gt;&amp;#8221; &amp;#8220;&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!previewStr.equals(currentStr))
+
+- {
+
+- String name = getAlpha(list.get(i).getAsString(SORT_KEY));
+
+- alphaIndexer.put(name, i);
+
+- sections[i] = name;
+
+- }
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; getCount()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; list.size();
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Object getItem(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; list.get(position);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; getItemId(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; position;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; View getView(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position, View convertView, ViewGroup parent)
+
+- {
+
+- ViewHolder holder;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (convertView == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- convertView = inflater.inflate(R.layout.list_item, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- holder = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ViewHolder();
+
+- holder.alpha = (TextView) convertView.findViewById(R.id.alpha);
+
+- holder.name = (TextView) convertView.findViewById(R.id.name);
+
+- holder.number =
+
+- (TextView) convertView.findViewById(R.id.number);
+
+- convertView.setTag(holder);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- {
+
+- holder = (ViewHolder) convertView.getTag();
+
+- }
+
+- 
+- ContentValues cv = list.get(position);
+
+- holder.name.setText(cv.getAsString(NAME));
+
+- holder.number.setText(cv.getAsString(NUMBER));
+
+- String currentStr =
+
+- getAlpha(list.get(position).getAsString(SORT_KEY));
+
+- String previewStr =
+
+- (position &amp;#8211; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;) &gt;= &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; ? getAlpha(list.get(position &amp;#8211; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)
+
+- .getAsString(SORT_KEY)) : &lt;span class=&quot;string&quot;&gt;&amp;#8221; &amp;#8220;&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!previewStr.equals(currentStr))
+
+- {
+
+- holder.alpha.setVisibility(View.VISIBLE);
+
+- holder.alpha.setText(currentStr);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- {
+
+- holder.alpha.setVisibility(View.GONE);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; convertView;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; ViewHolder
+
+- {
+
+- 
+- TextView alpha;
+
+- 
+- TextView name;
+
+- 
+- TextView number;
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; initSuSearch()&lt;span class=&quot;comment&quot;&gt;// 搜索&lt;/span&gt;
+
+- {
+
+- LayoutInflater inflater = LayoutInflater.from(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- suspend_search =
+
+- (ImageView) inflater.inflate(R.layout.suspend_search, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- WindowManager.LayoutParams lp =
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; WindowManager.LayoutParams(&lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;170&lt;/span&gt;, &amp;#8211;&lt;span class=&quot;number&quot;&gt;280&lt;/span&gt;,
+
+- WindowManager.LayoutParams.TYPE_APPLICATION,
+
+- WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+
+- PixelFormat.TRANSLUCENT);
+
+- windowManager.addView(suspend_search, lp);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; initOverlay()
+
+- {
+
+- LayoutInflater inflater = LayoutInflater.from(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- overlay = (TextView) inflater.inflate(R.layout.overlay, &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;);
+
+- WindowManager.LayoutParams lp =
+
+- &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; WindowManager.LayoutParams(
+
+- &lt;span class=&quot;number&quot;&gt;120&lt;/span&gt;,
+
+- &lt;span class=&quot;number&quot;&gt;120&lt;/span&gt;,
+
+- &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;,
+
+- &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;,
+
+- WindowManager.LayoutParams.TYPE_APPLICATION,
+
+- WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+
+- | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+
+- PixelFormat.TRANSLUCENT);
+
+- &lt;span class=&quot;comment&quot;&gt;// WindowManager windowManager = (WindowManager)&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;// this.getSystemService(Context.WINDOW_SERVICE);&lt;/span&gt;
+
+- windowManager.addView(overlay, lp);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; LetterListViewListener &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt;
+
+- OnTouchingLetterChangedListener
+
+- {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onTouchingLetterChanged(&lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String s, &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; y, &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; x)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (alphaIndexer.get(s) != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position = alphaIndexer.get(s);
+
+- 
+- listview.setSelection(position);
+
+- overlay.setText(sections[position]);
+
+- overlay.setVisibility(View.VISIBLE);
+
+- 
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onTouchingLetterEnd()
+
+- {
+
+- overlay.setVisibility(View.GONE);
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; OverlayThread &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; Runnable
+
+- {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; run()
+
+- {
+
+- overlay.setVisibility(View.GONE);
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String getAlpha(String str)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (str == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;#8220;#&amp;#8221;&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (str.trim().length() == &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;#8220;#&amp;#8221;&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt; c = str.trim().substring(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;).charAt(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+
+- 
+- Pattern pattern = Pattern.compile(&lt;span class=&quot;string&quot;&gt;&amp;#8220;^[A-Za-z]+$&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (pattern.matcher(c + &lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;).matches())
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; (c + &lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;).toUpperCase();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&amp;#8220;#&amp;#8221;&lt;/span&gt;;
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onDestroy()
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (windowManager != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)&lt;span class=&quot;comment&quot;&gt;// 防止内存泄露&lt;/span&gt;
+
+- {
+
+- windowManager.removeView(overlay);
+
+- windowManager.removeView(suspend_search);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onDestroy();
+
+- }
+
+- 
+- }
+</code></pre></div><p>MyLetterListView.java</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_7&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_7&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.menu;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Canvas;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Color;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Paint;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.graphics.Typeface;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.MotionEvent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MyLetterListView &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; View
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; OnTouchingLetterChangedListener onTouchingLetterChangedListener;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; String[] b = { &lt;span class=&quot;string&quot;&gt;&amp;#8220;@&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;A&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;B&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;C&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;D&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;E&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;F&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;G&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;H&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;I&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;J&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;K&amp;#8221;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8220;L&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;M&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;N&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;O&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;P&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;Q&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;R&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;S&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;T&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;U&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;V&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;W&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;X&amp;#8221;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8220;Y&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;Z&amp;#8221;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8220;#&amp;#8221;&lt;/span&gt; };
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; choose = &amp;#8211;&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Paint paint = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Paint();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; showBkg = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyLetterListView(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyLetterListView(Context context, AttributeSet attrs)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; MyLetterListView(Context context)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onDraw(Canvas canvas)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onDraw(canvas);
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (showBkg)
+
+- {
+
+- canvas.drawColor(Color.parseColor(&lt;span class=&quot;string&quot;&gt;&amp;#8220;#40000000&amp;#8221;&lt;/span&gt;));
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; height = getHeight();
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; width = getWidth();
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; singleHeight = height / b.length;
+
+- &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;; i &lt; b.length; i++)
+
+- {
+
+- paint.setTextSize(18f);
+
+- paint.setColor(Color.BLACK);
+
+- paint.setTypeface(Typeface.DEFAULT_BOLD);
+
+- paint.setAntiAlias(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (i == choose)
+
+- {
+
+- paint.setColor(Color.parseColor(&lt;span class=&quot;string&quot;&gt;&amp;#8220;#3399ff&amp;#8221;&lt;/span&gt;));
+
+- paint.setFakeBoldText(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; xPos = width / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; &amp;#8211; paint.measureText(b[i]) / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; yPos = singleHeight * i + singleHeight;
+
+- 
+- canvas.drawText(b[i], xPos, yPos, paint);
+
+- 
+- paint.reset();
+
+- }
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; dispatchTouchEvent(MotionEvent event)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; action = event.getAction();
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; y = event.getY();
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; x = event.getX();
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; oldChoose = choose;
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; OnTouchingLetterChangedListener listener =
+
+- onTouchingLetterChangedListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; c = (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) (y / getHeight() * b.length);
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (action)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_DOWN:
+
+- showBkg = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (oldChoose != c &amp;&amp; listener != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (c &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; &amp;&amp; c &lt; b.length)
+
+- {
+
+- listener.onTouchingLetterChanged(b[c], y, x);
+
+- choose = c;
+
+- invalidate();
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_MOVE:
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (oldChoose != c &amp;&amp; listener != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (c &gt; &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; &amp;&amp; c &lt; b.length)
+
+- {
+
+- listener.onTouchingLetterChanged(b[c], y, x);
+
+- choose = c;
+
+- invalidate();
+
+- }
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_UP:
+
+- showBkg = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- choose = &amp;#8211;&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;
+
+- listener.onTouchingLetterEnd();
+
+- invalidate();
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; onTouchEvent(MotionEvent event)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onTouchEvent(event);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setOnTouchingLetterChangedListener(
+
+- OnTouchingLetterChangedListener onTouchingLetterChangedListener)
+
+- {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.onTouchingLetterChangedListener = onTouchingLetterChangedListener;
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; OnTouchingLetterChangedListener
+
+- {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onTouchingLetterEnd();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onTouchingLetterChanged(String s, &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; y, &lt;span class=&quot;keyword&quot;&gt;float&lt;/span&gt; x);
+
+- }
+
+- }
+</code></pre></div><p>别忘了加权限：</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/csh159/article/details/8955029#)[copy](http://blog.csdn.net/csh159/article/details/8955029#)[print](http://blog.csdn.net/csh159/article/details/8955029#)[?](http://blog.csdn.net/csh159/article/details/8955029#)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_8&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;29&quot; height=&quot;15&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_8&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;uses-permission&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;android.permission.READ_CONTACTS&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+</code></pre></div><p>效果图：</p><p><img loading=lazy src=http://img.blog.csdn.net/20130521140818576></p><p>转自：http://blog.csdn.net/csh159/article/details/8955029</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/tcp%E5%AF%86%E9%9B%86io%E5%90%9E%E5%90%90%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7/><span class=title>« 上一页</span>
+<span>TCP密集IO吞吐压力测试工具</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E6%8A%8Aexcel%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90sql-insert%E8%AF%AD%E5%8F%A5/><span class=title>下一页 »</span>
+<span>把excel数据生成sql insert语句</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,414 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>android textview 自动换行 整齐排版 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="**一、问题在哪里？** textview显示长文字时会进行自动折行，如果遇到一些特殊情况，自动折行会杯具成这个样子： ![](http://images2015.cnblogs.com/blog/423151/201602/423151-20160223182710036-1140598862.p..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-textview-%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C-%E6%95%B4%E9%BD%90%E6%8E%92%E7%89%88/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-textview-%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C-%E6%95%B4%E9%BD%90%E6%8E%92%E7%89%88/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-textview-%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C-%E6%95%B4%E9%BD%90%E6%8E%92%E7%89%88/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="android textview 自动换行 整齐排版"><meta property="og:description" content="**一、问题在哪里？** textview显示长文字时会进行自动折行，如果遇到一些特殊情况，自动折行会杯具成这个样子： ![](http://images2015.cnblogs.com/blog/423151/201602/423151-20160223182710036-1140598862.p..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-10-16T08:44:07+00:00"><meta property="article:modified_time" content="2017-10-16T08:44:07+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="android textview 自动换行 整齐排版"><meta name=twitter:description content="**一、问题在哪里？** textview显示长文字时会进行自动折行，如果遇到一些特殊情况，自动折行会杯具成这个样子： ![](http://images2015.cnblogs.com/blog/423151/201602/423151-20160223182710036-1140598862.p..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"android textview 自动换行 整齐排版","item":"https://blog.zdltech.com/posts/android-textview-%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C-%E6%95%B4%E9%BD%90%E6%8E%92%E7%89%88/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"android textview 自动换行 整齐排版","name":"android textview 自动换行 整齐排版","description":"**一、问题在哪里？** textview显示长文字时会进行自动折行，如果遇到一些特殊情况，自动折行会杯具成这个样子： ![](http://images2015.cnblogs.com/blog/423151/201602/423151-20160223182710036-1140598862.p...","keywords":["android","移动开发"],"articleBody":"一、问题在哪里？\ntextview显示长文字时会进行自动折行，如果遇到一些特殊情况，自动折行会杯具成这个样子：\n上述特殊情况包括：\n1)全角/半角符号混排（一般是数字、字母、汉字混排）\n2)全角/半角标点符号出现在行首时，该标点符号会连同其前一个字符跳到下一行\n3)英文单词不能被折成两行\n4)……\n二、怎么搞？\n通常有两类解决方案：\n1)修改文本内容，将所有符号全角化、在标点符号前面加空格等等……\n2)保持文本内容不变，在合适的位置将文本手动分成多行\n本文采用第二种方案，更加通用，也最大限度的保留了原文本。\n三、开始干活\n3.1　“在合适的位置将文本手动分成多行”需要知道textview的实际宽度、字体大小等信息，框架如下：\n![复制代码](http://common.cnblogs.com/images/copycode.gif) 1 public class TestCActivity extends Activity { 2 private TextView mText; 3 4 @Override 5 protected void onCreate(Bundle savedInstanceState) { 6 super.onCreate(savedInstanceState); 7 8 setContentView(R.layout.testc); 9 10 mText = (TextView)findViewById(R.id.txt); 11 mText.setText(\"本文地址http://www.cnblogs.com/goagent/p/5159125.html本文地址啊本文。地址。啊http://www.cnblogs.com/goagent/p/5159125.html\"); 12 mText.getViewTreeObserver().addOnGlobalLayoutListener(new OnTvGlobalLayoutListener()); 13 } 14 15 private class OnTvGlobalLayoutListener implements OnGlobalLayoutListener { 16 @Override 17 public void onGlobalLayout() { 18 mText.getViewTreeObserver().removeOnGlobalLayoutListener(this); 19 final String newText = autoSplitText(mText); 20 if (!TextUtils.isEmpty(newText)) { 21 mText.setText(newText); 22 } 23 } 24 } 25 26 private String autoSplitText(final TextView tv) { 27 final String rawText = tv.getText().toString(); 28 final Paint tvPaint = tv.getPaint(); 29 final int tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); 30 31 //autoSplitText begin.... 32 String newText = rawText; 33 //autoSplitText end.... 34 35 return newText; 36 } 37 } ![复制代码](http://common.cnblogs.com/images/copycode.gif) 3.2　实现自动分割文本，简单来说就是用textview的paint逐字符测量，如果发现当前行绘制不下了，就手动加入一个换行符：\n![复制代码](http://common.cnblogs.com/images/copycode.gif) 1 private String autoSplitText(final TextView tv) { 2 final String rawText = tv.getText().toString(); //原始文本 3 final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息 4 final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度 5 6 //将原始文本按行拆分 7 String [] rawTextLines = rawText.replaceAll(\"\\r\", \"\").split(\"\\n\"); 8 StringBuilder sbNewText = new StringBuilder(); 9 for (String rawTextLine : rawTextLines) { 10 if (tvPaint.measureText(rawTextLine) \u0026lt;= tvWidth) { 11 //如果整行宽度在控件可用宽度之内，就不处理了 12 sbNewText.append(rawTextLine); 13 } else { 14 //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行 15 float lineWidth = 0; 16 for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) { 17 char ch = rawTextLine.charAt(cnt); 18 lineWidth += tvPaint.measureText(String.valueOf(ch)); 19 if (lineWidth \u0026lt;= tvWidth) { 20 sbNewText.append(ch); 21 } else { 22 sbNewText.append(\"\\n\"); 23 lineWidth = 0; 24 --cnt; 25 } 26 } 27 } 28 sbNewText.append(\"\\n\"); 29 } 30 31 //把结尾多余的\\n去掉 32 if (!rawText.endsWith(\"\\n\")) { 33 sbNewText.deleteCharAt(sbNewText.length() - 1); 34 } 35 36 return sbNewText.toString(); 37 } ![复制代码](http://common.cnblogs.com/images/copycode.gif) 3.3　话不多说，效果如下：\n四、更多玩法\n4.1　可以封装一个自定义的textview，直接包含自动排版换行的功能：\n![](http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif) ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` 1 package cc.snser.test; 2 3 import android.content.Context; 4 import android.graphics.Paint; 5 import android.text.TextUtils; 6 import android.util.AttributeSet; 7 import android.widget.TextView; 8 9 public class AutoSplitTextView extends TextView { 10 private boolean mEnabled = true; 11 12 public AutoSplitTextView(Context context) { 13 super(context); 14 } 15 16 public AutoSplitTextView(Context context, AttributeSet attrs) { 17 super(context, attrs); 18 } 19 20 public AutoSplitTextView(Context context, AttributeSet attrs, int defStyle) { 21 super(context, attrs, defStyle); 22 } 23 24 public void setAutoSplitEnabled(boolean enabled) { 25 mEnabled = enabled; 26 } 27 28 @Override 29 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) { 30 if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY 31 \u0026\u0026 MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY 32 \u0026\u0026 getWidth() \u003e 0 33 \u0026\u0026 getHeight() \u003e 0 34 \u0026\u0026 mEnabled) { 35 String newText = autoSplitText(this); 36 if (!TextUtils.isEmpty(newText)) { 37 setText(newText); 38 } 39 } 40 super.onMeasure(widthMeasureSpec, heightMeasureSpec); 41 } 42 43 private String autoSplitText(final TextView tv) { 44 final String rawText = tv.getText().toString(); //原始文本 45 final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息 46 final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度 47 48 //将原始文本按行拆分 49 String [] rawTextLines = rawText.replaceAll(\"\\r\", “”).split(\"\\n\"); 50 StringBuilder sbNewText = new StringBuilder(); 51 for (String rawTextLine : rawTextLines) { 52 if (tvPaint.measureText(rawTextLine) \u003c= tvWidth) { 53 //如果整行宽度在控件可用宽度之内，就不处理了 54 sbNewText.append(rawTextLine); 55 } else { 56 //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行 57 float lineWidth = 0; 58 for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) { 59 char ch = rawTextLine.charAt(cnt); 60 lineWidth += tvPaint.measureText(String.valueOf(ch)); 61 if (lineWidth \u003c= tvWidth) { 62 sbNewText.append(ch); 63 } else { 64 sbNewText.append(\"\\n\"); 65 lineWidth = 0; 66 –cnt; 67 } 68 } 69 } 70 sbNewText.append(\"\\n\"); 71 } 72 73 //把结尾多余的\\n去掉 74 if (!rawText.endsWith(\"\\n\")) { 75 sbNewText.deleteCharAt(sbNewText.length() - 1); 76 } 77 78 return sbNewText.toString(); 79 } 80 }\n\u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e \u003cdiv class=\"cnblogs_code\"\u003e ![](http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif) \u003cdiv id=\"cnblogs_code_open_8e2944ef-bf7a-4b98-bd80-4ca691a8c9cf\" class=\"cnblogs_code_hide\"\u003e \u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e ``` 1 package cc.snser.test; 2 3 import android.app.Activity; 4 import android.os.Bundle; 5 6 public class TestCActivity extends Activity { 7 private AutoSplitTextView mText; 8 9 @Override 10 protected void onCreate(Bundle savedInstanceState) { 11 super.onCreate(savedInstanceState); 12 13 setContentView(R.layout.testc); 14 15 mText = (AutoSplitTextView)findViewById(R.id.txt); 16 mText.setText(\"本文地址http://www.cnblogs.com/goagent/p/5159125.html本文地址啊本文。地址。啊http://www.cnblogs.com/goagent/p/5159125.html\"); 17 } 18 } ![复制代码](http://common.cnblogs.com/images/copycode.gif) ![](http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif) View testc.xml 4.2　实现悬挂缩进\n![](http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif) ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` 1 private String autoSplitText(final TextView tv, final String indent) { 2 final String rawText = tv.getText().toString(); //原始文本 3 final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息 4 final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度 5 6 //将缩进处理成空格 7 String indentSpace = “”; 8 float indentWidth = 0; 9 if (!TextUtils.isEmpty(indent)) { 10 float rawIndentWidth = tvPaint.measureText(indent); 11 if (rawIndentWidth \u003c tvWidth) { 12 while ((indentWidth = tvPaint.measureText(indentSpace)) \u003c rawIndentWidth) { 13 indentSpace += \" “; 14 } 15 } 16 } 17 18 //将原始文本按行拆分 19 String [] rawTextLines = rawText.replaceAll(\"\\r”, “”).split(\"\\n\"); 20 StringBuilder sbNewText = new StringBuilder(); 21 for (String rawTextLine : rawTextLines) { 22 if (tvPaint.measureText(rawTextLine) \u003c= tvWidth) { 23 //如果整行宽度在控件可用宽度之内，就不处理了 24 sbNewText.append(rawTextLine); 25 } else { 26 //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行 27 float lineWidth = 0; 28 for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) { 29 char ch = rawTextLine.charAt(cnt); 30 //从手动换行的第二行开始，加上悬挂缩进 31 if (lineWidth \u003c 0.1f \u0026\u0026 cnt != 0) { 32 sbNewText.append(indentSpace); 33 lineWidth += indentWidth; 34 } 35 lineWidth += tvPaint.measureText(String.valueOf(ch)); 36 if (lineWidth \u003c= tvWidth) { 37 sbNewText.append(ch); 38 } else { 39 sbNewText.append(\"\\n\"); 40 lineWidth = 0; 41 –cnt; 42 } 43 } 44 } 45 sbNewText.append(\"\\n\"); 46 } 47 48 //把结尾多余的\\n去掉 49 if (!rawText.endsWith(\"\\n\")) { 50 sbNewText.deleteCharAt(sbNewText.length() - 1); 51 } 52 53 return sbNewText.toString(); 54 }\n\u003cdiv class=\"cnblogs_code_toolbar\"\u003e \u003cspan class=\"cnblogs_code_copy\"\u003e\u003ca title=\"复制代码\"\u003e![复制代码](http://common.cnblogs.com/images/copycode.gif)\u003c/a\u003e\u003c/span\u003e \u003c/div\u003e \u003c/div\u003e \u003c/div\u003e 调用方式： \u003cspan class=\"cnblogs_code\"\u003eautoSplitText(tv, \u0026#8220;1、\u0026#8221;); 悬挂缩进效果： ![](http://images2015.cnblogs.com/blog/423151/201602/423151-20160224161817286-620248371.png) 转自：_http://www.cnblogs.com/snser/p/5159125.html]_ \u0026nbsp; \u0026nbsp; \u003cdiv class=\"title\"\u003e ## Android中 TextView 加载 混合字符 自动换行解决方案 \u003c/div\u003e \u003cdiv class=\"content\"\u003e 昨天测试提看一个bug,如下： 【3.1.0】当实勘员点评由中文和数字组成时，第一个中文后会自动换行 最终解决办法为加入这个方法： \u003cdiv class=\"cnblogs_code\"\u003e ![技术分享](http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif) \u003cdiv id=\"cnblogs_code_open_b676ddb2-cf37-4729-81b1-6fbaa6f0745c\" class=\"cnblogs_code_hide\"\u003e \u003cdiv class=\"top-box hide\"\u003e \u003c/div\u003e ``` private String autoSplitText(final TextView tv) { final String rawText = tv.getText().toString(); //原始文本 final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息 final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度 //将原始文本按行拆分 String[] rawTextLines = rawText.replaceAll(\"\\r\", \"\").split(\"\\n\"); StringBuilder sbNewText = new StringBuilder(); for (String rawTextLine : rawTextLines) { if (tvPaint.measureText(rawTextLine) \u0026lt;= tvWidth) { //如果整行宽度在控件可用宽度之内，就不处理了 sbNewText.append(rawTextLine); } else { //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行 float lineWidth = 0; for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) { char ch = rawTextLine.charAt(cnt); lineWidth += tvPaint.measureText(String.valueOf(ch)); if (lineWidth \u0026lt;= tvWidth) { sbNewText.append(ch); } else { sbNewText.append(\"\\n\"); lineWidth = 0; --cnt; } } } sbNewText.append(\"\\n\"); } //把结尾多余的\\n去掉 if (!rawText.endsWith(\"\\n\")) { sbNewText.deleteCharAt(sbNewText.length() - 1); } return sbNewText.toString(); } View Code \u0026nbsp; 加载完调用： ![技术分享](http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif) ``` tvDes.setText(desc.getSurvey_conclusion()); tvDes.setText(autoSplitText(tvDes));\nView Code \u0026nbsp; 如果出现不正常的问题，再换种方式调用，： ![技术分享](http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif) ``` ViewTreeObserver observer = tvDes.getViewTreeObserver(); observer.addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener() { @Override public void onGlobalLayout() { tvDes.setText(autoSplitText(tvDes)); } }); View Code 就可以了。 ","wordCount":"1087","inLanguage":"zh","datePublished":"2017-10-16T08:44:07Z","dateModified":"2017-10-16T08:44:07Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-textview-%E8%87%AA%E5%8A%A8%E6%8D%A2%E8%A1%8C-%E6%95%B4%E9%BD%90%E6%8E%92%E7%89%88/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">android textview 自动换行 整齐排版</h1><div class=post-description>**一、问题在哪里？** textview显示长文字时会进行自动折行，如果遇到一些特殊情况，自动折行会杯具成这个样子： ![](http://images2015.cnblogs.com/blog/423151/201602/423151-20160223182710036-1140598862.p...</div><div class=post-meta><span title='2017-10-16 08:44:07 +0000 UTC'>2017年10月16日</span>&nbsp;·&nbsp;<span>6 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p><strong>一、问题在哪里？</strong></p><p>textview显示长文字时会进行自动折行，如果遇到一些特殊情况，自动折行会杯具成这个样子：</p><p><img loading=lazy src=http://images2015.cnblogs.com/blog/423151/201602/423151-20160223182710036-1140598862.png></p><p>上述特殊情况包括：</p><p>1)全角/半角符号混排（一般是数字、字母、汉字混排）</p><p>2)全角/半角标点符号出现在行首时，该标点符号会连同其前一个字符跳到下一行</p><p>3)英文单词不能被折成两行</p><p>4)……</p><p> </p><p><strong>二、怎么搞？</strong></p><p>通常有两类解决方案：</p><p>1)修改文本内容，将所有符号全角化、在标点符号前面加空格等等……</p><p>2)保持文本内容不变，在合适的位置将文本手动分成多行</p><p>本文采用第二种方案，更加通用，也最大限度的保留了原文本。</p><p><strong>三、开始干活</strong></p><p>3.1　　“在合适的位置将文本手动分成多行”需要知道textview的实际宽度、字体大小等信息，框架如下：</p><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span><span style=color:#bd93f9>1</span> public <span style=color:#ff79c6>class</span> TestCActivity <span style=color:#ff79c6>extends</span> Activity {
+</span></span><span style=display:flex><span><span style=color:#bd93f9>2</span>     private TextView mText;
+</span></span><span style=display:flex><span><span style=color:#bd93f9>3</span>     
+</span></span><span style=display:flex><span><span style=color:#bd93f9>4</span>     @Override
+</span></span><span style=display:flex><span><span style=color:#bd93f9>5</span>     protected void onCreate(Bundle savedInstanceState) {
+</span></span><span style=display:flex><span><span style=color:#bd93f9>6</span>         super<span style=color:#ff79c6>.</span>onCreate(savedInstanceState);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>7</span>         
+</span></span><span style=display:flex><span><span style=color:#bd93f9>8</span>         setContentView(R<span style=color:#ff79c6>.</span>layout<span style=color:#ff79c6>.</span>testc);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>9</span>         
+</span></span><span style=display:flex><span><span style=color:#bd93f9>10</span>         mText <span style=color:#ff79c6>=</span> (TextView)findViewById(R<span style=color:#ff79c6>.</span>id<span style=color:#ff79c6>.</span>txt);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>11</span>         mText<span style=color:#ff79c6>.</span>setText(<span style=color:#f1fa8c>&#34;本文地址http://www.cnblogs.com/goagent/p/5159125.html本文地址啊本文。地址。啊http://www.cnblogs.com/goagent/p/5159125.html&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>12</span>         mText<span style=color:#ff79c6>.</span>getViewTreeObserver()<span style=color:#ff79c6>.</span>addOnGlobalLayoutListener(new OnTvGlobalLayoutListener());
+</span></span><span style=display:flex><span><span style=color:#bd93f9>13</span>     }
+</span></span><span style=display:flex><span><span style=color:#bd93f9>14</span> 
+</span></span><span style=display:flex><span><span style=color:#bd93f9>15</span>     private <span style=color:#ff79c6>class</span> OnTvGlobalLayoutListener implements OnGlobalLayoutListener {
+</span></span><span style=display:flex><span><span style=color:#bd93f9>16</span>         @Override
+</span></span><span style=display:flex><span><span style=color:#bd93f9>17</span>         public void onGlobalLayout() {
+</span></span><span style=display:flex><span><span style=color:#bd93f9>18</span>             mText<span style=color:#ff79c6>.</span>getViewTreeObserver()<span style=color:#ff79c6>.</span>removeOnGlobalLayoutListener(this);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>19</span>             final String newText <span style=color:#ff79c6>=</span> autoSplitText(mText);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>20</span>             <span style=color:#ff79c6>if</span> (<span style=color:#ff79c6>!</span>TextUtils<span style=color:#ff79c6>.</span>isEmpty(newText)) {
+</span></span><span style=display:flex><span><span style=color:#bd93f9>21</span>                 mText<span style=color:#ff79c6>.</span>setText(newText);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>22</span>             }
+</span></span><span style=display:flex><span><span style=color:#bd93f9>23</span>         }
+</span></span><span style=display:flex><span><span style=color:#bd93f9>24</span>     }
+</span></span><span style=display:flex><span><span style=color:#bd93f9>25</span>     
+</span></span><span style=display:flex><span><span style=color:#bd93f9>26</span>     private String autoSplitText(final TextView tv) {
+</span></span><span style=display:flex><span><span style=color:#bd93f9>27</span>         final String rawText <span style=color:#ff79c6>=</span> tv<span style=color:#ff79c6>.</span>getText()<span style=color:#ff79c6>.</span>toString();
+</span></span><span style=display:flex><span><span style=color:#bd93f9>28</span>         final Paint tvPaint <span style=color:#ff79c6>=</span> tv<span style=color:#ff79c6>.</span>getPaint();
+</span></span><span style=display:flex><span><span style=color:#bd93f9>29</span>         final int tvWidth <span style=color:#ff79c6>=</span> tv<span style=color:#ff79c6>.</span>getWidth() <span style=color:#ff79c6>-</span> tv<span style=color:#ff79c6>.</span>getPaddingLeft() <span style=color:#ff79c6>-</span> tv<span style=color:#ff79c6>.</span>getPaddingRight();
+</span></span><span style=display:flex><span><span style=color:#bd93f9>30</span>         
+</span></span><span style=display:flex><span><span style=color:#bd93f9>31</span>         <span style=color:#ff79c6>//</span>autoSplitText begin<span style=color:#ff79c6>....</span>
+</span></span><span style=display:flex><span><span style=color:#bd93f9>32</span>         String newText <span style=color:#ff79c6>=</span> rawText;
+</span></span><span style=display:flex><span><span style=color:#bd93f9>33</span>         <span style=color:#ff79c6>//</span>autoSplitText end<span style=color:#ff79c6>....</span>
+</span></span><span style=display:flex><span><span style=color:#bd93f9>34</span>         
+</span></span><span style=display:flex><span><span style=color:#bd93f9>35</span>         <span style=color:#ff79c6>return</span> newText;
+</span></span><span style=display:flex><span><span style=color:#bd93f9>36</span>     }
+</span></span><span style=display:flex><span><span style=color:#bd93f9>37</span> }
+</span></span></code></pre></div><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div></div><p>3.2　　实现自动分割文本，简单来说就是用textview的paint逐字符测量，如果发现当前行绘制不下了，就手动加入一个换行符：</p><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>1     private String autoSplitText(final TextView tv) {
+</span></span><span style=display:flex><span>2         final String rawText = tv.getText().toString(); //原始文本
+</span></span><span style=display:flex><span>3         final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息
+</span></span><span style=display:flex><span>4         final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度
+</span></span><span style=display:flex><span>5         
+</span></span><span style=display:flex><span>6         //将原始文本按行拆分
+</span></span><span style=display:flex><span>7         String [] rawTextLines = rawText.replaceAll(&#34;\r&#34;, &#34;&#34;).split(&#34;\n&#34;);
+</span></span><span style=display:flex><span>8         StringBuilder sbNewText = new StringBuilder();
+</span></span><span style=display:flex><span>9         for (String rawTextLine : rawTextLines) {
+</span></span><span style=display:flex><span>10             if (tvPaint.measureText(rawTextLine) &amp;lt;= tvWidth) {
+</span></span><span style=display:flex><span>11                 //如果整行宽度在控件可用宽度之内，就不处理了
+</span></span><span style=display:flex><span>12                 sbNewText.append(rawTextLine);
+</span></span><span style=display:flex><span>13             } else {
+</span></span><span style=display:flex><span>14                 //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行
+</span></span><span style=display:flex><span>15                 float lineWidth = 0;
+</span></span><span style=display:flex><span>16                 for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) {
+</span></span><span style=display:flex><span>17                     char ch = rawTextLine.charAt(cnt);
+</span></span><span style=display:flex><span>18                     lineWidth += tvPaint.measureText(String.valueOf(ch));
+</span></span><span style=display:flex><span>19                     if (lineWidth &amp;lt;= tvWidth) {
+</span></span><span style=display:flex><span>20                         sbNewText.append(ch);
+</span></span><span style=display:flex><span>21                     } else {
+</span></span><span style=display:flex><span>22                         sbNewText.append(&#34;\n&#34;);
+</span></span><span style=display:flex><span>23                         lineWidth = 0;
+</span></span><span style=display:flex><span>24                         --cnt;
+</span></span><span style=display:flex><span>25                     }
+</span></span><span style=display:flex><span>26                 }
+</span></span><span style=display:flex><span>27             }
+</span></span><span style=display:flex><span>28             sbNewText.append(&#34;\n&#34;);
+</span></span><span style=display:flex><span>29         }
+</span></span><span style=display:flex><span>30         
+</span></span><span style=display:flex><span>31         //把结尾多余的\n去掉
+</span></span><span style=display:flex><span>32         if (!rawText.endsWith(&#34;\n&#34;)) {
+</span></span><span style=display:flex><span>33             sbNewText.deleteCharAt(sbNewText.length() - 1);
+</span></span><span style=display:flex><span>34         }
+</span></span><span style=display:flex><span>35         
+</span></span><span style=display:flex><span>36         return sbNewText.toString();
+</span></span><span style=display:flex><span>37     }
+</span></span></code></pre></div><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div></div><p>3.3　　话不多说，效果如下：</p><p><img loading=lazy src=http://images2015.cnblogs.com/blog/423151/201602/423151-20160224111208458-75638255.png></p><p><strong>四、更多玩法</strong></p><p>4.1　　可以封装一个自定义的textview，直接包含自动排版换行的功能：</p><div class=cnblogs_code><pre><code>![](http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif)
+</code></pre><div id=cnblogs_code_open_ac06595c-9770-44b4-ab3d-564f319ab728 class=cnblogs_code_hide><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><pre><code>```
+</code></pre><p>1 package cc.snser.test;
+2
+3 import android.content.Context;
+4 import android.graphics.Paint;
+5 import android.text.TextUtils;
+6 import android.util.AttributeSet;
+7 import android.widget.TextView;
+8
+9 public class AutoSplitTextView extends TextView {
+10 private boolean mEnabled = true;
+11
+12 public AutoSplitTextView(Context context) {
+13 super(context);
+14 }
+15
+16 public AutoSplitTextView(Context context, AttributeSet attrs) {
+17 super(context, attrs);
+18 }
+19
+20 public AutoSplitTextView(Context context, AttributeSet attrs, int defStyle) {
+21 super(context, attrs, defStyle);
+22 }
+23<br>24 public void setAutoSplitEnabled(boolean enabled) {
+25 mEnabled = enabled;
+26 }
+27<br>28 @Override
+29 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+30 if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY
+31 && MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY
+32 && getWidth() > 0
+33 && getHeight() > 0
+34 && mEnabled) {
+35 String newText = autoSplitText(this);
+36 if (!TextUtils.isEmpty(newText)) {
+37 setText(newText);
+38 }
+39 }
+40 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+41 }
+42<br>43 private String autoSplitText(final TextView tv) {
+44 final String rawText = tv.getText().toString(); //原始文本
+45 final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息
+46 final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度
+47<br>48 //将原始文本按行拆分
+49 String [] rawTextLines = rawText.replaceAll("\r", &ldquo;&rdquo;).split("\n");
+50 StringBuilder sbNewText = new StringBuilder();
+51 for (String rawTextLine : rawTextLines) {
+52 if (tvPaint.measureText(rawTextLine) &lt;= tvWidth) {
+53 //如果整行宽度在控件可用宽度之内，就不处理了
+54 sbNewText.append(rawTextLine);
+55 } else {
+56 //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行
+57 float lineWidth = 0;
+58 for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) {
+59 char ch = rawTextLine.charAt(cnt);
+60 lineWidth += tvPaint.measureText(String.valueOf(ch));
+61 if (lineWidth &lt;= tvWidth) {
+62 sbNewText.append(ch);
+63 } else {
+64 sbNewText.append("\n");
+65 lineWidth = 0;
+66 &ndash;cnt;
+67 }
+68 }
+69 }
+70 sbNewText.append("\n");
+71 }
+72<br>73 //把结尾多余的\n去掉
+74 if (!rawText.endsWith("\n")) {
+75 sbNewText.deleteCharAt(sbNewText.length() - 1);
+76 }
+77<br>78 return sbNewText.toString();
+79 }
+80 }</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>!</span>[](http:<span style=color:#ff79c6>//</span>images<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>OutliningIndicators<span style=color:#ff79c6>/</span>ExpandedBlockStart<span style=color:#ff79c6>.</span>gif)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;</span>div id<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_open_8e2944ef-bf7a-4b98-bd80-4ca691a8c9cf&#34;</span> <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_hide&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>1</span> package cc<span style=color:#ff79c6>.</span>snser<span style=color:#ff79c6>.</span>test;
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>2</span> 
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>3</span> import android<span style=color:#ff79c6>.</span>app<span style=color:#ff79c6>.</span>Activity;
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>4</span> import android<span style=color:#ff79c6>.</span>os<span style=color:#ff79c6>.</span>Bundle;
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>5</span> 
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>6</span> public <span style=color:#ff79c6>class</span> TestCActivity <span style=color:#ff79c6>extends</span> Activity {
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>7</span>     private AutoSplitTextView mText;
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>8</span>     
+</span></span><span style=display:flex><span> <span style=color:#bd93f9>9</span>     @Override
+</span></span><span style=display:flex><span><span style=color:#bd93f9>10</span>     protected void onCreate(Bundle savedInstanceState) {
+</span></span><span style=display:flex><span><span style=color:#bd93f9>11</span>         super<span style=color:#ff79c6>.</span>onCreate(savedInstanceState);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>12</span>         
+</span></span><span style=display:flex><span><span style=color:#bd93f9>13</span>         setContentView(R<span style=color:#ff79c6>.</span>layout<span style=color:#ff79c6>.</span>testc);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>14</span>         
+</span></span><span style=display:flex><span><span style=color:#bd93f9>15</span>         mText <span style=color:#ff79c6>=</span> (AutoSplitTextView)findViewById(R<span style=color:#ff79c6>.</span>id<span style=color:#ff79c6>.</span>txt);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>16</span>         mText<span style=color:#ff79c6>.</span>setText(<span style=color:#f1fa8c>&#34;本文地址http://www.cnblogs.com/goagent/p/5159125.html本文地址啊本文。地址。啊http://www.cnblogs.com/goagent/p/5159125.html&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#bd93f9>17</span>     }
+</span></span><span style=display:flex><span><span style=color:#bd93f9>18</span> }
+</span></span></code></pre></div><pre><code>&lt;div class=&quot;cnblogs_code_toolbar&quot;&gt;
+  &lt;span class=&quot;cnblogs_code_copy&quot;&gt;&lt;a title=&quot;复制代码&quot;&gt;![复制代码](http://common.cnblogs.com/images/copycode.gif)&lt;/a&gt;&lt;/span&gt;
+&lt;/div&gt;
+</code></pre></div></div><div class=cnblogs_code>![](http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif) <span class=cnblogs_code_collapse>View testc.xml</span></div><p>4.2　　实现悬挂缩进</p><div class=cnblogs_code><pre><code>![](http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif)
+</code></pre><div id=cnblogs_code_open_8a7169e5-4c94-461c-b5bc-b6ad71da9173 class=cnblogs_code_hide><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><pre><code>```
+</code></pre><p>1 private String autoSplitText(final TextView tv, final String indent) {
+2 final String rawText = tv.getText().toString(); //原始文本
+3 final Paint tvPaint = tv.getPaint(); //paint，包含字体等信息
+4 final float tvWidth = tv.getWidth() - tv.getPaddingLeft() - tv.getPaddingRight(); //控件可用宽度
+5<br>6 //将缩进处理成空格
+7 String indentSpace = &ldquo;&rdquo;;
+8 float indentWidth = 0;
+9 if (!TextUtils.isEmpty(indent)) {
+10 float rawIndentWidth = tvPaint.measureText(indent);
+11 if (rawIndentWidth &lt; tvWidth) {
+12 while ((indentWidth = tvPaint.measureText(indentSpace)) &lt; rawIndentWidth) {
+13 indentSpace += " &ldquo;;
+14 }
+15 }
+16 }
+17<br>18 //将原始文本按行拆分
+19 String [] rawTextLines = rawText.replaceAll("\r&rdquo;, &ldquo;&rdquo;).split("\n");
+20 StringBuilder sbNewText = new StringBuilder();
+21 for (String rawTextLine : rawTextLines) {
+22 if (tvPaint.measureText(rawTextLine) &lt;= tvWidth) {
+23 //如果整行宽度在控件可用宽度之内，就不处理了
+24 sbNewText.append(rawTextLine);
+25 } else {
+26 //如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行
+27 float lineWidth = 0;
+28 for (int cnt = 0; cnt != rawTextLine.length(); ++cnt) {
+29 char ch = rawTextLine.charAt(cnt);
+30 //从手动换行的第二行开始，加上悬挂缩进
+31 if (lineWidth &lt; 0.1f && cnt != 0) {
+32 sbNewText.append(indentSpace);
+33 lineWidth += indentWidth;
+34 }
+35 lineWidth += tvPaint.measureText(String.valueOf(ch));
+36 if (lineWidth &lt;= tvWidth) {
+37 sbNewText.append(ch);
+38 } else {
+39 sbNewText.append("\n");
+40 lineWidth = 0;
+41 &ndash;cnt;
+42 }
+43 }
+44 }
+45 sbNewText.append("\n");
+46 }
+47<br>48 //把结尾多余的\n去掉
+49 if (!rawText.endsWith("\n")) {
+50 sbNewText.deleteCharAt(sbNewText.length() - 1);
+51 }
+52<br>53 return sbNewText.toString();
+54 }</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_toolbar&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_copy&#34;</span><span style=color:#ff79c6>&gt;&lt;</span>a title<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;复制代码&#34;</span><span style=color:#ff79c6>&gt;!</span>[复制代码](http:<span style=color:#ff79c6>//</span>common<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>images<span style=color:#ff79c6>/</span>copycode<span style=color:#ff79c6>.</span>gif)<span style=color:#ff79c6>&lt;/</span>a<span style=color:#ff79c6>&gt;&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>调用方式：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code&#34;</span><span style=color:#ff79c6>&gt;</span>autoSplitText(tv, <span style=color:#ff79c6>&amp;</span><span style=color:#6272a4>#8220;1、&amp;#8221;);&lt;/span&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>悬挂缩进效果：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>!</span>[](http:<span style=color:#ff79c6>//</span>images2015<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>blog<span style=color:#ff79c6>/</span><span style=color:#bd93f9>423151</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>201602</span><span style=color:#ff79c6>/</span><span style=color:#bd93f9>423151</span><span style=color:#ff79c6>-</span><span style=color:#bd93f9>20160224161817286</span><span style=color:#ff79c6>-</span><span style=color:#bd93f9>620248371.</span>png) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>转自：_http:<span style=color:#ff79c6>//</span>www<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>snser<span style=color:#ff79c6>/</span>p<span style=color:#ff79c6>/</span><span style=color:#bd93f9>5159125.</span>html]_
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&amp;</span>nbsp;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;title&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  <span style=color:#6272a4>## Android中 TextView 加载 混合字符 自动换行解决方案</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;content&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    昨天测试提看一个bug,如下：
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    【<span style=color:#bd93f9>3.1</span><span style=color:#ff79c6>.</span><span style=color:#bd93f9>0</span>】当实勘员点评由中文和数字组成时，第一个中文后会自动换行
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    最终解决办法为加入这个方法：
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>!</span>[技术分享](http:<span style=color:#ff79c6>//</span>images<span style=color:#ff79c6>.</span>cnblogs<span style=color:#ff79c6>.</span>com<span style=color:#ff79c6>/</span>OutliningIndicators<span style=color:#ff79c6>/</span>ContractedBlock<span style=color:#ff79c6>.</span>gif)
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>&lt;</span>div id<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_open_b676ddb2-cf37-4729-81b1-6fbaa6f0745c&#34;</span> <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;cnblogs_code_hide&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;</span>div <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;top-box hide&#34;</span><span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>&lt;/</span>div<span style=color:#ff79c6>&gt;</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span> private String autoSplitText(final TextView tv) {
+</span></span><span style=display:flex><span>        final String rawText <span style=color:#ff79c6>=</span> tv<span style=color:#ff79c6>.</span>getText()<span style=color:#ff79c6>.</span>toString(); <span style=color:#ff79c6>//</span>原始文本
+</span></span><span style=display:flex><span>        final Paint tvPaint <span style=color:#ff79c6>=</span> tv<span style=color:#ff79c6>.</span>getPaint(); <span style=color:#ff79c6>//</span>paint，包含字体等信息
+</span></span><span style=display:flex><span>        final float tvWidth <span style=color:#ff79c6>=</span> tv<span style=color:#ff79c6>.</span>getWidth() <span style=color:#ff79c6>-</span> tv<span style=color:#ff79c6>.</span>getPaddingLeft() <span style=color:#ff79c6>-</span> tv<span style=color:#ff79c6>.</span>getPaddingRight(); <span style=color:#ff79c6>//</span>控件可用宽度
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>//</span>将原始文本按行拆分
+</span></span><span style=display:flex><span>        String[] rawTextLines <span style=color:#ff79c6>=</span> rawText<span style=color:#ff79c6>.</span>replaceAll(<span style=color:#f1fa8c>&#34;</span><span style=color:#f1fa8c>\r</span><span style=color:#f1fa8c>&#34;</span>, <span style=color:#f1fa8c>&#34;&#34;</span>)<span style=color:#ff79c6>.</span>split(<span style=color:#f1fa8c>&#34;</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>);
+</span></span><span style=display:flex><span>        StringBuilder sbNewText <span style=color:#ff79c6>=</span> new StringBuilder();
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>for</span> (String rawTextLine : rawTextLines) {
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>if</span> (tvPaint<span style=color:#ff79c6>.</span>measureText(rawTextLine) <span style=color:#ff79c6>&amp;</span>lt;<span style=color:#ff79c6>=</span> tvWidth) {
+</span></span><span style=display:flex><span>                <span style=color:#ff79c6>//</span>如果整行宽度在控件可用宽度之内，就不处理了
+</span></span><span style=display:flex><span>                sbNewText<span style=color:#ff79c6>.</span>append(rawTextLine);
+</span></span><span style=display:flex><span>            } <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>                <span style=color:#ff79c6>//</span>如果整行宽度超过控件可用宽度，则按字符测量，在超过可用宽度的前一个字符处手动换行
+</span></span><span style=display:flex><span>                float lineWidth <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>;
+</span></span><span style=display:flex><span>                <span style=color:#ff79c6>for</span> (int cnt <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; cnt <span style=color:#ff79c6>!=</span> rawTextLine<span style=color:#ff79c6>.</span>length(); <span style=color:#ff79c6>++</span>cnt) {
+</span></span><span style=display:flex><span>                    char ch <span style=color:#ff79c6>=</span> rawTextLine<span style=color:#ff79c6>.</span>charAt(cnt);
+</span></span><span style=display:flex><span>                    lineWidth <span style=color:#ff79c6>+=</span> tvPaint<span style=color:#ff79c6>.</span>measureText(String<span style=color:#ff79c6>.</span>valueOf(ch));
+</span></span><span style=display:flex><span>                    <span style=color:#ff79c6>if</span> (lineWidth <span style=color:#ff79c6>&amp;</span>lt;<span style=color:#ff79c6>=</span> tvWidth) {
+</span></span><span style=display:flex><span>                        sbNewText<span style=color:#ff79c6>.</span>append(ch);
+</span></span><span style=display:flex><span>                    } <span style=color:#ff79c6>else</span> {
+</span></span><span style=display:flex><span>                        sbNewText<span style=color:#ff79c6>.</span>append(<span style=color:#f1fa8c>&#34;</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>);
+</span></span><span style=display:flex><span>                        lineWidth <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>;
+</span></span><span style=display:flex><span>                        <span style=color:#ff79c6>--</span>cnt;
+</span></span><span style=display:flex><span>                    }
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            sbNewText<span style=color:#ff79c6>.</span>append(<span style=color:#f1fa8c>&#34;</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>//</span>把结尾多余的\n去掉
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (<span style=color:#ff79c6>!</span>rawText<span style=color:#ff79c6>.</span>endsWith(<span style=color:#f1fa8c>&#34;</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>)) {
+</span></span><span style=display:flex><span>            sbNewText<span style=color:#ff79c6>.</span>deleteCharAt(sbNewText<span style=color:#ff79c6>.</span>length() <span style=color:#ff79c6>-</span> <span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> sbNewText<span style=color:#ff79c6>.</span>toString();
+</span></span><span style=display:flex><span>    }
+</span></span></code></pre></div><pre><code>&lt;/div&gt;
+
+
+
+  &lt;span class=&quot;cnblogs_code_collapse&quot;&gt;View Code&lt;/span&gt;&lt;/div&gt; 
+  
+  
+
+    &amp;nbsp;
+  
+
+  
+  
+
+    加载完调用：
+  
+
+  
+  &lt;div class=&quot;cnblogs_code&quot;&gt;
+    ![技术分享](http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif)
+
+    
+    &lt;div id=&quot;cnblogs_code_open_f0bb6e5e-2c9c-43fb-97bd-a567fd48c148&quot; class=&quot;cnblogs_code_hide&quot;&gt;
+      &lt;div class=&quot;top-box hide&quot;&gt;
+      &lt;/div&gt;
+      
+      ```
+</code></pre><p>tvDes.setText(desc.getSurvey_conclusion());
+tvDes.setText(autoSplitText(tvDes));</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>          &lt;span class=&#34;cnblogs_code_collapse&#34;&gt;View Code&lt;/span&gt;&lt;/div&gt; 
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            &amp;nbsp;
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            如果出现不正常的问题，再换种方式调用，：
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>          &lt;div class=&#34;cnblogs_code&#34;&gt;
+</span></span><span style=display:flex><span>            ![技术分享](http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif)
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>            
+</span></span><span style=display:flex><span>            &lt;div id=&#34;cnblogs_code_open_f9e0301e-16f5-43d7-b89a-7fc4725cbb4a&#34; class=&#34;cnblogs_code_hide&#34;&gt;
+</span></span><span style=display:flex><span>              &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>              &lt;/div&gt;
+</span></span><span style=display:flex><span>              
+</span></span><span style=display:flex><span>              ```
+</span></span><span style=display:flex><span>   ViewTreeObserver observer = tvDes.getViewTreeObserver();
+</span></span><span style=display:flex><span>        observer.addOnGlobalLayoutListener(
+</span></span><span style=display:flex><span>                new ViewTreeObserver.OnGlobalLayoutListener() {
+</span></span><span style=display:flex><span>                    @Override
+</span></span><span style=display:flex><span>                    public void onGlobalLayout() {
+</span></span><span style=display:flex><span>                        tvDes.setText(autoSplitText(tvDes));
+</span></span><span style=display:flex><span>                    }
+</span></span><span style=display:flex><span>                });
+</span></span></code></pre></div><pre><code>        &lt;/div&gt;
+        
+        
+
+          &lt;span class=&quot;cnblogs_code_collapse&quot;&gt;View Code&lt;/span&gt;&lt;/div&gt; 
+          
+          
+
+            就可以了。
+</code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android%E5%B8%83%E5%B1%80%E4%B8%AD%E7%9A%84%E7%A9%BA%E6%A0%BC%E5%92%8C%E5%8D%A0%E4%B8%80%E4%B8%AA%E6%B1%89%E5%AD%97%E5%AE%BD%E5%BA%A6%E7%9A%84%E7%A9%BA%E6%A0%BC%E7%9A%84%E5%AE%9E%E7%8E%B0/><span class=title>« 上一页</span>
+<span>Android布局中的空格和占一个汉字宽度的空格的实现</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E5%8A%A8%E6%80%81%E8%8E%B7%E5%8F%96%E6%9D%83%E9%99%90/><span class=title>下一页 »</span>
+<span>Android动态获取权限</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

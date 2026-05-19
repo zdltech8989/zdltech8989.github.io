@@ -1,0 +1,630 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>自定义ImageView 宽度自适应屏幕，高度等比缩放 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。 ``` package com.etongwl.commonlibs.view; import android.annotation.SuppressLint; import android.cont..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="自定义ImageView 宽度自适应屏幕，高度等比缩放"><meta property="og:description" content="实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。 ``` package com.etongwl.commonlibs.view; import android.annotation.SuppressLint; import android.cont..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-05-02T08:35:05+00:00"><meta property="article:modified_time" content="2017-05-02T08:35:05+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="自定义ImageView 宽度自适应屏幕，高度等比缩放"><meta name=twitter:description content="实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。 ``` package com.etongwl.commonlibs.view; import android.annotation.SuppressLint; import android.cont..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"自定义ImageView 宽度自适应屏幕，高度等比缩放","item":"https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"自定义ImageView 宽度自适应屏幕，高度等比缩放","name":"自定义ImageView 宽度自适应屏幕，高度等比缩放","description":"实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。 ``` package com.etongwl.commonlibs.view; import android.annotation.SuppressLint; import android.cont...","keywords":["android","移动开发"],"articleBody":"实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。\npackage com.etongwl.commonlibs.view; import android.annotation.SuppressLint; import android.content.Context; import android.graphics.Bitmap; import android.graphics.Canvas; import android.graphics.drawable.BitmapDrawable; import android.graphics.drawable.Drawable; import android.graphics.drawable.NinePatchDrawable; import android.util.AttributeSet; import android.view.ViewGroup; import android.widget.ImageView; /* * @Override public void setImageDrawable(final Drawable drawable) { super.setImageDrawable(drawable); if (drawable != null) { post(new Runnable() { @Override public void run() { float mWidth = getWidth(); float pWidth = drawable.getBounds().width(); float pHeight = drawable.getBounds().height(); int mHeight = (int) ((mWidth / pWidth) * pHeight); LayoutParams params = getLayoutParams(); params.height = mHeight; params.width = (int) mWidth; setLayoutParams(params); } }); } } 首先, 如果drawable不为空, 则通过drawable.getBounds()去获取drawable边界的宽和高. 在根据ImageView的宽与drawable的宽的比例去计算高度, 最后通过LayoutParams设置ImageView的高度 * */ /* \u0026lt;com.etongwl.commonlibs.view.AdaptiveImageView android:id=\"@+id/detail_image\" android:layout_width=\"wrap_content\" android:layout_height=\"wrap_content\" android:layout_gravity=\"center\" android:layout_marginTop=\"15dp\" android:scaleType=\"centerCrop\" android:background=\"@drawable/diandianxinwen\" android:visibility=\"visible\" /\u0026gt; */ /** * 按比例缩放 */ @SuppressLint(\"AppCompatCustomView\") public class AdaptiveImageView extends ImageView { // 控件默认长、宽 private int defaultWidth = 0; private int defaultHeight = 0; // 比例 private float scale = 0; public AdaptiveImageView(Context context) { super(context); } public AdaptiveImageView(Context context, AttributeSet attrs) { super(context, attrs); } public AdaptiveImageView(Context context, AttributeSet attrs, int defStyle) { super(context, attrs, defStyle); } @Override protected void onDraw(Canvas canvas) { Drawable drawable = getDrawable(); if (drawable == null) { return; } if (getWidth() == 0 || getHeight() == 0) { return; } this.measure(0, 0); if (drawable.getClass() == NinePatchDrawable.class) return; Bitmap b = ((BitmapDrawable) drawable).getBitmap(); Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true); if (bitmap.getWidth() == 0 || bitmap.getHeight() == 0) { return; } if (defaultWidth == 0) { defaultWidth = getWidth(); } if (defaultHeight == 0) { defaultHeight = getHeight(); } scale = (float) defaultWidth / (float) bitmap.getWidth(); defaultHeight = Math.round(bitmap.getHeight() * scale); ViewGroup.LayoutParams params = this.getLayoutParams(); params.width = defaultWidth; params.height = defaultHeight; this.setLayoutParams(params); super.onDraw(canvas); } } 简单实现ImageView宽度填满屏幕，高度自适应的两种方式 两种方式 1.重写View的onMeasure方法参考这里easion_zms的专栏 核心代码\n2.设置ImageView的属性： //宽度填满屏幕 android:layout_width=”match_parent” android:scaleType=”fitXY” android:layout_height=”wrap_content” //保持比例，一定要设置 android:adjustViewBounds=”true”\nAndroid ImageView图片自适应\n","wordCount":"648","inLanguage":"zh","datePublished":"2017-05-02T08:35:05Z","dateModified":"2017-05-02T08:35:05Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">自定义ImageView 宽度自适应屏幕，高度等比缩放</h1><div class=post-description>实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。 ``` package com.etongwl.commonlibs.view; import android.annotation.SuppressLint; import android.cont...</div><div class=post-meta><span title='2017-05-02 08:35:05 +0000 UTC'>2017年5月2日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e7%ae%80%e5%8d%95%e5%ae%9e%e7%8e%b0imageview%e5%ae%bd%e5%ba%a6%e5%a1%ab%e6%bb%a1%e5%b1%8f%e5%b9%95%e9%ab%98%e5%ba%a6%e8%87%aa%e9%80%82%e5%ba%94%e7%9a%84%e4%b8%a4%e7%a7%8d%e6%96%b9%e5%bc%8f aria-label=简单实现ImageView宽度填满屏幕，高度自适应的两种方式>简单实现ImageView宽度填满屏幕，高度自适应的两种方式</a></li></ul></div></details><div class="post-content md-content"><p>实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>package com<span style=color:#ff79c6>.</span>etongwl<span style=color:#ff79c6>.</span>commonlibs<span style=color:#ff79c6>.</span>view;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>annotation<span style=color:#ff79c6>.</span>SuppressLint;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>content<span style=color:#ff79c6>.</span>Context;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>Bitmap;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>Canvas;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>drawable<span style=color:#ff79c6>.</span>BitmapDrawable;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>drawable<span style=color:#ff79c6>.</span>Drawable;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>drawable<span style=color:#ff79c6>.</span>NinePatchDrawable;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>util<span style=color:#ff79c6>.</span>AttributeSet;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>view<span style=color:#ff79c6>.</span>ViewGroup;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>widget<span style=color:#ff79c6>.</span>ImageView;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/*</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> @Override
+</span></span><span style=display:flex><span>    public void setImageDrawable(final Drawable drawable) {
+</span></span><span style=display:flex><span>        super<span style=color:#ff79c6>.</span>setImageDrawable(drawable);
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (drawable <span style=color:#ff79c6>!=</span> null) {
+</span></span><span style=display:flex><span>            post(new Runnable() {
+</span></span><span style=display:flex><span>                @Override public void run() {
+</span></span><span style=display:flex><span>                    float mWidth <span style=color:#ff79c6>=</span> getWidth();
+</span></span><span style=display:flex><span>                    float pWidth <span style=color:#ff79c6>=</span> drawable<span style=color:#ff79c6>.</span>getBounds()<span style=color:#ff79c6>.</span>width();
+</span></span><span style=display:flex><span>                    float pHeight <span style=color:#ff79c6>=</span> drawable<span style=color:#ff79c6>.</span>getBounds()<span style=color:#ff79c6>.</span>height();
+</span></span><span style=display:flex><span>                    int mHeight <span style=color:#ff79c6>=</span> (int) ((mWidth <span style=color:#ff79c6>/</span> pWidth) <span style=color:#ff79c6>*</span> pHeight);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    LayoutParams params <span style=color:#ff79c6>=</span> getLayoutParams();
+</span></span><span style=display:flex><span>                    params<span style=color:#ff79c6>.</span>height <span style=color:#ff79c6>=</span> mHeight;
+</span></span><span style=display:flex><span>                    params<span style=color:#ff79c6>.</span>width <span style=color:#ff79c6>=</span> (int) mWidth;
+</span></span><span style=display:flex><span>                    setLayoutParams(params);
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>            });
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    首先, 如果drawable不为空, 则通过drawable<span style=color:#ff79c6>.</span>getBounds()去获取drawable边界的宽和高<span style=color:#ff79c6>.</span> 在根据ImageView的宽与drawable的宽的比例去计算高度, 最后通过LayoutParams设置ImageView的高度
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/*</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&amp;</span>lt;com<span style=color:#ff79c6>.</span>etongwl<span style=color:#ff79c6>.</span>commonlibs<span style=color:#ff79c6>.</span>view<span style=color:#ff79c6>.</span>AdaptiveImageView
+</span></span><span style=display:flex><span>          android:id<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;@+id/detail_image&#34;</span>
+</span></span><span style=display:flex><span>          android:layout_width<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;wrap_content&#34;</span>
+</span></span><span style=display:flex><span>          android:layout_height<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;wrap_content&#34;</span>
+</span></span><span style=display:flex><span>          android:layout_gravity<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;center&#34;</span>
+</span></span><span style=display:flex><span>          android:layout_marginTop<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;15dp&#34;</span>
+</span></span><span style=display:flex><span>          android:scaleType<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;centerCrop&#34;</span>
+</span></span><span style=display:flex><span>          android:background<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;@drawable/diandianxinwen&#34;</span>
+</span></span><span style=display:flex><span>          android:visibility<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;visible&#34;</span> <span style=color:#ff79c6>/&amp;</span>gt;
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/**</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> 按比例缩放
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@SuppressLint(<span style=color:#f1fa8c>&#34;AppCompatCustomView&#34;</span>)
+</span></span><span style=display:flex><span>public <span style=color:#ff79c6>class</span> AdaptiveImageView <span style=color:#ff79c6>extends</span> ImageView {
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span> 控件默认长、宽
+</span></span><span style=display:flex><span>    private int defaultWidth <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>;
+</span></span><span style=display:flex><span>    private int defaultHeight <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span> 比例
+</span></span><span style=display:flex><span>    private float scale <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public AdaptiveImageView(Context context) {
+</span></span><span style=display:flex><span>        super(context);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public AdaptiveImageView(Context context, AttributeSet attrs) {
+</span></span><span style=display:flex><span>        super(context, attrs);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    public AdaptiveImageView(Context context, AttributeSet attrs, int defStyle) {
+</span></span><span style=display:flex><span>        super(context, attrs, defStyle);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    @Override
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    protected void onDraw(Canvas canvas) {
+</span></span><span style=display:flex><span>        Drawable drawable <span style=color:#ff79c6>=</span> getDrawable();
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (drawable <span style=color:#ff79c6>==</span> null) {
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>return</span>;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (getWidth() <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span> <span style=color:#ff79c6>||</span> getHeight() <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>return</span>;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        this<span style=color:#ff79c6>.</span>measure(<span style=color:#bd93f9>0</span>, <span style=color:#bd93f9>0</span>);
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (drawable<span style=color:#ff79c6>.</span>getClass() <span style=color:#ff79c6>==</span> NinePatchDrawable<span style=color:#ff79c6>.</span><span style=color:#ff79c6>class</span>)
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>return</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        Bitmap b <span style=color:#ff79c6>=</span> ((BitmapDrawable) drawable)<span style=color:#ff79c6>.</span>getBitmap();
+</span></span><span style=display:flex><span>        Bitmap bitmap <span style=color:#ff79c6>=</span> b<span style=color:#ff79c6>.</span>copy(Bitmap<span style=color:#ff79c6>.</span>Config<span style=color:#ff79c6>.</span>ARGB_8888, <span style=font-style:italic>true</span>);
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (bitmap<span style=color:#ff79c6>.</span>getWidth() <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span> <span style=color:#ff79c6>||</span> bitmap<span style=color:#ff79c6>.</span>getHeight() <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+</span></span><span style=display:flex><span>            <span style=color:#ff79c6>return</span>;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (defaultWidth <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+</span></span><span style=display:flex><span>            defaultWidth <span style=color:#ff79c6>=</span> getWidth();
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>if</span> (defaultHeight <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+</span></span><span style=display:flex><span>            defaultHeight <span style=color:#ff79c6>=</span> getHeight();
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        scale <span style=color:#ff79c6>=</span> (float) defaultWidth <span style=color:#ff79c6>/</span> (float) bitmap<span style=color:#ff79c6>.</span>getWidth();
+</span></span><span style=display:flex><span>        defaultHeight <span style=color:#ff79c6>=</span> Math<span style=color:#ff79c6>.</span>round(bitmap<span style=color:#ff79c6>.</span>getHeight() <span style=color:#ff79c6>*</span> scale);
+</span></span><span style=display:flex><span>        ViewGroup<span style=color:#ff79c6>.</span>LayoutParams params <span style=color:#ff79c6>=</span> this<span style=color:#ff79c6>.</span>getLayoutParams();
+</span></span><span style=display:flex><span>        params<span style=color:#ff79c6>.</span>width <span style=color:#ff79c6>=</span> defaultWidth;
+</span></span><span style=display:flex><span>        params<span style=color:#ff79c6>.</span>height <span style=color:#ff79c6>=</span> defaultHeight;
+</span></span><span style=display:flex><span>        this<span style=color:#ff79c6>.</span>setLayoutParams(params);
+</span></span><span style=display:flex><span>        super<span style=color:#ff79c6>.</span>onDraw(canvas);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h1 class=title id=简单实现imageview宽度填满屏幕高度自适应的两种方式>简单实现ImageView宽度填满屏幕，高度自适应的两种方式</h1><p>两种方式 1.重写View的onMeasure方法参考这里<a href=http://blog.csdn.net/easion_zms/article/details/50263409>easion_zms的专栏</a> 核心代码</p><p>2.设置ImageView的属性： //宽度填满屏幕 android:layout_width=”match_parent” android:scaleType=”fitXY” android:layout_height=”wrap_content” //保持比例，一定要设置 android:adjustViewBounds=”true”</p><p> </p><p>Android ImageView图片自适应</p><p>&lt;ImageView</p><p>   android:id=”@+id/dynamic_item_image”</p><p>   android:layout_width=”wrap_content”</p><p>   android:layout_height=”wrap_content”</p><p>   android:layout_gravity=”top”</p><p>   android:layout_marginTop=”5dip”</p><p>   android:adjustViewBounds=”true”</p><p>   android:background=”@drawable/imageview_background” /><br>另外，android:background=”@drawable/imageview_background”是给图片加了一个边框，其中</p><p>imageview_background.xml:<br><em>&lt;shape</em>  xmlns:android=”http://schemas.android.com/apk/res/android”> <solid android:color=&#8221;@color/white&#8221;/><stroke android:width=&#8221;2.0dip&#8221; android:color=&#8221;#99D9D9D9&#8243;><corners android:radius=&#8221;2.0dip&#8221;></shape></p><p>ImageView属性说明：</p><p>1、类概述</p><p>                显示任意图像，例如图标。ImageView类可以加载各种来源的图片（如资源或图片库），需要计算图像的尺寸，比便它可以在其他布局中使用，并提供例如缩放和着色（渲染）各种显示选项。</p><p>2、XML属性</p><table class=ke-zeroborder cellspacing=0 cellpadding=0><tr><td><pre><code>    属性名称
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    描述
+  
+
+&lt;/td&gt;
+</code></pre></tr><tr><td><pre><code>    android:adjustViewBounds
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    是否保持宽高比。需要与maxWidth、MaxHeight一起使用，否则单独使用没有效果。
+  
+
+&lt;/td&gt;
+</code></pre></tr><tr><td><pre><code>    android:cropToPadding
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    是否截取指定区域用空白代替。单独设置无效果，需要与scrollY一起使用，效果如下，实现代码见代码部分：
+  
+
+  
+  
+
+    [&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225808_136.jpg&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;153&quot; height=&quot;80&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143901_RjRg.jpg) 
+  
+
+  
+  
+
+    &amp;nbsp;
+  
+
+&lt;/td&gt;
+</code></pre></tr><tr><td><pre><code>    android:maxHeight
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    设置View的最大高度，单独使用无效，需要与setAdjustViewBounds一起使用。如果想设置图片固定大小，又想保持图片宽高比，需要如下设置：
+  
+
+  
+  
+
+    1） 设置setAdjustViewBounds为true；
+  
+
+  
+  
+
+    2） 设置maxWidth、MaxHeight；
+  
+
+  
+  
+
+    3） 设置设置layout_width和layout_height为wrap_content。
+  
+
+&lt;/td&gt;
+</code></pre></tr><tr><td><pre><code>    android:maxWidth
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    设置View的最大宽度。同上。
+  
+
+&lt;/td&gt;
+</code></pre></tr><tr><td><pre><code>    android:scaleType
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    设置图片的填充方式。
+  
+
+  
+  &lt;table class=&quot;ke-zeroborder &quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          matrix
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          用矩阵来绘图
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+         
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          fitXY
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          1
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          拉伸图片（不按比例）以填充View的宽高
+        
+
+        
+        
+
+          [&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225808_94.png&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;120&quot; height=&quot;30&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143901_f9F7.png)
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          layout_
+        
+
+        
+        
+
+          height
+        
+
+        
+        
+
+          :30px
+        
+
+        
+        
+
+          layout_
+        
+
+        
+        
+
+          width
+        
+
+        
+        
+
+          :120px
+        
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          fitStart
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          2
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          按比例拉伸图片，拉伸后图片的高度为View的高度，且显示在View的左边
+        
+
+        
+        
+
+          [&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225808_131.png&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;120&quot; height=&quot;30&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143901_FjUd.png)
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          fitCenter
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          3
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          按比例拉伸图片，拉伸后图片的高度为View的高度，且显示在View的中间
+        
+
+        
+        
+
+          [&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225808_201.png&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;120&quot; height=&quot;30&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143901_c4jh.png)
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          fitEnd
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          4
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          按比例拉伸图片，拉伸后图片的高度为View的高度，且显示在View的右边
+        
+
+        
+        
+
+          [&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225808_509.png&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;120&quot; height=&quot;30&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143901_aCWp.png)
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          center
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          5
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          按原图大小显示图片，但图片宽高大于View的宽高时，截图图片中间部分显示[&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225808_219.png&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;80&quot; height=&quot;60&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143901_Rzoa.png)
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          &amp;nbsp;
+        
+
+        
+        
+
+          layout_
+        
+
+        
+        
+
+          height
+        
+
+        
+        
+
+          :60px
+        
+
+        
+        
+
+          layout_
+        
+
+        
+        
+
+          width
+        
+
+        
+        
+
+          :80px
+        
+
+        
+        
+
+          padding
+        
+
+        
+        
+
+          :10px
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          centerCrop
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          6
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          按比例放大原图直至等于某边View的宽高显示。[&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225808_405.png&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;80&quot; height=&quot;60&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143901_JPev.png)
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    
+    &lt;tr&gt;
+      &lt;td&gt;
+        
+
+          centerInside
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          7
+        
+
+      &lt;/td&gt;
+      
+      &lt;td&gt;
+        
+
+          当原图宽高或等于View的宽高时，按原图大小居中显示；反之将原图缩放至View的宽高居中显示。[&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225809_159.png&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;80&quot; height=&quot;60&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143902_UCBx.png)
+        
+
+        
+        
+
+          &amp;nbsp;
+        
+
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/td&gt;
+</code></pre></tr><tr><td><pre><code>    android:src
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    设置View的drawable(如图片，也可以是颜色，但是需要指定View的大小)
+  
+
+&lt;/td&gt;
+</code></pre></tr><tr><td><pre><code>    android:tint
+  
+
+&lt;/td&gt;
+
+&lt;td&gt;
+  
+
+    将图片渲染成指定的颜色。见下图：
+  
+
+  
+  
+
+    [&lt;img loading=&quot;lazy&quot; decoding=&quot;async&quot; style=&quot;border: 0px; max-width: 100%; vertical-align: middle;&quot; title=&quot;Android &lt;wbr&gt;ImageView图片自适应&quot; src=&quot;http://static.open-open.com/lib/uploadImg/20140506/20140506225809_434.jpg&quot; alt=&quot;Android ImageView图片自适应&quot; width=&quot;81&quot; height=&quot;69&quot; /&gt;](http://static.oschina.net/uploads/img/201405/06143902_dMaT.jpg) 左边为原图，右边为设置后的效果，见后面代码。
+  
+
+&lt;/td&gt;
+</code></pre></tr></table><p>原文地址：http://blog.sina.com.cn/s/blog_618199e60100y537.html</p><p> </p><p>android ImageView 宽度设定，高度自适应</p><p>首先，需要给你的ImageView布局加上Android:adjustViewBounds=”true”</p><p>&lt;ImageView android:id=”@+id/test_image”<br>android:layout_width=”wrap_content”<br>android:layout_height=”wrap_content”<br>android:scaleType=”fitXY”<br>android:adjustViewBounds=”true”<br>android:layout_gravity=”center”<br>android:contentDescription=”@string/app_name”<br>android:src=”@drawable/ic_launcher” /></p><p> </p><p>然后，在代码里设置ImageView.最大宽度和最大高度，因为adjustViewBounds属性只有在设置了最大高度和最大宽度后才会起作用</p><p>int screenWidth = getScreenWidth(this);<br>ViewGroup.LayoutParams lp = testImage.getLayoutParams();<br>lp.width = screenWidth;<br>lp.height = LayoutParams.WRAP_CONTENT;<br>testImage.setLayoutParams(lp);</p><p>testImage.setMaxWidth(screenWidth);<br>testImage.setMaxHeight(screenWidth * 5); 这里其实可以根据需求而定，我这里测试为最大宽度的5倍</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/brew-%E4%B8%ADnode-7-6-0-already-installed-its-just-not-linked-%E9%94%99%E8%AF%AF%E4%BF%AE%E6%94%B9/><span class=title>« 上一页</span>
+<span>brew 中node-7.6.0 already installed, it’s just not linked.错误修改</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/><span class=title>下一页 »</span>
+<span>Android 中的CreatePackageContext()</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

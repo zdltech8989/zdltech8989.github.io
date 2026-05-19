@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Android Studio工具 on ZDL Tech Blog</title>
+    <link>http://localhost:1313/categories/android-studio%E5%B7%A5%E5%85%B7/</link>
+    <description>Recent content in Android Studio工具 on ZDL Tech Blog</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 28 Oct 2018 07:02:24 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/android-studio%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android studio项目java文件过大导致的问题记录</title>
+      <link>http://localhost:1313/posts/android-studio%E9%A1%B9%E7%9B%AEjava%E6%96%87%E4%BB%B6%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Sun, 28 Oct 2018 07:02:24 +0000</pubDate>
+      <guid>http://localhost:1313/posts/android-studio%E9%A1%B9%E7%9B%AEjava%E6%96%87%E4%BB%B6%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/</guid>
+      <description>&lt;p&gt;最近在做一个项目的时候，出现了一个很奇怪的问题，我的java文件前面出现了一个奇怪的蓝色j，&lt;/p&gt;
+&lt;p&gt;这使得我的代码其他地方无法对它进行调用，所以程序一运行，调用到它的地方就会报错，（因为我的这个代码是用protobuffer协议自动生成的java文件，比较大，大概有5M多）。&lt;/p&gt;
+&lt;p&gt;后来上网查了一下，发现是IDEA对能关联的文件大小做了限制，主要是为了保护内存，默认值为2500kb或者5000kb，对于一般的java文件也够用了，只是这里我用protocbuf生成的java文件过大，所以要对它这个默认的值进行修改。&lt;/p&gt;
+&lt;p&gt;找到Android studio 的安装目录下bin 下的idea.properties文件（默认安装路径：C:\Program Files\Android\Android Studio\bin）。&lt;/p&gt;
+&lt;p&gt;打开这个文件，对里面的idea.max.intellisense.filesizej进行设置，保存( 单位是kb）&lt;/p&gt;
+&lt;p&gt;然后重启Android studio即可。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Android开发中Gradle配置使用</title>
+      <link>http://localhost:1313/posts/androidgradle/</link>
+      <pubDate>Wed, 07 Jun 2017 23:15:10 +0000</pubDate>
+      <guid>http://localhost:1313/posts/androidgradle/</guid>
+      <description>&lt;h1 id=&#34;toc_0&#34;&gt;Android开发中Gradle配置使用&lt;/h1&gt;
+&lt;img decoding=&#34;async&#34; src=&#34;https://img.shields.io/badge/AnroidGradleTools-V1.0.0-green.svg&#34; alt=&#34;&#34; /&gt; 
+&lt;h5 id=&#34;toc_1&#34;&gt;前言&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;font size=&#34;2&#34;&gt;每次创建私有项目都需要配置gradle文件，没什么技术含量，还要多劳动（程序员就是懒），为了能方便使用，才有了本仓库的诞生。&lt;br /&gt; 欢迎各位小伙伴们来砸场，喜欢请star下…&lt;/font&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;toc_2&#34;&gt;私有仓库使用&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;在下载config.properties文件放到工厂根目录（和gradle.properties同级）&lt;/li&gt;
+&lt;li&gt;如果使用Artifactory仓库配置工程build.gradle文件请看详细文件&lt;/li&gt;
+&lt;li&gt;在项目build.gradle文件中使用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;apply from:&amp;amp;#39;https://coding.net/u/zdl_411437734/p/gradle/git/raw/master/nexusBintry.gradle&amp;amp;#39;
+    或者
+apply from:&amp;amp;#39;https://coding.net/u/zdl_411437734/p/gradle/git/raw/master/artifactBintry.gradle&amp;amp;#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;执行相关命令即可&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;gradle uploadArchives （nexus仓库）
+或者
+gradle assembleRelease artifactoryPublish (artifactory仓库)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&#34;https://coding.net/u/zdl_411437734/p/gradle/git/blob/master/Maven.md&#34;&gt;详细使用文档&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;toc_3&#34;&gt;Sonarqube使用&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://coding.net/u/zdl_411437734/p/gradle/git/blob/master/SONARQUBE.md&#34;&gt;详细使用文档&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;toc_4&#34;&gt;pack（打包）使用&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;font size=&#34;2&#34;&gt;经常打包apk，有一个困扰，怎么修改打包后的名称，怎么区分打包的是release版本还是debug版本，想了解请继续看&lt;/font&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;在项目的buil.gradle文件配置打包的版本和输出的名称&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;//打包APK根据不同的环境打包不同的名称
+ext{
+    productName = project.name
+    versionName = &amp;quot;1.0.1&amp;quot;
+}
+//productName 打包出来的名称
+//versionName 打包显示版本号
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;2 . 引入packe.gradle文件&lt;a href=&#34;http://zdl_411437734.coding.me/gradle/pack.gradle&#34;&gt;下载packe.gradle&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apply from:&amp;quot;./pack.gradle&amp;quot;
+或者
+apply from:&amp;quot;https://coding.net/u/zdl_411437734/p/gradle/git/raw/master/pack.gradle&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3 . 打包即可（~~）&lt;/p&gt;
+&lt;h3 id=&#34;toc_5&#34;&gt;sign（签名）使用&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;font size=&#34;2&#34;&gt;有时候，在集成第三方时候，需要我们输入签名，在开发中和发布中一般默认都是2个keystroe，在这种情况下，开发很不方便，不断要打包成正式包才能测试，为了解决这个问题，我们配置gradle在开发时就使用正式签名开发，想了解请继续看&lt;/font&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;在项目的buil.gradle文件配置打包的版本和输出的名称&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;//打包APK根据不同的环境打包不同的名称
+ext{
+    productName = &amp;quot;CommonProject&amp;quot;
+    versionName = &amp;quot;2.0.1&amp;quot;
+    keyPassword = &amp;quot;android&amp;quot;
+    keyFilePath = &amp;quot;/Users/jason/Documents/keystore/android.keystore&amp;quot;
+    storePassword = &amp;quot;android&amp;quot;
+    keyAlias = &amp;quot;android&amp;quot;
+}
+
+//productName 打包出来的名称
+//versionName 打包显示版本号
+//keyPassword 密码
+//keyFilePath 正式全路径
+//storePassword 密码
+//keyAlias 别名
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;2 . 引入sign.gradle文件&lt;a href=&#34;http://zdl_411437734.coding.me/gradle/sign.gradle&#34;&gt;下载sign.gradle&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>使用Artifactory搭建本地maven仓库</title>
+      <link>http://localhost:1313/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/</link>
+      <pubDate>Tue, 21 Mar 2017 08:06:38 +0000</pubDate>
+      <guid>http://localhost:1313/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;引言&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第一次写成以后一般都会有一些小bug的，这样，同事A在自己电脑上修改代码，然后再次修改代码分别传给B和C。B和C需要替换之前的module，重新运行。这相当的麻烦，如果还有同事D,E,F..做起来真是噩梦，可能有有人想问，为什么不用svn或者git，用版本控制工具当然会好非常多，但每次pull其实也比较麻烦。还有另一种方法，使用本地maven仓库，使用过android studio的开发者都应该体会过其中的好处，当需要依赖一个新的模块(或者叫library)时，只需要这样&lt;/p&gt;
+&lt;p&gt;填写需要的模块及对应的版本号，同步一下就行了，很方便。本篇文章就教各位如何使用Artifactory来搭建本地仓库，来完成上图的效果&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;什么是Artifactory?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;一句话，开源的Maven仓库管理者&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;搭建Artifactory&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1.检测你的jdk版本是否为1.8及以上&lt;/p&gt;
+&lt;p&gt;打开cmd，输入java -version，如果输出结果如下所示即可，如果是1.6或者1.7，去&lt;a href=&#34;http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;官网下载&lt;/a&gt;最新版本替换&lt;/p&gt;
+&lt;div&gt;
+  &lt;code style=&#34;box-sizing: border-box; font-family: Monaco, Menlo, Consolas, &#39;Courier New&#39;, monospace; font-size: 14px; padding: 0px; color: inherit; white-space: pre-wrap !important; background: transparent; border-radius: 4px; margin: 0px; border: 0px; outline: 0px; vertical-align: baseline; word-break: break-word;&#34; data-original-code=&#34;C:\Users\Administrator&gt;java -version java version &amp;quot;1.8.0_31&amp;quot; Java(TM) SE Runtime Environment (build 1.8.0_31-b13) Java HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode)&#34; data-snippet-id=&#34;ext.437a4825669d574acb250e72155a8b81&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;C:\Users\Administrator&amp;gt;java -version&amp;lt;br /&gt;
+java version &#34;1.8.0_31&#34;&amp;lt;br /&gt;
+Java(TM) SE Runtime Environment (build 1.8.0_31-b13)&amp;lt;br /&gt;
+Java HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode)&lt;/code&gt;
+&lt;/div&gt;
+&lt;p&gt;2.下载&lt;a href=&#34;https://www.jfrog.com/open-source/&#34; target=&#34;_blank&#34; rel=&#34;noopener noreferrer&#34;&gt;Artifactory&lt;/a&gt;，解压下载好的安装包，打开解压后文件夹下的bin文件夹，运行artifactory.bat，大概等待1分钟左右就安装完成了&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>AS中Git与GitHub的使用入门</title>
+      <link>http://localhost:1313/posts/as%E4%B8%ADgit%E4%B8%8Egithub%E7%9A%84%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Tue, 22 Nov 2016 15:02:31 +0000</pubDate>
+      <guid>http://localhost:1313/posts/as%E4%B8%ADgit%E4%B8%8Egithub%E7%9A%84%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/</guid>
+      <description>&lt;p&gt;一直想把自己的写的开源小项目放到github中，这两天才花时间来学学&lt;a class=&#34;replace_word&#34; title=&#34;Git知识库&#34; href=&#34;http://lib.csdn.net/base/git&#34; target=&#34;_blank&#34;&gt;Git&lt;/a&gt;。遇到些问题，百度了很多才解决。跟SVN一样，值得写一篇总结记录下，虽然上资源很多，但作为入门，自己遇到的写出来完全不一样。&lt;/p&gt;
+&lt;h2 id=&#34;一-git与github的简单介绍&#34;&gt;&lt;a name=&#34;t0&#34;&gt;&lt;/a&gt;&lt;strong&gt;一、 Git与GitHub的简单介绍&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Git是一个开源的分布式&lt;a class=&#34;replace_word&#34; title=&#34;Git知识库&#34; href=&#34;http://lib.csdn.net/base/git&#34; target=&#34;_blank&#34;&gt;版本控制&lt;/a&gt;工具。&lt;br&gt;
+GitHub是一个使用Git作为版本控制的项目托管平台，它是一个网站。&lt;br&gt;
+详细请参考：&lt;a href=&#34;http://www.cnblogs.com/cocowool/archive/2012/02/17/2356125.html&#34;&gt;http://www.cnblogs.com/cocowool/archive/2012/02/17/2356125.html&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二-git的安装&#34;&gt;&lt;a name=&#34;t1&#34;&gt;&lt;/a&gt;&lt;strong&gt;二、 Git的安装&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;下载地址：&lt;a href=&#34;https://git-scm.com/download/win&#34;&gt;https://git-scm.com/download/win&lt;/a&gt; 或 &lt;a href=&#34;https://git-for-windows.github.io/&#34;&gt;https://git-for-windows.github.io/&lt;/a&gt;&lt;br&gt;
+安装时，全部默认选择即可。&lt;/p&gt;
+&lt;h2 id=&#34;三-as中配置git与github&#34;&gt;&lt;a name=&#34;t2&#34;&gt;&lt;/a&gt;&lt;strong&gt;三、 AS中配置Git与GitHub&lt;/strong&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;1-git的配置&#34;&gt;&lt;a name=&#34;t3&#34;&gt;&lt;/a&gt;&lt;strong&gt;1. Git的配置&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;在Settings设置中。&lt;br&gt;
+Path to Git executable: 【Git安装后的路径】&lt;br&gt;
+然后“Test”&lt;a class=&#34;replace_word&#34; title=&#34;软件测试知识库&#34; href=&#34;http://lib.csdn.net/base/softwaretest&#34; target=&#34;_blank&#34;&gt;测试&lt;/a&gt;一下，成功才可以。&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810014922627&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2-github的配置&#34;&gt;&lt;a name=&#34;t4&#34;&gt;&lt;/a&gt;&lt;strong&gt;2. GitHub的配置&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Host: github.com&lt;br&gt;
+Login: 【你的github用户名】&lt;br&gt;
+Password: 【github登录密码】&lt;br&gt;
+填好后，也进行“Test”测试一下，同样成功才可以。&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015011096&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;br&gt;
+测试完后按确定，会提示你是否设置密码，看个人需求。&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015045245&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;四-上传代码到github&#34;&gt;&lt;a name=&#34;t5&#34;&gt;&lt;/a&gt;&lt;strong&gt;四、 上传代码到GitHub&lt;/strong&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;1-创建github仓库&#34;&gt;&lt;a name=&#34;t6&#34;&gt;&lt;/a&gt;&lt;strong&gt;1. 创建GitHub仓库&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;在Github上创建一个仓库：&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015152575&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;创建好后，将是这个样子，里面包括一个.gitignore忽略配置文件和一个README.md&lt;/p&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015245310&#34; alt=&#34;这里写图片描述&#34; /&gt; 
+&lt;p&gt;git地址如下：&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015310099&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2-创建git本地仓库&#34;&gt;&lt;a name=&#34;t7&#34;&gt;&lt;/a&gt;&lt;strong&gt;2. 创建Git本地仓库&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;选择工程 —— VCS —— ……&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015357093&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;此时，VCS的5个图标显示出来了，且要提交的文件名都是暗红色&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015612268&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;3-把工程add添加到仓库&#34;&gt;&lt;a name=&#34;t8&#34;&gt;&lt;/a&gt;&lt;strong&gt;3. 把工程add添加到仓库&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;选择工程 —— 右键 —— Git —— Add&lt;br&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015525600&#34; alt=&#34;这里写图片描述&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Add后待提交的文件名是绿色&lt;/p&gt;
+&lt;h3 id=&#34;4-commit提交&#34;&gt;&lt;a name=&#34;t9&#34;&gt;&lt;/a&gt;&lt;strong&gt;4. commit提交&lt;/strong&gt;&lt;/h3&gt;
+&lt;img decoding=&#34;async&#34; title=&#34;&#34; src=&#34;http://img.blog.csdn.net/20160810015708207&#34; alt=&#34;这里写图片描述&#34; /&gt; 
+&lt;p&gt;CommitMessage：填入提交说明信息。主要用于说明你做了哪些修改。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Android 使用Gradle打包APP名称和版本号</title>
+      <link>http://localhost:1313/posts/android-shi-yonggradle-da-baoapp-ming-cheng-he-ban/</link>
+      <pubDate>Sat, 24 Sep 2016 11:54:43 +0000</pubDate>
+      <guid>http://localhost:1313/posts/android-shi-yonggradle-da-baoapp-ming-cheng-he-ban/</guid>
+      <description>&lt;p&gt;需求：我想根据不同的类型，打包不同的版本号，在Android中怎么实现？&lt;br&gt;
+例如：release（发布）版本号 1.0.1,debug（测试）版本号1.0.1.20160924&lt;br&gt;
+在Android开发中，我们会不断的进行版本打包，打包分为2类：&lt;br&gt;
+1、release（正式发布上线版）&lt;br&gt;
+2、debug（测试版）。&lt;br&gt;
+我们可以通过每次打包前修改build.gradle中android-&amp;gt;versionName实现，作为一个程序员，有不断探索的精神，能懒就懒（重复没有意义的工作懒的做）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    知识介绍
+    1、gradle中定义变量和函数 通过关键字 def 来定义
+        例如：def versionStr = &amp;quot;1.0.1&amp;quot;  
+                   def myFunction() { return &amp;quot;xxxxx&amp;quot; }
+
+    2、gradle中时间使用
+          new Date().format(&amp;quot;yyyyMMdd&amp;quot;, TimeZone.getTimeZone(&amp;quot;UTC&amp;quot;);
+          这行代码的意思是“当前时间是UTC时区，已yyyyMMdd格式化时间输出”
+
+    3、gradle中variant.mergedFlavor使用
+          variant.mergedFlavor.versionName 表示修改打包时versionName的值
+
+    4、gradle中variant.outputs使用
+          variant.outputs表示输出相关配置
+
+   下面是我的build.gradle文件
+
+        apply plugin: &amp;amp;#39;com.android.application&amp;amp;#39;
+        apply plugin: &amp;amp;#39;android-apt&amp;amp;#39;
+
+//定义时间
+def releaseTime() {
+   return new Date().format(&amp;quot;yyyyMMdd&amp;quot;, TimeZone.getTimeZone(&amp;quot;UTC&amp;quot;))
+}
+
+//设置发布的显示的版本号
+def getVersionName(){
+    return &amp;quot;1.2.0&amp;quot;
+}
+
+android {
+   compileSdkVersion 23
+   buildToolsVersion &amp;quot;24.0.0&amp;quot;
+
+   defaultConfig {
+    applicationId &amp;quot;com.xxx.xxxx&amp;quot;
+    minSdkVersion 14
+    targetSdkVersion 23
+    versionCode 3
+    //versionName getVersionName()
+    }
+buildTypes {
+    debug {
+        buildConfigField(&amp;quot;boolean&amp;quot;,&amp;quot;API_DEBUG&amp;quot;,&amp;quot;true&amp;quot;)
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile(&amp;amp;#39;proguard-android.txt&amp;amp;#39;), &amp;amp;#39;proguard-rules.pro&amp;amp;#39;
+    }
+    release {
+        buildConfigField(&amp;quot;boolean&amp;quot;,&amp;quot;API_DEBUG&amp;quot;,&amp;quot;false&amp;quot;)
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile(&amp;amp;#39;proguard-android.txt&amp;amp;#39;), &amp;amp;#39;proguard-rules.pro&amp;amp;#39;
+    }
+}
+compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+}
+
+//修改打包不能成功配置
+lintOptions {
+    checkReleaseBuilds false
+    abortOnError false
+}
+//配置自定义打包名称
+applicationVariants.all { variant -&amp;gt;
+    variant.outputs.each { output -&amp;gt;
+        def outputFile = output.outputFile
+        def fileName
+        if (outputFile != null &amp;amp;&amp;amp; outputFile.name.endsWith(&amp;amp;#39;.apk&amp;amp;#39;)) {
+            if (variant.buildType.name.equals(&amp;amp;#39;release&amp;amp;#39;)) {
+                variant.mergedFlavor.versionName = getVersionName()
+                fileName = &amp;quot;XXXX_&amp;lt;span class=&amp;quot;katex math inline&amp;quot;&amp;gt;{variant.mergedFlavor.versionName}_release.apk&amp;quot;
+            } else if (variant.buildType.name.equals(&amp;amp;#39;debug&amp;amp;#39;)) {
+                variant.mergedFlavor.versionName = getVersionName()+&amp;quot;.&amp;quot;+releaseTime()
+                fileName = &amp;quot;XXXX_&amp;lt;/span&amp;gt;{variant.mergedFlavor.versionName}_debug.apk&amp;quot;
+            }
+            output.outputFile = new File(outputFile.parent, fileName)
+        }
+    }
+}
+}
+dependencies {
+    compile fileTree(include: [&amp;amp;#39;*.jar&amp;amp;#39;], dir: &amp;amp;#39;libs&amp;amp;#39;)
+    testCompile &amp;amp;#39;junit:junit:4.12&amp;amp;#39;
+}
+tasks.withType(JavaCompile) {
+    options.encoding = &amp;quot;UTF-8&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;大家可以举一反三&lt;br&gt;
+例如想修改versionCode可以这么写&lt;br&gt;
+variant.mergedFlavor.versionCode = xxxx；&lt;br&gt;
+现在试试吧！&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>win10 android studio Terminal无法输入</title>
+      <link>http://localhost:1313/posts/win10-android-studio-terminal%E6%97%A0%E6%B3%95%E8%BE%93%E5%85%A5/</link>
+      <pubDate>Tue, 12 Apr 2016 01:41:14 +0000</pubDate>
+      <guid>http://localhost:1313/posts/win10-android-studio-terminal%E6%97%A0%E6%B3%95%E8%BE%93%E5%85%A5/</guid>
+      <description>&lt;ol&gt;
+&lt;li&gt;win R -&amp;gt; 输入 cmd 回车 ，打开命令行界面&lt;/li&gt;
+&lt;li&gt;在标题栏上右键，属性&lt;/li&gt;
+&lt;li&gt;勾选使用旧版控制台&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;image-package imagebubble&#34;&gt;
+  &lt;img decoding=&#34;async&#34; class=&#34;imagebubble-image&#34; src=&#34;http://upload-images.jianshu.io/upload_images/1181400-c3c27b0c43937ea3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240&#34; alt=&#34;&#34; data-original-src=&#34;http://upload-images.jianshu.io/upload_images/1181400-c3c27b0c43937ea3.png?imageMogr2/auto-orient/strip%7CimageView2/2&#34; /&gt;&lt;/p&gt; 
+  &lt;div class=&#34;image-caption&#34;&gt;
+    转自：http://www.jianshu.com/p/0ed41f13fd6a
+  &lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    <item>
+      <title>[Android Studio] Android Studio移除的Module如何恢复</title>
+      <link>http://localhost:1313/posts/android-studio-android-studio%E7%A7%BB%E9%99%A4%E7%9A%84module%E5%A6%82%E4%BD%95%E6%81%A2%E5%A4%8D/</link>
+      <pubDate>Sat, 22 Aug 2015 01:49:30 +0000</pubDate>
+      <guid>http://localhost:1313/posts/android-studio-android-studio%E7%A7%BB%E9%99%A4%E7%9A%84module%E5%A6%82%E4%BD%95%E6%81%A2%E5%A4%8D/</guid>
+      <description>&lt;div id=&#34;cnblogs_post_body&#34;&gt;
+  &lt;p&gt;
+    如果你执行了从module列表中移除module的操作，但是没有执行delete module文件夹的操作，那如何恢复被移除掉的module呢。
+  &lt;/p&gt;
+  &lt;p&gt;
+    关于如何移除请戳这：&lt;a href=&#34;http://www.cnblogs.com/0616--ataozhijia/p/3865379.html&#34;&gt;Android Studio如何删除module&lt;/a&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    这种场景还是很多见的，比如我 移除了module app，但是后面我又想用这个module了，要恢复的话，很简单，看下图，编辑settings.gradle即可，当然里面的module名称必须得 和你移除的module名称要一致，编辑完了记得点sycn gradle按钮。
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;img decoding=&#34;async&#34; src=&#34;http://img.blog.csdn.net/20140707170254562?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHlyODM5NjA5NDQ=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center&#34; alt=&#34;&#34; /&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;clear&#34;&gt;
+&lt;/div&gt;
+&lt;div id=&#34;blog_post_info_block&#34;&gt;
+  &lt;div id=&#34;BlogPostCategory&#34;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    <item>
+      <title>AndroidStudio快捷键</title>
+      <link>http://localhost:1313/posts/androidstudio%E5%BF%AB%E6%8D%B7%E9%94%AE/</link>
+      <pubDate>Fri, 07 Aug 2015 05:58:22 +0000</pubDate>
+      <guid>http://localhost:1313/posts/androidstudio%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid>
+      <description>&lt;p&gt;Ctrl+G / Ctrl+Alt+Shift+G：查询变量或者函数或者类在哪里被使用或被调用，后者是前者的复杂表现，可以选择查询范围等。&lt;/p&gt;
+&lt;p&gt;Alt+H：查找功能，全局查找&lt;/p&gt;
+&lt;p&gt;F4：查看类继承关系&lt;/p&gt;
+&lt;p&gt;F2：查看文档说明（函数使用说明）&lt;/p&gt;
+&lt;p&gt;Ctrl+E：查看最近打开过的文件&lt;/p&gt;
+&lt;p&gt;Ctrl+Shift+E：查看最近编辑过的文件&lt;/p&gt;
+&lt;p&gt;double Shift：全局查找，这个查看和Alt+H稍稍有些不同，这个是全局文件查找，到文件名称层面。&lt;/p&gt;
+&lt;p&gt;Ctrl+Shift+R：快速定位到你所想打开的文件。&lt;/p&gt;
+&lt;p&gt;Alt+↑：光标所在位置那行代码往上移动&lt;/p&gt;
+&lt;p&gt;Alt+↓：光标所在位置那行代码往下移动&lt;/p&gt;
+&lt;p&gt;Ctrl+D：删除光标所在位置那行代码&lt;/p&gt;
+&lt;p&gt;Ctrl+X：剪切光标所在位置那行代码&lt;/p&gt;
+&lt;p&gt;Alt+Shift+↓/Ctrl+C：复制光标所在行代码到下一行&lt;/p&gt;
+&lt;p&gt;Ctrl+O:快捷查找当前类中的函数，变量&lt;/p&gt;
+&lt;p&gt;Ctrl+Shift+R：修改名称&lt;/p&gt;
+&lt;p&gt;Alt+Enter：导入包&lt;/p&gt;
+&lt;p&gt;Alt+←：后退，定位到上个查看或者编辑的地方&lt;/p&gt;
+&lt;p&gt;Alt+→：往前定位，比如你定位到上个点后，想回去，就可以用这个快捷键&lt;/p&gt;
+&lt;p&gt;Ctrl+/：当行注释，反注释再按一次即可&lt;/p&gt;
+&lt;p&gt;Ctrl+Shift+/：模块注释，反注释再按一次即可,注意这边的”/“不能用小键盘的&lt;/p&gt;
+&lt;p&gt;Ctrl+Shift+小键盘/：折叠代码（Ctrl+Shift+小键盘*这个不灵了，今天没空了，后面会针对这个问题做解决，并更新上来），当然笔记本没小键盘，你可以自己改快捷键&lt;/p&gt;
+&lt;p&gt;Ctrl+Alt+S：打开settings界面&lt;/p&gt;
+&lt;p&gt;Ctrl+Alt+Shift+S：打开Project Structure界面&lt;/p&gt;
+&lt;p&gt;Alt+Shift+X：运行（Run）&lt;/p&gt;
+&lt;p&gt;Alt+Shift+D：调试运行（Debug）&lt;/p&gt;
+&lt;p&gt;Ctrl+F9：编译工程&lt;/p&gt;
+&lt;p&gt;Ctrl+Shift+K：push文件到Server（git）&lt;/p&gt;
+&lt;p&gt;Debug类快捷键&lt;/p&gt;
+&lt;p&gt;F5：但不调试进入函数内部。&lt;/p&gt;
+&lt;p&gt;F6：但不调试不进入函数内部。&lt;/p&gt;
+&lt;p&gt;F7：由函数内部返回调用处。&lt;/p&gt;
+&lt;p&gt;F8：执行到下一个断点，没断点则执行完成。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Action&lt;/th&gt;
+          &lt;th&gt;Mac OSX&lt;/th&gt;
+          &lt;th&gt;Win/Linux&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;注释代码(//)&lt;/td&gt;
+          &lt;td&gt;Cmd + /&lt;/td&gt;
+          &lt;td&gt;Ctrl + /&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;注释代码(/**/)&lt;/td&gt;
+          &lt;td&gt;Cmd + Option + /&lt;/td&gt;
+          &lt;td&gt;Ctrl + Shift + /&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;格式化代码&lt;/td&gt;
+          &lt;td&gt;Cmd + Option + L&lt;/td&gt;
+          &lt;td&gt;Ctrl + Alt + L&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;清除无效包引用&lt;/td&gt;
+          &lt;td&gt;Option + Control + O&lt;/td&gt;
+          &lt;td&gt;Alt + Ctrl + O&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;查找&lt;/td&gt;
+          &lt;td&gt;Cmd + F&lt;/td&gt;
+          &lt;td&gt;Ctrl + F&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;查找+替换&lt;/td&gt;
+          &lt;td&gt;Cmd + R&lt;/td&gt;
+          &lt;td&gt;Ctrl + R&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;上下移动代码&lt;/td&gt;
+          &lt;td&gt;Option + Shift + Up/Down&lt;/td&gt;
+          &lt;td&gt;Alt + Shift + Up/Down&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;删除行&lt;/td&gt;
+          &lt;td&gt;Cmd + Delete&lt;/td&gt;
+          &lt;td&gt;Ctrl + Y&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;扩大缩小选中范围&lt;/td&gt;
+          &lt;td&gt;Option + Up/Down&lt;/td&gt;
+          &lt;td&gt;Ctrl + W/Ctrl + Shift + W&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;快捷生成结构体&lt;/td&gt;
+          &lt;td&gt;Cmd + Option + T&lt;/td&gt;
+          &lt;td&gt;Ctrl + Alt + T&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;快捷覆写方法&lt;/td&gt;
+          &lt;td&gt;Ctrl + O&lt;/td&gt;
+          &lt;td&gt;Ctrl + O&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;快捷定位到行首/尾&lt;/td&gt;
+          &lt;td&gt;Cmd + Left/Right&lt;/td&gt;
+          &lt;td&gt;Ctrl + Left/Right&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;折叠展开代码块&lt;/td&gt;
+          &lt;td&gt;Cmd + Plus,Minus&lt;/td&gt;
+          &lt;td&gt;Ctrl + Plus/Minus&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;折叠展开全部代码块&lt;/td&gt;
+          &lt;td&gt;Cmd + Shift + Plus,Minus&lt;/td&gt;
+          &lt;td&gt;Ctrl + Shift + Plus,Minus&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;文件方法结构&lt;/td&gt;
+          &lt;td&gt;Cmd + F12&lt;/td&gt;
+          &lt;td&gt;Ctrl + F12&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;查找调用的位置&lt;/td&gt;
+          &lt;td&gt;Ctrl + Option + H&lt;/td&gt;
+          &lt;td&gt;Ctrl + Alt + H&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;大小写转换&lt;/td&gt;
+          &lt;td&gt;Cmd + Shift + U&lt;/td&gt;
+          &lt;td&gt;Ctrl + Shift + U&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt; &lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Android studio使用Annotations框架</title>
+      <link>http://localhost:1313/posts/android-studio%E4%BD%BF%E7%94%A8annotations%E6%A1%86%E6%9E%B6/</link>
+      <pubDate>Fri, 17 Jul 2015 07:56:53 +0000</pubDate>
+      <guid>http://localhost:1313/posts/android-studio%E4%BD%BF%E7%94%A8annotations%E6%A1%86%E6%9E%B6/</guid>
+      <description>&lt;p&gt;首页创建Android studio项目&lt;/p&gt;
+&lt;p&gt;在项目的build.gradle中添加如下代码（如此简单）&lt;br&gt;
+buildscript {&lt;br&gt;
+repositories {&lt;br&gt;
+mavenCentral()&lt;br&gt;
+}&lt;br&gt;
+dependencies {&lt;br&gt;
+// replace with the current version of the Android plugin&lt;br&gt;
+classpath ‘com.android.tools.build:gradle:1.2.3’&lt;br&gt;
+// the latest version of the android-apt plugin&lt;br&gt;
+classpath ‘com.neenbedankt.gradle.plugins:android-apt:1.4’&lt;br&gt;
+}&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;repositories {&lt;br&gt;
+mavenCentral()&lt;br&gt;
+mavenLocal()&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;apply plugin: ‘com.android.application’&lt;br&gt;
+apply plugin: ‘android-apt’&lt;br&gt;
+def AAVersion = ‘3.3.2’//这个是Annotations的版本号，这个可以去Annotations官网查看，也可以在Android studio中Jcenter或者mavenCentral中查找最新版本号&lt;/p&gt;
+&lt;p&gt;dependencies {&lt;br&gt;
+compile fileTree(include: [‘*.jar’], dir: ‘libs’)&lt;br&gt;
+compile ‘com.android.support:appcompat-v7:22.2.0’&lt;br&gt;
+apt “org.androidannotations:androidannotations:&lt;span class=&#34;katex math inline&#34;&gt;AAVersion”&lt;br /&gt; compile “org.androidannotations:androidannotations-api:&lt;/span&gt;AAVersion”&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;apt {&lt;br&gt;
+arguments {&lt;br&gt;
+androidManifestFile variant.outputs[0].processResources.manifestFile&lt;br&gt;
+// if you have multiple outputs (when using splits), you may want to have other index than 0&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Android studio第一次导入项目遇到的问题，和解决方案</title>
+      <link>http://localhost:1313/posts/android-studio%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AF%BC%E5%85%A5%E9%A1%B9%E7%9B%AE%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link>
+      <pubDate>Thu, 09 Jul 2015 09:39:10 +0000</pubDate>
+      <guid>http://localhost:1313/posts/android-studio%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AF%BC%E5%85%A5%E9%A1%B9%E7%9B%AE%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid>
+      <description>&lt;p&gt;在github或者其他的git平台下载的android studio项目导入到自己的Android studio中会出现一堆问题，&lt;/p&gt;
+&lt;p&gt;首先在导入之前先用自己的Android studio创建一个测试工程，主要使用测试工程下的2个文件，分别是：./build.gradle和./gradle/wrapper/gradle-wrapper.properties文件&lt;/p&gt;
+&lt;p&gt;例如1.build.gradle&lt;br&gt;
+dependencies {&lt;br&gt;
+classpath ‘com.android.tools.build:gradle:1.2.3’&lt;br&gt;
+}&lt;br&gt;
+修改classpath中的gradle修改为你当前android studio环境中的配置&lt;/p&gt;
+&lt;p&gt;例如2.gradle/wrapper/gradle-wrapper.properties&lt;/p&gt;
+&lt;p&gt;distributionUrl=https://services.gradle.org/distributions/gradle-2.2.1-all.zip&lt;br&gt;
+替换文件中的这句话，使用自己Android studio中相应语句&lt;/p&gt;
+&lt;p&gt;修改完成以上以后，打开Android studio选择/import project按照提示导入。&lt;/p&gt;
+&lt;p&gt;如何遇到导入的项目没有办法运行，这个时候我们运行 build/Rebuild Project进行重新编译项目。&lt;br&gt;
+在此过程中遇到&lt;br&gt;
+FAILURE: Build failed with an exception.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;What went wrong:&lt;br&gt;
+Task ‘build.gradle’ not found in root project ‘XXX’.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Try:&lt;br&gt;
+Run gradle tasks to get a list of available tasks. Run with –info or –debug option to get more log output.&lt;br&gt;
+说明我们导入的项目还没有符合我们的环境，我们需要进一步配置。&lt;br&gt;
+打开cmd ,进入项目更目录执行&lt;br&gt;
+gradlew&lt;br&gt;
+gradlew build&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;检查环境变量是否配置了gradle环境，没有自己配置下，在执行gradlew时会出现解压的目录地址，自己手动配置到环境变量就行了。&lt;br&gt;
+紧接着执行&lt;br&gt;
+gradle build&lt;br&gt;
+gradle tasks //查看android gradle的所有任务&lt;br&gt;
+gradle compileReleaseSource //生成debug apk ，在build/outpus/apk 文件夹下&lt;br&gt;
+（下面2句可以不执行）&lt;br&gt;
+到此项目导入配置完成，关闭项目，使用Android studio重新打开项目，如果能开到某个文件夹上面有一个手机图标，恭喜你，项目配置成功了。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

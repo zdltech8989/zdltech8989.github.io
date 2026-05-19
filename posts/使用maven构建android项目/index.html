@@ -1,0 +1,593 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>使用Maven构建Android项目 | ZDL Tech Blog</title>
+<meta name=keywords content="maven"><meta name=description content="之前一直在做WEB前端项目，前段时间接手第一个Android项目，拿到代码之后，先试着run起来再说，导入eclipse，一堆错误，设置classpath依赖，折腾半天，还是编译错误，于是联系项目接口人，得知他有一个Android库项目没有提交到SVN，晕。。。 对于习惯使用Maven管理Java项..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8maven%E6%9E%84%E5%BB%BAandroid%E9%A1%B9%E7%9B%AE/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8maven%E6%9E%84%E5%BB%BAandroid%E9%A1%B9%E7%9B%AE/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8maven%E6%9E%84%E5%BB%BAandroid%E9%A1%B9%E7%9B%AE/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="使用Maven构建Android项目"><meta property="og:description" content="之前一直在做WEB前端项目，前段时间接手第一个Android项目，拿到代码之后，先试着run起来再说，导入eclipse，一堆错误，设置classpath依赖，折腾半天，还是编译错误，于是联系项目接口人，得知他有一个Android库项目没有提交到SVN，晕。。。 对于习惯使用Maven管理Java项..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-06-05T07:21:37+00:00"><meta property="article:modified_time" content="2014-06-05T07:21:37+00:00"><meta property="article:tag" content="Maven"><meta name=twitter:card content="summary"><meta name=twitter:title content="使用Maven构建Android项目"><meta name=twitter:description content="之前一直在做WEB前端项目，前段时间接手第一个Android项目，拿到代码之后，先试着run起来再说，导入eclipse，一堆错误，设置classpath依赖，折腾半天，还是编译错误，于是联系项目接口人，得知他有一个Android库项目没有提交到SVN，晕。。。 对于习惯使用Maven管理Java项..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"使用Maven构建Android项目","item":"https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8maven%E6%9E%84%E5%BB%BAandroid%E9%A1%B9%E7%9B%AE/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用Maven构建Android项目","name":"使用Maven构建Android项目","description":"之前一直在做WEB前端项目，前段时间接手第一个Android项目，拿到代码之后，先试着run起来再说，导入eclipse，一堆错误，设置classpath依赖，折腾半天，还是编译错误，于是联系项目接口人，得知他有一个Android库项目没有提交到SVN，晕。。。 对于习惯使用Maven管理Java项...","keywords":["maven"],"articleBody":"之前一直在做WEB前端项目，前段时间接手第一个Android项目，拿到代码之后，先试着run起来再说，导入eclipse，一堆错误，设置classpath依赖，折腾半天，还是编译错误，于是联系项目接口人，得知他有一个Android库项目没有提交到SVN，晕。。。\n对于习惯使用Maven管理Java项目的我来说，自然想到能否用Maven构建Android项目呢？于是开始Google、百度，发现已经有前人做过这样的实践了，不过在使用过程中还是遇到不少问题，后面经过各种努力终于能比较顺地使用了，这篇文章对如何使用Maven构建Android项目作了简要总结。如果你和我一样饱受项目依赖管理的折磨，和我一样讨厌项目打包发布时的繁琐，希望能通过Maven让这一切自动化完成。那么，这篇文章或许对你有用。\n1. 环境搭建\n- **JDK与Android SDK安装 做Android开发，这里无需多说，但安装完成后需要正确设置JAVA_HOME、CLASSPATH、ANDROID_HOME等环境变量。其中ANDROID_HOME为Android SDK安装的根目录。并将%ANDROID_HOME%\\tools和%ANDROID_HOME%\\platform-tools值添加到Path变量中。\n- **Maven安装 这里无需多说，下载安装Maven并正确设置环境变量即可。\n- **IDE支持 - **Eclipse 大多数人都在使用Eclipse开发Android应用，如果你用Eclipse做Android开发，推荐下载eclipse-with-m2e-and-adt，该版本已经安装了ADT、m2e、m2e-android等重要插件，支持在Eclipse中使用Maven进行Android应用开发。当时为了安装这些插件费了好大劲，所以，如果你看到这里，可以直接下载它，不用像我一样去做那些没有意义又浪费时间的事情。\n- **IntelliJ IDEA 做Java开发，你不能不知道的神器，完美支持使用Maven构建Android应用，强烈推荐。即使是装了插件的Eclipse对使用Maven构建Android应用仍然支持不好。如果你是Eclipse的信徒，你也可以试试它，如果你能习惯它，你一定会被它的强大所吸引。\n- **NetBeans IDE NetBeans也支持Android开发，但没怎么了解，用的人应该也比较少。\n2. 项目构建\n以下是我的项目中使用的pom文件，因为涉及保密，部分地方做过修改，但整体结构没有改变，可以清楚地说明问题。\n\u003c?xml version=“1.0” encoding=“UTF-8”?\u003e xmlns=“http://maven.apache.org/POM/4.0.0” xmlns:xsi=“http://www.w3.org/2001/XMLSchema-instance” xsi:schemaLocation=“http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd”\u003e ","wordCount":"589","inLanguage":"zh","datePublished":"2014-06-05T07:21:37Z","dateModified":"2014-06-05T07:21:37Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8maven%E6%9E%84%E5%BB%BAandroid%E9%A1%B9%E7%9B%AE/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">使用Maven构建Android项目</h1><div class=post-description>之前一直在做WEB前端项目，前段时间接手第一个Android项目，拿到代码之后，先试着run起来再说，导入eclipse，一堆错误，设置classpath依赖，折腾半天，还是编译错误，于是联系项目接口人，得知他有一个Android库项目没有提交到SVN，晕。。。 对于习惯使用Maven管理Java项...</div><div class=post-meta><span title='2014-06-05 07:21:37 +0000 UTC'>2014年6月5日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>之前一直在做WEB前端项目，前段时间接手第一个Android项目，拿到代码之后，先试着run起来再说，导入eclipse，一堆错误，设置classpath依赖，折腾半天，还是编译错误，于是联系项目接口人，得知他有一个Android库项目没有提交到SVN，晕。。。</p><p>对于习惯使用Maven管理Java项目的我来说，自然想到能否用Maven构建Android项目呢？于是开始Google、百度，发现已经有前人做过这样的实践了，不过在使用过程中还是遇到不少问题，后面经过各种努力终于能比较顺地使用了，这篇文章对如何使用Maven构建Android项目作了简要总结。如果你和我一样饱受项目依赖管理的折磨，和我一样讨厌项目打包发布时的繁琐，希望能通过Maven让这一切自动化完成。那么，这篇文章或许对你有用。</p><p><strong>1. 环境搭建</strong></p><pre><code>- **JDK与Android SDK安装
+</code></pre><p>做Android开发，这里无需多说，但安装完成后需要正确设置JAVA_HOME、CLASSPATH、ANDROID_HOME等环境变量。其中ANDROID_HOME为Android SDK安装的根目录。并将%ANDROID_HOME%\tools和%ANDROID_HOME%\platform-tools值添加到Path变量中。</p><pre><code>- **Maven安装
+</code></pre><p>这里无需多说，下载安装Maven并正确设置环境变量即可。</p><pre><code>- **IDE支持 
+    - **Eclipse
+</code></pre><p>大多数人都在使用Eclipse开发Android应用，如果你用Eclipse做Android开发，推荐下载<a href="http://pan.baidu.com/share/link?shareid=338412&amp;uk=2081314170">eclipse-with-m2e-and-adt</a>，该版本已经安装了ADT、m2e、m2e-android等重要插件，支持在Eclipse中使用Maven进行Android应用开发。当时为了安装这些插件费了好大劲，所以，如果你看到这里，可以直接下载它，不用像我一样去做那些没有意义又浪费时间的事情。</p><pre><code>  - **IntelliJ IDEA
+</code></pre><p>做Java开发，你不能不知道的神器，完美支持使用Maven构建Android应用，强烈推荐。即使是装了插件的Eclipse对使用Maven构建Android应用仍然支持不好。如果你是Eclipse的信徒，你也可以试试它，如果你能习惯它，你一定会被它的强大所吸引。</p><pre><code>  - **NetBeans IDE
+</code></pre><p>NetBeans也支持Android开发，但没怎么了解，用的人应该也比较少。</p><p><strong>2. 项目构建</strong></p><p>以下是我的项目中使用的pom文件，因为涉及保密，部分地方做过修改，但整体结构没有改变，可以清楚地说明问题。</p><div class="codecolorer-container xml vibrant .codecolorer-container table td.line-numbers div {width:auto;}" style=color:#fff><div class="xml codecolorer"><span class=sc3><span class=re1 style=color:#fc0> <span class=re0 style=color:#399>version</span>=<span class=st0 style=color:#6f0>&#8220;1.0&#8221;</span> <span class=re0 style=color:#399>encoding</span>=<span class=st0 style=color:#6f0>&#8220;UTF-8&#8221;</span><span class=re2 style=color:#fc0>?></span></span>
+<span class=sc3><span class=re1 style=color:#fc0> </span>
+<span class=sc3>   <span class=re0 style=color:#399>xmlns</span>=<span class=st0 style=color:#6f0>&#8220;http://maven.apache.org/POM/4.0.0&#8221;</span> </span>
+<span class=sc3>   <span class=re0 style=color:#399>xmlns:xsi</span>=<span class=st0 style=color:#6f0>&#8220;http://www.w3.org/2001/XMLSchema-instance&#8221;</span></span>
+<span class=sc3>   <span class=re0 style=color:#399>xsi:schemaLocation</span>=<span class=st0 style=color:#6f0>&#8220;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&#8221;</span><span class=re2 style=color:#fc0>></span></span><pre><code>  &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;&lt;modelVersion&lt;span class=&quot;re2&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;4.0.0&lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;&lt;/modelVersion&lt;span class=&quot;re2&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+</code></pre><p><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.ikoding.android<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-app-quickstart<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>1.0.0<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></p><blockquote><p></span></span></span>apk<span class=sc3><span class=re1 style=color:#fc0>&lt;/packaging<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;name<span class=re2>></span></span></span>Android Application Quick Satrt<span class=sc3><span class=re1 style=color:#fc0>&lt;/name<span class=re2>></span></span></span></p></blockquote><pre><code>  &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;&lt;dependencies&lt;span class=&quot;re2&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+</code></pre><p><span class=sc3><span class=re1 style=color:#fc0>&lt;dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.google.android<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>4.1.1.4<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;scope<span class=re2>></span></span></span>provided<span class=sc3><span class=re1 style=color:#fc0>&lt;/scope<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.google.android<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>support-v4<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>r7<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.james<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>apache-mime4j<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>0.5<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.httpcomponents<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>httpmime<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>4.2.2<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.ikoding.android<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-base<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>2.0.0<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;type<span class=re2>></span></span></span>apklib<span class=sc3><span class=re1 style=color:#fc0>&lt;/type<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependencies<span class=re2>></span></span></span></p><pre><code>  &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;
+</code></pre><blockquote><p></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.filename<span class=re2>></span></span></span>app-quickstart.keystore<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.filename<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.storepass<span class=re2>></span></span></span>2013@ikoding<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.storepass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.keypass<span class=re2>></span></span></span>2013@ikoding<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.keypass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.alias<span class=re2>></span></span></span>ikoding-android-app<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.alias<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>UTF-8<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.sourceEncoding<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span></p></blockquote><pre><code>  &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;**&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+</code></pre><p><span class=sc3><span class=re1 style=color:#fc0>&lt;finalName<span class=re2>></span></span></span>${project.artifactId}-${project.version}-${manifest.metadata.id}<span class=sc3><span class=re1 style=color:#fc0>&lt;/finalName<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;sourceDirectory<span class=re2>></span></span></span>src<span class=sc3><span class=re1 style=color:#fc0>&lt;/sourceDirectory<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;resources<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;resource<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;directory<span class=re2>></span></span></span>.<span class=sc3><span class=re1 style=color:#fc0>&lt;/directory<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;filtering<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/filtering<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;targetPath<span class=re2>></span></span></span>../filtered-resources<span class=sc3><span class=re1 style=color:#fc0>&lt;/targetPath<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0><em>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;include<span class=re2>></span></span></span>AndroidManifest.xml<span class=sc3><span class=re1 style=color:#fc0>&lt;/include<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/includes<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/resource<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;resource<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;directory<span class=re2>></span></span></span>resources<span class=sc3><span class=re1 style=color:#fc0>&lt;/directory<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;filtering<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/filtering<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;includes<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;include<span class=re2>></span></span></span>**/</em><span class=sc3><span class=re1 style=color:#fc0>&lt;/include<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/includes<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;excludes<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;exclude<span class=re2>></span></span></span>**/env-*.properties<span class=sc3><span class=re1 style=color:#fc0>&lt;/exclude<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/excludes<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/resource<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/resources<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></p><blockquote><p></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.jayway.maven.plugins.android.generation2<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-maven-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>3.5.0<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;extensions<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/extensions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>run<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goal<span class=re2>></span></span></span>deploy<span class=sc3><span class=re1 style=color:#fc0>&lt;/goal<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goal<span class=re2>></span></span></span>run<span class=sc3><span class=re1 style=color:#fc0>&lt;/goal<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>install<span class=sc3><span class=re1 style=color:#fc0>&lt;/phase<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>proguard.cfg<span class=sc3><span class=re1 style=color:#fc0>&lt;/proguardConfig<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>${project.build.proguardSkip}<span class=sc3><span class=re1 style=color:#fc0>&lt;/proguardSkip<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifestDebuggable<span class=re2>></span></span></span>${manifest.debuggable}<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifestDebuggable<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;androidManifestFile<span class=re2>></span></span></span>target/filtered-resources/AndroidManifest.xml<span class=sc3><span class=re1 style=color:#fc0>&lt;/androidManifestFile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;release<span class=re2>></span></span></span>${project.build.release}<span class=sc3><span class=re1 style=color:#fc0>&lt;/release<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;run<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;debug<span class=re2>></span></span></span>${project.build.debug}<span class=sc3><span class=re1 style=color:#fc0>&lt;/debug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/run<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;runDebug<span class=re2>></span></span></span>${project.build.runDebug}<span class=sc3><span class=re1 style=color:#fc0>&lt;/runDebug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;sign<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;debug<span class=re2>></span></span></span>${project.build.sign.debug}<span class=sc3><span class=re1 style=color:#fc0>&lt;/debug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/sign<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugins<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/pluginManagement<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.jayway.maven.plugins.android.generation2<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-maven-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;sdk<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>15<span class=sc3><span class=re1 style=color:#fc0>&lt;/platform<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/sdk<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.codehaus.mojo<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>keytool-maven-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>1.2<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc-1>&lt;!–<executions>–></span>
+<span class=sc-1>&lt;!–<execution>–></span>
+<span class=sc-1>&lt;!–<goals>–></span>
+<span class=sc-1>&lt;!–<goal>clean</goal>–></span>
+<span class=sc-1>&lt;!–<goal>generateKeyPair</goal>–></span>
+<span class=sc-1>&lt;!–</goals>–></span>
+<span class=sc-1>&lt;!–
+generate-resources</phase>–></span>
+<span class=sc-1>&lt;!–</execution>–></span>
+<span class=sc-1>&lt;!–</executions>–></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore<span class=re2>></span></span></span>${keystore.filename}<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;storepass<span class=re2>></span></span></span>${keystore.storepass}<span class=sc3><span class=re1 style=color:#fc0>&lt;/storepass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keypass<span class=re2>></span></span></span>${keystore.keypass}<span class=sc3><span class=re1 style=color:#fc0>&lt;/keypass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;alias<span class=re2>></span></span></span>${keystore.alias}<span class=sc3><span class=re1 style=color:#fc0>&lt;/alias<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;dname<span class=re2>></span></span></span>CN=iKoding, OU=iKoding, O=iKoding, C=CN<span class=sc3><span class=re1 style=color:#fc0>&lt;/dname<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;sigalg<span class=re2>></span></span></span>SHA1withDSA<span class=sc3><span class=re1 style=color:#fc0>&lt;/sigalg<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;validity<span class=re2>></span></span></span>10000<span class=sc3><span class=re1 style=color:#fc0>&lt;/validity<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keyalg<span class=re2>></span></span></span>DSA<span class=sc3><span class=re1 style=color:#fc0>&lt;/keyalg<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keysize<span class=re2>></span></span></span>1024<span class=sc3><span class=re1 style=color:#fc0>&lt;/keysize<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-compiler-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;source<span class=re2>></span></span></span>1.6<span class=sc3><span class=re1 style=color:#fc0>&lt;/source<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;target<span class=re2>></span></span></span>1.6<span class=sc3><span class=re1 style=color:#fc0>&lt;/target<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;encoding<span class=re2>></span></span></span>UTF8<span class=sc3><span class=re1 style=color:#fc0>&lt;/encoding<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-eclipse-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>2.9<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span>org.eclipse.m2e.core.maven2Nature<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnature<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>com.android.ide.eclipse.adt.AndroidNature<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnature<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>org.eclipse.jdt.core.javanature<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnature<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnatures<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-resources-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>2.6<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>initialize<span class=sc3><span class=re1 style=color:#fc0>&lt;/phase<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goal<span class=re2>></span></span></span>resources<span class=sc3><span class=re1 style=color:#fc0>&lt;/goal<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugins<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/build<span class=re2>></span></span></span></p></blockquote><pre><code>  &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;
+</code></pre><blockquote><p></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>debug<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;activation<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;activeByDefault<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/activeByDefault<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/activation<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;build<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;filters<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;filter<span class=re2>></span></span></span>resources/env-debug.properties<span class=sc3><span class=re1 style=color:#fc0>&lt;/filter<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/filters<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/build<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.debug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>false<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.runDebug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.proguardSkip<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>false<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.release<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.sign.debug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.debuggable<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.debuggable<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>release<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span>false<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.debug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>false<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.runDebug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>false<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.proguardSkip<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.release<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>false<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.sign.debug<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.debuggable<span class=re2>></span></span></span>false<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.debuggable<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;build<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;filters<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;filter<span class=re2>></span></span></span>resources/env-release.properties<span class=sc3><span class=re1 style=color:#fc0>&lt;/filter<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/filters<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-jarsigner-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>1.2<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>sign<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goal<span class=re2>></span></span></span>sign<span class=sc3><span class=re1 style=color:#fc0>&lt;/goal<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>package<span class=sc3><span class=re1 style=color:#fc0>&lt;/phase<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;inherited<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/inherited<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;includes<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;include<span class=re2>></span></span></span>${project.build.outputDirectory}/*.apk<span class=sc3><span class=re1 style=color:#fc0>&lt;/include<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/includes<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore<span class=re2>></span></span></span>${keystore.filename}<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;storepass<span class=re2>></span></span></span>${keystore.storepass}<span class=sc3><span class=re1 style=color:#fc0>&lt;/storepass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keypass<span class=re2>></span></span></span>${keystore.keypass}<span class=sc3><span class=re1 style=color:#fc0>&lt;/keypass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;alias<span class=re2>></span></span></span>${keystore.alias}<span class=sc3><span class=re1 style=color:#fc0>&lt;/alias<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugins<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/build<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc-1>&lt;!– 渠道profiles –></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>channel-test<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;activation<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;activeByDefault<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/activeByDefault<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/activation<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.id<span class=re2>></span></span></span>test<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.channel<span class=re2>></span></span></span>test<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.channel<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>channel-91<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.id<span class=re2>></span></span></span>91-market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.channel<span class=re2>></span></span></span>91 market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.channel<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>channel-yingyonghui<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.id<span class=re2>></span></span></span>yingyonghui-market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.channel<span class=re2>></span></span></span>yingyonghui market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.channel<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>channel-tongbutui<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.id<span class=re2>></span></span></span>tongbutui-market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.channel<span class=re2>></span></span></span>tongbutui market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.channel<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>channel-tengxun<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.id<span class=re2>></span></span></span>tengxun-market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.channel<span class=re2>></span></span></span>tengxun market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.channel<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>channel-anzhi<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.id<span class=re2>></span></span></span>anzhi-market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.channel<span class=re2>></span></span></span>anzhi market<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.channel<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;id<span class=re2>></span></span></span>channel-gfan<span class=sc3><span class=re1 style=color:#fc0>&lt;/id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.id<span class=re2>></span></span></span>gfan<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.id<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;manifest.metadata.channel<span class=re2>></span></span></span>gfan<span class=sc3><span class=re1 style=color:#fc0>&lt;/manifest.metadata.channel<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profile<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/profiles<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/project<span class=re2>></span></span></span></div></div></p></blockquote><pre><code>    以上的pom文件基本上涉及到了一个Android应用构建过程中的各个方面，以下针对其中比较重要的一些点作简要说明。
+  
+
+  
+  
+    
+      - &lt;i&gt;*依赖管理
+      
+    
+  
+  
+  
+
+    这也是我们使用Maven构建Android项目的重要原因之一，值得注意的是以下部分：
+  
+
+  
+  &lt;div class=&quot;codecolorer-container xml vibrant .codecolorer-container table td.line-numbers div {width:auto;}&quot; style=&quot;color: #ffffff;&quot;&gt;
+    &lt;div class=&quot;xml codecolorer&quot;&gt;
+      &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;&lt;dependency&lt;span class=&quot;re2&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+</code></pre><p><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.ikoding.android<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-base<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>2.0.0<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;type<span class=re2>></span></span></span>apklib<span class=sc3><span class=re1 style=color:#fc0>&lt;/type<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependency<span class=re2>></span></span></span></div></div></p><pre><code>    以上依赖的type为apklib，这就是我们项目中的Library Project，此外，我们还可以使用Maven管理Native库，亦即我们项目中所依赖的那些so库文件。
+  
+
+  
+  
+    
+      - **资源过滤
+      
+    
+  
+  
+  
+
+    项目中总会有一些和环境相关的配置，比如线下测试环境和线上环境的配置可能不一样，为此我们在pom中分别定义了id为debug和release两个profile，并使用不同的filter进行资源过滤。
+  
+
+  
+  
+    
+      - **生成keystore
+      
+    
+  
+  
+  
+
+    我们使用了keytool-maven-plugin来生成签名时所需的keystore文件，我在properties中定义了生成keystore文件所需的信息，如下所示：
+  
+
+  
+  &lt;div class=&quot;codecolorer-container xml vibrant .codecolorer-container table td.line-numbers div {width:auto;}&quot; style=&quot;color: #ffffff;&quot;&gt;
+    &lt;div class=&quot;xml codecolorer&quot;&gt;
+      &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;
+</code></pre><blockquote><p></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.filename<span class=re2>></span></span></span>app-quickstart.keystore<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.filename<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.storepass<span class=re2>></span></span></span>2013@ikoding<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.storepass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.keypass<span class=re2>></span></span></span>2013@ikoding<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.keypass<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;keystore.alias<span class=re2>></span></span></span>ikoding-android-app<span class=sc3><span class=re1 style=color:#fc0>&lt;/keystore.alias<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span></div></div></p></blockquote><pre><code>    可以运行mvn keytool:generateKeyPair命令来生成keystore文件，之后在应用正式打包发布时候就会使用该keystore文件进行签名。
+  
+
+  
+  
+    
+      - **生成渠道包
+      
+    
+  
+  
+  
+
+    项目最终发布时需要根据渠道号生成不同的渠道包，我们可以利用Maven的资源过滤对AndroidManifest.xml文件中的渠道信息进行替换，例如我们上面的pom文件对Manifest文件中${manifest.metadata.channel}的渠道信息进行了替换，还有一些其他信息如Manifest文件的debuggable属性也可以针对不同配置进行替换，比如我们在日常开发中需要将该值设为true，而在项目正式发布时需要将该值设为false，我们以上的pom文件中就定义了多个针对不同渠道的profile。
+  
+
+  
+  
+    
+      - **代码混淆
+      
+    
+  
+  
+  
+
+    项目正式发布时需要对代码进行混淆处理，我们只需在android-maven-plugin配置中指定proguardConfig文件，比如我们在上面的pom中指定proguard文件为proguard.cfg，项目构建过程中会自动运行代码混淆，并且可以通过proguardSkip属性指定是否运行代码混淆任务，这样我们就可以在日常开发调试过程中关闭混淆，而在项目发布时开启混淆。
+  
+
+  
+  
+    
+      - **签名
+      
+    
+  
+  
+  
+
+    我们使用了maven-jarsigner-plugin对apk文件进行签名，签名使用的证书就是之前生成的keystore文件。
+  
+
+  
+  
+    
+      - **调试
+      
+    
+  
+  
+  
+
+    我在使用Maven构建Android项目之初遇到的问题就是无法进行断点调试，这显然会降低开发效率，后来发现可以通过android-maven-plugin的runDebug属性开启调试，这样可以在应用程序启动时连接debugger进行调试。
+  
+
+  
+  
+    
+      - **IDE支持
+      
+    
+  
+  
+  
+
+    再次回到这个话题上，在导入eclipse之前，你需要先运行mvn eclipse:eclipse命令，生成eclipse项目文件，因为eclipse对android-maven-plugin支持不好。
+  
+
+  
+  
+
+    &lt;strong&gt;3. 常用命令**
+  
+
+  
+  
+
+    以下是使用Maven构建Android项目中常用的一些命令，你可以根据需要选择合适的命令。
+  
+
+  
+  
+    
+      - **mvn clean package
+      
+    
+  
+  
+  
+
+    打包，但不部署。
+  
+
+  
+  
+    
+      - **mvn clean install
+      
+    
+  
+  
+  
+
+    打包，部署并运行。
+  
+
+  
+  
+    
+      - **mvn clean package android:redeploy android:run
+      
+    
+  
+  
+  
+
+    这个命令通常用于手机上已经安装了要部署的应用，但签名不同，所以我们打包的同时使用redeploy命令将现有应用删除并重新部署，最后使用run命令运行应用。
+  
+
+  
+  
+    
+      - **mvn android:redeploy android:run
+      
+    
+  
+  
+  
+
+    不打包，将已生成的包重新部署并运行。
+  
+
+  
+  
+    
+      - **mvn android:deploy android:run
+      
+    
+  
+  
+  
+
+    部署并运行已生成的包，与redeploy不同的是，deploy不会删除已有部署和应用数据。
+  
+
+  
+  
+
+    **4. 总结**
+  
+
+  
+  
+
+    使用Maven构建Android应用很好地解决了依赖管理的问题，而且我们也可以将很多繁琐的任务自动化完成。在使用过程中主要的问题是Eclipse的m2e-android插件支持不够理想，而IntelliJ IDEA在这方便显得非常强大，让我得以将Maven和IDE的优势结合在一起。你可以在此基础上开发出一些常用类型项目的maven archetype，这样你就可以更快的开始一个新的项目。
+  
+
+  
+  
+
+    **5. 坚持？改变？**
+  
+
+  
+  
+
+    事实上我所在的团队成员最初都在使用Eclipse进行开发，后来在我的一再“忽悠”下，大家都接受了这种新的开发方式，并逐渐转向IntelliJ IDEA。这需要你有做出改变的勇气，毕竟改变是痛苦的，没有充分的理由就很难说服别人改变，但当你适应后就会有新的收获。
+  
+
+  
+  
+
+    **附件**
+  
+
+  
+  
+
+    下面是Android *Library* Project的pom文件，它比文中的Application Project的pom文件看起来要简单很多：
+  
+
+  
+  &lt;div class=&quot;codecolorer-container xml vibrant .codecolorer-container table td.line-numbers div {width:auto;}&quot; style=&quot;color: #ffffff;&quot;&gt;
+    &lt;div class=&quot;xml codecolorer&quot;&gt;
+      &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;&lt;?xml&lt;/span&gt; &lt;span class=&quot;re0&quot; style=&quot;color: #339999;&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;st0&quot; style=&quot;color: #66ff00;&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;re0&quot; style=&quot;color: #339999;&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;st0&quot; style=&quot;color: #66ff00;&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;re2&quot; style=&quot;color: #ffcc00;&quot;&gt;?&gt;&lt;/span&gt;&lt;/span&gt;
+</code></pre><p><span class=sc3><span class=re1 style=color:#fc0> <span class=re0 style=color:#399>xmlns</span>=<span class=st0 style=color:#6f0>“http://maven.apache.org/POM/4.0.0”</span> <span class=re0 style=color:#399>xmlns:xsi</span>=<span class=st0 style=color:#6f0>“http://www.w3.org/2001/XMLSchema-instance”</span></span>
+<span class=sc3>    <span class=re0 style=color:#399>xsi:schemaLocation</span>=<span class=st0 style=color:#6f0>“http://maven.apache.org/POM/4.0.0 <a href=http://maven.apache.org/maven-v4_0_0.xsd&amp;#8221;>http://maven.apache.org/maven-v4_0_0.xsd&amp;#8221;</a></span><span class=re2 style=color:#fc0>></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;modelVersion<span class=re2>></span></span></span>4.0.0<span class=sc3><span class=re1 style=color:#fc0>&lt;/modelVersion<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.ikoding.android<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-lib-quickstart<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>1.0.0<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></p><blockquote><p></span></span></span>apklib<span class=sc3><span class=re1 style=color:#fc0>&lt;/packaging<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;name<span class=re2>></span></span></span>Android Library Project Quick Start<span class=sc3><span class=re1 style=color:#fc0>&lt;/name<span class=re2>></span></span></span></p></blockquote><pre><code>        &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;&lt;dependencies&lt;span class=&quot;re2&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+</code></pre><p><span class=sc3><span class=re1 style=color:#fc0>&lt;dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.google.android<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>4.1.1.4<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;scope<span class=re2>></span></span></span>provided<span class=sc3><span class=re1 style=color:#fc0>&lt;/scope<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependency<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/dependencies<span class=re2>></span></span></span></p><pre><code>        &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;
+</code></pre><blockquote><p></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span>UTF-8<span class=sc3><span class=re1 style=color:#fc0>&lt;/project.build.sourceEncoding<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/properties<span class=re2>></span></span></span></p></blockquote><pre><code>        &lt;span class=&quot;sc3&quot;&gt;&lt;span class=&quot;re1&quot; style=&quot;color: #ffcc00;&quot;&gt;&lt;build&lt;span class=&quot;re2&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+</code></pre><p><span class=sc3><span class=re1 style=color:#fc0>&lt;sourceDirectory<span class=re2>></span></span></span>src<span class=sc3><span class=re1 style=color:#fc0>&lt;/sourceDirectory<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></p><blockquote><p></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.jayway.maven.plugins.android.generation2<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-maven-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>3.5.0<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;extensions<span class=re2>></span></span></span>true<span class=sc3><span class=re1 style=color:#fc0>&lt;/extensions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugins<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/pluginManagement<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>com.jayway.maven.plugins.android.generation2<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>android-maven-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;sdk<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>15<span class=sc3><span class=re1 style=color:#fc0>&lt;/platform<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/sdk<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-compiler-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;source<span class=re2>></span></span></span>1.6<span class=sc3><span class=re1 style=color:#fc0>&lt;/source<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;target<span class=re2>></span></span></span>1.6<span class=sc3><span class=re1 style=color:#fc0>&lt;/target<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;encoding<span class=re2>></span></span></span>UTF-8<span class=sc3><span class=re1 style=color:#fc0>&lt;/encoding<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-source-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goal<span class=re2>></span></span></span>jar<span class=sc3><span class=re1 style=color:#fc0>&lt;/goal<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-javadoc-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;goal<span class=re2>></span></span></span>jar<span class=sc3><span class=re1 style=color:#fc0>&lt;/goal<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/goals<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/execution<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/executions<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0>&lt;groupId<span class=re2>></span></span></span>org.apache.maven.plugins<span class=sc3><span class=re1 style=color:#fc0>&lt;/groupId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;artifactId<span class=re2>></span></span></span>maven-eclipse-plugin<span class=sc3><span class=re1 style=color:#fc0>&lt;/artifactId<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;version<span class=re2>></span></span></span>2.9<span class=sc3><span class=re1 style=color:#fc0>&lt;/version<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span><span class=sc3><span class=re1 style=color:#fc0></span></span></span>org.eclipse.m2e.core.maven2Nature<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnature<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>com.android.ide.eclipse.adt.AndroidNature<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnature<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0></span></span></span>org.eclipse.jdt.core.javanature<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnature<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/projectnatures<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/configuration<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugin<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/plugins<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/build<span class=re2>></span></span></span>
+<span class=sc3><span class=re1 style=color:#fc0>&lt;/project<span class=re2>></span></span></span></div></div></p></blockquote></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/maven/>Maven</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/eclipse-%E4%B8%AD%E5%AE%89%E8%A3%85-maven-%E6%8F%92%E4%BB%B6-%E5%BB%BA%E7%AB%8Bmaven%E5%B7%A5%E7%A8%8B/><span class=title>« 上一页</span>
+<span>eclipse 中安装 maven 插件 ，建立maven工程</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E5%88%A4%E6%96%AD%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E6%9C%8D%E5%8A%A1/><span class=title>下一页 »</span>
+<span>Android判断正在运行的服务</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

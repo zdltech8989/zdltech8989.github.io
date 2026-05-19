@@ -1,0 +1,221 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>【Android 应用开发】 Android APK 反编译 混淆 反编译后重编译 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="**反编译工具** : 总结了一下 linux, windows, mac 上的版本, 一起放到 CSDN 上下载; &amp;#8212; **CSDN 下载地址** : **[http://download.csdn.net/detail/han1202012/8221787](http://downl..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-android-apk-%E5%8F%8D%E7%BC%96%E8%AF%91-%E6%B7%B7%E6%B7%86-%E5%8F%8D%E7%BC%96%E8%AF%91%E5%90%8E%E9%87%8D%E7%BC%96%E8%AF%91/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-android-apk-%E5%8F%8D%E7%BC%96%E8%AF%91-%E6%B7%B7%E6%B7%86-%E5%8F%8D%E7%BC%96%E8%AF%91%E5%90%8E%E9%87%8D%E7%BC%96%E8%AF%91/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-android-apk-%E5%8F%8D%E7%BC%96%E8%AF%91-%E6%B7%B7%E6%B7%86-%E5%8F%8D%E7%BC%96%E8%AF%91%E5%90%8E%E9%87%8D%E7%BC%96%E8%AF%91/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="【Android 应用开发】 Android APK 反编译 混淆 反编译后重编译"><meta property="og:description" content="**反编译工具** : 总结了一下 linux, windows, mac 上的版本, 一起放到 CSDN 上下载; — **CSDN 下载地址** : **[http://download.csdn.net/detail/han1202012/8221787](http://downl..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-12-18T01:49:33+00:00"><meta property="article:modified_time" content="2014-12-18T01:49:33+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="【Android 应用开发】 Android APK 反编译 混淆 反编译后重编译"><meta name=twitter:description content="**反编译工具** : 总结了一下 linux, windows, mac 上的版本, 一起放到 CSDN 上下载; — **CSDN 下载地址** : **[http://download.csdn.net/detail/han1202012/8221787](http://downl..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"【Android 应用开发】 Android APK 反编译 混淆 反编译后重编译","item":"https://blog.zdltech.com/posts/android-%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-android-apk-%E5%8F%8D%E7%BC%96%E8%AF%91-%E6%B7%B7%E6%B7%86-%E5%8F%8D%E7%BC%96%E8%AF%91%E5%90%8E%E9%87%8D%E7%BC%96%E8%AF%91/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"【Android 应用开发】 Android APK 反编译 混淆 反编译后重编译","name":"【Android 应用开发】 Android APK 反编译 混淆 反编译后重编译","description":"**反编译工具** : 总结了一下 linux, windows, mac 上的版本, 一起放到 CSDN 上下载; \u0026#8212; **CSDN 下载地址** : **[http://download.csdn.net/detail/han1202012/8221787](http://downl...","keywords":["android","移动开发"],"articleBody":"反编译工具 : 总结了一下 linux, windows, mac 上的版本, 一起放到 CSDN 上下载;\n— CSDN 下载地址 : http://download.csdn.net/detail/han1202012/8221787\n**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork) - octopus@octopus:~/decompiler$ tree -L 2 - . - ├── linux - │ ├── apktool - │ ├── dex2jar-0.0.9.15 - │ └── jd-gui - ├── mac - │ ├── apktool - │ ├── dex2jar-0.0.9.15 - │ └── jd-gui-0.3.5.osx.i686.dmg - ├── windows - │ ├── apkTool - │ ├── dex2jar-0.0.9.15 - │ └── jd-gui.exe - └── 源码 - └── apktool-source.zip - - 10 directories, 4 files 一. 反编译 至 Java 源码 1. 工具介绍 dex2jar 简介 : 将 .dex 或者 .class 后缀文件转换成 .jar 文件;\n— 最新版本 : 目前最新版本 0.0.9.15;\n— 官方地址 (需要翻墙) : http://code.google.com/p/dex2jar/ ;\n— 下载地址 (需要翻墙) : http://code.google.com/p/dex2jar/downloads/list;\njd-gui 简介 : 使用该工具可以查看 .jar 中的 java 代码;\n— 官网地址 : http://jd.benow.ca/ ;\n2. 反编译过程 (1) Ubuntu 系统反编译 a. 获取 .dex 后缀文件 : 修改 apk 文件后缀, 获取 class.dex 文件;\nb. 执行反编译 : 将 classes.dex 拷贝到 dex2jar 目录下, 执行 ./d2j-dex2jar.sh classes.dex 命令;\n— 执行结果 :\n**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork) - octopus@octopus:~/decompiler/linux/dex2jar-0.0.9.15$ ./d2j-dex2jar.sh classes.dex - dex2jar classes.dex -\u003e classes-dex2jar.jar c. jd-gui 中查看源码 : 将 classes-dex2jar.jar 文件拖入 jd-gui 中, 查看源码;\n3. 混淆代码 注意 : 如果不使用签名文件进行打包的话, 直接从 eclipse 中拷贝的文件是无法混淆的;\n(1) 配置混淆文件 编辑 progard.cfg :\n— 文件内容 :\n**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork) - -optimizationpasses 5 - -dontusemixedcaseclassnames - -dontskipnonpubliclibraryclasses - -dontpreverify - -verbose - -optimizations !code/simplification/arithmetic,!field/*,!class/merging/* - - #组件相关的类不进行混淆, 保留 - -keep public class * extends android.app.Activity - -keep public class * extends android.app.Application - -keep public class * extends android.app.Service - -keep public class * extends android.content.BroadcastReceiver - -keep public class * extends android.content.ContentProvider - -keep public class * extends android.app.backup.BackupAgentHelper - -keep public class * extends android.preference.Preference - -keep public class com.android.vending.licensing.ILicensingService - - # 所有类中的 native 方法不混淆 - -keepclasseswithmembernames class * { - native ; - } - - # 对全部类的指定方法的方法名不进行混淆 - -keepclasseswithmembers class * { - public (android.content.Context, android.util.AttributeSet); - } - - #对全部类的指定方法的方法名不进行混淆 - -keepclasseswithmembers class * { - public (android.content.Context, android.util.AttributeSet, int); - } - - # 保留 Activity 子类 - -keepclassmembers class * extends android.app.Activity { - public void *(android.view.View); - } - - # 对枚举类型enum的全部类的下面指定方法的方法名不进行混淆 - -keepclassmembers enum * { - public static **[] values(); - public static ** valueOf(java.lang.String); - } - - # 实现了 Parcelable 序列化接口的类不混淆 - -keep class * implements android.os.Parcelable { - public static final android.os.Parcelable$Creator *; - } — project.properties 配置混淆文件 :\n**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork) - target=android-19 - proguard.config=proguard.cfg (2) 打包 apk 文件 (创建新的 keystore) b. 创建 keystore : 选择 Create new keystore, 选择一个文件, 然后设置 keystore 的用户名 和 密码;\n— Location : keystore 文件;\n— Password : 密码;\n— Confirm : 确认密码, 重新输入密码;\nc. 输入 keystore 详细信息 :\n— Alias : 别名;\n— Password : 别名密码;\n— Confirm : 确认密码;\n— Validity(years) : 有效期限, 推荐 25 年;\n— First and Last Name : 开发者姓名;\n下面的参数可以不填写\n— Orgnizational Unit : 组织名称;\n— Orgnization : 组织;\n— City or Location : 城市;\n— State or Provience : 省 或者 州;\n— Country Code : 国家;\nd. 选择 apk 文件并打包 : 点击 finish 按钮后打包完毕;\n(3) 打包 apk 文件 (使用现有的 keystore 文件) b. 选择签名文件 : 输入签名文件密码;\nc. 输入别名密码 :\nd. 打包 apk : 选择要打包的 apk 文件 :\n(4) 验证混淆效果 反编译 : 将 apk 文件后缀改为 .zip, 之后取出 classes.dex 文件 到 dex2jar 根目录中, 执行 ./d2j-dex2jar.sh classes.dex 命令;\n**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork) - octopus@octopus:~/decompiler/linux/dex2jar-0.0.9.15$ ./d2j-dex2jar.sh classes.dex - dex2jar classes.dex -\u003e classes-dex2jar.jar 在 jd-gui 中查看 Java 代码 :\n二. Apktools 反编译 1. Apktools 介绍 Apktools 简介 :\n— 最新版本 : 2.0.0 ;\n— 官方网站 (需要翻墙) : https://code.google.com/p/android-apktool/ ;\n— 新版本下载地址 : https://bitbucket.org/iBotPeaches/apktool/downloads ;\n— 老版本下载地址 (需要翻墙) : https://code.google.com/p/android-apktool/downloads/list ;\n需要下载的文件 :\n— apktool jar 包 : apktool1.5.2.tar.bz2\n— apktool 引导工具 (Linux) : apktool-install-linux-r05-ibot.tar.bz2\n— apktool 引导工具 (mac) : apktool-install-macosx-r05-ibot.tar.bz2\n— apktool 引导工具 (wondows) : apktool-install-windows-r05-ibot.tar.bz2\n2. 反编译 将下载的文件放到一个文件中 :\n反编译 : 将 apk 文件放入上面的目录, 执行命令 ./apktool d WheelView.apk ;\n— 反编译过程 :\n**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork) - octopus@octopus:~/decompiler/linux/apktool$ ./apktool d WheelView.apk - I: Baksmaling\u0026#8230; - I: Loading resource table\u0026#8230; - I: Loaded. - I: Decoding AndroidManifest.xml with resources\u0026#8230; - I: Loading resource table from file: /home/octopus/apktool/framework/1.apk - I: Loaded. - I: Regular manifest package\u0026#8230; - I: Decoding file-resources\u0026#8230; - I: Decoding values */* XMLs\u0026#8230; - I: Done. - I: Copying assets and libs\u0026#8230; - octopus@octopus:~/decompiler/linux/apktool$ ls - aapt apktool apktool.jar WheelView WheelView.apk — 反编译结果 : 反编译结果都在 WheelView 目录中, res 中是相关资源文件, smali 中是 smali 汇编文件;\n3. 重新编译 重新编译命令格式 : ./apktool b apk源目录 apk文件名称;\n— 执行命令 : ./apktool b WheelView WheelView1.apk , 可以生成 WheelView1.apk 文件;\n**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork) - octopus@octopus:~/decompiler/linux/apktool$ ls - aapt apktool apktool.jar WheelView WheelView.apk - octopus@octopus:~/decompiler/linux/apktool$ ./apktool b WheelView WheelView1.apk - I: Checking whether sources has changed\u0026#8230; - I: Smaling\u0026#8230; - I: Checking whether resources has changed\u0026#8230; - I: Building resources\u0026#8230; - I: Building apk file\u0026#8230; - octopus@octopus:~/decompiler/linux/apktool$ ls - aapt apktool apktool.jar WheelView WheelView1.apk WheelView.apk ","wordCount":"862","inLanguage":"zh","datePublished":"2014-12-18T01:49:33Z","dateModified":"2014-12-18T01:49:33Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-android-apk-%E5%8F%8D%E7%BC%96%E8%AF%91-%E6%B7%B7%E6%B7%86-%E5%8F%8D%E7%BC%96%E8%AF%91%E5%90%8E%E9%87%8D%E7%BC%96%E8%AF%91/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">【Android 应用开发】 Android APK 反编译 混淆 反编译后重编译</h1><div class=post-description>**反编译工具** : 总结了一下 linux, windows, mac 上的版本, 一起放到 CSDN 上下载; &amp;#8212; **CSDN 下载地址** : **[http://download.csdn.net/detail/han1202012/8221787](http://downl...</div><div class=post-meta><span title='2014-12-18 01:49:33 +0000 UTC'>2014年12月18日</span>&nbsp;·&nbsp;<span>5 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e4%b8%80-%e5%8f%8d%e7%bc%96%e8%af%91-%e8%87%b3-java-%e6%ba%90%e7%a0%81 aria-label="一. 反编译 至 Java 源码">一. 反编译 至 Java 源码</a><ul><li><a href=#1-%e5%b7%a5%e5%85%b7%e4%bb%8b%e7%bb%8d aria-label="1. 工具介绍">1. 工具介绍</a></li><li><a href=#2-%e5%8f%8d%e7%bc%96%e8%af%91%e8%bf%87%e7%a8%8b aria-label="2. 反编译过程">2. 反编译过程</a><ul><li><a href=#1-ubuntu-%e7%b3%bb%e7%bb%9f%e5%8f%8d%e7%bc%96%e8%af%91 aria-label="(1) Ubuntu 系统反编译">(1) Ubuntu 系统反编译</a></li></ul></li><li><a href=#3-%e6%b7%b7%e6%b7%86%e4%bb%a3%e7%a0%81 aria-label="3. 混淆代码">3. 混淆代码</a><ul><li><a href=#1-%e9%85%8d%e7%bd%ae%e6%b7%b7%e6%b7%86%e6%96%87%e4%bb%b6 aria-label="(1) 配置混淆文件">(1) 配置混淆文件</a></li><li><a href=#2-%e6%89%93%e5%8c%85-apk-%e6%96%87%e4%bb%b6-%e5%88%9b%e5%bb%ba%e6%96%b0%e7%9a%84-keystore aria-label="(2) 打包 apk 文件 (创建新的 keystore)">(2) 打包 apk 文件 (创建新的 keystore)</a></li><li><a href=#3-%e6%89%93%e5%8c%85-apk-%e6%96%87%e4%bb%b6-%e4%bd%bf%e7%94%a8%e7%8e%b0%e6%9c%89%e7%9a%84-keystore-%e6%96%87%e4%bb%b6 aria-label="(3) 打包 apk 文件 (使用现有的 keystore 文件)">(3) 打包 apk 文件 (使用现有的 keystore 文件)</a></li><li><a href=#4-%e9%aa%8c%e8%af%81%e6%b7%b7%e6%b7%86%e6%95%88%e6%9e%9c aria-label="(4) 验证混淆效果">(4) 验证混淆效果</a></li></ul></li></ul></li><li><a href=#%e4%ba%8c-apktools-%e5%8f%8d%e7%bc%96%e8%af%91 aria-label="二. Apktools 反编译">二. Apktools 反编译</a><ul><li><a href=#1-apktools-%e4%bb%8b%e7%bb%8d aria-label="1. Apktools 介绍">1. Apktools 介绍</a></li><li><a href=#2-%e5%8f%8d%e7%bc%96%e8%af%91 aria-label="2. 反编译">2. 反编译</a></li><li><a href=#3-%e9%87%8d%e6%96%b0%e7%bc%96%e8%af%91 aria-label="3. 重新编译">3. 重新编译</a></li></ul></li></ul></div></details><div class="post-content md-content"><p><strong>反编译工具</strong> : 总结了一下 linux, windows, mac 上的版本, 一起放到 CSDN 上下载;</p><p>— <strong>CSDN 下载地址</strong> : <strong><a href=http://download.csdn.net/detail/han1202012/8221787>http://download.csdn.net/detail/han1202012/8221787</a></strong></p><div class="dp-highlighter bg_plain"><div class=bar><div class=tools>**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- octopus@octopus:~/decompiler$ tree -L 2
+
+- .
+
+- ├── linux
+
+- │   ├── apktool
+
+- │   ├── dex2jar-0.0.9.15
+
+- │   └── jd-gui
+
+- ├── mac
+
+- │   ├── apktool
+
+- │   ├── dex2jar-0.0.9.15
+
+- │   └── jd-gui-0.3.5.osx.i686.dmg
+
+- ├── windows
+
+- │   ├── apkTool
+
+- │   ├── dex2jar-0.0.9.15
+
+- │   └── jd-gui.exe
+
+- └── 源码
+
+- └── apktool-source.zip
+
+- 
+- 10 directories, 4 files
+</code></pre></div><p> </p><h1 id=一-反编译-至-java-源码><a name=t0></a>一. 反编译 至 Java 源码<a hidden class=anchor aria-hidden=true href=#一-反编译-至-java-源码>#</a></h1><h2 id=1-工具介绍><a name=t1></a>1. 工具介绍<a hidden class=anchor aria-hidden=true href=#1-工具介绍>#</a></h2><p><strong>dex2jar 简介</strong> : 将 .dex 或者 .class 后缀文件转换成 .jar 文件;</p><p>— <strong>最新版本</strong> : 目前最新版本 0.0.9.15;</p><p>— <strong>官方地址 (需要翻墙)</strong> : <a href=http://code.google.com/p/dex2jar/><strong>http://code.google.com/p/dex2jar/</strong></a> ;</p><p>— <strong>下载地址 (需要翻墙)</strong> : <strong><a href=http://code.google.com/p/dex2jar/downloads/list>http://code.google.com/p/dex2jar/downloads/list</a></strong>;</p><p><strong>jd-gui 简介</strong> : 使用该工具可以查看 .jar 中的 java 代码;</p><p>— <strong>官网地址</strong> : <strong><a href=http://jd.benow.ca/>http://jd.benow.ca/</a></strong> ;</p><h2 id=2-反编译过程><a name=t2></a>2. 反编译过程<a hidden class=anchor aria-hidden=true href=#2-反编译过程>#</a></h2><h3 id=1-ubuntu-系统反编译><a name=t3></a>(1) Ubuntu 系统反编译<a hidden class=anchor aria-hidden=true href=#1-ubuntu-系统反编译>#</a></h3><p><strong>a. 获取 .dex 后缀文件</strong> : 修改 apk 文件后缀, 获取 class.dex 文件;</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203172422485?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>b. 执行反编译</strong> : 将 classes.dex 拷贝到 dex2jar 目录下, 执行 <strong>./d2j-dex2jar.sh classes.dex</strong> 命令;</p><p>— <strong>执行结果</strong> :</p><div class="dp-highlighter bg_plain"><div class=bar><div class=tools>**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- octopus@octopus:~/decompiler/linux/dex2jar-0.0.9.15$ ./d2j-dex2jar.sh classes.dex
+
+- dex2jar classes.dex -&gt; classes-dex2jar.jar
+</code></pre></div><p><strong>c. jd-gui 中查看源码</strong> : 将 classes-dex2jar.jar 文件拖入 jd-gui 中, 查看源码;</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203172923004?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><h2 id=3-混淆代码><a name=t4></a>3. 混淆代码<a hidden class=anchor aria-hidden=true href=#3-混淆代码>#</a></h2><p><strong>注意 : 如果不使用签名文件进行打包的话, 直接从 eclipse 中拷贝的文件是无法混淆的;</strong></p><h3 id=1-配置混淆文件><a name=t5></a>(1) 配置混淆文件<a hidden class=anchor aria-hidden=true href=#1-配置混淆文件>#</a></h3><p><strong>编辑 progard.cfg</strong> :</p><p><strong>— 文件内容</strong> :</p><div class="dp-highlighter bg_plain"><div class=bar><div class=tools>**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- -optimizationpasses 5
+
+- -dontusemixedcaseclassnames
+
+- -dontskipnonpubliclibraryclasses
+
+- -dontpreverify
+
+- -verbose
+
+- -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+
+- 
+- #组件相关的类不进行混淆, 保留
+
+- -keep public class * extends android.app.Activity
+
+- -keep public class * extends android.app.Application
+
+- -keep public class * extends android.app.Service
+
+- -keep public class * extends android.content.BroadcastReceiver
+
+- -keep public class * extends android.content.ContentProvider
+
+- -keep public class * extends android.app.backup.BackupAgentHelper
+
+- -keep public class * extends android.preference.Preference
+
+- -keep public class com.android.vending.licensing.ILicensingService
+
+- 
+- # 所有类中的 native 方法不混淆
+
+- -keepclasseswithmembernames class * {
+
+- native &lt;methods&gt;;
+
+- }
+
+- 
+- # 对全部类的指定方法的方法名不进行混淆
+
+- -keepclasseswithmembers class * {
+
+- public &lt;init&gt;(android.content.Context, android.util.AttributeSet);
+
+- }
+
+- 
+- #对全部类的指定方法的方法名不进行混淆
+
+- -keepclasseswithmembers class * {
+
+- public &lt;init&gt;(android.content.Context, android.util.AttributeSet, int);
+
+- }
+
+- 
+- # 保留 Activity 子类
+
+- -keepclassmembers class * extends android.app.Activity {
+
+- public void *(android.view.View);
+
+- }
+
+- 
+- # 对枚举类型enum的全部类的下面指定方法的方法名不进行混淆
+
+- -keepclassmembers enum * {
+
+- public static **[] values();
+
+- public static ** valueOf(java.lang.String);
+
+- }
+
+- 
+- # 实现了 Parcelable 序列化接口的类不混淆
+
+- -keep class * implements android.os.Parcelable {
+
+- public static final android.os.Parcelable$Creator *;
+
+- }
+</code></pre></div><p>— <strong>project.properties 配置混淆文件</strong> :</p><div class="dp-highlighter bg_plain"><div class=bar><div class=tools>**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- target=android-19
+
+- proguard.config=proguard.cfg
+</code></pre></div><p> </p><h3 id=2-打包-apk-文件-创建新的-keystore><a name=t6></a>(2) 打包 apk 文件 (创建新的 keystore)<a hidden class=anchor aria-hidden=true href=#2-打包-apk-文件-创建新的-keystore>#</a></h3><p><img loading=lazy src="http://img.blog.csdn.net/20141203193038467?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>b. 创建 keystore</strong> : 选择 Create new keystore, 选择一个文件, 然后设置 keystore 的用户名 和 密码;</p><p>— <strong>Location</strong> : keystore 文件;</p><p>— Password : 密码;</p><p>— <strong>Confirm</strong> : 确认密码, 重新输入密码;</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203193256062?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>c. 输入 keystore 详细信息</strong> :</p><p>— <strong>Alias</strong> : 别名;</p><p>— <strong>Password</strong> : 别名密码;</p><p>— <strong>Confirm</strong> : 确认密码;</p><p>— <strong>Validity(years)</strong> : 有效期限, 推荐 25 年;</p><p>— <strong>First and Last Name</strong> : 开发者姓名;</p><p><strong>下面的参数可以不填写</strong></p><p>— <strong>Orgnizational Unit</strong> : 组织名称;</p><p>— <strong>Orgnization</strong> : 组织;</p><p>— <strong>City or Location</strong> : 城市;</p><p>— <strong>State or Provience</strong> : 省 或者 州;</p><p>— <strong>Country Code</strong> : 国家;</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203193631921?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>d. 选择 apk 文件并打包</strong> : 点击 finish 按钮后打包完毕;</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203194115291?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><h3 id=3-打包-apk-文件-使用现有的-keystore-文件><a name=t7></a>(3) 打包 apk 文件 (使用现有的 keystore 文件)<a hidden class=anchor aria-hidden=true href=#3-打包-apk-文件-使用现有的-keystore-文件>#</a></h3><p><img loading=lazy src="http://img.blog.csdn.net/20141203194931453?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>b. 选择签名文件</strong> : 输入签名文件密码;</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203195205765?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>c. 输入别名密码</strong> :</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203195310490?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>d. 打包 apk : 选择要打包的 apk 文件</strong> :</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203195356890?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><h3 id=4-验证混淆效果><a name=t8></a>(4) 验证混淆效果<a hidden class=anchor aria-hidden=true href=#4-验证混淆效果>#</a></h3><p><strong>反编译</strong> : 将 apk 文件后缀改为 .zip, 之后取出 classes.dex 文件 到 dex2jar 根目录中, 执行 ./d2j-dex2jar.sh classes.dex 命令;</p><div class="dp-highlighter bg_plain"><div class=bar><div class=tools>**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_5&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_5&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- octopus@octopus:~/decompiler/linux/dex2jar-0.0.9.15$ ./d2j-dex2jar.sh classes.dex
+
+- dex2jar classes.dex -&gt; classes-dex2jar.jar
+</code></pre></div><p> </p><p><strong>在 jd-gui 中查看 Java 代码</strong> :</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203194331698?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><h1 id=二-apktools-反编译><a name=t9></a>二. Apktools 反编译<a hidden class=anchor aria-hidden=true href=#二-apktools-反编译>#</a></h1><h2 id=1-apktools-介绍><a name=t10></a>1. Apktools 介绍<a hidden class=anchor aria-hidden=true href=#1-apktools-介绍>#</a></h2><p><strong>Apktools 简介</strong> :</p><p>— <strong>最新版本</strong> : 2.0.0 ;</p><p>— <strong>官方网站 (需要翻墙)</strong> : <a href=https://code.google.com/p/android-apktool/><strong>https://code.google.com/p/android-apktool/</strong></a> ;</p><p>— <strong>新版本下载地址</strong> : <a href=https://bitbucket.org/iBotPeaches/apktool/downloads><strong>https://bitbucket.org/iBotPeaches/apktool/downloads</strong></a> ;</p><p>— <strong>老版本下载地址 (需要翻墙)</strong> : <a href=https://code.google.com/p/android-apktool/downloads/list><strong>https://code.google.com/p/android-apktool/downloads/list</strong></a> ;</p><p><strong>需要下载的文件</strong> :</p><p>— <strong>apktool jar 包</strong> : <a href="https://code.google.com/p/android-apktool/downloads/detail?name=apktool1.5.2.tar.bz2&amp;can=2&amp;q=">apktool1.5.2.tar.bz2</a></p><p>— <strong>apktool 引导工具 (Linux)</strong> : <a href="https://code.google.com/p/android-apktool/downloads/detail?name=apktool-install-linux-r05-ibot.tar.bz2&amp;can=2&amp;q=">apktool-install-linux-r05-ibot.tar.bz2</a></p><p>— <strong>apktool 引导工具 (mac)</strong> : <a href="https://code.google.com/p/android-apktool/downloads/detail?name=apktool-install-macosx-r05-ibot.tar.bz2&amp;can=2&amp;q=">apktool-install-macosx-r05-ibot.tar.bz2</a></p><p>— <strong>apktool 引导工具 (wondows)</strong> : <a href="https://code.google.com/p/android-apktool/downloads/detail?name=apktool-install-windows-r05-ibot.tar.bz2&amp;can=2&amp;q=">apktool-install-windows-r05-ibot.tar.bz2</a></p><h2 id=2-反编译><a name=t11></a>2. 反编译<a hidden class=anchor aria-hidden=true href=#2-反编译>#</a></h2><p><strong>将下载的文件放到一个文件中</strong> :</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203202438953?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><p><strong>反编译</strong> : 将 apk 文件放入上面的目录, 执行命令 ./apktool d WheelView.apk ;</p><p>— 反编译过程 :</p><div class="dp-highlighter bg_plain"><div class=bar><div class=tools>**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_6&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_6&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- octopus@octopus:~/decompiler/linux/apktool$ ./apktool d WheelView.apk
+
+- I: Baksmaling&amp;#8230;
+
+- I: Loading resource table&amp;#8230;
+
+- I: Loaded.
+
+- I: Decoding AndroidManifest.xml with resources&amp;#8230;
+
+- I: Loading resource table from file: /home/octopus/apktool/framework/1.apk
+
+- I: Loaded.
+
+- I: Regular manifest package&amp;#8230;
+
+- I: Decoding file-resources&amp;#8230;
+
+- I: Decoding values */* XMLs&amp;#8230;
+
+- I: Done.
+
+- I: Copying assets and libs&amp;#8230;
+
+- octopus@octopus:~/decompiler/linux/apktool$ ls
+
+- aapt  apktool  apktool.jar  WheelView  WheelView.apk
+</code></pre></div><p>— <strong>反编译结果</strong> : 反编译结果都在 WheelView 目录中, res 中是相关资源文件, smali 中是 smali 汇编文件;</p><p><img loading=lazy src="http://img.blog.csdn.net/20141203202756619?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2h1bGlhbmdoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><h2 id=3-重新编译><a name=t12></a>3. 重新编译<a hidden class=anchor aria-hidden=true href=#3-重新编译>#</a></h2><p><strong>重新编译命令格式</strong> : ./apktool b apk源目录 apk文件名称;</p><p>— <strong>执行命令</strong> : ./apktool b WheelView WheelView1.apk , 可以生成 WheelView1.apk 文件;</p><div class="dp-highlighter bg_plain"><div class=bar><div class=tools>**[plain]** [view plain](http://blog.csdn.net/shulianghan/article/details/41697821#)[copy](http://blog.csdn.net/shulianghan/article/details/41697821#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/541288)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/541288/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_7&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_7&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- octopus@octopus:~/decompiler/linux/apktool$ ls
+
+- aapt  apktool  apktool.jar  WheelView  WheelView.apk
+
+- octopus@octopus:~/decompiler/linux/apktool$ ./apktool b WheelView WheelView1.apk
+
+- I: Checking whether sources has changed&amp;#8230;
+
+- I: Smaling&amp;#8230;
+
+- I: Checking whether resources has changed&amp;#8230;
+
+- I: Building resources&amp;#8230;
+
+- I: Building apk file&amp;#8230;
+
+- octopus@octopus:~/decompiler/linux/apktool$ ls
+
+- aapt  apktool  apktool.jar  WheelView  WheelView1.apk  WheelView.apk
+</code></pre></div><p> </p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/matrix%E5%AD%A6%E4%B9%A03matrix%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%B8%89%E7%A7%8D%E5%8F%98%E6%8D%A2%E4%B9%8Btranslationskewrotate/><span class=title>« 上一页</span>
+<span>Matrix学习3、Matrix的基本三种变换之Translation、Skew、Rotate</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android-%E5%9B%BE%E7%89%87%E7%9A%84%E6%B5%8F%E8%A7%88%E7%BC%A9%E6%94%BE%E6%8B%96%E5%8A%A8%E5%92%8C%E8%87%AA%E5%8A%A8%E5%B1%85%E4%B8%AD/><span class=title>下一页 »</span>
+<span>Android 图片的浏览、缩放、拖动和自动居中</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

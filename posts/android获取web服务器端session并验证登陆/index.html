@@ -1,0 +1,1110 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>android获取web服务器端session并验证登陆 | ZDL Tech Blog</title>
+<meta name=keywords content="android,elasticsearch,移动开发"><meta name=description content="传统网页实现用户登陆一般采用session或cookie记录用户基本信息又或者两者结合起来使用。android也可以采用session实现用户登陆验证并记录用户登陆状态时的基本信息，session是在服务器端的;而类似cookie的记录方式，则可以在客户端采用xml文件记录用户基本信息,重要数据则可..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E8%8E%B7%E5%8F%96web%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AFsession%E5%B9%B6%E9%AA%8C%E8%AF%81%E7%99%BB%E9%99%86/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E8%8E%B7%E5%8F%96web%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AFsession%E5%B9%B6%E9%AA%8C%E8%AF%81%E7%99%BB%E9%99%86/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E8%8E%B7%E5%8F%96web%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AFsession%E5%B9%B6%E9%AA%8C%E8%AF%81%E7%99%BB%E9%99%86/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="android获取web服务器端session并验证登陆"><meta property="og:description" content="传统网页实现用户登陆一般采用session或cookie记录用户基本信息又或者两者结合起来使用。android也可以采用session实现用户登陆验证并记录用户登陆状态时的基本信息，session是在服务器端的;而类似cookie的记录方式，则可以在客户端采用xml文件记录用户基本信息,重要数据则可..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-08-22T02:31:18+00:00"><meta property="article:modified_time" content="2016-08-22T02:31:18+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="Elasticsearch"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="android获取web服务器端session并验证登陆"><meta name=twitter:description content="传统网页实现用户登陆一般采用session或cookie记录用户基本信息又或者两者结合起来使用。android也可以采用session实现用户登陆验证并记录用户登陆状态时的基本信息，session是在服务器端的;而类似cookie的记录方式，则可以在客户端采用xml文件记录用户基本信息,重要数据则可..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"android获取web服务器端session并验证登陆","item":"https://blog.zdltech.com/posts/android%E8%8E%B7%E5%8F%96web%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AFsession%E5%B9%B6%E9%AA%8C%E8%AF%81%E7%99%BB%E9%99%86/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"android获取web服务器端session并验证登陆","name":"android获取web服务器端session并验证登陆","description":"传统网页实现用户登陆一般采用session或cookie记录用户基本信息又或者两者结合起来使用。android也可以采用session实现用户登陆验证并记录用户登陆状态时的基本信息，session是在服务器端的;而类似cookie的记录方式，则可以在客户端采用xml文件记录用户基本信息,重要数据则可...","keywords":["android","elasticsearch","移动开发"],"articleBody":"传统网页实现用户登陆一般采用session或cookie记录用户基本信息又或者两者结合起来使用。android也可以采用session实现用户登陆验证并记录用户登陆状态时的基本信息，session是在服务器端的;而类似cookie的记录方式，则可以在客户端采用xml文件记录用户基本信息,重要数据则可以加密存放客户端。android实现的session登陆功能与网页请求不同的是，网页形式的一次成功的登陆请求后，再点击其他页面时，session一直是存在的，在一定时间内是有效的；而采用android客户端请求的一次成功登陆后，再次发送新的请求，则会产生新的session，而不是原来的。这就需要记录session的id号，并在整个请求过程中都记录并传递这个id号，才能保证session的一致性。\n以获取php session为例，主要思路实现分为客户端与服务器端3个步骤。\n附件:源码下载 1.）客户端（ANDROID） 建立一个名为GetWebSession的android项目，编写GetWebSession.java,LoginSuccessActivity.java,GetUserInfoActivity.java三个activity类。\nGetWebSession.java主要是实现布局界面以及发送用户名和密码到php服务器端验证，如果验证成功则跳转到LoginSuccessActivity.java类。GetWebSession.java主要涉及到与服务器端连接请求，对从服务器端返回的json数据(如用户id,session等)进行解析，并存入HashMap,传递到LoginSuccessActivity.java 代码如下:\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - package com.login.main; - import java.io.IOException; - import java.io.UnsupportedEncodingException; - import java.util.ArrayList; - import java.util.HashMap; - import java.util.List; - import org.apache.http.HttpEntity; - import org.apache.http.HttpResponse; - import org.apache.http.client.ClientProtocolException; - import org.apache.http.client.entity.UrlEncodedFormEntity; - import org.apache.http.client.methods.HttpPost; - import org.apache.http.impl.client.DefaultHttpClient; - import org.apache.http.message.BasicNameValuePair; - import org.apache.http.protocol.HTTP; - import org.apache.http.util.EntityUtils; - import org.json.JSONException; - import org.json.JSONObject; - import android.app.Activity; - import android.content.Context; - import android.content.Intent; - import android.os.Bundle; - import android.view.View; - import android.view.View.OnClickListener; - import android.widget.Button; - import android.widget.EditText; - import android.widget.Toast; - public class GetWebSession extends Activity { - /** Called when the activity is first created. */ - private EditText user; - private EditText password; - private Button loginBtn; - private Button logoutBtn; - //主要是记录用户会话过程中的一些用户的基本信息 - private HashMap session =new HashMap(); - @Override - public void onCreate(Bundle savedInstanceState) { - super.onCreate(savedInstanceState); - setContentView(R.layout.main); - user=(EditText)findViewById(R.id.user); - password=(EditText)findViewById(R.id.password); - loginBtn=(Button)findViewById(R.id.loginBtn); - loginBtn.setOnClickListener(loginClick); - logoutBtn=(Button)findViewById(R.id.logoutBtn); - logoutBtn.setOnClickListener(logoutClick); - } - OnClickListener loginClick=new OnClickListener() { - @Override - public void onClick(View v) { - // TODO Auto-generated method stub - if(checkUser()){ - Toast.makeText(v.getContext(), \u0026#8220;用户登录成功！\u0026#8221;, Toast.LENGTH_SHORT).show(); - Context context = v.getContext(); - Intent intent = new Intent(context, - LoginSuccessActivity.class); - //传递session参数,在用户登录成功后为session初始化赋值,即传递HashMap的值 - Bundle map = new Bundle(); - map.putSerializable(\u0026#8220;sessionid\u0026#8221;, session); - intent.putExtra(\u0026#8220;session\u0026#8221;, map); - context.startActivity(intent); // 跳转到成功页面 - } - else - Toast.makeText(v.getContext(), \u0026#8220;用户验证失败！\u0026#8221;, Toast.LENGTH_SHORT).show(); - } - }; - OnClickListener logoutClick=new OnClickListener() { - @Override - public void onClick(View v) { - // TODO Auto-generated method stub - System.exit(); - } - }; - private boolean checkUser(){ - String username=user.getText().toString(); - String pass=password.getText().toString(); - DefaultHttpClient mHttpClient = new DefaultHttpClient(); - HttpPost mPost = new HttpPost(\u0026#8220;http://10.0.2.2/web/php/login.php\u0026#8221;); - //传递用户名和密码相当于 - //http://10.0.2.2/web/php/login.php?username=\u0026#8221;\u0026password=\u0026#8221; - List pairs = new ArrayList(); - pairs.add(new BasicNameValuePair(\u0026#8220;username\u0026#8221;, username)); - pairs.add(new BasicNameValuePair(\u0026#8220;password\u0026#8221;, pass)); - try { - mPost.setEntity(new UrlEncodedFormEntity(pairs, HTTP.UTF_8)); - } catch (UnsupportedEncodingException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } - try { - HttpResponse response = mHttpClient.execute(mPost); - int res = response.getStatusLine().getStatusCode(); - if (res == 200) { - HttpEntity entity = response.getEntity(); - if (entity != null) { - String info = EntityUtils.toString(entity); - System.out.println(\u0026#8220;info\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8211;\u0026#8220;+info); - //以下主要是对服务器端返回的数据进行解析 - JSONObject jsonObject=null; - //flag为登录成功与否的标记,从服务器端返回的数据 - String flag=\u0026#8220;\u0026#8221;; - String name=\u0026#8220;\u0026#8221;; - String userid=\u0026#8220;\u0026#8221;; - String sessionid=\u0026#8220;\u0026#8221;; - try { - jsonObject = new JSONObject(info); - flag = jsonObject.getString(\u0026#8220;flag\u0026#8221;); - name = jsonObject.getString(\u0026#8220;name\u0026#8221;); - userid = jsonObject.getString(\u0026#8220;userid\u0026#8221;); - sessionid = jsonObject.getString(\u0026#8220;sessionid\u0026#8221;); - } catch (JSONException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } - //根据服务器端返回的标记,判断服务端端验证是否成功 - if(flag.equals(\u0026#8220;success\u0026#8221;)){ - //为session传递相应的值,用于在session过程中记录相关用户信息 - session.put(\u0026#8220;s_userid\u0026#8221;, userid); - session.put(\u0026#8220;s_username\u0026#8221;, name); - session.put(\u0026#8220;s_sessionid\u0026#8221;, sessionid); - return true; - } - else{ - return false; - } - } - else{ - return false; - } - } - } catch (ClientProtocolException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } catch (IOException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } - return false; - } - } LoginSuccessActivity.java主要获取php的session唯一的标识id以及用户的一些基本信息，session id则作为本次用户登录状态在服务器的唯一标识，即确定用户的唯一状态进行相关操作。LoginSuccessActivity.java类的方法与GetWebSession.java类似。其主要功能是获取session id后再次发送session id到服务器进行验证，根据封装的session数据验证用户操作权限等。 代码如下：\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - package com.login.main; - import java.io.IOException; - import java.io.UnsupportedEncodingException; - import java.util.ArrayList; - import java.util.HashMap; - import java.util.List; - import org.apache.http.HttpEntity; - import org.apache.http.HttpResponse; - import org.apache.http.client.ClientProtocolException; - import org.apache.http.client.entity.UrlEncodedFormEntity; - import org.apache.http.client.methods.HttpPost; - import org.apache.http.impl.client.DefaultHttpClient; - import org.apache.http.message.BasicNameValuePair; - import org.apache.http.protocol.HTTP; - import org.apache.http.util.EntityUtils; - import org.json.JSONException; - import org.json.JSONObject; - import android.app.Activity; - import android.content.Context; - import android.content.Intent; - import android.os.Bundle; - import android.view.View; - import android.view.View.OnClickListener; - import android.widget.Button; - import android.widget.TextView; - import android.widget.Toast; - public class LoginSuccessActivity extends Activity{ - private HashMapsession; - @SuppressWarnings(\u0026#8220;unchecked\u0026#8221;) - @Override - protected void onCreate(Bundle savedInstanceState) { - // TODO Auto-generated method stub - super.onCreate(savedInstanceState); - setContentView(R.layout.login_success); - //获取从登录成功后界面的传递的参数 - session = (HashMap) this.getIntent() - .getBundleExtra(\u0026#8220;session\u0026#8221;).getSerializable(\u0026#8220;sessionid\u0026#8221;); - //读取session的基本信息，并显示相应的控件 - String userid_info=session.get(\u0026#8220;s_userid\u0026#8221;); - String username_info=session.get(\u0026#8220;s_username\u0026#8221;); - String session_id=session.get(\u0026#8220;s_sessionid\u0026#8221;); - //显示相应的内容到控件 - TextView userid_show=(TextView)findViewById(R.id.userid_show); - userid_show.setText(userid_info); - TextView username_show=(TextView)findViewById(R.id.username_show); - username_show.setText(username_info); - TextView sessionid_show=(TextView)findViewById(R.id.sessionid_show); - sessionid_show.setText(session_id); - //根据本次session再次获取用户信息 - Button getInfo=(Button)findViewById(R.id.getinfo); - getInfo.setOnClickListener(getInfoClick); - } - OnClickListener getInfoClick=new OnClickListener() { - @Override - public void onClick(View v) { - // TODO Auto-generated method stub - if(getUserInfo()){ - Context context = v.getContext(); - Intent intent = new Intent(context, - GetUserInfoActivity.class); - //传递session参数,在用户登录成功后为session初始化赋值,即传递HashMap的值 - Bundle map = new Bundle(); - map.putSerializable(\u0026#8220;sessionid\u0026#8221;, session); - intent.putExtra(\u0026#8220;session\u0026#8221;, map); - context.startActivity(intent); // 跳转到成功页面 - }else{ - Toast.makeText(v.getContext(), \u0026#8220;数据为空！\u0026#8221;, Toast.LENGTH_SHORT).show(); - } - } - }; - private boolean getUserInfo(){ - String sess_username=session.get(\u0026#8220;s_username\u0026#8221;); - String sess_userid=session.get(\u0026#8220;s_userid\u0026#8221;); - String sess_id=session.get(\u0026#8220;s_sessionid\u0026#8221;); - DefaultHttpClient mHttpClient = new DefaultHttpClient(); - HttpPost mPost = new HttpPost(\u0026#8220;http://10.0.2.2/web/php/getinfo.php\u0026#8221;); - List pairs = new ArrayList(); - pairs.add(new BasicNameValuePair(\u0026#8220;sess_userid\u0026#8221;, sess_userid)); - pairs.add(new BasicNameValuePair(\u0026#8220;sess_username\u0026#8221;, sess_username)); - pairs.add(new BasicNameValuePair(\u0026#8220;sess_sessionid\u0026#8221;, sess_id)); - try { - mPost.setEntity(new UrlEncodedFormEntity(pairs, HTTP.UTF_8)); - } catch (UnsupportedEncodingException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } - try { - HttpResponse response = mHttpClient.execute(mPost); - int res = response.getStatusLine().getStatusCode(); - if (res == 200) { - HttpEntity entity = response.getEntity(); - if (entity != null) { - String info = EntityUtils.toString(entity); - System.out.println(\u0026#8220;info\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8211;\u0026#8220;+info); - //以下主要是对服务器端返回的数据进行解析 - JSONObject jsonObject=null; - //flag为登录成功与否的标记,从服务器端返回的数据 - String flag=\u0026#8220;\u0026#8221;; - String userinfo=\u0026#8220;\u0026#8221;; - String level=\u0026#8220;\u0026#8221;; - String sessionid=\u0026#8220;\u0026#8221;; - try { - jsonObject = new JSONObject(info); - flag = jsonObject.getString(\u0026#8220;flag\u0026#8221;); - userinfo = jsonObject.getString(\u0026#8220;info\u0026#8221;); - level = jsonObject.getString(\u0026#8220;level\u0026#8221;); - sessionid = jsonObject.getString(\u0026#8220;sessionid\u0026#8221;); - } catch (JSONException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } - //根据服务器端返回的标记,判断服务端端验证是否成功 - if(flag.equals(\u0026#8220;notempty\u0026#8221;)){ - //为session传递相应的值,用于在session过程中记录相关用户信息 - session.put(\u0026#8220;info_userinfo\u0026#8221;, userinfo); - session.put(\u0026#8220;info_level\u0026#8221;, level); - session.put(\u0026#8220;info_sessionid\u0026#8221;, sessionid); - return true; - } - else{ - return false; - } - } - else{ - return false; - } - } - } catch (ClientProtocolException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } catch (IOException e) { - // TODO Auto-generated catch block - e.printStackTrace(); - } - return false; - } - } 3.GetUserInfoActivity.java类是根据用户登录后产生唯一session 标识进行操作获取用户详细信息的类。\n代码如下:\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - package com.login.main; - import java.util.HashMap; - import android.app.Activity; - import android.os.Bundle; - import android.widget.TextView; - public class GetUserInfoActivity extends Activity{ - private HashMapsession; - @SuppressWarnings(\u0026#8220;unchecked\u0026#8221;) - @Override - protected void onCreate(Bundle savedInstanceState) { - // TODO Auto-generated method stub - super.onCreate(savedInstanceState); - setContentView(R.layout.get_info); - //获取从登录成功后界面的再次传递的参数 - session = (HashMap) this.getIntent(). - getBundleExtra(\u0026#8220;session\u0026#8221;).getSerializable(\u0026#8220;sessionid\u0026#8221;); - //读取session的基本信息，并显示相应的控件 - String session_info=session.get(\u0026#8220;info_userinfo\u0026#8221;); - String session_level=session.get(\u0026#8220;info_level\u0026#8221;); - String session_id=session.get(\u0026#8220;info_sessionid\u0026#8221;); - //显示相应的内容到控件 - System.out.println(\u0026#8220;session_info\u0026#8212;\u0026#8212;\u0026#8211;\u0026#8220;+session_info); - TextView get_info=(TextView)findViewById(R.id.get_info); - get_info.setText(session_info); - TextView get_level=(TextView)findViewById(R.id.get_level); - get_level.setText(session_level); - TextView get_sessionid=(TextView)findViewById(R.id.get_sessionid); - get_sessionid.setText(session_id); - } - } 4.三个布局的xml文件\n(1.)main.xml\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cLinearLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; \u003e - \u003cTextView android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;用户\u0026#8221;\u003e\u003c/TextView\u003e - \u003cEditText android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;\u0026#8221; android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:singleLine=\u0026#8220;true\u0026#8221; android:id=\u0026#8220;@+id/user\u0026#8221; \u003e\u003c/EditText\u003e - \u003cTextView android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;密码\u0026#8221;\u003e\u003c/TextView\u003e - \u003cEditText android:id=\u0026#8220;@+id/password\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;\u0026#8221; android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:password=\u0026#8220;true\u0026#8221; android:singleLine=\u0026#8220;true\u0026#8221;\u003e\u003c/EditText\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - - \u003cTableRow android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221;\u003e - \u003cButton android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; android:text=\u0026#8220;登录\u0026#8221; - android:id=\u0026#8220;@+id/loginBtn\u0026#8221; - android:layout_weight=\u0026#8220;1\u0026#8221;\u003e\u003c/Button\u003e - \u003cButton android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:text=\u0026#8220;退出\u0026#8221; - android:id=\u0026#8220;@+id/logoutBtn\u0026#8221; - android:layout_weight=\u0026#8220;1\u0026#8221;\u003e\u003c/Button\u003e - - \u003c/TableRow\u003e \u003c/LinearLayout\u003e \u003c/LinearLayout\u003e (2.)login_success.xml\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cLinearLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221;\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - \u003cTextView - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;用户ID:\u0026#8221; \u003e - \u003c/TextView\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:text=\u0026#8220;\u0026#8221; - android:id=\u0026#8220;@+id/userid_show\u0026#8221; \u003e\u003c/TextView\u003e - \u003c/LinearLayout\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;用户名: \u0026#8220; \u003e\u003c/TextView\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:text=\u0026#8220;\u0026#8221; - android:id=\u0026#8220;@+id/username_show\u0026#8221; \u003e\u003c/TextView\u003e - \u003c/LinearLayout\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;本次会话：\u0026#8221; \u003e\u003c/TextView\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:text=\u0026#8220;\u0026#8221; - android:id=\u0026#8220;@+id/sessionid_show\u0026#8221; \u003e\u003c/TextView\u003e - \u003c/LinearLayout\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - \u003cButton android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:id=\u0026#8220;@+id/getinfo\u0026#8221; - android:text=\u0026#8220;根据本次会话再次获取用户信息\u0026#8221; - \u003e\u003c/Button\u003e - \u003c/LinearLayout\u003e - \u003c/LinearLayout\u003e (3.)get_info.xml\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;utf-8\u0026#8221;?\u003e - \u003cLinearLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221;\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;用户信息: \u0026#8220; \u003e - \u003c/TextView\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:text=\u0026#8220;\u0026#8221; - android:id=\u0026#8220;@+id/get_info\u0026#8221; \u003e\u003c/TextView\u003e - \u003c/LinearLayout\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;用户级别：\u0026#8221; \u003e\u003c/TextView\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:text=\u0026#8220;\u0026#8221; - android:id=\u0026#8220;@+id/get_level\u0026#8221; \u003e\u003c/TextView\u003e - \u003c/LinearLayout\u003e - - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;本次会话：\u0026#8221; \u003e\u003c/TextView\u003e - \u003cTextView android:layout_height=\u0026#8220;fill_parent\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; android:text=\u0026#8220;\u0026#8221; - android:id=\u0026#8220;@+id/get_sessionid\u0026#8221; \u003e\u003c/TextView\u003e - \u003c/LinearLayout\u003e - \u003cLinearLayout android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:layout_width=\u0026#8220;fill_parent\u0026#8221; - android:orientation=\u0026#8220;horizontal\u0026#8221; - android:paddingLeft=\u0026#8220;0dip\u0026#8221;\u003e \u003c/LinearLayout\u003e \u003c/LinearLayout\u003e 2.）服务器端（PHP） php服务器端主要有三个文件,conn.php,login.php和getinfo.php。\nconn.php是连接数据库的配置文件。\nlogin.php主要是用来验证android客户端发送的请求,请求成功则返回flag=’success’的状态标识,采用数组记录用户基本信息，存储用户数据到session，并且记录本次产生的session id。用户基本数据及本次session产生的id均封装成json格式(json_encode(arr)),发送android客户端。产生本次session id的方法sessionid=session_id();//注意没有参数\n具体代码如下：\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - \u003c?php - header(\u0026#8220;Content-Type: text/html; charset=utf-8\u0026#8221;) ; - //包含数据库连接文件 - include(\u0026#8216;conn.php\u0026#8217;); - session_start(); - $username = htmlspecialchars($_POST[\u0026#8220;username\u0026#8221;]); - $password=$_POST[\u0026#8220;password\u0026#8221;]; - mysql_query(\u0026#8220;set names utf8\u0026#8221;); - //检测用户名及密码是否正确 - $check_query = mysql_query(\u0026#8220;select id ,name from user where name=\u0026#8217;$username\u0026#8217; and - password=\u0026#8217;$password\u0026#8217; limit 1\u0026#8243;); - $arr=array();//空的数组,该数组主要是格式化数据并封装成json格式发送到客户端 - if($result = mysql_fetch_array($check_query)){ - //登录成功 - $_SESSION[\u0026#8216;username\u0026#8217;] = $result[\u0026#8216;name\u0026#8217;]; - $_SESSION[\u0026#8216;userid\u0026#8217;] = $result[\u0026#8216;id\u0026#8217;]; - //获取当前session id - $sessionid=session_id(); - $_SESSION[\u0026#8216;$sessionid\u0026#8217;] = $sessionid; - $arr = array( - \u0026#8216;flag\u0026#8217;=\u003e\u0026#8216;success\u0026#8217;, - \u0026#8216;name\u0026#8217;=\u003e$result[\u0026#8216;name\u0026#8217;], - \u0026#8216;userid\u0026#8217;=\u003e$result[\u0026#8216;id\u0026#8217;], - \u0026#8216;sessionid\u0026#8217;=\u003e$sessionid - ); - //封装json,如果php版本低于5.2，则不支持json_encode()方法， - //可以参考本文件夹中php_json_encode.php中php_json_encode()方法代替json_encode(); - echo json_encode($arr); - } else { - $arr = array( - \u0026#8216;flag\u0026#8217;=\u003e\u0026#8216;error\u0026#8217;, - \u0026#8216;name\u0026#8217;=\u003e\u0026#8221;, - \u0026#8216;userid\u0026#8217;=\u003e\u0026#8221;, - \u0026#8216;sessionid\u0026#8217;=\u003e\u0026#8221; - ); //封装json,如果php版本低于5.2，则不支持json_encode()方法， - //可以参考本文件夹中php_json_encode.php中php_json_encode()方法代替json_encode(); - echo json_encode($arr); - } - ?\u003e getinfo.php文件主要是用户再次查询信息验证session，而不是重新产生session，以记录用户状态。通过验证flag是否为empty判断数据是否显示。最后封装成json发送到客户端 获取本次session的方法：\nsessionid=_POST[“sess_sessionid”];//获取android客户端的sessionid\nsession_id($sessionid);//有参数\nsession_start();//启动session\n具体代码如下:\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - \u003c?php - header(\u0026#8220;Content-Type: text/html; charset=utf-8\u0026#8221;) ; - include(\u0026#8216;conn.php\u0026#8217;); - //获取从客户端LoginSuccessActivity类传递的参数 - $userid=$_POST[\u0026#8220;sess_userid\u0026#8221;]; - $username=$_POST[\u0026#8220;sess_username\u0026#8221;]; - //获取客户端传递的session标识 - $sessionid=$_POST[\u0026#8220;sess_sessionid\u0026#8221;]; - session_id($sessionid); - //将会根据session id获得原来的session - session_start(); - //获取服务器端原来session记录的username,并且根据客户端传过来的username比较进行验证操作 - $sess_username=$_SESSION[\u0026#8216;username\u0026#8217;]; - if($username==$sess_username){ - mysql_query(\u0026#8220;set names utf8\u0026#8221;); - //查询用户基本信息 - $check_query = mysql_query(\u0026#8220;select userinfo,level from info where userid=\u0026#8217;$userid\u0026#8217; limit 1\u0026#8221;); - $arr=array();//空的数组 - if($result = mysql_fetch_array($check_query)){ - $arr = array( - \u0026#8216;flag\u0026#8217;=\u003e\u0026#8216;notempty\u0026#8217;, - \u0026#8216;info\u0026#8217;=\u003e$result[\u0026#8216;userinfo\u0026#8217;], - \u0026#8216;level\u0026#8217;=\u003e$result[\u0026#8216;level\u0026#8217;], - \u0026#8216;sessionid\u0026#8217;=\u003e$sessionid - ); - echo json_encode($arr); - } - } else { - $arr = array( - \u0026#8216;flag\u0026#8217;=\u003e\u0026#8217;empty\u0026#8217;, - \u0026#8216;name\u0026#8217;=\u003e\u0026#8221;, - \u0026#8216;userid\u0026#8217;=\u003e\u0026#8221;, - \u0026#8216;sessionid\u0026#8217;=\u003e$sessionid - ); - echo json_encode($arr); - } - ?\u003e 3.）数据库端（MYSQL） 采用mysql建立数据库，建立两个简单的数据表：user和info。\n[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#) - /* - MySQL Data Transfer - Source Host: localhost - Source Database: login - Target Host: localhost - Target Database: login - Date: 2011-6-14 11:10:46 - */ - - SET FOREIGN_KEY_CHECKS=0; - \u0026#8212; \u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;- - \u0026#8212; Table structure for info - \u0026#8212; \u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;- - CREATE TABLE `info` ( - `id` int(12) NOT NULL AUTO_INCREMENT, - `userid` int(12) DEFAULT NULL, - `userinfo` varchar(100) DEFAULT NULL, - `level` int(2) DEFAULT NULL, - PRIMARY KEY (`id`), - KEY `useid` (`userid`), - CONSTRAINT `useid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) - ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8; - - \u0026#8212; \u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;- - \u0026#8212; Table structure for user - \u0026#8212; \u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;- - CREATE TABLE `user` ( - `id` int(12) NOT NULL AUTO_INCREMENT, - `name` varchar(20) DEFAULT NULL, - `password` varchar(20) DEFAULT NULL, - `status` int(2) DEFAULT NULL, - PRIMARY KEY (`id`) - ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8; - - \u0026#8212; \u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;- - \u0026#8212; Records - \u0026#8212; \u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;\u0026#8212;- - INSERT INTO `info` VALUES (\u0026#8216;1\u0026#8217;, \u0026#8216;1\u0026#8217;, \u0026#8216;charlie is a developer.\u0026#8217;, \u0026#8216;1\u0026#8217;); - INSERT INTO `info` VALUES (\u0026#8216;2\u0026#8217;, \u0026#8216;2\u0026#8217;, \u0026#8216;william is a boss.\u0026#8217;, \u0026#8217;20\u0026#8217;); - INSERT INTO `user` VALUES (\u0026#8216;1\u0026#8217;, \u0026#8216;charlie\u0026#8217;, \u0026#8216;password\u0026#8217;, \u0026#8216;1\u0026#8217;); - INSERT INTO `user` VALUES (\u0026#8216;2\u0026#8217;, \u0026#8216;william\u0026#8217;, \u0026#8216;mypassword\u0026#8217;, \u0026#8216;2\u0026#8217;); 运行效果如图：\n图 -1 GetWebSession.java类的布局\n图 -2 LoginSuccessActivity.java类获取的session id以及用户基本信息\n图 -3 GetWebSession.java获取用户详细信息及本次session的一致性\n转自：http://www.yoyong.com/archives/178\n","wordCount":"2784","inLanguage":"zh","datePublished":"2016-08-22T02:31:18Z","dateModified":"2016-08-22T02:31:18Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E8%8E%B7%E5%8F%96web%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AFsession%E5%B9%B6%E9%AA%8C%E8%AF%81%E7%99%BB%E9%99%86/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">android获取web服务器端session并验证登陆</h1><div class=post-description>传统网页实现用户登陆一般采用session或cookie记录用户基本信息又或者两者结合起来使用。android也可以采用session实现用户登陆验证并记录用户登陆状态时的基本信息，session是在服务器端的;而类似cookie的记录方式，则可以在客户端采用xml文件记录用户基本信息,重要数据则可...</div><div class=post-meta><span title='2016-08-22 02:31:18 +0000 UTC'>2016年8月22日</span>&nbsp;·&nbsp;<span>14 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><ul><li><a href=#%e9%99%84%e4%bb%b6%e6%ba%90%e7%a0%81%e4%b8%8b%e8%bd%bd aria-label=附件:源码下载>附件:源码下载</a></li></ul><li><a href=#1%e5%ae%a2%e6%88%b7%e7%ab%afandroid aria-label=1.）客户端（ANDROID）>1.）客户端（ANDROID）</a></li><li><a href=#2%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%ab%afphp aria-label=2.）服务器端（PHP）>2.）服务器端（PHP）</a></li><li><a href=#3%e6%95%b0%e6%8d%ae%e5%ba%93%e7%ab%afmysql aria-label=3.）数据库端（MYSQL）>3.）数据库端（MYSQL）</a></li></ul></div></details><div class="post-content md-content"><p>传统网页实现用户登陆一般采用session或cookie记录用户基本信息又或者两者结合起来使用。android也可以采用session实现用户登陆验证并记录用户登陆状态时的基本信息，session是在服务器端的;而类似cookie的记录方式，则可以在客户端采用xml文件记录用户基本信息,重要数据则可以加密存放客户端。android实现的session登陆功能与网页请求不同的是，网页形式的一次成功的登陆请求后，再点击其他页面时，session一直是存在的，在一定时间内是有效的；而采用android客户端请求的一次成功登陆后，再次发送新的请求，则会产生新的session，而不是原来的。这就需要记录session的id号，并在整个请求过程中都记录并传递这个id号，才能保证session的一致性。</p><p>以获取php session为例，主要思路实现分为客户端与服务器端3个步骤。</p><h4 id=附件源码下载>附件:<a href=http://www.yoyong.com/upload/GetWebSession.zip title="download source">源码下载</a><a hidden class=anchor aria-hidden=true href=#附件源码下载>#</a></h4><p> </p><h3 id=1客户端android>1.）<strong>客户端（ANDROID）</strong><a hidden class=anchor aria-hidden=true href=#1客户端android>#</a></h3><p>建立一个名为GetWebSession的android项目，编写GetWebSession.java,LoginSuccessActivity.java,GetUserInfoActivity.java三个activity类。</p><ol><li>GetWebSession.java主要是实现布局界面以及发送用户名和密码到php服务器端验证，如果验证成功则跳转到LoginSuccessActivity.java类。GetWebSession.java主要涉及到与服务器端连接请求，对从服务器端返回的json数据(如用户id,session等)进行解析，并存入HashMap,传递到LoginSuccessActivity.java</li></ol><p>代码如下:</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.login.main;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.io.IOException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.io.UnsupportedEncodingException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.ArrayList;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.List;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.HttpEntity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.HttpResponse;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.client.ClientProtocolException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.client.entity.UrlEncodedFormEntity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.client.methods.HttpPost;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.impl.client.DefaultHttpClient;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.message.BasicNameValuePair;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.protocol.HTTP;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.util.EntityUtils;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.json.JSONException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.json.JSONObject;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View.OnClickListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Button;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.EditText;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Toast;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; GetWebSession &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity {
+
+- &lt;span class=&quot;comment&quot;&gt;/** Called when the activity is first created. */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; EditText user;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; EditText password;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Button loginBtn;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Button logoutBtn;
+
+- &lt;span class=&quot;comment&quot;&gt;//主要是记录用户会话过程中的一些用户的基本信息&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; HashMap&lt;String, String&gt; session =&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashMap&lt;String, String&gt;();
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.main);
+
+- user=(EditText)findViewById(R.id.user);
+
+- password=(EditText)findViewById(R.id.password);
+
+- loginBtn=(Button)findViewById(R.id.loginBtn);
+
+- loginBtn.setOnClickListener(loginClick);
+
+- logoutBtn=(Button)findViewById(R.id.logoutBtn);
+
+- logoutBtn.setOnClickListener(logoutClick);
+
+- }
+
+- OnClickListener loginClick=&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View v) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(checkUser()){
+
+- Toast.makeText(v.getContext(), &lt;span class=&quot;string&quot;&gt;&amp;#8220;用户登录成功！&amp;#8221;&lt;/span&gt;, Toast.LENGTH_SHORT).show();
+
+- Context context = v.getContext();
+
+- Intent intent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(context,
+
+- LoginSuccessActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//传递session参数,在用户登录成功后为session初始化赋值,即传递HashMap的值&lt;/span&gt;
+
+- Bundle map = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Bundle();
+
+- map.putSerializable(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sessionid&amp;#8221;&lt;/span&gt;, session);
+
+- intent.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;session&amp;#8221;&lt;/span&gt;, map);
+
+- context.startActivity(intent); &lt;span class=&quot;comment&quot;&gt;// 跳转到成功页面&lt;/span&gt;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;
+
+- Toast.makeText(v.getContext(), &lt;span class=&quot;string&quot;&gt;&amp;#8220;用户验证失败！&amp;#8221;&lt;/span&gt;, Toast.LENGTH_SHORT).show();
+
+- }
+
+- };
+
+- OnClickListener logoutClick=&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View v) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- System.exit(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+
+- }
+
+- };
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; checkUser(){
+
+- String username=user.getText().toString();
+
+- String pass=password.getText().toString();
+
+- DefaultHttpClient mHttpClient = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; DefaultHttpClient();
+
+- HttpPost mPost = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HttpPost(&lt;span class=&quot;string&quot;&gt;&amp;#8220;http://10.0.2.2/web/php/login.php&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//传递用户名和密码相当于&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;//http://10.0.2.2/web/php/login.php?username=&amp;#8221;&amp;password=&amp;#8221;&lt;/span&gt;
+
+- List&lt;BasicNameValuePair&gt; pairs = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&lt;BasicNameValuePair&gt;();
+
+- pairs.add(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; BasicNameValuePair(&lt;span class=&quot;string&quot;&gt;&amp;#8220;username&amp;#8221;&lt;/span&gt;, username));
+
+- pairs.add(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; BasicNameValuePair(&lt;span class=&quot;string&quot;&gt;&amp;#8220;password&amp;#8221;&lt;/span&gt;, pass));
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- mPost.setEntity(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; UrlEncodedFormEntity(pairs, HTTP.UTF_8));
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (UnsupportedEncodingException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- HttpResponse response = mHttpClient.execute(mPost);
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; res = response.getStatusLine().getStatusCode();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (res == &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;) {
+
+- HttpEntity entity = response.getEntity();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (entity != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- String info = EntityUtils.toString(entity);
+
+- System.out.println(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8211;&amp;#8220;&lt;/span&gt;+info);
+
+- &lt;span class=&quot;comment&quot;&gt;//以下主要是对服务器端返回的数据进行解析&lt;/span&gt;
+
+- JSONObject jsonObject=&lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;//flag为登录成功与否的标记,从服务器端返回的数据&lt;/span&gt;
+
+- String flag=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- String name=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- String userid=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- String sessionid=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- jsonObject = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; JSONObject(info);
+
+- flag = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;flag&amp;#8221;&lt;/span&gt;);
+
+- name = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;name&amp;#8221;&lt;/span&gt;);
+
+- userid = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;userid&amp;#8221;&lt;/span&gt;);
+
+- sessionid = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sessionid&amp;#8221;&lt;/span&gt;);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (JSONException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;comment&quot;&gt;//根据服务器端返回的标记,判断服务端端验证是否成功&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(flag.equals(&lt;span class=&quot;string&quot;&gt;&amp;#8220;success&amp;#8221;&lt;/span&gt;)){
+
+- &lt;span class=&quot;comment&quot;&gt;//为session传递相应的值,用于在session过程中记录相关用户信息&lt;/span&gt;
+
+- session.put(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_userid&amp;#8221;&lt;/span&gt;, userid);
+
+- session.put(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_username&amp;#8221;&lt;/span&gt;, name);
+
+- session.put(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_sessionid&amp;#8221;&lt;/span&gt;, sessionid);
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;{
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;{
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (ClientProtocolException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (IOException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+</code></pre></div><ol start=2><li>LoginSuccessActivity.java主要获取php的session唯一的标识id以及用户的一些基本信息，session id则作为本次用户登录状态在服务器的唯一标识，即确定用户的唯一状态进行相关操作。LoginSuccessActivity.java类的方法与GetWebSession.java类似。其主要功能是获取session id后再次发送session id到服务器进行验证，根据封装的session数据验证用户操作权限等。</li></ol><p>代码如下：</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.login.main;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.io.IOException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.io.UnsupportedEncodingException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.ArrayList;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.List;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.HttpEntity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.HttpResponse;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.client.ClientProtocolException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.client.entity.UrlEncodedFormEntity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.client.methods.HttpPost;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.impl.client.DefaultHttpClient;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.message.BasicNameValuePair;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.protocol.HTTP;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.apache.http.util.EntityUtils;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.json.JSONException;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; org.json.JSONObject;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View.OnClickListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Button;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.TextView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Toast;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; LoginSuccessActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity{
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; HashMap&lt;String, String&gt;session;
+
+- &lt;span class=&quot;annotation&quot;&gt;@SuppressWarnings&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;#8220;unchecked&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.login_success);
+
+- &lt;span class=&quot;comment&quot;&gt;//获取从登录成功后界面的传递的参数&lt;/span&gt;
+
+- session =  (HashMap&lt;String, String&gt;) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getIntent()
+
+- .getBundleExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;session&amp;#8221;&lt;/span&gt;).getSerializable(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sessionid&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//读取session的基本信息，并显示相应的控件&lt;/span&gt;
+
+- String userid_info=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_userid&amp;#8221;&lt;/span&gt;);
+
+- String username_info=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_username&amp;#8221;&lt;/span&gt;);
+
+- String session_id=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_sessionid&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//显示相应的内容到控件&lt;/span&gt;
+
+- TextView userid_show=(TextView)findViewById(R.id.userid_show);
+
+- userid_show.setText(userid_info);
+
+- TextView username_show=(TextView)findViewById(R.id.username_show);
+
+- username_show.setText(username_info);
+
+- TextView sessionid_show=(TextView)findViewById(R.id.sessionid_show);
+
+- sessionid_show.setText(session_id);
+
+- &lt;span class=&quot;comment&quot;&gt;//根据本次session再次获取用户信息&lt;/span&gt;
+
+- Button getInfo=(Button)findViewById(R.id.getinfo);
+
+- getInfo.setOnClickListener(getInfoClick);
+
+- }
+
+- OnClickListener getInfoClick=&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnClickListener() {
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View v) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(getUserInfo()){
+
+- Context context = v.getContext();
+
+- Intent intent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(context,
+
+- GetUserInfoActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//传递session参数,在用户登录成功后为session初始化赋值,即传递HashMap的值&lt;/span&gt;
+
+- Bundle map = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Bundle();
+
+- map.putSerializable(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sessionid&amp;#8221;&lt;/span&gt;, session);
+
+- intent.putExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;session&amp;#8221;&lt;/span&gt;, map);
+
+- context.startActivity(intent); &lt;span class=&quot;comment&quot;&gt;// 跳转到成功页面&lt;/span&gt;
+
+- }&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;{
+
+- Toast.makeText(v.getContext(), &lt;span class=&quot;string&quot;&gt;&amp;#8220;数据为空！&amp;#8221;&lt;/span&gt;, Toast.LENGTH_SHORT).show();
+
+- }
+
+- }
+
+- };
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; getUserInfo(){
+
+- String sess_username=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_username&amp;#8221;&lt;/span&gt;);
+
+- String sess_userid=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_userid&amp;#8221;&lt;/span&gt;);
+
+- String sess_id=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;s_sessionid&amp;#8221;&lt;/span&gt;);
+
+- DefaultHttpClient mHttpClient = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; DefaultHttpClient();
+
+- HttpPost mPost = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HttpPost(&lt;span class=&quot;string&quot;&gt;&amp;#8220;http://10.0.2.2/web/php/getinfo.php&amp;#8221;&lt;/span&gt;);
+
+- List&lt;BasicNameValuePair&gt; pairs = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&lt;BasicNameValuePair&gt;();
+
+- pairs.add(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; BasicNameValuePair(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sess_userid&amp;#8221;&lt;/span&gt;, sess_userid));
+
+- pairs.add(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; BasicNameValuePair(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sess_username&amp;#8221;&lt;/span&gt;, sess_username));
+
+- pairs.add(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; BasicNameValuePair(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sess_sessionid&amp;#8221;&lt;/span&gt;, sess_id));
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- mPost.setEntity(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; UrlEncodedFormEntity(pairs, HTTP.UTF_8));
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (UnsupportedEncodingException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- HttpResponse response = mHttpClient.execute(mPost);
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; res = response.getStatusLine().getStatusCode();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (res == &lt;span class=&quot;number&quot;&gt;200&lt;/span&gt;) {
+
+- HttpEntity entity = response.getEntity();
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (entity != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) {
+
+- String info = EntityUtils.toString(entity);
+
+- System.out.println(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8211;&amp;#8220;&lt;/span&gt;+info);
+
+- &lt;span class=&quot;comment&quot;&gt;//以下主要是对服务器端返回的数据进行解析&lt;/span&gt;
+
+- JSONObject jsonObject=&lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- &lt;span class=&quot;comment&quot;&gt;//flag为登录成功与否的标记,从服务器端返回的数据&lt;/span&gt;
+
+- String flag=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- String userinfo=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- String level=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- String sessionid=&lt;span class=&quot;string&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; {
+
+- jsonObject = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; JSONObject(info);
+
+- flag = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;flag&amp;#8221;&lt;/span&gt;);
+
+- userinfo = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info&amp;#8221;&lt;/span&gt;);
+
+- level = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;level&amp;#8221;&lt;/span&gt;);
+
+- sessionid = jsonObject.getString(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sessionid&amp;#8221;&lt;/span&gt;);
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (JSONException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;comment&quot;&gt;//根据服务器端返回的标记,判断服务端端验证是否成功&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(flag.equals(&lt;span class=&quot;string&quot;&gt;&amp;#8220;notempty&amp;#8221;&lt;/span&gt;)){
+
+- &lt;span class=&quot;comment&quot;&gt;//为session传递相应的值,用于在session过程中记录相关用户信息&lt;/span&gt;
+
+- session.put(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info_userinfo&amp;#8221;&lt;/span&gt;, userinfo);
+
+- session.put(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info_level&amp;#8221;&lt;/span&gt;, level);
+
+- session.put(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info_sessionid&amp;#8221;&lt;/span&gt;, sessionid);
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;{
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;{
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (ClientProtocolException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- } &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (IOException e) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated catch block&lt;/span&gt;
+
+- e.printStackTrace();
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- }
+</code></pre></div><p>3.GetUserInfoActivity.java类是根据用户登录后产生唯一session 标识进行操作获取用户详细信息的类。</p><p>代码如下:</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.login.main;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.HashMap;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.TextView;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; GetUserInfoActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity{
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; HashMap&lt;String, String&gt;session;
+
+- &lt;span class=&quot;annotation&quot;&gt;@SuppressWarnings&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;#8220;unchecked&amp;#8221;&lt;/span&gt;)
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- &lt;span class=&quot;comment&quot;&gt;// TODO Auto-generated method stub&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.get_info);
+
+- &lt;span class=&quot;comment&quot;&gt;//获取从登录成功后界面的再次传递的参数&lt;/span&gt;
+
+- session =  (HashMap&lt;String, String&gt;) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getIntent().
+
+- getBundleExtra(&lt;span class=&quot;string&quot;&gt;&amp;#8220;session&amp;#8221;&lt;/span&gt;).getSerializable(&lt;span class=&quot;string&quot;&gt;&amp;#8220;sessionid&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//读取session的基本信息，并显示相应的控件&lt;/span&gt;
+
+- String session_info=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info_userinfo&amp;#8221;&lt;/span&gt;);
+
+- String session_level=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info_level&amp;#8221;&lt;/span&gt;);
+
+- String session_id=session.get(&lt;span class=&quot;string&quot;&gt;&amp;#8220;info_sessionid&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//显示相应的内容到控件&lt;/span&gt;
+
+- System.out.println(&lt;span class=&quot;string&quot;&gt;&amp;#8220;session_info&amp;#8212;&amp;#8212;&amp;#8211;&amp;#8220;&lt;/span&gt;+session_info);
+
+- TextView get_info=(TextView)findViewById(R.id.get_info);
+
+- get_info.setText(session_info);
+
+- TextView get_level=(TextView)findViewById(R.id.get_level);
+
+- get_level.setText(session_level);
+
+- TextView get_sessionid=(TextView)findViewById(R.id.get_sessionid);
+
+- get_sessionid.setText(session_id);
+
+- }
+
+- }
+</code></pre></div><p>4.三个布局的xml文件</p><p>(1.)main.xml</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;用户&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;EditText&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:singleLine&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/user&amp;#8221;&lt;/span&gt;  &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;EditText&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;密码&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;EditText&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/password&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:password&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:singleLine&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;true&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;EditText&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TableRow&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;登录&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/loginBtn&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_weight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;退出&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/logoutBtn&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_weight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TableRow&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>(2.)login_success.xml</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;用户ID:&amp;#8221;&lt;/span&gt;   &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/userid_show&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;用户名: &amp;#8220;&lt;/span&gt;   &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/username_show&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;本次会话：&amp;#8221;&lt;/span&gt;   &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/sessionid_show&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/getinfo&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;根据本次会话再次获取用户信息&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>(3.)get_info.xml</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;用户信息: &amp;#8220;&lt;/span&gt;   &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/get_info&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;用户级别：&amp;#8221;&lt;/span&gt;   &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/get_level&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;本次会话：&amp;#8221;&lt;/span&gt;   &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/get_sessionid&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;TextView&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;fill_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;horizontal&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:paddingLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;0dip&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><h3 id=2服务器端php>2.）服务器端（PHP）<a hidden class=anchor aria-hidden=true href=#2服务器端php>#</a></h3><p>php服务器端主要有三个文件,conn.php,login.php和getinfo.php。</p><ol><li><p>conn.php是连接数据库的配置文件。</p></li><li><p>login.php主要是用来验证android客户端发送的请求,请求成功则返回flag=’success’的状态标识,采用数组记录用户基本信息，存储用户数据到session，并且记录本次产生的session id。用户基本数据及本次session产生的id均封装成json格式(json_encode(<span class="katex math inline">arr)),发送android客户端。产生本次session id的方法</span>sessionid=session_id();//注意没有参数</p></li></ol><p>具体代码如下：</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;?php
+
+- header(&lt;span class=&quot;string&quot;&gt;&amp;#8220;Content-Type: text/html; charset=utf-8&amp;#8221;&lt;/span&gt;) ;
+
+- &lt;span class=&quot;comment&quot;&gt;//包含数据库连接文件&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;include&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;#8216;conn.php&amp;#8217;&lt;/span&gt;);
+
+- session_start();
+
+- &lt;span class=&quot;vars&quot;&gt;$username&lt;/span&gt; = htmlspecialchars(&lt;span class=&quot;vars&quot;&gt;$_POST&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8220;username&amp;#8221;&lt;/span&gt;]);
+
+- &lt;span class=&quot;vars&quot;&gt;$password&lt;/span&gt;=&lt;span class=&quot;vars&quot;&gt;$_POST&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8220;password&amp;#8221;&lt;/span&gt;];
+
+- mysql_query(&lt;span class=&quot;string&quot;&gt;&amp;#8220;set names utf8&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//检测用户名及密码是否正确&lt;/span&gt;
+
+- &lt;span class=&quot;vars&quot;&gt;$check_query&lt;/span&gt; = mysql_query(&lt;span class=&quot;string&quot;&gt;&amp;#8220;select id ,name from user where name=&amp;#8217;$username&amp;#8217; and&lt;/span&gt;
+
+- &lt;span class=&quot;string&quot;&gt;password=&amp;#8217;$password&amp;#8217; limit 1&amp;#8243;&lt;/span&gt;);
+
+- &lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt;=&lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;();&lt;span class=&quot;comment&quot;&gt;//空的数组,该数组主要是格式化数据并封装成json格式发送到客户端&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt; = mysql_fetch_array(&lt;span class=&quot;vars&quot;&gt;$check_query&lt;/span&gt;)){
+
+- &lt;span class=&quot;comment&quot;&gt;//登录成功&lt;/span&gt;
+
+- &lt;span class=&quot;vars&quot;&gt;$_SESSION&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;username&amp;#8217;&lt;/span&gt;] = &lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;name&amp;#8217;&lt;/span&gt;];
+
+- &lt;span class=&quot;vars&quot;&gt;$_SESSION&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;userid&amp;#8217;&lt;/span&gt;] = &lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;id&amp;#8217;&lt;/span&gt;];
+
+- &lt;span class=&quot;comment&quot;&gt;//获取当前session id&lt;/span&gt;
+
+- &lt;span class=&quot;vars&quot;&gt;$sessionid&lt;/span&gt;=session_id();
+
+- &lt;span class=&quot;vars&quot;&gt;$_SESSION&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;$sessionid&amp;#8217;&lt;/span&gt;] = &lt;span class=&quot;vars&quot;&gt;$sessionid&lt;/span&gt;;
+
+- &lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;(
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;flag&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8216;success&amp;#8217;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;name&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;name&amp;#8217;&lt;/span&gt;],
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;userid&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;id&amp;#8217;&lt;/span&gt;],
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;sessionid&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;vars&quot;&gt;$sessionid&lt;/span&gt;
+
+- );
+
+- &lt;span class=&quot;comment&quot;&gt;//封装json,如果php版本低于5.2，则不支持json_encode()方法，&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;//可以参考本文件夹中php_json_encode.php中php_json_encode()方法代替json_encode();&lt;/span&gt;
+
+- &lt;span class=&quot;func&quot;&gt;echo&lt;/span&gt; json_encode(&lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt;);
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- &lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;(
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;flag&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8216;error&amp;#8217;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;name&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8221;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;userid&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8221;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;sessionid&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8221;&lt;/span&gt;
+
+- ); &lt;span class=&quot;comment&quot;&gt;//封装json,如果php版本低于5.2，则不支持json_encode()方法，&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;//可以参考本文件夹中php_json_encode.php中php_json_encode()方法代替json_encode();&lt;/span&gt;
+
+- &lt;span class=&quot;func&quot;&gt;echo&lt;/span&gt; json_encode(&lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt;);
+
+- }
+
+- ?&gt;
+</code></pre></div><ol start=3><li>getinfo.php文件主要是用户再次查询信息验证session，而不是重新产生session，以记录用户状态。通过验证flag是否为empty判断数据是否显示。最后封装成json发送到客户端</li></ol><p>获取本次session的方法：</p><p><span class="katex math inline">sessionid=</span>_POST[“sess_sessionid”];//获取android客户端的sessionid</p><p>session_id($sessionid);//有参数</p><p>session_start();//启动session</p><p>具体代码如下:</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- &lt;?php
+
+- header(&lt;span class=&quot;string&quot;&gt;&amp;#8220;Content-Type: text/html; charset=utf-8&amp;#8221;&lt;/span&gt;) ;
+
+- &lt;span class=&quot;keyword&quot;&gt;include&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&amp;#8216;conn.php&amp;#8217;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//获取从客户端LoginSuccessActivity类传递的参数&lt;/span&gt;
+
+- &lt;span class=&quot;vars&quot;&gt;$userid&lt;/span&gt;=&lt;span class=&quot;vars&quot;&gt;$_POST&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8220;sess_userid&amp;#8221;&lt;/span&gt;];
+
+- &lt;span class=&quot;vars&quot;&gt;$username&lt;/span&gt;=&lt;span class=&quot;vars&quot;&gt;$_POST&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8220;sess_username&amp;#8221;&lt;/span&gt;];
+
+- &lt;span class=&quot;comment&quot;&gt;//获取客户端传递的session标识&lt;/span&gt;
+
+- &lt;span class=&quot;vars&quot;&gt;$sessionid&lt;/span&gt;=&lt;span class=&quot;vars&quot;&gt;$_POST&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8220;sess_sessionid&amp;#8221;&lt;/span&gt;];
+
+- session_id(&lt;span class=&quot;vars&quot;&gt;$sessionid&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//将会根据session id获得原来的session&lt;/span&gt;
+
+- session_start();
+
+- &lt;span class=&quot;comment&quot;&gt;//获取服务器端原来session记录的username,并且根据客户端传过来的username比较进行验证操作&lt;/span&gt;
+
+- &lt;span class=&quot;vars&quot;&gt;$sess_username&lt;/span&gt;=&lt;span class=&quot;vars&quot;&gt;$_SESSION&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;username&amp;#8217;&lt;/span&gt;];
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;vars&quot;&gt;$username&lt;/span&gt;==&lt;span class=&quot;vars&quot;&gt;$sess_username&lt;/span&gt;){
+
+- mysql_query(&lt;span class=&quot;string&quot;&gt;&amp;#8220;set names utf8&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;comment&quot;&gt;//查询用户基本信息&lt;/span&gt;
+
+- &lt;span class=&quot;vars&quot;&gt;$check_query&lt;/span&gt; = mysql_query(&lt;span class=&quot;string&quot;&gt;&amp;#8220;select userinfo,level from info where userid=&amp;#8217;$userid&amp;#8217;  limit 1&amp;#8221;&lt;/span&gt;);
+
+- &lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt;=&lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;();&lt;span class=&quot;comment&quot;&gt;//空的数组&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt; = mysql_fetch_array(&lt;span class=&quot;vars&quot;&gt;$check_query&lt;/span&gt;)){
+
+- &lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;(
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;flag&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8216;notempty&amp;#8217;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;info&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;userinfo&amp;#8217;&lt;/span&gt;],
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;level&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;vars&quot;&gt;$result&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;&amp;#8216;level&amp;#8217;&lt;/span&gt;],
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;sessionid&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;vars&quot;&gt;$sessionid&lt;/span&gt;
+
+- );
+
+- &lt;span class=&quot;func&quot;&gt;echo&lt;/span&gt; json_encode(&lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt;);
+
+- }
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- &lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt; = &lt;span class=&quot;keyword&quot;&gt;array&lt;/span&gt;(
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;flag&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8217;empty&amp;#8217;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;name&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8221;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;userid&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;string&quot;&gt;&amp;#8221;&lt;/span&gt;,
+
+- &lt;span class=&quot;string&quot;&gt;&amp;#8216;sessionid&amp;#8217;&lt;/span&gt;=&gt;&lt;span class=&quot;vars&quot;&gt;$sessionid&lt;/span&gt;
+
+- );
+
+- &lt;span class=&quot;func&quot;&gt;echo&lt;/span&gt; json_encode(&lt;span class=&quot;vars&quot;&gt;$arr&lt;/span&gt;);
+
+- }
+
+- ?&gt;
+</code></pre></div><h3 id=3数据库端mysql>3.）数据库端（MYSQL）<a hidden class=anchor aria-hidden=true href=#3数据库端mysql>#</a></h3><p>采用mysql建立数据库，建立两个简单的数据表：user和info。</p><div class=dp-highlighter><div class=bar><div class=tools>[view plain](http://www.yoyong.com/archives/178#)[copy to clipboard](http://www.yoyong.com/archives/178#)[print](http://www.yoyong.com/archives/178#)[?](http://www.yoyong.com/archives/178#)</div></div><pre><code>- /*
+
+- MySQL Data Transfer
+
+- Source Host: localhost
+
+- Source &lt;span class=&quot;keyword&quot;&gt;Database&lt;/span&gt;: login
+
+- Target Host: localhost
+
+- Target &lt;span class=&quot;keyword&quot;&gt;Database&lt;/span&gt;: login
+
+- &lt;span class=&quot;keyword&quot;&gt;Date&lt;/span&gt;: 2011-6-14 11:10:46
+
+- */
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;SET&lt;/span&gt; FOREIGN_KEY_CHECKS=0;
+
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; Table structure for info&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;TABLE&lt;/span&gt; `info` (
+
+- `id` &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;(12) &lt;span class=&quot;op&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt; AUTO_INCREMENT,
+
+- `userid` &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;(12) &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt;,
+
+- `userinfo` &lt;span class=&quot;keyword&quot;&gt;varchar&lt;/span&gt;(100) &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt;,
+
+- `&lt;span class=&quot;keyword&quot;&gt;level&lt;/span&gt;` &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;(2) &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt;,
+
+- &lt;span class=&quot;keyword&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;KEY&lt;/span&gt; (`id`),
+
+- &lt;span class=&quot;keyword&quot;&gt;KEY&lt;/span&gt; `useid` (`userid`),
+
+- &lt;span class=&quot;keyword&quot;&gt;CONSTRAINT&lt;/span&gt; `useid` &lt;span class=&quot;keyword&quot;&gt;FOREIGN&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;KEY&lt;/span&gt; (`userid`) &lt;span class=&quot;keyword&quot;&gt;REFERENCES&lt;/span&gt; `&lt;span class=&quot;func&quot;&gt;user&lt;/span&gt;` (`id`)
+
+- ) ENGINE=InnoDB AUTO_INCREMENT=3 &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; CHARSET=utf8;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; Table structure for user&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;TABLE&lt;/span&gt; `&lt;span class=&quot;func&quot;&gt;user&lt;/span&gt;` (
+
+- `id` &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;(12) &lt;span class=&quot;op&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt; AUTO_INCREMENT,
+
+- `&lt;span class=&quot;keyword&quot;&gt;name&lt;/span&gt;` &lt;span class=&quot;keyword&quot;&gt;varchar&lt;/span&gt;(20) &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt;,
+
+- `&lt;span class=&quot;keyword&quot;&gt;password&lt;/span&gt;` &lt;span class=&quot;keyword&quot;&gt;varchar&lt;/span&gt;(20) &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt;,
+
+- `status` &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;(2) &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;NULL&lt;/span&gt;,
+
+- &lt;span class=&quot;keyword&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;KEY&lt;/span&gt; (`id`)
+
+- ) ENGINE=InnoDB AUTO_INCREMENT=3 &lt;span class=&quot;keyword&quot;&gt;DEFAULT&lt;/span&gt; CHARSET=utf8;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; Records&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;&amp;#8212; &amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;&amp;#8212;-&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;INTO&lt;/span&gt; `info` &lt;span class=&quot;keyword&quot;&gt;VALUES&lt;/span&gt; (&lt;span class=&quot;string&quot;&gt;&amp;#8216;1&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;1&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;charlie  is a developer.&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;1&amp;#8217;&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;INTO&lt;/span&gt; `info` &lt;span class=&quot;keyword&quot;&gt;VALUES&lt;/span&gt; (&lt;span class=&quot;string&quot;&gt;&amp;#8216;2&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;2&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;william is a boss.&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8217;20&amp;#8217;&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;INTO&lt;/span&gt; `&lt;span class=&quot;func&quot;&gt;user&lt;/span&gt;` &lt;span class=&quot;keyword&quot;&gt;VALUES&lt;/span&gt; (&lt;span class=&quot;string&quot;&gt;&amp;#8216;1&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;charlie&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;password&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;1&amp;#8217;&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;INTO&lt;/span&gt; `&lt;span class=&quot;func&quot;&gt;user&lt;/span&gt;` &lt;span class=&quot;keyword&quot;&gt;VALUES&lt;/span&gt; (&lt;span class=&quot;string&quot;&gt;&amp;#8216;2&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;william&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;mypassword&amp;#8217;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&amp;#8216;2&amp;#8217;&lt;/span&gt;);
+</code></pre></div><p> </p><p>运行效果如图：</p><p><img loading=lazy src=http://www.yoyong.com/images/2011/06/user-login-ui.jpg></p><p>图 -1 GetWebSession.java类的布局</p><p><a href=http://www.yoyong.com/images/2011/06/login-and-get-session.jpg><img loading=lazy src=http://www.yoyong.com/images/2011/06/login-and-get-session.jpg></a></p><p>图 -2 LoginSuccessActivity.java类获取的session id以及用户基本信息</p><p><a href=http://www.yoyong.com/images/2011/06/get-user-info-by-session-again.jpg><img loading=lazy src=http://www.yoyong.com/images/2011/06/get-user-info-by-session-again.jpg></a></p><p>图 -3 GetWebSession.java获取用户详细信息及本次session的一致性</p><p> </p><p>转自：http://www.yoyong.com/archives/178</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/elasticsearch/>Elasticsearch</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-webview%E7%BD%91%E9%A1%B5%E8%A1%A8%E5%8D%95%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/><span class=title>« 上一页</span>
+<span>android webView网页表单自动登录（单点登录）</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E6%8E%A8%E8%8D%90%E5%9B%BD%E5%A4%96%E7%A8%8B%E5%BA%8F%E5%91%98%E6%95%B4%E7%90%86%E7%9A%84java%E8%B5%84%E6%BA%90%E5%A4%A7%E5%85%A8/><span class=title>下一页 »</span>
+<span>推荐！国外程序员整理的Java资源大全</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

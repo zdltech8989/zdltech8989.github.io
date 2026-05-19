@@ -1,0 +1,823 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android 向右滑动销毁（finish）Activity, 随着手势的滑动而滑动的效果 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="转载（[http://blog.csdn.net/xiaanming/article/details/20934541](http://blog.csdn.net/xiaanming/article/details/20934541)） 今天给大家带来一个向右滑动销毁Activity的效果，Acti..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E5%90%91%E5%8F%B3%E6%BB%91%E5%8A%A8%E9%94%80%E6%AF%81finishactivity-%E9%9A%8F%E7%9D%80%E6%89%8B%E5%8A%BF%E7%9A%84%E6%BB%91%E5%8A%A8%E8%80%8C%E6%BB%91%E5%8A%A8%E7%9A%84/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E5%90%91%E5%8F%B3%E6%BB%91%E5%8A%A8%E9%94%80%E6%AF%81finishactivity-%E9%9A%8F%E7%9D%80%E6%89%8B%E5%8A%BF%E7%9A%84%E6%BB%91%E5%8A%A8%E8%80%8C%E6%BB%91%E5%8A%A8%E7%9A%84/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E5%90%91%E5%8F%B3%E6%BB%91%E5%8A%A8%E9%94%80%E6%AF%81finishactivity-%E9%9A%8F%E7%9D%80%E6%89%8B%E5%8A%BF%E7%9A%84%E6%BB%91%E5%8A%A8%E8%80%8C%E6%BB%91%E5%8A%A8%E7%9A%84/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android 向右滑动销毁（finish）Activity, 随着手势的滑动而滑动的效果"><meta property="og:description" content="转载（[http://blog.csdn.net/xiaanming/article/details/20934541](http://blog.csdn.net/xiaanming/article/details/20934541)） 今天给大家带来一个向右滑动销毁Activity的效果，Acti..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-03-07T02:05:49+00:00"><meta property="article:modified_time" content="2015-03-07T02:05:49+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android 向右滑动销毁（finish）Activity, 随着手势的滑动而滑动的效果"><meta name=twitter:description content="转载（[http://blog.csdn.net/xiaanming/article/details/20934541](http://blog.csdn.net/xiaanming/article/details/20934541)） 今天给大家带来一个向右滑动销毁Activity的效果，Acti..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android 向右滑动销毁（finish）Activity, 随着手势的滑动而滑动的效果","item":"https://blog.zdltech.com/posts/android-%E5%90%91%E5%8F%B3%E6%BB%91%E5%8A%A8%E9%94%80%E6%AF%81finishactivity-%E9%9A%8F%E7%9D%80%E6%89%8B%E5%8A%BF%E7%9A%84%E6%BB%91%E5%8A%A8%E8%80%8C%E6%BB%91%E5%8A%A8%E7%9A%84/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android 向右滑动销毁（finish）Activity, 随着手势的滑动而滑动的效果","name":"Android 向右滑动销毁（finish）Activity, 随着手势的滑动而滑动的效果","description":"转载（[http://blog.csdn.net/xiaanming/article/details/20934541](http://blog.csdn.net/xiaanming/article/details/20934541)） 今天给大家带来一个向右滑动销毁Activity的效果，Acti...","keywords":["android","移动开发"],"articleBody":"转载（http://blog.csdn.net/xiaanming/article/details/20934541）\n今天给大家带来一个向右滑动销毁Activity的效果，Activtiy随着手指的移动而移动，该效果在Android应用中还是比较少见的，在IOS中就比较常见了，例如“网易新闻” ,”美食杰” , “淘宝”等应用采用此效果，而Android应用中“知乎”采用的也是这种滑动切换Activity的效果， 不过我发现“淘宝”并没有随着手势的移动而移动，只是捕捉到滑动手势，然后产生平滑切换界面的动画效果，这个在Android中还是很好实现的, 网上很多滑动切换Activity的Demo貌似都是这种效果的吧，如果要实现类似“网易新闻”的随手势的滑动而滑动，似乎就要复杂一些了，我之前在IOS中看到”网易新闻”的这种效果就很感兴趣，然后群里也有朋友问我怎么实现类似“知乎”这个应用的滑动切换的效果，我也特意去下了一个“知乎”，在之前的实现中我遇到了一些瓶颈，没有实现出来就搁置了在那里，今天无意中看到给Activity设置透明的背景，于是乎我恍然大悟，真是灵感来源于瞬间，不能强求啊，然后自己就将此效果实现了出来，给大家分享一下，希望给有此需求的你一点点帮助。\n不知道大家对Scroller这个类以及View的scrollBy() 和scrollTo()的使用熟悉不？我之前介绍了Scroller类的滑动实现原理Android 带你从源码的角度解析Scroller的滚动实现原理，在那里面也介绍了scrollBy() 和scrollTo()方法，不明白的同学可以去看看，这对实现此效果有很大的帮助，了解scrollBy() 和scrollTo()的朋友应该知道，如果想对某个View（例如Button）就行滚动,我们直接调用该View(Button)的scrollBy()方法，并不是该View(Button)进行滚动，而是该View里面的内容（Button上面的文字）进行滚动，所以我们假如要让View整体滚动就需要对其View的父布局调用scrollBy()方法，回到这篇文章来，假如我们想要对一个Activity进行滚动，我们就需求对这个Activity布局文件的顶层布局的父布局进行滚动\n例如下面的XML布局文件\n**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork) - \u003cLinearLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - xmlns:tools=\u0026#8220;http://schemas.android.com/tools\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:gravity=\u0026#8220;center\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - - \u003c/LinearLayout\u003e 如果我们对LinearLayout进行滚动，并不能实现我们想要的效果，而只能对LinearLayout里面的内容或者说是子View进行滚动，所以我们需要获取利用LinearLayout的getParent()方法获取父布局，其实Android系统会对我们的布局文件的最外层套一个FrameLayout，所以我们其实就是对FrameLayout进行滚动就行了\n了解了实现的原理之后，我们就来编写代码吧，首先新建一个android工程，取名SildingFinish\n由于我们的需求可能不是在一个界面提供这个滑动切换的效果，所以我们应该将这部分滑动的逻辑抽取出来，我这里就他写成了一个扩展RelativeLayout的自定义布局SildingFinishLayout，首先我们看其代码\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork) - package com.example.view; - - import android.content.Context; - import android.util.AttributeSet; - import android.view.MotionEvent; - import android.view.View; - import android.view.View.OnTouchListener; - import android.view.ViewConfiguration; - import android.view.ViewGroup; - import android.widget.AbsListView; - import android.widget.RelativeLayout; - import android.widget.ScrollView; - import android.widget.Scroller; - - /** - * 自定义可以滑动的RelativeLayout, 类似于IOS的滑动删除页面效果，当我们要使用 - * 此功能的时候，需要将该Activity的顶层布局设置为SildingFinishLayout， - * 然后需要调用setTouchView()方法来设置需要滑动的View - * - * @author xiaanming - * - * @blog http://blog.csdn.net/xiaanming - * - */ - public class SildingFinishLayout extends RelativeLayout implements - OnTouchListener { - /** - * SildingFinishLayout布局的父布局 - */ - private ViewGroup mParentView; - /** - * 处理滑动逻辑的View - */ - private View touchView; - /** - * 滑动的最小距离 - */ - private int mTouchSlop; - /** - * 按下点的X坐标 - */ - private int downX; - /** - * 按下点的Y坐标 - */ - private int downY; - /** - * 临时存储X坐标 - */ - private int tempX; - /** - * 滑动类 - */ - private Scroller mScroller; - /** - * SildingFinishLayout的宽度 - */ - private int viewWidth; - /** - * 记录是否正在滑动 - */ - private boolean isSilding; - - private OnSildingFinishListener onSildingFinishListener; - private boolean isFinish; - - - public SildingFinishLayout(Context context, AttributeSet attrs) { - this(context, attrs, ); - } - - public SildingFinishLayout(Context context, AttributeSet attrs, int defStyle) { - super(context, attrs, defStyle); - - mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop(); - mScroller = new Scroller(context); - } - - @Override - protected void onLayout(boolean changed, int l, int t, int r, int b) { - super.onLayout(changed, l, t, r, b); - if (changed) { - // 获取SildingFinishLayout所在布局的父布局 - mParentView = (ViewGroup) this.getParent(); - viewWidth = this.getWidth(); - } - } - - /** - * 设置OnSildingFinishListener, 在onSildingFinish()方法中finish Activity - * - * @param onSildingFinishListener - */ - public void setOnSildingFinishListener( - OnSildingFinishListener onSildingFinishListener) { - this.onSildingFinishListener = onSildingFinishListener; - } - - /** - * 设置Touch的View - * - * @param touchView - */ - public void setTouchView(View touchView) { - this.touchView = touchView; - touchView.setOnTouchListener(this); - } - - public View getTouchView() { - return touchView; - } - - /** - * 滚动出界面 - */ - private void scrollRight() { - final int delta = (viewWidth + mParentView.getScrollX()); - // 调用startScroll方法来设置一些滚动的参数，我们在computeScroll()方法中调用scrollTo来滚动item - mScroller.startScroll(mParentView.getScrollX(), , -delta + 1, , - Math.abs(delta)); - postInvalidate(); - } - - /** - * 滚动到起始位置 - */ - private void scrollOrigin() { - int delta = mParentView.getScrollX(); - mScroller.startScroll(mParentView.getScrollX(), , -delta, , - Math.abs(delta)); - postInvalidate(); - } - - /** - * touch的View是否是AbsListView， 例如ListView, GridView等其子类 - * - * @return - */ - private boolean isTouchOnAbsListView() { - return touchView instanceof AbsListView ? true : false; - } - - /** - * touch的view是否是ScrollView或者其子类 - * - * @return - */ - private boolean isTouchOnScrollView() { - return touchView instanceof ScrollView ? true : false; - } - - @Override - public boolean onTouch(View v, MotionEvent event) { - switch (event.getAction()) { - case MotionEvent.ACTION_DOWN: - downX = tempX = (int) event.getRawX(); - downY = (int) event.getRawY(); - break; - case MotionEvent.ACTION_MOVE: - int moveX = (int) event.getRawX(); - int deltaX = tempX \u0026#8211; moveX; - tempX = moveX; - if (Math.abs(moveX \u0026#8211; downX) \u003e mTouchSlop - \u0026\u0026 Math.abs((int) event.getRawY() \u0026#8211; downY) \u003c mTouchSlop) { - isSilding = true; - - // 若touchView是AbsListView， - // 则当手指滑动，取消item的点击事件，不然我们滑动也伴随着item点击事件的发生 - if (isTouchOnAbsListView()) { - MotionEvent cancelEvent = MotionEvent.obtain(event); - cancelEvent - .setAction(MotionEvent.ACTION_CANCEL - | (event.getActionIndex() \u003c\u003c MotionEvent.ACTION_POINTER_INDEX_SHIFT)); - v.onTouchEvent(cancelEvent); - } - - } - - if (moveX \u0026#8211; downX \u003e= \u0026\u0026 isSilding) { - mParentView.scrollBy(deltaX, ); - - // 屏蔽在滑动过程中ListView ScrollView等自己的滑动事件 - if (isTouchOnScrollView() || isTouchOnAbsListView()) { - return true; - } - } - break; - case MotionEvent.ACTION_UP: - isSilding = false; - if (mParentView.getScrollX() \u003c= -viewWidth / 2) { - isFinish = true; - scrollRight(); - } else { - scrollOrigin(); - isFinish = false; - } - break; - } - - // 假如touch的view是AbsListView或者ScrollView 我们处理完上面自己的逻辑之后 - // 再交给AbsListView, ScrollView自己处理其自己的逻辑 - if (isTouchOnScrollView() || isTouchOnAbsListView()) { - return v.onTouchEvent(event); - } - - // 其他的情况直接返回true - return true; - } - - @Override - public void computeScroll() { - // 调用startScroll的时候scroller.computeScrollOffset()返回true， - if (mScroller.computeScrollOffset()) { - mParentView.scrollTo(mScroller.getCurrX(), mScroller.getCurrY()); - postInvalidate(); - - if (mScroller.isFinished()) { - - if (onSildingFinishListener != null \u0026\u0026 isFinish) { - onSildingFinishListener.onSildingFinish(); - } - } - } - } - - - public interface OnSildingFinishListener { - public void onSildingFinish(); - } - - } 我们在onLayout()方法中利用getParent()方法获取该布局的父布局和获取其控件的宽度，主要是为之后的实现做准备工作。\n我们的滑动逻辑主要是利用View的scrollBy() 方法, scrollTo()方法和Scroller类来实现的，当手指拖动视图的时候，我们监听手指在屏幕上滑动的距离利用View的scrollBy() 方法使得View随着手指的滑动而滑动，而当手指离开屏幕，我们在根据逻辑使用Scroller类startScroll()方法设置滑动的参数，然后再根据View的scrollTo进行滚动。\n对于View的滑动，存在一些Touch事件消费的处理等问题，因此我们需要对View的整个Touch事件很熟悉 ,最主要的就是Activity里面有一些ListView、 GridView、ScrollView等控件了， 假如我们Activity里面存在ListView、GridView等控件的话，我们对Activity的最外层布局进行滚动根本就无效果，因为Touch事件被ListView、GridView等控件消费了，所以Activity的最外层布局根本得不到Touch事件，也就实现不了Touch逻辑了，所以为了解决此Touch事件问题我提供了setTouchView(View touchView) 方法，这个方法是将Touch事件动态的设置到到View上面，所以针对上面的问题，我们将OnTouchListener直接设置到ListView、GridView上面，这样子就避免了Activity的最外层接受不到Touch事件的问题了\n接下来看onTouch()方法\n首先我们在ACTION_DOWN记录按下点的X,Y坐标\n然后在ACTION_MOVE中判断，如果我们在水平方向滑动的距离大于mTouchSlop并且在竖直方向滑动的距离小于mTouchSlop，表示Activity处于滑动状态，我们判断如果touchView是ListView、GridView或者其子类的时候，因为我们手指在ListView、GridView上面，伴随着item的点击事件的发生，所以我们对touchView设置ACTION_CANCEL来取消item的点击事件，然后对该布局的父布局调用scrollBy()进行滚动，并且如果TouchView是AbsListView或者ScrollView直接返回true,来取消AbsListView或者ScrollView本身的ACTION_MOVE事件，最直观的感受就是我们在滑动Activity的时候，禁止AbsListView或者ScrollView的上下滑动\n最后在ACTION_UP中判断如果手指滑动的距离大于控件长度的二分之一，表示将Activity滑出界面，否则滑动到起始位置，我们利用Scroller类的startScroll()方法设置好开始位置，滑动距离和时间，然后调用postInvalidate()刷新界面，之后就到computeScroll()方法中，我们利用scrollTo()方法对该布局的父布局进行滚动，滚动结束之后，我们判断界面是否滑出界面，如果是就调用OnSildingFinishListener接口的onSildingFinish（）方法，所以只要在onSildingFinish()方法中finish界面就行了\n整个滑动布局的代码就是这个样子，接下来我们就来使用了，主界面Activity只有三个按钮，分别跳转到普通布局的Activity,有ListView的Activity和有ScrollView的Activity中\n**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork) - \u003cLinearLayout xmlns:android=\u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - xmlns:tools=\u0026#8220;http://schemas.android.com/tools\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:gravity=\u0026#8220;center\u0026#8221; - android:orientation=\u0026#8220;vertical\u0026#8221; \u003e - - \u003cButton - android:id=\u0026#8220;@+id/normal_activity\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;普通的Activity\u0026#8221; /\u003e - - \u003cButton - android:id=\u0026#8220;@+id/absListview_activity\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;有AbsListView的Activity\u0026#8221; /\u003e - - \u003cButton - android:id=\u0026#8220;@+id/scrollview_activity\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;wrap_content\u0026#8221; - android:text=\u0026#8220;有ScrollView的Activity\u0026#8221; /\u003e - - \u003c/LinearLayout\u003e 然后就是MainActivity的代码，根据ID实例化Button，然后为Button设置OnClickListener事件，不同的按钮跳转到不同的Activity，然后设置从右向左滑动的动画，重写onBackPressed()方法，当我们按下手机物理键盘的返回键，添加从左向右滑出的动画\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork) - package com.example.slidingfinish; - - import android.app.Activity; - import android.content.Intent; - import android.os.Bundle; - import android.view.View; - import android.view.View.OnClickListener; - import android.view.Window; - import android.widget.Button; - - import com.example.slidingfinish.R; - - public class MainActivity extends Activity implements OnClickListener { - - @Override - protected void onCreate(Bundle savedInstanceState) { - requestWindowFeature(Window.FEATURE_NO_TITLE); - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_main); - - Button mButtonNormal = (Button) findViewById(R.id.normal_activity); - mButtonNormal.setOnClickListener(this); - - Button mButtonAbs = (Button) findViewById(R.id.absListview_activity); - mButtonAbs.setOnClickListener(this); - - Button mButtonScroll = (Button) findViewById(R.id.scrollview_activity); - mButtonScroll.setOnClickListener(this); - - } - - @Override - public void onClick(View v) { - Intent mIntent = null; - switch (v.getId()) { - case R.id.normal_activity: - mIntent = new Intent(MainActivity.this, NormalActivity.class); - break; - case R.id.absListview_activity: - mIntent = new Intent(MainActivity.this, AbsActivity.class); - break; - case R.id.scrollview_activity: - mIntent = new Intent(MainActivity.this, ScrollActivity.class); - break; - } - - startActivity(mIntent); - overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain); - } - - //Press the back button in mobile phone - @Override - public void onBackPressed() { - super.onBackPressed(); - overridePendingTransition(, R.anim.base_slide_right_out); - } - - } 在这里我之贴出含有ListView的Activity的代码，先看布局，我们自定义滑动布局SildingFinishLayout应该放在XML的最顶层\n**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork) - \u003c?xml version=\u0026#8220;1.0\u0026#8221; encoding=\u0026#8220;UTF-8\u0026#8221;?\u003e - \u0026#8220;http://schemas.android.com/apk/res/android\u0026#8221; - xmlns:tools=\u0026#8220;http://schemas.android.com/tools\u0026#8221; - android:id=\u0026#8220;@+id/sildingFinishLayout\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; - android:background=\u0026#8220;#556677\u0026#8221; \u003e - - \u0026#8220;@+id/listView\u0026#8221; - android:cacheColorHint=\u0026#8220;@android:color/transparent\u0026#8221; - android:layout_width=\u0026#8220;match_parent\u0026#8221; - android:layout_height=\u0026#8220;match_parent\u0026#8221; \u003e - - - - **[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork) - package com.example.slidingfinish; - - import java.util.ArrayList; - import java.util.List; - - import android.app.Activity; - import android.content.Intent; - import android.os.Bundle; - import android.view.View; - import android.view.Window; - import android.widget.AdapterView; - import android.widget.AdapterView.OnItemClickListener; - import android.widget.ArrayAdapter; - import android.widget.ListView; - - import com.example.slidingfinish.R; - import com.example.view.SildingFinishLayout; - import com.example.view.SildingFinishLayout.OnSildingFinishListener; - - public class AbsActivity extends Activity { - private List list = new ArrayList(); - - @Override - protected void onCreate(Bundle savedInstanceState) { - requestWindowFeature(Window.FEATURE_NO_TITLE); - super.onCreate(savedInstanceState); - setContentView(R.layout.activity_abslistview); - - for (int i = ; i \u003c= 30; i++) { - list.add(\u0026#8220;测试数据\u0026#8221; + i); - } - - ListView mListView = (ListView) findViewById(R.id.listView); - ArrayAdapter adapter = new ArrayAdapter( - AbsActivity.this, android.R.layout.simple_list_item_1, list); - mListView.setAdapter(adapter); - - SildingFinishLayout mSildingFinishLayout = (SildingFinishLayout) findViewById(R.id.sildingFinishLayout); - mSildingFinishLayout - .setOnSildingFinishListener(new OnSildingFinishListener() { - - @Override - public void onSildingFinish() { - AbsActivity.this.finish(); - } - }); - - // touchView要设置到ListView上面 - mSildingFinishLayout.setTouchView(mListView); - - mListView.setOnItemClickListener(new OnItemClickListener() { - - @Override - public void onItemClick(AdapterView\u003c?\u003e parent, View view, - int position, long id) { - - startActivity(new Intent(AbsActivity.this, NormalActivity.class)); - overridePendingTransition(R.anim.base_slide_right_in, - R.anim.base_slide_remain); - } - }); - } - - // Press the back button in mobile phone - @Override - public void onBackPressed() { - super.onBackPressed(); - overridePendingTransition(, R.anim.base_slide_right_out); - } - - } 利用ID找到SildingFinishLayout实例，利用setTouchView（）方法设置touchView到ListView上面，然后调用setOnSildingFinishListener（）设置OnSildingFinishListener，在onSildingFinish（）中finish界面就可以啦。\n在运行项目之前还有一个很重要的操作，也是之前我被卡到的问题，就是我们需要对Activity设置为透明，即设置主题android:theme=”@android:style/Theme.Translucent”\n**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork) - \u003cactivity - android:name=\u0026#8220;.AbsActivity\u0026#8221; - android:theme=\u0026#8220;@android:style/Theme.Translucent\u0026#8221; \u003e - \u003c/activity\u003e - \u003cactivity - android:name=\u0026#8220;.NormalActivity\u0026#8221; - android:theme=\u0026#8220;@android:style/Theme.Translucent\u0026#8221; \u003e - \u003c/activity\u003e - \u003cactivity - android:name=\u0026#8220;.ScrollActivity\u0026#8221; - android:theme=\u0026#8220;@android:style/Theme.Translucent\u0026#8221; \u003e - \u003c/activity\u003e 好了，现在我们可以运行项目看看效果啦\n正是我们想要的效果，如果想要加入滑动切换界面的效果只需要三步就行了，首先将Activity布局的最外层修改为SildingFinishLayout，然后在Activity里面调用setTouchView()方法设置touchView，设置OnSildingFinishListener监听在onSildingFinish()方法中finish界面，最后设置Activity的背景为透明（不是设置Activity布局文件的最顶层布局背景颜色透明，这点要区分一下）是不是很方便呢？好了,今天的讲解到这里就结束了，有疑问的朋友请在下面留言，有兴趣的朋友可以下载源码看看！\n项目源码，点击下载\n博主后面又改了下代码，写了一个简洁加强版的demo,代码更加简洁了，也对里面是ViewPager做了处理，并且加了边界的阴影效果，也不必要调用setTouchView()来设置那个View响应滚动，对SildingFinishLayout里面的子View是什么没有任何关系，如果大家想使用此效果的话，建议下载如下版本\n加强简洁版，点击下载\n","wordCount":"1856","inLanguage":"zh","datePublished":"2015-03-07T02:05:49Z","dateModified":"2015-03-07T02:05:49Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E5%90%91%E5%8F%B3%E6%BB%91%E5%8A%A8%E9%94%80%E6%AF%81finishactivity-%E9%9A%8F%E7%9D%80%E6%89%8B%E5%8A%BF%E7%9A%84%E6%BB%91%E5%8A%A8%E8%80%8C%E6%BB%91%E5%8A%A8%E7%9A%84/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android 向右滑动销毁（finish）Activity, 随着手势的滑动而滑动的效果</h1><div class=post-description>转载（[http://blog.csdn.net/xiaanming/article/details/20934541](http://blog.csdn.net/xiaanming/article/details/20934541)） 今天给大家带来一个向右滑动销毁Activity的效果，Acti...</div><div class=post-meta><span title='2015-03-07 02:05:49 +0000 UTC'>2015年3月7日</span>&nbsp;·&nbsp;<span>9 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>转载（<a href=http://blog.csdn.net/xiaanming/article/details/20934541>http://blog.csdn.net/xiaanming/article/details/20934541</a>）</p><p>今天给大家带来一个向右滑动销毁Activity的效果，Activtiy随着手指的移动而移动，该效果在Android应用中还是比较少见的，在IOS中就比较常见了，例如“网易新闻” ,”美食杰” , “淘宝”等应用采用此效果，而Android应用中“知乎”采用的也是这种滑动切换Activity的效果， 不过我发现“淘宝”并没有随着手势的移动而移动，只是捕捉到滑动手势，然后产生平滑切换界面的动画效果，这个在Android中还是很好实现的,  网上很多滑动切换Activity的Demo貌似都是这种效果的吧，如果要实现类似“网易新闻”的随手势的滑动而滑动，似乎就要复杂一些了，我之前在IOS中看到”网易新闻”的这种效果就很感兴趣，然后群里也有朋友问我怎么实现类似“知乎”这个应用的滑动切换的效果，我也特意去下了一个“知乎”，在之前的实现中我遇到了一些瓶颈，没有实现出来就搁置了在那里，今天无意中看到给Activity设置透明的背景，于是乎我恍然大悟，真是灵感来源于瞬间，不能强求啊，然后自己就将此效果实现了出来，给大家分享一下，希望给有此需求的你一点点帮助。</p><p>不知道大家对Scroller这个类以及View的scrollBy() 和scrollTo()的使用熟悉不？我之前介绍了Scroller类的滑动实现原理<a href=http://blog.csdn.net/xiaanming/article/details/17483273>Android 带你从源码的角度解析Scroller的滚动实现原理</a>，在那里面也介绍了scrollBy() 和scrollTo()方法，不明白的同学可以去看看，这对实现此效果有很大的帮助，了解scrollBy() 和scrollTo()的朋友应该知道，如果想对某个View（例如Button）就行滚动,我们直接调用该View(Button)的scrollBy()方法，并不是该View(Button)进行滚动，而是该View里面的内容（Button上面的文字）进行滚动，所以我们假如要让View整体滚动就需要对其View的父布局调用scrollBy()方法，回到这篇文章来，假如我们想要对一个Activity进行滚动，我们就需求对这个Activity布局文件的顶层布局的父布局进行滚动</p><p>例如下面的XML布局文件</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;xmlns:tools&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/tools&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>如果我们对LinearLayout进行滚动，并不能实现我们想要的效果，而只能对LinearLayout里面的内容或者说是子View进行滚动，所以我们需要获取利用LinearLayout的getParent()方法获取父布局，其实Android系统会对我们的布局文件的最外层套一个FrameLayout，所以我们其实就是对FrameLayout进行滚动就行了</p><p>了解了实现的原理之后，我们就来编写代码吧，首先新建一个android工程，取名SildingFinish</p><p>由于我们的需求可能不是在一个界面提供这个滑动切换的效果，所以我们应该将这部分滑动的逻辑抽取出来，我这里就他写成了一个扩展RelativeLayout的自定义布局SildingFinishLayout，首先我们看其代码</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.view;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.MotionEvent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View.OnTouchListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.ViewConfiguration;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.ViewGroup;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AbsListView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.RelativeLayout;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ScrollView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Scroller;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 自定义可以滑动的RelativeLayout, 类似于IOS的滑动删除页面效果，当我们要使用&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 此功能的时候，需要将该Activity的顶层布局设置为SildingFinishLayout，&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * 然后需要调用setTouchView()方法来设置需要滑动的View&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @author xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * @blog http://blog.csdn.net/xiaanming&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; SildingFinishLayout &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; RelativeLayout &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt;
+
+- OnTouchListener {
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * SildingFinishLayout布局的父布局&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ViewGroup mParentView;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 处理滑动逻辑的View&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; View touchView;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 滑动的最小距离&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; mTouchSlop;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 按下点的X坐标&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; downX;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 按下点的Y坐标&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; downY;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 临时存储X坐标&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; tempX;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 滑动类&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Scroller mScroller;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * SildingFinishLayout的宽度&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; viewWidth;
+
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 记录是否正在滑动&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isSilding;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; OnSildingFinishListener onSildingFinishListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isFinish;
+
+- 
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; SildingFinishLayout(Context context, AttributeSet attrs) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;(context, attrs, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; SildingFinishLayout(Context context, AttributeSet attrs, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; defStyle) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(context, attrs, defStyle);
+
+- 
+- mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+
+- mScroller = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Scroller(context);
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onLayout(&lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; changed, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; l, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; t, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; r, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; b) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onLayout(changed, l, t, r, b);
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (changed) {
+
+- &lt;span class=&quot;comment&quot;&gt;// 获取SildingFinishLayout所在布局的父布局&lt;/span&gt;
+
+- mParentView = (ViewGroup) &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getParent();
+
+- viewWidth = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.getWidth();
+
+- }
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 设置OnSildingFinishListener, 在onSildingFinish()方法中finish Activity&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param onSildingFinishListener&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setOnSildingFinishListener(
+
+- OnSildingFinishListener onSildingFinishListener) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.onSildingFinishListener = onSildingFinishListener;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 设置Touch的View&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @param touchView&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; setTouchView(View touchView) {
+
+- &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.touchView = touchView;
+
+- touchView.setOnTouchListener(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; View getTouchView() {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; touchView;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 滚动出界面&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; scrollRight() {
+
+- &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; delta = (viewWidth + mParentView.getScrollX());
+
+- &lt;span class=&quot;comment&quot;&gt;// 调用startScroll方法来设置一些滚动的参数，我们在computeScroll()方法中调用scrollTo来滚动item&lt;/span&gt;
+
+- mScroller.startScroll(mParentView.getScrollX(), &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, -delta + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;,
+
+- Math.abs(delta));
+
+- postInvalidate();
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * 滚动到起始位置&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; scrollOrigin() {
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; delta = mParentView.getScrollX();
+
+- mScroller.startScroll(mParentView.getScrollX(), &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, -delta, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;,
+
+- Math.abs(delta));
+
+- postInvalidate();
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * touch的View是否是AbsListView， 例如ListView, GridView等其子类&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isTouchOnAbsListView() {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; touchView &lt;span class=&quot;keyword&quot;&gt;instanceof&lt;/span&gt; AbsListView ? &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt; : &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * touch的view是否是ScrollView或者其子类&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * &lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     * @return&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;     */&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; isTouchOnScrollView() {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; touchView &lt;span class=&quot;keyword&quot;&gt;instanceof&lt;/span&gt; ScrollView ? &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt; : &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; onTouch(View v, MotionEvent event) {
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (event.getAction()) {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_DOWN:
+
+- downX = tempX = (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) event.getRawX();
+
+- downY = (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) event.getRawY();
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_MOVE:
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; moveX = (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) event.getRawX();
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; deltaX = tempX &amp;#8211; moveX;
+
+- tempX = moveX;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (Math.abs(moveX &amp;#8211; downX) &gt; mTouchSlop
+
+- &amp;&amp; Math.abs((&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt;) event.getRawY() &amp;#8211; downY) &lt; mTouchSlop) {
+
+- isSilding = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 若touchView是AbsListView，&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;// 则当手指滑动，取消item的点击事件，不然我们滑动也伴随着item点击事件的发生&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (isTouchOnAbsListView()) {
+
+- MotionEvent cancelEvent = MotionEvent.obtain(event);
+
+- cancelEvent
+
+- .setAction(MotionEvent.ACTION_CANCEL
+
+- | (event.getActionIndex() &lt;&lt; MotionEvent.ACTION_POINTER_INDEX_SHIFT));
+
+- v.onTouchEvent(cancelEvent);
+
+- }
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (moveX &amp;#8211; downX &gt;= &lt;span class=&quot;number&quot;&gt;&lt;/span&gt; &amp;&amp; isSilding) {
+
+- mParentView.scrollBy(deltaX, &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;);
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 屏蔽在滑动过程中ListView ScrollView等自己的滑动事件&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (isTouchOnScrollView() || isTouchOnAbsListView()) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_UP:
+
+- isSilding = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mParentView.getScrollX() &lt;= -viewWidth / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;) {
+
+- isFinish = &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- scrollRight();
+
+- } &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; {
+
+- scrollOrigin();
+
+- isFinish = &lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;;
+
+- }
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 假如touch的view是AbsListView或者ScrollView 我们处理完上面自己的逻辑之后&lt;/span&gt;
+
+- &lt;span class=&quot;comment&quot;&gt;// 再交给AbsListView, ScrollView自己处理其自己的逻辑&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (isTouchOnScrollView() || isTouchOnAbsListView()) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; v.onTouchEvent(event);
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// 其他的情况直接返回true&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;
+
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; computeScroll() {
+
+- &lt;span class=&quot;comment&quot;&gt;// 调用startScroll的时候scroller.computeScrollOffset()返回true，&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mScroller.computeScrollOffset()) {
+
+- mParentView.scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+
+- postInvalidate();
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mScroller.isFinished()) {
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (onSildingFinishListener != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; &amp;&amp; isFinish) {
+
+- onSildingFinishListener.onSildingFinish();
+
+- }
+
+- }
+
+- }
+
+- }
+
+- 
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; OnSildingFinishListener {
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onSildingFinish();
+
+- }
+
+- 
+- }
+</code></pre></div><p>我们在onLayout()方法中利用getParent()方法获取该布局的父布局和获取其控件的宽度，主要是为之后的实现做准备工作。</p><p>我们的滑动逻辑主要是利用View的scrollBy() 方法, scrollTo()方法和Scroller类来实现的，当手指拖动视图的时候，我们监听手指在屏幕上滑动的距离利用View的scrollBy() 方法使得View随着手指的滑动而滑动，而当手指离开屏幕，我们在根据逻辑使用Scroller类startScroll()方法设置滑动的参数，然后再根据View的scrollTo进行滚动。</p><p>对于View的滑动，存在一些Touch事件消费的处理等问题，因此我们需要对View的整个Touch事件很熟悉 ,最主要的就是Activity里面有一些ListView、 GridView、ScrollView等控件了， 假如我们Activity里面存在ListView、GridView等控件的话，我们对Activity的最外层布局进行滚动根本就无效果，因为Touch事件被ListView、GridView等控件消费了，所以Activity的最外层布局根本得不到Touch事件，也就实现不了Touch逻辑了，所以为了解决此Touch事件问题我提供了setTouchView(View touchView) 方法，这个方法是将Touch事件动态的设置到到View上面，所以针对上面的问题，我们将OnTouchListener直接设置到ListView、GridView上面，这样子就避免了Activity的最外层接受不到Touch事件的问题了</p><p>接下来看onTouch()方法</p><p>首先我们在ACTION_DOWN记录按下点的X,Y坐标</p><p>然后在ACTION_MOVE中判断，如果我们在水平方向滑动的距离大于mTouchSlop并且在竖直方向滑动的距离小于mTouchSlop，表示Activity处于滑动状态，我们判断如果touchView是ListView、GridView或者其子类的时候，因为我们手指在ListView、GridView上面，伴随着item的点击事件的发生，所以我们对touchView设置ACTION_CANCEL来取消item的点击事件，然后对该布局的父布局调用scrollBy()进行滚动，并且如果TouchView是AbsListView或者ScrollView直接返回true,来取消AbsListView或者ScrollView本身的ACTION_MOVE事件，最直观的感受就是我们在滑动Activity的时候，禁止AbsListView或者ScrollView的上下滑动</p><p>最后在ACTION_UP中判断如果手指滑动的距离大于控件长度的二分之一，表示将Activity滑出界面，否则滑动到起始位置，我们利用Scroller类的startScroll()方法设置好开始位置，滑动距离和时间，然后调用postInvalidate()刷新界面，之后就到computeScroll()方法中，我们利用scrollTo()方法对该布局的父布局进行滚动，滚动结束之后，我们判断界面是否滑出界面，如果是就调用OnSildingFinishListener接口的onSildingFinish（）方法，所以只要在onSildingFinish()方法中finish界面就行了</p><p>整个滑动布局的代码就是这个样子，接下来我们就来使用了，主界面Activity只有三个按钮，分别跳转到普通布局的Activity,有ListView的Activity和有ScrollView的Activity中</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_3&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_3&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;xmlns:tools&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/tools&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:gravity&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;center&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:orientation&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;vertical&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/normal_activity&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;普通的Activity&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/absListview_activity&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;有AbsListView的Activity&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;Button&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/scrollview_activity&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;wrap_content&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:text&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;有ScrollView的Activity&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;LinearLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>然后就是MainActivity的代码，根据ID实例化Button，然后为Button设置OnClickListener事件，不同的按钮跳转到不同的Activity，然后设置从右向左滑动的动画，重写onBackPressed()方法，当我们按下手机物理键盘的返回键，添加从左向右滑出的动画</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_4&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_4&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.slidingfinish;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View.OnClickListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.Window;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.Button;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.slidingfinish.R;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; OnClickListener {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.activity_main);
+
+- 
+- Button mButtonNormal = (Button) findViewById(R.id.normal_activity);
+
+- mButtonNormal.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- 
+- Button mButtonAbs = (Button) findViewById(R.id.absListview_activity);
+
+- mButtonAbs.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- 
+- Button mButtonScroll = (Button) findViewById(R.id.scrollview_activity);
+
+- mButtonScroll.setOnClickListener(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- 
+- }
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onClick(View v) {
+
+- Intent mIntent = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (v.getId()) {
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; R.id.normal_activity:
+
+- mIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, NormalActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; R.id.absListview_activity:
+
+- mIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, AbsActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; R.id.scrollview_activity:
+
+- mIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(MainActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, ScrollActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;);
+
+- &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;
+
+- }
+
+- 
+- startActivity(mIntent);
+
+- overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_remain);
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;//Press the back button in mobile phone&lt;/span&gt;
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onBackPressed() {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onBackPressed();
+
+- overridePendingTransition(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, R.anim.base_slide_right_out);
+
+- }
+
+- 
+- }
+</code></pre></div><p>在这里我之贴出含有ListView的Activity的代码，先看布局，我们自定义滑动布局SildingFinishLayout应该放在XML的最顶层</p><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_5&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_5&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;?xml version=&lt;span class=&quot;string&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; encoding=&lt;span class=&quot;string&quot;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;?&gt;
+
+- &lt;com.example.view.SildingFinishLayout xmlns:android=&lt;span class=&quot;string&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- xmlns:tools=&lt;span class=&quot;string&quot;&gt;&amp;#8220;http://schemas.android.com/tools&amp;#8221;&lt;/span&gt;
+
+- android:id=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@+id/sildingFinishLayout&amp;#8221;&lt;/span&gt;
+
+- android:layout_width=&lt;span class=&quot;string&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- android:layout_height=&lt;span class=&quot;string&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- android:background=&lt;span class=&quot;string&quot;&gt;&amp;#8220;#556677&amp;#8221;&lt;/span&gt; &gt;
+
+- 
+- &lt;ListView
+
+- android:id=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@+id/listView&amp;#8221;&lt;/span&gt;
+
+- android:cacheColorHint=&lt;span class=&quot;string&quot;&gt;&amp;#8220;@android:color/transparent&amp;#8221;&lt;/span&gt;
+
+- android:layout_width=&lt;span class=&quot;string&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- android:layout_height=&lt;span class=&quot;string&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt; &gt;
+
+- &lt;/ListView&gt;
+
+- 
+- 
+- &lt;/com.example.view.SildingFinishLayout&gt;
+</code></pre></div><div class="dp-highlighter bg_java"><div class=bar><div class=tools>**[java]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_6&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_6&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;package&lt;/span&gt; com.example.slidingfinish;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.ArrayList;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; java.util.List;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.app.Activity;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.content.Intent;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.os.Bundle;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.view.Window;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AdapterView;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.AdapterView.OnItemClickListener;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ArrayAdapter;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; android.widget.ListView;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.slidingfinish.R;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.view.SildingFinishLayout;
+
+- &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; com.example.view.SildingFinishLayout.OnSildingFinishListener;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; AbsActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; Activity {
+
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; List&lt;String&gt; list = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&lt;String&gt;();
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.activity_abslistview);
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;&lt;/span&gt;; i &lt;= &lt;span class=&quot;number&quot;&gt;30&lt;/span&gt;; i++) {
+
+- list.add(&lt;span class=&quot;string&quot;&gt;&amp;#8220;测试数据&amp;#8221;&lt;/span&gt; + i);
+
+- }
+
+- 
+- ListView mListView = (ListView) findViewById(R.id.listView);
+
+- ArrayAdapter&lt;String&gt; adapter = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayAdapter&lt;String&gt;(
+
+- AbsActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, android.R.layout.simple_list_item_1, list);
+
+- mListView.setAdapter(adapter);
+
+- 
+- SildingFinishLayout mSildingFinishLayout = (SildingFinishLayout) findViewById(R.id.sildingFinishLayout);
+
+- mSildingFinishLayout
+
+- .setOnSildingFinishListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnSildingFinishListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onSildingFinish() {
+
+- AbsActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.finish();
+
+- }
+
+- });
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// touchView要设置到ListView上面&lt;/span&gt;
+
+- mSildingFinishLayout.setTouchView(mListView);
+
+- 
+- mListView.setOnItemClickListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnItemClickListener() {
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onItemClick(AdapterView&lt;?&gt; parent, View view,
+
+- &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; position, &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; id) {
+
+- 
+- startActivity(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(AbsActivity.&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, NormalActivity.&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt;));
+
+- overridePendingTransition(R.anim.base_slide_right_in,
+
+- R.anim.base_slide_remain);
+
+- }
+
+- });
+
+- }
+
+- 
+- &lt;span class=&quot;comment&quot;&gt;// Press the back button in mobile phone&lt;/span&gt;
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onBackPressed() {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onBackPressed();
+
+- overridePendingTransition(&lt;span class=&quot;number&quot;&gt;&lt;/span&gt;, R.anim.base_slide_right_out);
+
+- }
+
+- 
+- }
+</code></pre></div><p>利用ID找到SildingFinishLayout实例，利用setTouchView（）方法设置touchView到ListView上面，然后调用setOnSildingFinishListener（）设置OnSildingFinishListener，在onSildingFinish（）中finish界面就可以啦。</p><p>在运行项目之前还有一个很重要的操作，也是之前我被卡到的问题，就是我们需要对Activity设置为透明，即设置主题android:theme=”@android:style/Theme.Translucent”</p><div class="dp-highlighter bg_html"><div class=bar><div class=tools>**[html]** [view plain](http://blog.csdn.net/xiaanming/article/details/20934541#)[copy](http://blog.csdn.net/xiaanming/article/details/20934541#)[![在CODE上查看代码片](https://code.csdn.net/assets/CODE_ico.png)](https://code.csdn.net/snippets/232806)[![派生到我的代码片](https://code.csdn.net/assets/ico_fork.svg)](https://code.csdn.net/snippets/232806/fork)<pre><code>  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_7&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_7&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;activity&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;.AbsActivity&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:theme&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@android:style/Theme.Translucent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;activity&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;activity&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;.NormalActivity&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:theme&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@android:style/Theme.Translucent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;activity&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;activity&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:name&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;.ScrollActivity&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:theme&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@android:style/Theme.Translucent&amp;#8221;&lt;/span&gt; &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;activity&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p>好了，现在我们可以运行项目看看效果啦</p><p><img loading=lazy src=http://img.blog.csdn.net/20140311113145734></p><p> <br>正是我们想要的效果，如果想要加入滑动切换界面的效果只需要三步就行了，首先将Activity布局的最外层修改为SildingFinishLayout，然后在Activity里面调用setTouchView()方法设置touchView，设置OnSildingFinishListener监听在onSildingFinish()方法中finish界面，最后设置Activity的背景为透明（不是设置Activity布局文件的最顶层布局背景颜色透明，这点要区分一下）是不是很方便呢？好了,今天的讲解到这里就结束了，有疑问的朋友请在下面留言，有兴趣的朋友可以下载源码看看！</p><p><a href=http://download.csdn.net/detail/xiaanming/7038121>项目源码，点击下载</a></p><p>博主后面又改了下代码，写了一个简洁加强版的demo,代码更加简洁了，也对里面是ViewPager做了处理，并且加了边界的阴影效果，也不必要调用setTouchView()来设置那个View响应滚动，对SildingFinishLayout里面的子View是什么没有任何关系，如果大家想使用此效果的话，建议下载如下版本</p><p><a href=https://github.com/xiaanming/SlidingFinish>加强简洁版，点击下载</a></p><p> </p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-%E5%8F%AF%E6%8B%96%E6%8B%BD%E7%9A%84gridview%E6%95%88%E6%9E%9C%E5%AE%9E%E7%8E%B0-%E9%95%BF%E6%8C%89%E5%8F%AF%E6%8B%96%E6%8B%BD%E5%92%8Citem%E5%AE%9E%E6%97%B6%E4%BA%A4%E6%8D%A2/><span class=title>« 上一页</span>
+<span>Android 可拖拽的GridView效果实现, 长按可拖拽和item实时交换</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8%E5%BC%80%E6%BA%90%E5%BA%93stickygridheaders%E6%9D%A5%E5%AE%9E%E7%8E%B0%E5%B8%A6sections%E5%92%8Cheaders%E7%9A%84gridview%E6%98%BE%E7%A4%BA%E6%9C%AC%E5%9C%B0%E5%9B%BE-2/><span class=title>下一页 »</span>
+<span>Android 使用开源库StickyGridHeaders来实现带sections和headers的GridView显示本地图片效果</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

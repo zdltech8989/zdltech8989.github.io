@@ -1,0 +1,277 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>我的Android进阶之旅——>Android关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类 | ZDL Tech Blog</title>
+<meta name=keywords content="android,安全,移动开发"><meta name=description content="下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确 ``` import Java.io.BufferedReader; import java.io.IOException; import java.io...."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E6%88%91%E7%9A%84android%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%97%85-android%E5%85%B3%E4%BA%8Ehttpsurlconnection%E4%B8%80%E4%B8%AA%E5%BF%BD%E7%95%A5https%E8%AF%81%E4%B9%A6%E6%98%AF%E5%90%A6%E6%AD%A3/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E6%88%91%E7%9A%84android%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%97%85-android%E5%85%B3%E4%BA%8Ehttpsurlconnection%E4%B8%80%E4%B8%AA%E5%BF%BD%E7%95%A5https%E8%AF%81%E4%B9%A6%E6%98%AF%E5%90%A6%E6%AD%A3/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E6%88%91%E7%9A%84android%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%97%85-android%E5%85%B3%E4%BA%8Ehttpsurlconnection%E4%B8%80%E4%B8%AA%E5%BF%BD%E7%95%A5https%E8%AF%81%E4%B9%A6%E6%98%AF%E5%90%A6%E6%AD%A3/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="我的Android进阶之旅——>Android关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类"><meta property="og:description" content="下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确 ``` import Java.io.BufferedReader; import java.io.IOException; import java.io...."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-08-10T08:31:51+00:00"><meta property="article:modified_time" content="2016-08-10T08:31:51+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="安全"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="我的Android进阶之旅——>Android关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类"><meta name=twitter:description content="下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确 ``` import Java.io.BufferedReader; import java.io.IOException; import java.io...."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"我的Android进阶之旅——\u003eAndroid关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类","item":"https://blog.zdltech.com/posts/%E6%88%91%E7%9A%84android%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%97%85-android%E5%85%B3%E4%BA%8Ehttpsurlconnection%E4%B8%80%E4%B8%AA%E5%BF%BD%E7%95%A5https%E8%AF%81%E4%B9%A6%E6%98%AF%E5%90%A6%E6%AD%A3/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"我的Android进阶之旅——\u003eAndroid关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类","name":"我的Android进阶之旅——\u003eAndroid关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类","description":"下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确 ``` import Java.io.BufferedReader; import java.io.IOException; import java.io....","keywords":["android","安全","移动开发"],"articleBody":"下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确\nimport Java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.io.OutputStream; import java.io.UnsupportedEncodingException; import java.net.HttpURLConnection; import java.net.URL; import java.net.URLEncoder; import java.security.KeyManagementException; import java.security.NoSuchAlgorithmException; import java.security.NoSuchProviderException; import java.security.cert.CertificateException; import java.security.cert.X509Certificate; import java.util.Map; import java.util.Map.Entry; import javax.net.ssl.HostnameVerifier; import javax.net.ssl.HttpsURLConnection; import javax.net.ssl.SSLContext; import javax.net.ssl.SSLSession; import javax.net.ssl.SSLSocketFactory; import javax.net.ssl.TrustManager; import javax.net.ssl.X509TrustManager; /** * 忽略Https证书是否正确的Https Post请求工具类 * \u0026lt;p/\u0026gt; * created by OuyangPeng on 2016/1/17. */ public class HttpUtil { private static final String DEFAULT_CHARSET = \"UTF-8\"; // 默认字符集 private static final String _GET = \"GET\"; // GET private static final String _POST = \"POST\";// POST /** * 初始化http请求参数 */ private static HttpURLConnection initHttp(String url, String method, Map\u0026lt;String, String\u0026gt; headers) throws IOException { URL _url = new URL(url); HttpURLConnection http = (HttpURLConnection) _url.openConnection(); // 连接超时 http.setConnectTimeout(25000); // 读取超时 --服务器响应比较慢，增大时间 http.setReadTimeout(25000); http.setRequestMethod(method); http.setRequestProperty(\"Content-Type\", \"application/x-www-form-urlencoded\"); http.setRequestProperty(\"User-Agent\", \"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) [chrome](http://www.07net01.com/tags-chrome-0.html)/33.0.1750.146 Safari/537.36\"); if (null != headers \u0026\u0026 !headers.isEmpty()) { for (Entry\u0026lt;String, String\u0026gt; entry : headers.entrySet()) { http.setRequestProperty(entry.getKey(), entry.getValue()); } } http.setDoOutput(true); http.setDoInput(true); http.connect(); return http; } /** * 初始化http请求参数 */ private static HttpsURLConnection initHttps(String url, String method, Map\u0026lt;String, String\u0026gt; headers) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException { TrustManager[] tm = {new MyX509TrustManager()}; SSLContext sslContext = SSLContext.getInstance(\"SSL\"); sslContext.init(null, tm, new java.security.SecureRandom()); // 从上述SSLContext对象中得到SSLSocketFactory对象 SSLSocketFactory ssf = sslContext.getSocketFactory(); URL _url = new URL(url); HttpsURLConnection http = (HttpsURLConnection) _url.openConnection(); // 设置域名校验 http.setHostnameVerifier(new TrustAnyHostnameVerifier()); http.setSSLSocketFactory(ssf); // 连接超时 http.setConnectTimeout(25000); // 读取超时 --服务器响应比较慢，增大时间 http.setReadTimeout(25000); http.setRequestMethod(method); http.setRequestProperty(\"Content-Type\", \"application/x-www-form-urlencoded\"); http.setRequestProperty(\"User-Agent\", \"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36\"); if (null != headers \u0026\u0026 !headers.isEmpty()) { for (Entry\u0026lt;String, String\u0026gt; entry : headers.entrySet()) { http.setRequestProperty(entry.getKey(), entry.getValue()); } } http.setDoOutput(true); http.setDoInput(true); http.connect(); return http; } /** * get请求 */ public static String get(String url, Map\u0026lt;String, String\u0026gt; params, Map\u0026lt;String, String\u0026gt; headers) { StringBuffer bufferRes = null; try { HttpURLConnection http = null; if (isHttps(url)) { http = initHttps(initParams(url, params), _GET, headers); } else { http = initHttp(initParams(url, params), _GET, headers); } InputStream in = http.getInputStream(); BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET)); String valueString = null; bufferRes = new StringBuffer(); while ((valueString = read.readLine()) != null) { bufferRes.append(valueString); } in.close(); if (http != null) { http.disconnect();// 关闭连接 } return bufferRes.toString(); } catch (Exception e) { e.printStackTrace(); return null; } } /** * get请求 */ public static String get(String url) { return get(url, null); } /** * get请求 */ public static String get(String url, Map\u0026lt;String, String\u0026gt; params) { return get(url, params, null); } /** * post请求 */ public static String post(String url, String params, Map\u0026lt;String, String\u0026gt; headers) { StringBuffer bufferRes = null; try { HttpURLConnection http = null; if (isHttps(url)) { http = initHttps(url, _POST, headers); } else { http = initHttp(url, _POST, headers); } OutputStream out = http.getOutputStream(); out.write(params.getBytes(DEFAULT_CHARSET)); out.flush(); out.close(); InputStream in = http.getInputStream(); BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET)); String valueString = null; bufferRes = new StringBuffer(); while ((valueString = read.readLine()) != null) { bufferRes.append(valueString); } in.close(); if (http != null) { http.disconnect();// 关闭连接 } return bufferRes.toString(); } catch (Exception e) { e.printStackTrace(); return null; } } /** * post请求 */ public static String post(String url, Map\u0026lt;String, String\u0026gt; params) { return post(url, map2Url(params), null); } /** * post请求 */ public static String post(String url, Map\u0026lt;String, String\u0026gt; params, Map\u0026lt;String, String\u0026gt; headers) { return post(url, map2Url(params), headers); } /** * 初始化参数 */ public static String initParams(String url, Map\u0026lt;String, String\u0026gt; params) { if (null == params || params.isEmpty()) { return url; } StringBuilder sb = new StringBuilder(url); if (url.indexOf(\"?\") == -1) { sb.append(\"?\"); } sb.append(map2Url(params)); return sb.toString(); } /** * map转url参数 */ public static String map2Url(Map\u0026lt;String, String\u0026gt; paramToMap) { if (null == paramToMap || paramToMap.isEmpty()) { return null; } StringBuffer url = new StringBuffer(); boolean isfist = true; for (Entry\u0026lt;String, String\u0026gt; entry : paramToMap.entrySet()) { if (isfist) { isfist = false; } else { url.append(\"\u0026\"); } url.append(entry.getKey()).append(\"=\"); String value = http://blog.csdn.net/ouyang_peng/article/details/entry.getValue(); if (null == value || \"\".equals(value.trim())) { try { url.append(URLEncoder.encode(value, DEFAULT_CHARSET)); } catch (UnsupportedEncodingException e) { e.printStackTrace(); } } } return url.toString(); } /** * 检测是否https */ private static boolean isHttps(String url) { return url.startsWith(\"https\"); } /** * 不进行主机名确认 */ private static class TrustAnyHostnameVerifier implements HostnameVerifier { public boolean verify(String hostname, SSLSession session) { return true; } } /** * 信任所有主机 对于任何证书都不做SSL检测 * 安全验证机制，而Android采用的是X509验证 */ private static class MyX509TrustManager implements X509TrustManager { public X509Certificate[] getAcceptedIssuers() { return null; } @Override public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException { } @Override public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException { } } } 可以参考以下几篇文章：\nhttp://www.blogjava.net/stevenjohn/archive/2012/08/16/385569.html\nhttp://blog.csdn.net/sunny243788557/article/details/38874153\nhttp://blog.csdn.net/liangweiwei130/article/details/8845024\nhttp://www.xuebuyuan.com/1788389.html\n","wordCount":"727","inLanguage":"zh","datePublished":"2016-08-10T08:31:51Z","dateModified":"2016-08-10T08:31:51Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E6%88%91%E7%9A%84android%E8%BF%9B%E9%98%B6%E4%B9%8B%E6%97%85-android%E5%85%B3%E4%BA%8Ehttpsurlconnection%E4%B8%80%E4%B8%AA%E5%BF%BD%E7%95%A5https%E8%AF%81%E4%B9%A6%E6%98%AF%E5%90%A6%E6%AD%A3/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">我的Android进阶之旅——>Android关于HttpsURLConnection一个忽略Https证书是否正确的Https请求工具类</h1><div class=post-description>下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确 ``` import Java.io.BufferedReader; import java.io.IOException; import java.io....</div><div class=post-meta><span title='2016-08-10 08:31:51 +0000 UTC'>2016年8月10日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>下面是一个android HttpsURLConnection忽略Https证书是否正确的Https请求工具类，不需要验证服务器端证书是否正确</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>import Java.io.BufferedReader;
+</span></span><span style=display:flex><span>import java.io.IOException;
+</span></span><span style=display:flex><span>import java.io.InputStream;
+</span></span><span style=display:flex><span>import java.io.InputStreamReader;
+</span></span><span style=display:flex><span>import java.io.OutputStream;
+</span></span><span style=display:flex><span>import java.io.UnsupportedEncodingException;
+</span></span><span style=display:flex><span>import java.net.HttpURLConnection;
+</span></span><span style=display:flex><span>import java.net.URL;
+</span></span><span style=display:flex><span>import java.net.URLEncoder;
+</span></span><span style=display:flex><span>import java.security.KeyManagementException;
+</span></span><span style=display:flex><span>import java.security.NoSuchAlgorithmException;
+</span></span><span style=display:flex><span>import java.security.NoSuchProviderException;
+</span></span><span style=display:flex><span>import java.security.cert.CertificateException;
+</span></span><span style=display:flex><span>import java.security.cert.X509Certificate;
+</span></span><span style=display:flex><span>import java.util.Map;
+</span></span><span style=display:flex><span>import java.util.Map.Entry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>import javax.net.ssl.HostnameVerifier;
+</span></span><span style=display:flex><span>import javax.net.ssl.HttpsURLConnection;
+</span></span><span style=display:flex><span>import javax.net.ssl.SSLContext;
+</span></span><span style=display:flex><span>import javax.net.ssl.SSLSession;
+</span></span><span style=display:flex><span>import javax.net.ssl.SSLSocketFactory;
+</span></span><span style=display:flex><span>import javax.net.ssl.TrustManager;
+</span></span><span style=display:flex><span>import javax.net.ssl.X509TrustManager;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>/**
+</span></span><span style=display:flex><span> * 忽略Https证书是否正确的Https Post请求工具类
+</span></span><span style=display:flex><span> * &amp;lt;p/&amp;gt;
+</span></span><span style=display:flex><span> * created by OuyangPeng on 2016/1/17.
+</span></span><span style=display:flex><span> */
+</span></span><span style=display:flex><span>public class HttpUtil {
+</span></span><span style=display:flex><span>    private static final String DEFAULT_CHARSET = &#34;UTF-8&#34;; // 默认字符集
+</span></span><span style=display:flex><span>    private static final String _GET = &#34;GET&#34;; // GET
+</span></span><span style=display:flex><span>    private static final String _POST = &#34;POST&#34;;// POST
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * 初始化http请求参数
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    private static HttpURLConnection initHttp(String url, String method, Map&amp;lt;String, String&amp;gt; headers)
+</span></span><span style=display:flex><span>            throws IOException {
+</span></span><span style=display:flex><span>        URL _url = new URL(url);
+</span></span><span style=display:flex><span>        HttpURLConnection http = (HttpURLConnection) _url.openConnection();
+</span></span><span style=display:flex><span>        // 连接超时
+</span></span><span style=display:flex><span>        http.setConnectTimeout(25000);
+</span></span><span style=display:flex><span>        // 读取超时 --服务器响应比较慢，增大时间
+</span></span><span style=display:flex><span>        http.setReadTimeout(25000);
+</span></span><span style=display:flex><span>        http.setRequestMethod(method);
+</span></span><span style=display:flex><span>        http.setRequestProperty(&#34;Content-Type&#34;, &#34;application/x-www-form-urlencoded&#34;);
+</span></span><span style=display:flex><span>        http.setRequestProperty(&#34;User-Agent&#34;,
+</span></span><span style=display:flex><span>                &#34;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) [chrome](http://www.07net01.com/tags-chrome-0.html)/33.0.1750.146 Safari/537.36&#34;);
+</span></span><span style=display:flex><span>        if (null != headers &amp;&amp; !headers.isEmpty()) {
+</span></span><span style=display:flex><span>            for (Entry&amp;lt;String, String&amp;gt; entry : headers.entrySet()) {
+</span></span><span style=display:flex><span>                http.setRequestProperty(entry.getKey(), entry.getValue());
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        http.setDoOutput(true);
+</span></span><span style=display:flex><span>        http.setDoInput(true);
+</span></span><span style=display:flex><span>        http.connect();
+</span></span><span style=display:flex><span>        return http;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * 初始化http请求参数
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    private static HttpsURLConnection initHttps(String url, String method, Map&amp;lt;String, String&amp;gt; headers)
+</span></span><span style=display:flex><span>            throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
+</span></span><span style=display:flex><span>        TrustManager[] tm = {new MyX509TrustManager()};
+</span></span><span style=display:flex><span>        SSLContext sslContext = SSLContext.getInstance(&#34;SSL&#34;);
+</span></span><span style=display:flex><span>        sslContext.init(null, tm, new java.security.SecureRandom());
+</span></span><span style=display:flex><span>        // 从上述SSLContext对象中得到SSLSocketFactory对象  
+</span></span><span style=display:flex><span>        SSLSocketFactory ssf = sslContext.getSocketFactory();
+</span></span><span style=display:flex><span>        URL _url = new URL(url);
+</span></span><span style=display:flex><span>        HttpsURLConnection http = (HttpsURLConnection) _url.openConnection();
+</span></span><span style=display:flex><span>        // 设置域名校验
+</span></span><span style=display:flex><span>        http.setHostnameVerifier(new TrustAnyHostnameVerifier());
+</span></span><span style=display:flex><span>        http.setSSLSocketFactory(ssf);
+</span></span><span style=display:flex><span>        // 连接超时
+</span></span><span style=display:flex><span>        http.setConnectTimeout(25000);
+</span></span><span style=display:flex><span>        // 读取超时 --服务器响应比较慢，增大时间
+</span></span><span style=display:flex><span>        http.setReadTimeout(25000);
+</span></span><span style=display:flex><span>        http.setRequestMethod(method);
+</span></span><span style=display:flex><span>        http.setRequestProperty(&#34;Content-Type&#34;, &#34;application/x-www-form-urlencoded&#34;);
+</span></span><span style=display:flex><span>        http.setRequestProperty(&#34;User-Agent&#34;,
+</span></span><span style=display:flex><span>                &#34;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36&#34;);
+</span></span><span style=display:flex><span>        if (null != headers &amp;&amp; !headers.isEmpty()) {
+</span></span><span style=display:flex><span>            for (Entry&amp;lt;String, String&amp;gt; entry : headers.entrySet()) {
+</span></span><span style=display:flex><span>                http.setRequestProperty(entry.getKey(), entry.getValue());
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        http.setDoOutput(true);
+</span></span><span style=display:flex><span>        http.setDoInput(true);
+</span></span><span style=display:flex><span>        http.connect();
+</span></span><span style=display:flex><span>        return http;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * get请求
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String get(String url, Map&amp;lt;String, String&amp;gt; params, Map&amp;lt;String, String&amp;gt; headers) {
+</span></span><span style=display:flex><span>        StringBuffer bufferRes = null;
+</span></span><span style=display:flex><span>        try {
+</span></span><span style=display:flex><span>            HttpURLConnection http = null;
+</span></span><span style=display:flex><span>            if (isHttps(url)) {
+</span></span><span style=display:flex><span>                http = initHttps(initParams(url, params), _GET, headers);
+</span></span><span style=display:flex><span>            } else {
+</span></span><span style=display:flex><span>                http = initHttp(initParams(url, params), _GET, headers);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            InputStream in = http.getInputStream();
+</span></span><span style=display:flex><span>            BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET));
+</span></span><span style=display:flex><span>            String valueString = null;
+</span></span><span style=display:flex><span>            bufferRes = new StringBuffer();
+</span></span><span style=display:flex><span>            while ((valueString = read.readLine()) != null) {
+</span></span><span style=display:flex><span>                bufferRes.append(valueString);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            in.close();
+</span></span><span style=display:flex><span>            if (http != null) {
+</span></span><span style=display:flex><span>                http.disconnect();// 关闭连接
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            return bufferRes.toString();
+</span></span><span style=display:flex><span>        } catch (Exception e) {
+</span></span><span style=display:flex><span>            e.printStackTrace();
+</span></span><span style=display:flex><span>            return null;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * get请求
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String get(String url) {
+</span></span><span style=display:flex><span>        return get(url, null);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * get请求
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String get(String url, Map&amp;lt;String, String&amp;gt; params) {
+</span></span><span style=display:flex><span>        return get(url, params, null);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * post请求
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String post(String url, String params, Map&amp;lt;String, String&amp;gt; headers) {
+</span></span><span style=display:flex><span>        StringBuffer bufferRes = null;
+</span></span><span style=display:flex><span>        try {
+</span></span><span style=display:flex><span>            HttpURLConnection http = null;
+</span></span><span style=display:flex><span>            if (isHttps(url)) {
+</span></span><span style=display:flex><span>                http = initHttps(url, _POST, headers);
+</span></span><span style=display:flex><span>            } else {
+</span></span><span style=display:flex><span>                http = initHttp(url, _POST, headers);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            OutputStream out = http.getOutputStream();
+</span></span><span style=display:flex><span>            out.write(params.getBytes(DEFAULT_CHARSET));
+</span></span><span style=display:flex><span>            out.flush();
+</span></span><span style=display:flex><span>            out.close();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            InputStream in = http.getInputStream();
+</span></span><span style=display:flex><span>            BufferedReader read = new BufferedReader(new InputStreamReader(in, DEFAULT_CHARSET));
+</span></span><span style=display:flex><span>            String valueString = null;
+</span></span><span style=display:flex><span>            bufferRes = new StringBuffer();
+</span></span><span style=display:flex><span>            while ((valueString = read.readLine()) != null) {
+</span></span><span style=display:flex><span>                bufferRes.append(valueString);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            in.close();
+</span></span><span style=display:flex><span>            if (http != null) {
+</span></span><span style=display:flex><span>                http.disconnect();// 关闭连接
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            return bufferRes.toString();
+</span></span><span style=display:flex><span>        } catch (Exception e) {
+</span></span><span style=display:flex><span>            e.printStackTrace();
+</span></span><span style=display:flex><span>            return null;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * post请求
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String post(String url, Map&amp;lt;String, String&amp;gt; params) {
+</span></span><span style=display:flex><span>        return post(url, map2Url(params), null);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * post请求
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String post(String url, Map&amp;lt;String, String&amp;gt; params, Map&amp;lt;String, String&amp;gt; headers) {
+</span></span><span style=display:flex><span>        return post(url, map2Url(params), headers);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * 初始化参数
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String initParams(String url, Map&amp;lt;String, String&amp;gt; params) {
+</span></span><span style=display:flex><span>        if (null == params || params.isEmpty()) {
+</span></span><span style=display:flex><span>            return url;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        StringBuilder sb = new StringBuilder(url);
+</span></span><span style=display:flex><span>        if (url.indexOf(&#34;?&#34;) == -1) {
+</span></span><span style=display:flex><span>            sb.append(&#34;?&#34;);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        sb.append(map2Url(params));
+</span></span><span style=display:flex><span>        return sb.toString();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * map转url参数
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    public static String map2Url(Map&amp;lt;String, String&amp;gt; paramToMap) {
+</span></span><span style=display:flex><span>        if (null == paramToMap || paramToMap.isEmpty()) {
+</span></span><span style=display:flex><span>            return null;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        StringBuffer url = new StringBuffer();
+</span></span><span style=display:flex><span>        boolean isfist = true;
+</span></span><span style=display:flex><span>        for (Entry&amp;lt;String, String&amp;gt; entry : paramToMap.entrySet()) {
+</span></span><span style=display:flex><span>            if (isfist) {
+</span></span><span style=display:flex><span>                isfist = false;
+</span></span><span style=display:flex><span>            } else {
+</span></span><span style=display:flex><span>                url.append(&#34;&amp;&#34;);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>            url.append(entry.getKey()).append(&#34;=&#34;);
+</span></span><span style=display:flex><span>            String value = http://blog.csdn.net/ouyang_peng/article/details/entry.getValue();
+</span></span><span style=display:flex><span>            if (null == value || &#34;&#34;.equals(value.trim())) {
+</span></span><span style=display:flex><span>                try {
+</span></span><span style=display:flex><span>                    url.append(URLEncoder.encode(value, DEFAULT_CHARSET));
+</span></span><span style=display:flex><span>                } catch (UnsupportedEncodingException e) {
+</span></span><span style=display:flex><span>                    e.printStackTrace();
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        return url.toString();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * 检测是否https
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    private static boolean isHttps(String url) {
+</span></span><span style=display:flex><span>        return url.startsWith(&#34;https&#34;);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * 不进行主机名确认
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    private static class TrustAnyHostnameVerifier implements HostnameVerifier {
+</span></span><span style=display:flex><span>        public boolean verify(String hostname, SSLSession session) {
+</span></span><span style=display:flex><span>            return true;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    /**
+</span></span><span style=display:flex><span>     * 信任所有主机 对于任何证书都不做SSL检测
+</span></span><span style=display:flex><span>     * 安全验证机制，而Android采用的是X509验证
+</span></span><span style=display:flex><span>     */
+</span></span><span style=display:flex><span>    private static class MyX509TrustManager implements X509TrustManager {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        public X509Certificate[] getAcceptedIssuers() {
+</span></span><span style=display:flex><span>            return null;
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        @Override
+</span></span><span style=display:flex><span>        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        @Override
+</span></span><span style=display:flex><span>        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p> </p><p>可以参考以下几篇文章：</p><p><a href=http://www.blogjava.net/stevenjohn/archive/2012/08/16/385569.html>http://www.blogjava.net/stevenjohn/archive/2012/08/16/385569.html</a></p><p><a href=http://blog.csdn.net/sunny243788557/article/details/38874153>http://blog.csdn.net/sunny243788557/article/details/38874153</a></p><p><a href=http://blog.csdn.net/liangweiwei130/article/details/8845024>http://blog.csdn.net/liangweiwei130/article/details/8845024</a></p><p><a href=http://www.xuebuyuan.com/1788389.html>http://www.xuebuyuan.com/1788389.html</a></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E5%AE%89%E5%85%A8/>安全</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/intellij-idea-14-1%E4%B8%8Ajfinal%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%89%8B%E5%86%8C/><span class=title>« 上一页</span>
+<span>IntelliJ IDEA 14.1上JFinal开发环境搭建手册</span>
+</a><a class=next href=https://blog.zdltech.com/posts/butterknife8-1-0%E7%9A%84%E4%BD%BF%E7%94%A8/><span class=title>下一页 »</span>
+<span>ButterKnife：8.1.0的使用</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

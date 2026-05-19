@@ -1,0 +1,1042 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android webview使用详解 | ZDL Tech Blog</title>
+<meta name=keywords content="android,webview,移动开发"><meta name=description content="1. 打开网页时不调用系统浏览器， 而是在本WebView中显示： ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` mWebView.setWebViewClient(new WebViewClient(){ @Override ..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-webview%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-webview%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-webview%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android webview使用详解"><meta property="og:description" content="1. 打开网页时不调用系统浏览器， 而是在本WebView中显示： ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` mWebView.setWebViewClient(new WebViewClient(){ @Override ..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2016-11-21T09:21:12+00:00"><meta property="article:modified_time" content="2016-11-21T09:21:12+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="Webview"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android webview使用详解"><meta name=twitter:description content="1. 打开网页时不调用系统浏览器， 而是在本WebView中显示： ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` mWebView.setWebViewClient(new WebViewClient(){ @Override ..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android webview使用详解","item":"https://blog.zdltech.com/posts/android-webview%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android webview使用详解","name":"Android webview使用详解","description":"1. 打开网页时不调用系统浏览器， 而是在本WebView中显示： ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` mWebView.setWebViewClient(new WebViewClient(){ @Override ...","keywords":["android","webview","移动开发"],"articleBody":" 打开网页时不调用系统浏览器， 而是在本WebView中显示： ![复制代码](http://common.cnblogs.com/images/copycode.gif) mWebView.setWebViewClient(new WebViewClient(){ @Override public boolean shouldOverrideUrlLoading(WebView view, String url) { view.loadUrl(url); return true; } }); ![复制代码](http://common.cnblogs.com/images/copycode.gif) 通过java代码调用javascript ![复制代码](http://common.cnblogs.com/images/copycode.gif) WebSettings webSettings = mWebView .getSettings(); webSettings.setJavaScriptEnabled(true); mWebView.addJavascriptInterface(new Object() { public void clickOnAndroid() { mHandler.post(new Runnable() { public void run() { webview.loadUrl(\"javascript:wave()\"); } }); } }, \"demo\"); ![复制代码](http://common.cnblogs.com/images/copycode.gif) 按返回键时， 不退出程序而是返回上一浏览页面： ![复制代码](http://common.cnblogs.com/images/copycode.gif) public boolean onKeyDown(int keyCode, KeyEvent event) { if ((keyCode == KeyEvent.KEYCODE_BACK) \u0026\u0026 mWebView.canGoBack()) { mWebView.goBack(); return true; } return super.onKeyDown(keyCode, event); } ![复制代码](http://common.cnblogs.com/images/copycode.gif) 打开页面时， 自适应屏幕： WebSettings webSettings = mWebView .getSettings(); webSettings.setUseWideViewPort(true);//设置此属性，可任意比例缩放 webSettings.setLoadWithOverviewMode(true); 便页面支持缩放： WebSettings webSettings = mWebView .getSettings(); webSettings.setJavaScriptEnabled(true); webSettings.setBuiltInZoomControls(true); webSettings.setSupportZoom(true); 6.如果webView中需要用户手动输入用户名、密码或其他，则webview必须设置支持获取手势焦点。\n``` webview.requestFocusFromTouch(); ``` 7.WebView 加载界面主要调用三个方法：LoadUrl、LoadData、LoadDataWithBaseURL.\n1、LoadUrl 直接加载网页、图片并显示.（本地或是网络上的网页、图片、gif） 2、LoadData 显示文字与图片内容 （模拟器1.5、1.6） 3、LoadDataWithBase 显示文字与图片内容（支持多个模拟器版本） 8.WebSettings 的常用方法介绍\n![复制代码](http://common.cnblogs.com/images/copycode.gif) setJavaScriptEnabled(true); //支持js setPluginsEnabled(true); //支持插件 setUseWideViewPort(false); //将图片调整到适合webview的大小 setSupportZoom(true); //支持缩放 setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN); //支持内容重新布局 supportMultipleWindows(); //多窗口 setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK); //关闭webview中缓存 setAllowFileAccess(true); //设置可以访问文件 setNeedInitialFocus(true); //当webview调用requestFocus时为webview设置节点 webview webSettings.setBuiltInZoomControls(true); //设置支持缩放 setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口 setLoadWithOverviewMode(true); // 缩放至屏幕的大小 setLoadsImagesAutomatically(true); //支持自动加载图片 ![复制代码](http://common.cnblogs.com/images/copycode.gif) 9.WebViewClient 的方法全解\n![复制代码](http://common.cnblogs.com/images/copycode.gif) doUpdateVisitedHistory(WebView view, String url, boolean isReload) //(更新历史记录) onFormResubmission(WebView view, Message dontResend, Message resend) //(应用程序重新请求网页数据) onLoadResource(WebView view, String url) // 在加载页面资源时会调用，每一个资源（比如图片）的加载都会调用一次。 onPageStarted(WebView view, String url, Bitmap favicon) //这个事件就是开始载入页面调用的，通常我们可以在这设定一个loading的页面，告诉用户程序在等待网络响应。 onPageFinished(WebView view, String url) //在页面加载结束时调用。同样道理，我们知道一个页面载入完成，于是我们可以关闭loading 条，切换程序动作。 onReceivedError(WebView view, int errorCode, String description, String failingUrl)// (报告错误信息) onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host,String realm)//（获取返回信息授权请求） onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) //重写此方法可以让webview处理https请求。 onScaleChanged(WebView view, float oldScale, float newScale) // (WebView发生改变时调用) onUnhandledKeyEvent(WebView view, KeyEvent event) //（Key事件未被加载时调用） shouldOverrideKeyEvent(WebView view, KeyEvent event)//重写此方法才能够处理在浏览器中的按键事件。 shouldOverrideUrlLoading(WebView view, String url) //在点击请求的是链接是才会调用，重写此方法返回true表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边。这个函数我们可以做很多操作，比如我们读取到某些特殊的URL，于是就可以不打开地址，取消这个操作，进行预先定义的其他操作，这对一个程序是非常必要的。 ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` 1、width : 控制viewport的大小，可以指定一个值，如600， 或者特殊的值，如device-width为设备的宽度（单位为缩放为100%的CSS的像素） 2、height : 和width相对应，指定高度 3、initial-scale : 初始缩放比例，页面第一次加载时的缩放比例 4、maximum-scale : 允许用户缩放到的最大比例，范围从0到10.0 5、minimum-scale : 允许用户缩放到的最小比例，范围从0到10.0 6、user-scalable : 用户是否可以手动缩放，值可以是：①yes、 true允许用户缩放；②no、false不允许用户缩放\" data-snippet-id=\"ext.ccb8432def9ed981af59f83a732110e7\" data-snippet-saved=\"false\" data-codota-status=\"done\"\u003eandroid webview设置自适应任意大小的pc网页 webview自适应setUseWideViewPortsetLayoutAlgorithmwebSettingsandroid webview [html] view plaincopyprint? WebSettings webSettings = view.getSettings();\nwebSettings.setJavaScriptEnabled(true);\n// User settings\nwebSettings.setJavaScriptEnabled(true);\nwebSettings.setJavaScriptCanOpenWindowsAutomatically(true);\nwebSettings.setUseWideViewPort(true);//关键点\nwebSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);\nwebSettings.setDisplayZoomControls(false);\nwebSettings.setJavaScriptEnabled(true); // 设置支持javascript脚本\nwebSettings.setAllowFileAccess(true); // 允许访问文件\nwebSettings.setBuiltInZoomControls(true); // 设置显示缩放按钮\nwebSettings.setSupportZoom(true); // 支持缩放\nwebSettings.setLoadWithOverviewMode(true);\nDisplayMetrics metrics = new DisplayMetrics();\ngetWindowManager().getDefaultDisplay().getMetrics(metrics);\nint mDensity = metrics.densityDpi;\nLog.d(“maomao”, “densityDpi = \" + mDensity);\nif (mDensity == 240) {\nwebSettings.setDefaultZoom(ZoomDensity.FAR);\n} else if (mDensity == 160) {\nwebSettings.setDefaultZoom(ZoomDensity.MEDIUM);\n} else if(mDensity == 120) {\nwebSettings.setDefaultZoom(ZoomDensity.CLOSE);\n}else if(mDensity == DisplayMetrics.DENSITY_XHIGH){\nwebSettings.setDefaultZoom(ZoomDensity.FAR);\n}else if (mDensity == DisplayMetrics.DENSITY_TV){\nwebSettings.setDefaultZoom(ZoomDensity.FAR);\n}else{\nwebSettings.setDefaultZoom(ZoomDensity.MEDIUM);\n}\n/**\n用WebView显示图片，可使用这个参数 设置网页布局类型： 1、LayoutAlgorithm.NARROW_COLUMNS ： 适应内容大小 2、LayoutAlgorithm.SINGLE_COLUMN:适应屏幕，内容将自动缩放\n*/\nwebSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS); 其中关键是以下设置属性 webSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS); webSettings.setUseWideViewPort(true);\n这样的话如果你的PC网页里面没有设置 meta标签 viewport的缩放设置也没有关系。\n常用的 viewport meta 如下：\n1 1、width : 控制viewport的大小，可以指定一个值，如600， 或者特殊的值，如device-width为设备的宽度（单位为缩放为100%的CSS的像素）\n2、height : 和width相对应，指定高度\n3、initial-scale : 初始缩放比例，页面第一次加载时的缩放比例\n4、maximum-scale : 允许用户缩放到的最大比例，范围从0到10.0\n5、minimum-scale : 允许用户缩放到的最小比例，范围从0到10.0\n6、user-scalable : 用户是否可以手动缩放，值可以是：①yes、 true允许用户缩放；②no、false不允许用户缩放\nWebSettings用于管理WebView状态配置，当WebView第一次被创建时，WebView包含着一个默认的配置，这些默认的配置将通过get方法返回，通过WebView中的getSettings方法获得一个WebSettings对象，如果一个WebView被销毁，在WebSettings中所有回调方法将抛出IllegalStateException异常。 1、setSupportZoom(boolean support) 设置WebView是否支持使用屏幕控件或手势进行缩放，默认是true，支持缩放。 - getSettings.setSupportZoom(false); 2、setMediaPlaybackRequiresUserGesture(boolean require) 设置WebView是否通过手势触发播放媒体，默认是true，需要手势触发。 - getSettings.setMediaPlaybackRequiresUserGesture(false); 3、setBuiltInZoomControls(boolean enabled) 设置WebView是否使用其内置的变焦机制，该机制集合屏幕缩放控件使用，默认是false，不使用内置变焦机制。 - getSettings.setBuiltInZoomControls(true); 4、setDisplayZoomControls(boolean enabled) 设置WebView使用内置缩放机制时，是否展现在屏幕缩放控件上，默认true，展现在控件上。 - getSettings.setDisplayZoomControls(false); 5、setAllowFileAccess(boolean allow) 设置在WebView内部是否允许访问文件，默认允许访问。 - getSettings.setAllowFileAccess(false); 6、setAllowContentAccess(boolean allow) 设置WebView是否使用其内置的变焦机制，该机制结合屏幕缩放控件使用，默认是false，不使用内置变焦机制。 - getSettings.setAllowContentAccess(false); 7、setLoadWithOverviewMode(boolean overview) 设置WebView是否使用预览模式加载界面。 - getSettings.setLoadWithOverviewMode(false); 8、setSaveFormData(boolean save) 设置WebView是否保存表单数据，默认true，保存数据。 - getSettings.setSaveFormData(false); 9、setTextZoom(int textZoom) 设置WebView中加载页面字体变焦百分比，默认100，整型数。 - getSettings.setTextZoom(100); 10、setAcceptThirdPartyCookies(boolean accept) 设置WebView访问第三方Cookies策略，参考CookieManager提供的方法：setShouldAcceptThirdPartyCookies。 - getSettings.setAcceptThirdPartyCookies(false); 11、setUseWideViewPort(boolean use) 设置WebView是否使用viewport，当该属性被设置为false时，加载页面的宽度总是适应WebView控件宽度；当被设置为true，当前页面包含viewport属性标签，在标签中指定宽度值生效，如果页面不包含viewport标签，无法提供一个宽度值，这个时候该方法将被使用。 - getSettings.setUseWideViewPort(false)； 12、setSupportMultipleWindows(boolean support) 设置WebView是否支持多屏窗口，参考WebChromeClient#onCreateWindow，默认false，不支持。 - getSettings.setSupportMultipleWindows(true); 13、setLayoutAlgorithm(LayoutAlgorithm l) 设置WebView底层的布局算法，参考LayoutAlgorithm#NARROW_COLUMNS，将会重新生成WebView布局 - getSettings.setLayoutAlgorithm(LayoutAlgorithm l)； 14、setStandardFontFamily(String font) 设置WebView标准字体库字体，默认字体“sans-serif”。 - getSettings.setStandardFontFamily(\u0026#8220;sans-serif\u0026#8221;); 15、setFixedFontFamily(String font) 设置WebView固定的字体库字体，默认“monospace”。 - getSettings.setFixedFontFamily(\u0026#8220;monospace\u0026#8221;); 16、setSansSerifFontFamily(String font) 设置WebView Sans SeriFontFamily字体库字体，默认“sans-serif”。 - getSettings.setSansSerifFontFamily(\u0026#8220;sans-serif\u0026#8221;); 17、setSerifFontFamily(String font) 设置WebView seri FontFamily字体库字体，默认“sans-serif”。 - getSettings.setSansSerifFontFamily(\u0026#8220;sans-serif\u0026#8221;); 18、setCursiveFontFamily(String font) 设置WebView字体库字体，默认“cursive” - getSettings.setCursiveFontFamily(\u0026#8220;cursive\u0026#8221;); 19、setFantasyFontFamily(String font) 设置WebView字体库字体，默认“fantasy”。 - getSettings.setFantasyFontFamily(\u0026#8220;fantasy\u0026#8221;); 20、setMinimumFontSize(int size) 设置WebView字体最小值，默认值8，取值1到72 - getSettings.setMinimumFontSize(8); 21、setMinimumLogicalFontSize(int size) 设置WebView逻辑上最小字体值，默认值8，取值1到72 - getSettings.setMinimumLogicalFontSize(8); 22、setDefaultFontSize(int size) 设置WebView默认值字体值，默认值16，取值1到72 - getSettings.setDefaultFontSize(16); 23、setDefaultFixedFontSize(int size) 设置WebView默认固定的字体值，默认值16，取值1到72 - getSettings.setDefaultFixedFontSize(16); 24、setLoadsImagesAutomatically(boolean flag) 设置WebView是否加载图片资源，默认true，自动加载图片 - getSettings.setLoadsImagesAutomatically(false); 25、setBlockNetworkImage(boolean flag) 设置WebView是否以http、https方式访问从网络加载图片资源，默认false - getSettings.setBlockNetworkImage(true); 26、setBlockNetworkLoads(boolean flag) 设置WebView是否从网络加载资源，Application需要设置访问网络权限，否则报异常 - getSettings.setBlockNetworkLoads(true); 27、setJavaScriptEnabled(boolean flag) 设置WebView是否允许执行JavaScript脚本，默认false，不允许 - getSettings.setJavaScriptEnabled(true); 28、setAllowUniversalAccessFromFileURLs(boolean flag) 设置WebView运行中的脚本可以是否访问任何原始起点内容，默认true - getSettings.setAllowUniversalAccessFromFileURLs(false); 29、setAllowFileAccessFromFileURLs(boolean flag) 设置WebView运行中的一个文件方案被允许访问其他文件方案中的内容，默认值true - getSettings.setAllowFileAccessFromFileURLs(false); 30、setGeolocationDatabasePath(String databasePath) 设置WebView保存地理位置信息数据路径，指定的路径Application具备写入权限 - getSettings.setGeolocationDatabasePath(String path); 31、setAppCacheEnabled(boolean flag) 设置Application缓存API是否开启，默认false，设置有效的缓存路径参考setAppCachePath(String path)方法 - getSettings.setAppCacheEnabled(true); 32、setAppCachePath(String appCachePath) 设置当前Application缓存文件路径，Application Cache API能够开启需要指定Application具备写入权限的路径 - getSettings.setAppCachePath(String appCachePath); 33、setDatabaseEnabled(boolean flag) 设置是否开启数据库存储API权限，默认false，未开启，可以参考setDatabasePath(String path) - getSettings.setDatabaseEnabled(false); 34、setDomStorageEnabled(boolean flag) 设置是否开启DOM存储API权限，默认false，未开启，设置为true，WebView能够使用DOM storage API - getSettings.setDomStorageEnabled(true); 35、setGeolocationEnabled(boolean flag) 设置是否开启定位功能，默认true，开启定位 - getSettings.setGeolocationEnabled(false); 36、setJavaScriptCanOpenWindowsAutomatically(boolean flag) 设置脚本是否允许自动打开弹窗，默认false，不允许 - getSettings.setJavaScriptCanOpenWindowsAutomatically(true); 37、setDefaultTextEncodingName(String encoding) 设置WebView加载页面文本内容的编码，默认“UTF-8”。 - getSettings.setDefaultTextEncodingName(\u0026#8220;UTF-8\u0026#8221;); 38、setUserAgentString(String ua) 设置WebView代理字符串，如果String为null或为空，将使用系统默认值 - getSettings.setUserAgentString(String ua); 39、setNeedInitialFocus(boolean flag) 设置WebView是否需要设置一个节点获取焦点当被回调的时候，默认true - getSettings.setNeedInitialFocus(false); 40、setCacheMode(int mode) 重写缓存被使用到的方法，该方法基于Navigation Type，加载普通的页面，将会检查缓存同时重新验证是否需要加载，如果不需要重新加载，将直接从缓存读取数据，允许客户端通过指定LOAD_DEFAULT、LOAD_CACHE_ELSE_NETWORK、LOAD_NO_CACHE、LOAD_CACHE_ONLY其中之一重写该行为方法，默认值LOAD_DEFAULT - getSettings.setCacheMode(WebSettings.LOAD_DEFAULT); 41、setMixedContentMode(int mode) 设置当一个安全站点企图加载来自一个不安全站点资源时WebView的行为，android.os.Build.VERSION_CODES.KITKAT默认为MIXED_CONTENT_ALWAYS_ALLOW，android.os.Build.VERSION_CODES#LOLLIPOP默认为MIXED_CONTENT_NEVER_ALLOW，取值其中之一：MIXED_CONTENT_NEVER_ALLOW、MIXED_CONTENT_ALWAYS_ALLOW、MIXED_CONTENT_COMPATIBILITY_MODE. - getSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE); ","wordCount":"1058","inLanguage":"zh","datePublished":"2016-11-21T09:21:12Z","dateModified":"2016-11-21T09:21:12Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-webview%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android webview使用详解</h1><div class=post-description>1. 打开网页时不调用系统浏览器， 而是在本WebView中显示： ![复制代码](http://common.cnblogs.com/images/copycode.gif) ``` mWebView.setWebViewClient(new WebViewClient(){ @Override ...</div><div class=post-meta><span title='2016-11-21 09:21:12 +0000 UTC'>2016年11月21日</span>&nbsp;·&nbsp;<span>5 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><ol><li>打开网页时不调用系统浏览器， 而是在本WebView中显示：</li></ol><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>mWebView<span style=color:#ff79c6>.</span>setWebViewClient(new WebViewClient(){
+</span></span><span style=display:flex><span>    @Override
+</span></span><span style=display:flex><span>    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+</span></span><span style=display:flex><span>        view<span style=color:#ff79c6>.</span>loadUrl(url);
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> <span style=font-style:italic>true</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div></div><ol start=2><li>通过java代码调用javascript</li></ol><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>WebSettings webSettings <span style=color:#ff79c6>=</span>   mWebView <span style=color:#ff79c6>.</span>getSettings();       
+</span></span><span style=display:flex><span>webSettings<span style=color:#ff79c6>.</span>setJavaScriptEnabled(<span style=font-style:italic>true</span>); 
+</span></span><span style=display:flex><span>mWebView<span style=color:#ff79c6>.</span>addJavascriptInterface(new Object() {       
+</span></span><span style=display:flex><span>          public void clickOnAndroid() {       
+</span></span><span style=display:flex><span>              mHandler<span style=color:#ff79c6>.</span>post(new Runnable() {       
+</span></span><span style=display:flex><span>                  public void run() {       
+</span></span><span style=display:flex><span>                      webview<span style=color:#ff79c6>.</span>loadUrl(<span style=color:#f1fa8c>&#34;javascript:wave()&#34;</span>);       
+</span></span><span style=display:flex><span>                  }       
+</span></span><span style=display:flex><span>              });       
+</span></span><span style=display:flex><span>          }       
+</span></span><span style=display:flex><span>      }, <span style=color:#f1fa8c>&#34;demo&#34;</span>);
+</span></span></code></pre></div><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div></div><ol start=3><li>按返回键时， 不退出程序而是返回上一浏览页面：</li></ol><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>public boolean onKeyDown(int keyCode, KeyEvent event) {       
+</span></span><span style=display:flex><span>      if ((keyCode == KeyEvent.KEYCODE_BACK) &amp;&amp; mWebView.canGoBack()) {       
+</span></span><span style=display:flex><span>          mWebView.goBack();       
+</span></span><span style=display:flex><span>          return true;       
+</span></span><span style=display:flex><span>      }       
+</span></span><span style=display:flex><span>      return super.onKeyDown(keyCode, event);       
+</span></span><span style=display:flex><span>  }
+</span></span></code></pre></div><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div></div><ol start=4><li>打开页面时， 自适应屏幕：</li></ol><div class=cnblogs_code><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>WebSettings webSettings =   mWebView .getSettings();       
+</span></span><span style=display:flex><span>webSettings.setUseWideViewPort(true);//设置此属性，可任意比例缩放
+</span></span><span style=display:flex><span>webSettings.setLoadWithOverviewMode(true);
+</span></span></code></pre></div></div><ol start=5><li>便页面支持缩放：</li></ol><div class=cnblogs_code><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>WebSettings webSettings =   mWebView .getSettings();       
+</span></span><span style=display:flex><span>webSettings.setJavaScriptEnabled(true);  
+</span></span><span style=display:flex><span>webSettings.setBuiltInZoomControls(true);
+</span></span><span style=display:flex><span>webSettings.setSupportZoom(true);
+</span></span></code></pre></div></div><p>6.如果webView中需要用户手动输入用户名、密码或其他，则webview必须设置支持获取手势焦点。</p><div class=cnblogs_code>```
+webview.requestFocusFromTouch();
+```</div><p>7.WebView 加载界面主要调用三个方法：LoadUrl、LoadData、LoadDataWithBaseURL.</p><div class=cnblogs_code><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>1、LoadUrl            直接加载网页、图片并显示.（本地或是网络上的网页、图片、gif）  
+</span></span><span style=display:flex><span>2、LoadData           显示文字与图片内容 （模拟器1.5、1.6）  
+</span></span><span style=display:flex><span>3、LoadDataWithBase  显示文字与图片内容（支持多个模拟器版本）
+</span></span></code></pre></div></div><p>8.WebSettings 的常用方法介绍</p><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>setJavaScriptEnabled(true);  //支持js
+</span></span><span style=display:flex><span>setPluginsEnabled(true);  //支持插件 
+</span></span><span style=display:flex><span>setUseWideViewPort(false);  //将图片调整到适合webview的大小 
+</span></span><span style=display:flex><span>setSupportZoom(true);  //支持缩放 
+</span></span><span style=display:flex><span>setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN); //支持内容重新布局  
+</span></span><span style=display:flex><span>supportMultipleWindows();  //多窗口 
+</span></span><span style=display:flex><span>setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);  //关闭webview中缓存 
+</span></span><span style=display:flex><span>setAllowFileAccess(true);  //设置可以访问文件 
+</span></span><span style=display:flex><span>setNeedInitialFocus(true); //当webview调用requestFocus时为webview设置节点
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>webview webSettings.setBuiltInZoomControls(true); //设置支持缩放 
+</span></span><span style=display:flex><span>setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>setLoadWithOverviewMode(true); // 缩放至屏幕的大小
+</span></span><span style=display:flex><span>setLoadsImagesAutomatically(true);  //支持自动加载图片
+</span></span></code></pre></div><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div></div><p>9.WebViewClient 的方法全解</p><div class=cnblogs_code><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div><div class="top-box hide"></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>doUpdateVisitedHistory(WebView view, String url, boolean isReload)  <span style=color:#ff79c6>//</span>(更新历史记录) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>onFormResubmission(WebView view, Message dontResend, Message resend) <span style=color:#ff79c6>//</span>(应用程序重新请求网页数据) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>onLoadResource(WebView view, String url) <span style=color:#ff79c6>//</span> 在加载页面资源时会调用，每一个资源（比如图片）的加载都会调用一次。 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>onPageStarted(WebView view, String url, Bitmap favicon) <span style=color:#ff79c6>//</span>这个事件就是开始载入页面调用的，通常我们可以在这设定一个loading的页面，告诉用户程序在等待网络响应。 
+</span></span><span style=display:flex><span>onPageFinished(WebView view, String url) <span style=color:#ff79c6>//</span>在页面加载结束时调用。同样道理，我们知道一个页面载入完成，于是我们可以关闭loading 条，切换程序动作。 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>onReceivedError(WebView view, int errorCode, String description, String failingUrl)<span style=color:#ff79c6>//</span> (报告错误信息) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host,String realm)<span style=color:#ff79c6>//</span>（获取返回信息授权请求） 
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) <span style=color:#ff79c6>//</span>重写此方法可以让webview处理https请求。
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>onScaleChanged(WebView view, float oldScale, float newScale) <span style=color:#ff79c6>//</span> (WebView发生改变时调用) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>onUnhandledKeyEvent(WebView view, KeyEvent event) <span style=color:#ff79c6>//</span>（Key事件未被加载时调用） 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>shouldOverrideKeyEvent(WebView view, KeyEvent event)<span style=color:#ff79c6>//</span>重写此方法才能够处理在浏览器中的按键事件。 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>shouldOverrideUrlLoading(WebView view, String url) 
+</span></span><span style=display:flex><span><span style=color:#ff79c6>//</span>在点击请求的是链接是才会调用，重写此方法返回true表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边。这个函数我们可以做很多操作，比如我们读取到某些特殊的URL，于是就可以不打开地址，取消这个操作，进行预先定义的其他操作，这对一个程序是非常必要的。
+</span></span></code></pre></div><div class=cnblogs_code_toolbar><span class=cnblogs_code_copy><a title=复制代码>![复制代码](http://common.cnblogs.com/images/copycode.gif)</a></span></div></div><div class=cnblogs_code_toolbar></div><div class=cnblogs_code_toolbar></div><div class=cnblogs_code_toolbar>```
+1、width : 控制viewport的大小，可以指定一个值，如600， 或者特殊的值，如device-width为设备的宽度（单位为缩放为100%的CSS的像素） 2、height : 和width相对应，指定高度 3、initial-scale : 初始缩放比例，页面第一次加载时的缩放比例 4、maximum-scale : 允许用户缩放到的最大比例，范围从0到10.0 5、minimum-scale : 允许用户缩放到的最小比例，范围从0到10.0 6、user-scalable : 用户是否可以手动缩放，值可以是：①yes、 true允许用户缩放；②no、false不允许用户缩放" data-snippet-id="ext.ccb8432def9ed981af59f83a732110e7" data-snippet-saved="false" data-codota-status="done">android webview设置自适应任意大小的pc网页<p>webview自适应setUseWideViewPortsetLayoutAlgorithmwebSettingsandroid webview
+[html] view plaincopyprint?
+WebSettings webSettings = view.getSettings();<br>webSettings.setJavaScriptEnabled(true);</p><p>// User settings</p><p>webSettings.setJavaScriptEnabled(true);<br>webSettings.setJavaScriptCanOpenWindowsAutomatically(true);<br>webSettings.setUseWideViewPort(true);//关键点</p><p>webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);</p><p>webSettings.setDisplayZoomControls(false);<br>webSettings.setJavaScriptEnabled(true); // 设置支持javascript脚本<br>webSettings.setAllowFileAccess(true); // 允许访问文件<br>webSettings.setBuiltInZoomControls(true); // 设置显示缩放按钮<br>webSettings.setSupportZoom(true); // 支持缩放</p><p>webSettings.setLoadWithOverviewMode(true);</p><p>DisplayMetrics metrics = new DisplayMetrics();<br>getWindowManager().getDefaultDisplay().getMetrics(metrics);<br>int mDensity = metrics.densityDpi;<br>Log.d(&ldquo;maomao&rdquo;, &ldquo;densityDpi = " + mDensity);<br>if (mDensity == 240) {<br>webSettings.setDefaultZoom(ZoomDensity.FAR);<br>} else if (mDensity == 160) {<br>webSettings.setDefaultZoom(ZoomDensity.MEDIUM);<br>} else if(mDensity == 120) {<br>webSettings.setDefaultZoom(ZoomDensity.CLOSE);<br>}else if(mDensity == DisplayMetrics.DENSITY_XHIGH){<br>webSettings.setDefaultZoom(ZoomDensity.FAR);<br>}else if (mDensity == DisplayMetrics.DENSITY_TV){<br>webSettings.setDefaultZoom(ZoomDensity.FAR);<br>}else{<br>webSettings.setDefaultZoom(ZoomDensity.MEDIUM);<br>}</p><p>/**</p><ul><li>用WebView显示图片，可使用这个参数 设置网页布局类型： 1、LayoutAlgorithm.NARROW_COLUMNS ：</li><li>适应内容大小 2、LayoutAlgorithm.SINGLE_COLUMN:适应屏幕，内容将自动缩放<br>*/<br>webSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);</li></ul><p>其中关键是以下设置属性
+webSettings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+webSettings.setUseWideViewPort(true);</p><p>这样的话如果你的PC网页里面没有设置 meta标签 viewport的缩放设置也没有关系。</p><p>常用的 viewport meta 如下：</p><p>1 &lt;meta name=&ldquo;viewport&rdquo; content=&ldquo;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&rdquo; /></p><p>1、width : 控制viewport的大小，可以指定一个值，如600， 或者特殊的值，如device-width为设备的宽度（单位为缩放为100%的CSS的像素）</p><p>2、height : 和width相对应，指定高度</p><p>3、initial-scale : 初始缩放比例，页面第一次加载时的缩放比例</p><p>4、maximum-scale : 允许用户缩放到的最大比例，范围从0到10.0</p><p>5、minimum-scale : 允许用户缩放到的最小比例，范围从0到10.0</p><p>6、user-scalable : 用户是否可以手动缩放，值可以是：①yes、 true允许用户缩放；②no、false不允许用户缩放</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    WebSettings用于管理WebView状态配置，当WebView第一次被创建时，WebView包含着一个默认的配置，这些默认的配置将通过get方法返回，通过WebView中的getSettings方法获得一个WebSettings对象，如果一个WebView被销毁，在WebSettings中所有回调方法将抛出IllegalStateException异常。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    1、setSupportZoom(boolean support)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否支持使用屏幕控件或手势进行缩放，默认是true，支持缩放。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setSupportZoom(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    2、setMediaPlaybackRequiresUserGesture(boolean require)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否通过手势触发播放媒体，默认是true，需要手势触发。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setMediaPlaybackRequiresUserGesture(false); &#34; data-snippet-id=&#34;ext.342589f5b082706e962e0694b0bb05f4&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setMediaPlaybackRequiresUserGesture(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    3、setBuiltInZoomControls(boolean enabled)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否使用其内置的变焦机制，该机制集合屏幕缩放控件使用，默认是false，不使用内置变焦机制。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setBuiltInZoomControls(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    4、setDisplayZoomControls(boolean enabled)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView使用内置缩放机制时，是否展现在屏幕缩放控件上，默认true，展现在控件上。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setDisplayZoomControls(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    5、setAllowFileAccess(boolean allow)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置在WebView内部是否允许访问文件，默认允许访问。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setAllowFileAccess(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    6、setAllowContentAccess(boolean allow)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否使用其内置的变焦机制，该机制结合屏幕缩放控件使用，默认是false，不使用内置变焦机制。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setAllowContentAccess(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    7、setLoadWithOverviewMode(boolean overview)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否使用预览模式加载界面。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setLoadWithOverviewMode(false); &#34; data-snippet-id=&#34;ext.c2f5f70d36700f3031c7fccf6d3ca68c&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setLoadWithOverviewMode(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    8、setSaveFormData(boolean save)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否保存表单数据，默认true，保存数据。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setSaveFormData(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    9、setTextZoom(int textZoom)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView中加载页面字体变焦百分比，默认100，整型数。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setTextZoom(&lt;span class=&#34;number&#34;&gt;100&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    10、setAcceptThirdPartyCookies(boolean accept)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView访问第三方Cookies策略，参考CookieManager提供的方法：setShouldAcceptThirdPartyCookies。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setAcceptThirdPartyCookies(false); &#34; data-snippet-id=&#34;ext.37c3dae673198683080e0a9652f06380&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setAcceptThirdPartyCookies(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    11、setUseWideViewPort(boolean use)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否使用viewport，当该属性被设置为false时，加载页面的宽度总是适应WebView控件宽度；当被设置为true，当前页面包含viewport属性标签，在标签中指定宽度值生效，如果页面不包含viewport标签，无法提供一个宽度值，这个时候该方法将被使用。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setUseWideViewPort(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;)；
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    12、setSupportMultipleWindows(boolean support)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否支持多屏窗口，参考WebChromeClient#onCreateWindow，默认false，不支持。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setSupportMultipleWindows(true); &#34; data-snippet-id=&#34;ext.4dee8c96fbfe75879ab258a822a3d45d&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setSupportMultipleWindows(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    13、setLayoutAlgorithm(LayoutAlgorithm l)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView底层的布局算法，参考LayoutAlgorithm#NARROW_COLUMNS，将会重新生成WebView布局
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setLayoutAlgorithm(LayoutAlgorithm l)； &#34; data-snippet-id=&#34;ext.7339c879ba40f18da85489391822e7ad&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setLayoutAlgorithm(LayoutAlgorithm l)；
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    14、setStandardFontFamily(String font)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView标准字体库字体，默认字体“sans-serif”。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setStandardFontFamily(&amp;quot;sans-serif&amp;quot;); &#34; data-snippet-id=&#34;ext.429bac1e40341f6450d4006869897b1b&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setStandardFontFamily(&lt;span class=&#34;string&#34;&gt;&amp;#8220;sans-serif&amp;#8221;&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    15、setFixedFontFamily(String font)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView固定的字体库字体，默认“monospace”。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setFixedFontFamily(&amp;quot;monospace&amp;quot;); &#34; data-snippet-id=&#34;ext.370c848cf6baeb1849d9b139301455ba&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setFixedFontFamily(&lt;span class=&#34;string&#34;&gt;&amp;#8220;monospace&amp;#8221;&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    16、setSansSerifFontFamily(String font)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView Sans SeriFontFamily字体库字体，默认“sans-serif”。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setSansSerifFontFamily(&amp;quot;sans-serif&amp;quot;); &#34; data-snippet-id=&#34;ext.e7dd16a3cadd3fbe04f2a99c96b59974&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setSansSerifFontFamily(&lt;span class=&#34;string&#34;&gt;&amp;#8220;sans-serif&amp;#8221;&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    17、setSerifFontFamily(String font)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView seri FontFamily字体库字体，默认“sans-serif”。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setSansSerifFontFamily(&amp;quot;sans-serif&amp;quot;); &#34; data-snippet-id=&#34;ext.e7dd16a3cadd3fbe04f2a99c96b59974&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setSansSerifFontFamily(&lt;span class=&#34;string&#34;&gt;&amp;#8220;sans-serif&amp;#8221;&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    18、setCursiveFontFamily(String font)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView字体库字体，默认“cursive”
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setCursiveFontFamily(&amp;quot;cursive&amp;quot;); &#34; data-snippet-id=&#34;ext.0e81e0cd838d419febd2608f44dbc4c0&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setCursiveFontFamily(&lt;span class=&#34;string&#34;&gt;&amp;#8220;cursive&amp;#8221;&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    19、setFantasyFontFamily(String font)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView字体库字体，默认“fantasy”。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setFantasyFontFamily(&amp;quot;fantasy&amp;quot;); &#34; data-snippet-id=&#34;ext.a168bb1a8233935ba8711446ddcbb397&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setFantasyFontFamily(&lt;span class=&#34;string&#34;&gt;&amp;#8220;fantasy&amp;#8221;&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    20、setMinimumFontSize(int size)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView字体最小值，默认值8，取值1到72
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setMinimumFontSize(&lt;span class=&#34;number&#34;&gt;8&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    21、setMinimumLogicalFontSize(int size)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView逻辑上最小字体值，默认值8，取值1到72
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setMinimumLogicalFontSize(&lt;span class=&#34;number&#34;&gt;8&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    22、setDefaultFontSize(int size)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView默认值字体值，默认值16，取值1到72
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setDefaultFontSize(&lt;span class=&#34;number&#34;&gt;16&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    23、setDefaultFixedFontSize(int size)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView默认固定的字体值，默认值16，取值1到72
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setDefaultFixedFontSize(&lt;span class=&#34;number&#34;&gt;16&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    24、setLoadsImagesAutomatically(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否加载图片资源，默认true，自动加载图片
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setLoadsImagesAutomatically(false); &#34; data-snippet-id=&#34;ext.db53a3bb934fdc540ac4008e89cfd5b3&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setLoadsImagesAutomatically(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    25、setBlockNetworkImage(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否以http、https方式访问从网络加载图片资源，默认false
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setBlockNetworkImage(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    26、setBlockNetworkLoads(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否从网络加载资源，Application需要设置访问网络权限，否则报异常
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setBlockNetworkLoads(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    27、setJavaScriptEnabled(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否允许执行JavaScript脚本，默认false，不允许
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setJavaScriptEnabled(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    28、setAllowUniversalAccessFromFileURLs(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView运行中的脚本可以是否访问任何原始起点内容，默认true
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setAllowUniversalAccessFromFileURLs(false); &#34; data-snippet-id=&#34;ext.4238a9bd30d5dcb07027c59173bcd744&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setAllowUniversalAccessFromFileURLs(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    29、setAllowFileAccessFromFileURLs(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView运行中的一个文件方案被允许访问其他文件方案中的内容，默认值true
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setAllowFileAccessFromFileURLs(false); &#34; data-snippet-id=&#34;ext.3dd034da8b8b35572480ef9ada3e3a7b&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setAllowFileAccessFromFileURLs(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    30、setGeolocationDatabasePath(String databasePath)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView保存地理位置信息数据路径，指定的路径Application具备写入权限
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setGeolocationDatabasePath(String path); &#34; data-snippet-id=&#34;ext.071d81098e35cc28bc88f2f6f2a99a2e&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setGeolocationDatabasePath(String path);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    31、setAppCacheEnabled(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置Application缓存API是否开启，默认false，设置有效的缓存路径参考setAppCachePath(String path)方法
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setAppCacheEnabled(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    32、setAppCachePath(String appCachePath)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置当前Application缓存文件路径，Application Cache API能够开启需要指定Application具备写入权限的路径
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setAppCachePath(String appCachePath); &#34; data-snippet-id=&#34;ext.24285fb0b1a9b9b4381630fc6a21b7e7&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setAppCachePath(String appCachePath);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    33、setDatabaseEnabled(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置是否开启数据库存储API权限，默认false，未开启，可以参考setDatabasePath(String path)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setDatabaseEnabled(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    34、setDomStorageEnabled(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置是否开启DOM存储API权限，默认false，未开启，设置为true，WebView能够使用DOM storage API
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setDomStorageEnabled(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    35、setGeolocationEnabled(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置是否开启定位功能，默认true，开启定位
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setGeolocationEnabled(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    36、setJavaScriptCanOpenWindowsAutomatically(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置脚本是否允许自动打开弹窗，默认false，不允许
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setJavaScriptCanOpenWindowsAutomatically(true); &#34; data-snippet-id=&#34;ext.d233c5f7e27c0368d20ac42d6b4e9cc8&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setJavaScriptCanOpenWindowsAutomatically(&lt;span class=&#34;keyword&#34;&gt;true&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    37、setDefaultTextEncodingName(String encoding)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView加载页面文本内容的编码，默认“UTF-8”。
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setDefaultTextEncodingName(&amp;quot;UTF-8&amp;quot;); &#34; data-snippet-id=&#34;ext.027b71c6f5576d613b7aa4686e3361b2&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setDefaultTextEncodingName(&lt;span class=&#34;string&#34;&gt;&amp;#8220;UTF-8&amp;#8221;&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    38、setUserAgentString(String ua)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView代理字符串，如果String为null或为空，将使用系统默认值
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setUserAgentString(String ua);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    39、setNeedInitialFocus(boolean flag)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置WebView是否需要设置一个节点获取焦点当被回调的时候，默认true
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;div class=&#34;bar&#34;&gt;
+</span></span><span style=display:flex><span>    &lt;/div&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setNeedInitialFocus(&lt;span class=&#34;keyword&#34;&gt;false&lt;/span&gt;);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    40、setCacheMode(int mode)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    重写缓存被使用到的方法，该方法基于Navigation Type，加载普通的页面，将会检查缓存同时重新验证是否需要加载，如果不需要重新加载，将直接从缓存读取数据，允许客户端通过指定LOAD_DEFAULT、LOAD_CACHE_ELSE_NETWORK、LOAD_NO_CACHE、LOAD_CACHE_ONLY其中之一重写该行为方法，默认值LOAD_DEFAULT
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setCacheMode(WebSettings.LOAD_DEFAULT); &#34; data-snippet-id=&#34;ext.7445efb2477a16b7a2eb6cd0cb7fca82&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    41、setMixedContentMode(int mode)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    设置当一个安全站点企图加载来自一个不安全站点资源时WebView的行为，android.os.Build.VERSION_CODES.KITKAT默认为MIXED_CONTENT_ALWAYS_ALLOW，android.os.Build.VERSION_CODES#LOLLIPOP默认为MIXED_CONTENT_NEVER_ALLOW，取值其中之一：MIXED_CONTENT_NEVER_ALLOW、MIXED_CONTENT_ALWAYS_ALLOW、MIXED_CONTENT_COMPATIBILITY_MODE.
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  &lt;div class=&#34;dp-highlighter&#34; data-original-code=&#34; getSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE); &#34; data-snippet-id=&#34;ext.6529fa3720481ead6048f41f307618c6&#34; data-snippet-saved=&#34;false&#34; data-codota-status=&#34;done&#34;&gt;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>      - getSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  &lt;/div&gt;
+</span></span><span style=display:flex><span>&lt;/div&gt;
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/webview/>Webview</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/as%E4%B8%ADgit%E4%B8%8Egithub%E7%9A%84%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/><span class=title>« 上一页</span>
+<span>AS中Git与GitHub的使用入门</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android23%E4%BB%A5%E4%B8%8A%E5%8A%A8%E6%80%81%E9%89%B4%E6%9D%83%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%96%B9%E6%B3%95%E5%8F%8A%E6%80%9D%E8%B7%AF/><span class=title>下一页 »</span>
+<span>Android23以上动态鉴权实现的方法及思路</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

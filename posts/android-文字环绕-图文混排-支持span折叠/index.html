@@ -1,0 +1,234 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android 文字环绕 图文混排 支持Span折叠 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content='**先直接上效果图** [文字环绕 图文混排 支持Span折叠" src="http://s5.sinaimg.cn/middle/47021dd4gb63d6d54ffa4&amp;690" alt="Android 文字环绕 图文混排 支持Span折叠" width="320" height="480"...'><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E6%96%87%E5%AD%97%E7%8E%AF%E7%BB%95-%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92-%E6%94%AF%E6%8C%81span%E6%8A%98%E5%8F%A0/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E6%96%87%E5%AD%97%E7%8E%AF%E7%BB%95-%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92-%E6%94%AF%E6%8C%81span%E6%8A%98%E5%8F%A0/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E6%96%87%E5%AD%97%E7%8E%AF%E7%BB%95-%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92-%E6%94%AF%E6%8C%81span%E6%8A%98%E5%8F%A0/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android 文字环绕 图文混排 支持Span折叠"><meta property="og:description" content='**先直接上效果图** [文字环绕 图文混排 支持Span折叠" src="http://s5.sinaimg.cn/middle/47021dd4gb63d6d54ffa4&amp;690" alt="Android 文字环绕 图文混排 支持Span折叠" width="320" height="480"...'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-12-03T03:36:34+00:00"><meta property="article:modified_time" content="2014-12-03T03:36:34+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android 文字环绕 图文混排 支持Span折叠"><meta name=twitter:description content='**先直接上效果图** [文字环绕 图文混排 支持Span折叠" src="http://s5.sinaimg.cn/middle/47021dd4gb63d6d54ffa4&amp;690" alt="Android 文字环绕 图文混排 支持Span折叠" width="320" height="480"...'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android 文字环绕 图文混排 支持Span折叠","item":"https://blog.zdltech.com/posts/android-%E6%96%87%E5%AD%97%E7%8E%AF%E7%BB%95-%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92-%E6%94%AF%E6%8C%81span%E6%8A%98%E5%8F%A0/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android 文字环绕 图文混排 支持Span折叠","name":"Android 文字环绕 图文混排 支持Span折叠","description":"**先直接上效果图** [文字环绕 图文混排 支持Span折叠\" src=\"http://s5.sinaimg.cn/middle/47021dd4gb63d6d54ffa4\u0026690\" alt=\"Android 文字环绕 图文混排 支持Span折叠\" width=\"320\" height=\"480\"...","keywords":["android","移动开发"],"articleBody":"先直接上效果图\n上图为实现目标，实现了Android图文混排，文字环绕，支持Span的识别，表情的嵌入，支持文字字体大小的设置等。\n由于项目中需要用到图文混排技术，在此稍微研究了两天，出来一个效果还算不错的东西\n图文混排技术，在不少Android应用中都已经实现，说穿了其实就是两个TextView加一个ImageView的布局罢了，代码里面实现下String的剪切就可以了，不过我这里的这个除了要实现混排效果外，还要支持Span，支持表情等，这就有点麻烦了。下面慢慢分解。先贴出RichTextImageView的布局。\n\u003c?xml version=”1.0″ encoding=”utf-8″?\u003e http://schemas.android.com/apk/res/android” android:layout_width=”fill_parent” android:layout_height=”fill_parent” android:orientation=”vertical” android:id=”@+id/richview” \u003e\n","wordCount":"552","inLanguage":"zh","datePublished":"2014-12-03T03:36:34Z","dateModified":"2014-12-03T03:36:34Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E6%96%87%E5%AD%97%E7%8E%AF%E7%BB%95-%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92-%E6%94%AF%E6%8C%81span%E6%8A%98%E5%8F%A0/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android 文字环绕 图文混排 支持Span折叠</h1><div class=post-description>**先直接上效果图** [文字环绕 图文混排 支持Span折叠" src="http://s5.sinaimg.cn/middle/47021dd4gb63d6d54ffa4&amp;690" alt="Android 文字环绕 图文混排 支持Span折叠" width="320" height="480"...</div><div class=post-meta><span title='2014-12-03 03:36:34 +0000 UTC'>2014年12月3日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p><span style=color:red><strong>先直接上效果图</strong></span></p><p><a href="http://photo.blog.sina.com.cn/showpic.html#blogid=47021dd401012szb&amp;url=http://s5.sinaimg.cn/orignal/47021dd4gb63d6d54ffa4"><img loading=lazy decoding=async title="Android <wbr>文字环绕 <wbr>图文混排 <wbr>支持Span折叠" src=http://s5.sinaimg.cn/middle/47021dd4gb63d6d54ffa4&690 alt="Android <wbr>文字环绕 <wbr>图文混排 <wbr>支持Span折叠" width=320 height=480 name=image_operate_1061326275157265></a> <wbr> <a href="http://photo.blog.sina.com.cn/showpic.html#blogid=47021dd401012szb&amp;url=http://s8.sinaimg.cn/orignal/47021dd4gb64b88ffe747"><img loading=lazy decoding=async title="Android <wbr>文字环绕 <wbr>图文混排 <wbr>支持Span折叠" src=http://s8.sinaimg.cn/middle/47021dd4gb64b88ffe747&690 alt="Android <wbr>文字环绕 <wbr>图文混排 <wbr>支持Span折叠" width=320 height=480 name=image_operate_77241326335453250></a></p><wbr><p>上图为实现目标，实现了Android图文混排，文字环绕，支持Span的识别，表情的嵌入，支持文字字体大小的设置等。</p><p> <wbr></p><p> <wbr></p><p> <wbr></p><p> <wbr> <wbr> <wbr> 由于项目中需要用到图文混排技术，在此稍微研究了两天，出来一个效果还算不错的东西</p><p> <wbr> <wbr> <wbr> 图文混排技术，在不少Android应用中都已经实现，说穿了其实就是两个TextView加一个ImageView的布局罢了，代码里面实现下String的剪切就可以了，不过我这里的这个除了要实现混排效果外，还要支持Span，支持表情等，这就有点麻烦了。下面慢慢分解。先贴出RichTextImageView的布局。</p><p> <wbr></p><p>&lt;com.demonzym.richtextdemo.RichTextImageView xmlns:android=”<a href=http://schemas.android.com/apk/res/android>http://schemas.android.com/apk/res/android</a>”
+<wbr> <wbr> <wbr> android:layout_width=”fill_parent”
+<wbr> <wbr> <wbr> android:layout_height=”fill_parent”
+<wbr> <wbr> <wbr> android:orientation=”vertical”
+<wbr> <wbr> <wbr> android:id=”@+id/richview” ></p><p> <wbr> <wbr> <wbr> &lt;LinearLayout
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/linearLayout1″
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”fill_parent”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”wrap_content” >
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> &lt;RelativeLayout
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/layout_preimage_isgif_left”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”wrap_content”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”wrap_content”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_weight=”0″
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:visibility=”gone” ></p><p> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> &lt;ImageView
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/preimage_statues_left”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”134dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”134dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:background=”@drawable/preview_back”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:cropToPadding=”true”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:scaleType=”centerCrop”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:src=”@drawable/preview_back_small” /></p><p> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> &lt;ImageView
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/preimage_isgif_left”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”24dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”17dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_alignBottom=”@+id/preimage_statues”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_alignRight=”@+id/preimage_statues”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_marginBottom=”9dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_marginRight=”7dip” />
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> </relativelayout></p><p> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> &lt;com.demonzym.richtextdemo.RichTextView
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/lefttext”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”wrap_content”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”fill_parent”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_weight=”1″/></p><p> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> &lt;RelativeLayout
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/layout_preimage_isgif_right”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”wrap_content”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”wrap_content”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_weight=”0″
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:visibility=”gone” ></p><p> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> &lt;ImageView
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/preimage_statues_right”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”134dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”134dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:background=”@drawable/preview_back”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:cropToPadding=”true”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:scaleType=”centerCrop”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:src=”@drawable/preview_back_small” /></p><p> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> &lt;ImageView
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/preimage_isgif_right”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”24dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”17dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_alignBottom=”@+id/preimage_statues”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_alignRight=”@+id/preimage_statues”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_marginBottom=”9dip”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_marginRight=”7dip” />
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> </relativelayout>
+<wbr> <wbr> <wbr> </linearlayout></p><p> <wbr> <wbr> <wbr> &lt;com.demonzym.richtextdemo.RichTextView
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:id=”@+id/bottomtext”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_width=”fill_parent”
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr> android:layout_height=”wrap_content”/></p><p>&lt;/com.demonzym.richtextdemo.RichTextImageView></p><p> <wbr></p><p>布局中的RichTextView是另外封装的一个实现Span的TextView，就是实现效果图中表情啊，@啊，#话题# 之类的，了解Span的都懂的，就不细说了。读者研究这个图文混排的时候，可以直接用TextView替代。</p><p> <wbr></p><p>RichTextImageView <wbr> 即本文中的图文混排的View。继承于LinearLayout，该类实现的关键代码如下：</p><p> <wbr></p><p> <wbr>public void setText(String t) {
+<wbr> <wbr>mTopText.setText(“”);
+<wbr> <wbr>mBottomText.setText(“”);
+<wbr> <wbr>mTopText.setVisibility(View.INVISIBLE);
+<wbr> <wbr>mBottomText.setVisibility(View.GONE);
+<wbr> <wbr>bRequestBottomLayout = true;</p><p> <wbr> <wbr>if (t == null)
+<wbr> <wbr> <wbr>t = “”;</p><p>// <wbr> <wbr>Log.e(“setText”, t);
+<wbr> <wbr>
+<wbr> <wbr>mTextContent = t;</p><p> <wbr> <wbr>mTopText.setText(mTextContent);</p><p> <wbr> <wbr>requestLayout();
+<wbr> <wbr>
+<wbr>}</p><p> <wbr></p><p> <wbr></p><p>public void setImage(int id) {
+<wbr> <wbr>mImageContent = id;
+<wbr> <wbr>mPreviewImage.setImageResource(id);
+<wbr> <wbr>mPreview.setVisibility(View.VISIBLE);</p><p> <wbr> <wbr>if (!Util.isStringEmpty(mTextContent))
+<wbr> <wbr> <wbr>setText(mTextContent);
+<wbr>}</p><p> <wbr></p><p>private void iniViews() {
+<wbr> <wbr>mLinearLayout = (LinearLayout) findViewById(R.id.linearLayout1);
+<wbr> <wbr>mTopText = (RichTextView) findViewById(R.id.lefttext);
+<wbr> <wbr>mBottomText = (RichTextView) findViewById(R.id.bottomtext);</p><p> <wbr> <wbr>if(IMAGE_LOCATION == IMAGE_LOCATION_RIGHT){
+<wbr> <wbr> <wbr>mPreview = (RelativeLayout) findViewById(R.id.layout_preimage_isgif_right);
+<wbr> <wbr> <wbr>mPreviewImage = (ImageView) findViewById(R.id.preimage_statues_right);
+<wbr> <wbr> <wbr>mPreviewImageIsGif = (ImageView) findViewById(R.id.preimage_isgif_right);
+<wbr> <wbr>}else if(IMAGE_LOCATION == IMAGE_LOCATION_LEFT){
+<wbr> <wbr> <wbr>mPreview = (RelativeLayout) findViewById(R.id.layout_preimage_isgif_left);
+<wbr> <wbr> <wbr>mPreviewImage = (ImageView) findViewById(R.id.preimage_statues_left);
+<wbr> <wbr> <wbr>mPreviewImageIsGif = (ImageView) findViewById(R.id.preimage_isgif_left); <wbr> <wbr> <wbr>
+<wbr> <wbr>}
+<wbr>}
+<wbr></p><p><wbr>public void setImageLocation(int l){
+<wbr> <wbr>if(l != IMAGE_LOCATION_RIGHT && l != IMAGE_LOCATION_LEFT)
+<wbr> <wbr> <wbr>return;
+<wbr> <wbr>else{
+<wbr> <wbr> <wbr>IMAGE_LOCATION = l;
+<wbr> <wbr> <wbr>mPreview.setVisibility(View.GONE);
+<wbr> <wbr> <wbr>iniViews();
+<wbr> <wbr> <wbr>setImage(mImageContent);
+<wbr> <wbr>}
+<wbr>}</p><p> <wbr></p><p> <wbr></p><p> <wbr></p><p>@Override
+<wbr>protected void onLayout(boolean changed, int l, int t, int r, int b) {
+<wbr> <wbr>// TODO Auto-generated method stub
+<wbr> <wbr>super.onLayout(changed, l, t, r, b);</p><p> <wbr> <wbr>if (Util.isStringEmpty(mTextContent))
+<wbr> <wbr> <wbr>return;</p><p>// <wbr> <wbr>Log.e(“top text 宽 高”,
+// <wbr> <wbr> <wbr> <wbr>mTopText.getWidth() + ” ” + mTopText.getHeight());
+// <wbr> <wbr>Log.e(“top text 单行高度”, “” + mTopText.getLineHeight());
+<wbr> <wbr>
+// <wbr> <wbr>Rect rect = getStringRect(mTextContent, mTopText.getPaint());
+// <wbr> <wbr>Log.e(“文本的宽 高”, rect.width() + ” ” + rect.height());
+<wbr> <wbr>
+<wbr> <wbr>// toptext最多能显示的行数
+<wbr> <wbr>int topTextMaxRows = mTopText.getHeight() / mTopText.getLineHeight();
+<wbr> <wbr> <wbr> <wbr>
+<wbr> <wbr>// 显示这些内容真实占用的行数
+<wbr> <wbr>int textRows = mTopText.getLineCount();
+// <wbr> <wbr>Log.e(“top text最多能显示的行数”, “” + topTextMaxRows);
+// <wbr> <wbr>Log.e(“当前文本实际占用的行数”, “” + textRows);
+<wbr> <wbr>
+<wbr> <wbr>//由于文本可能带有表情，重新计算显示行数，以保证显示正确
+<wbr> <wbr>Rect lineR = new Rect();
+<wbr> <wbr>int realH = 0; <wbr> <wbr> <wbr> <wbr> //toptext真实高度
+<wbr> <wbr>int i = 0;
+<wbr> <wbr>for(i = 0; i &lt; topTextMaxRows; i++){
+<wbr> <wbr> <wbr>try{
+<wbr> <wbr> <wbr> <wbr>mTopText.getLineBounds(i, lineR);
+<wbr> <wbr> <wbr>}catch(IndexOutOfBoundsExceptio<wbr>n e){
+<wbr> <wbr> <wbr> <wbr>break;
+<wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr>realH += lineR.height();
+<wbr> <wbr> <wbr>if(realH >= mTopText.getHeight())
+<wbr> <wbr> <wbr> <wbr>break;
+<wbr> <wbr>}
+// <wbr> <wbr>Log.e(“当前view实际能显示的行数为”, “” + i);
+<wbr> <wbr>topTextMaxRows = i;
+<wbr> <wbr>
+<wbr> <wbr>//如果toptext显示不下的话，显示到bottomtext里面去
+<wbr> <wbr>if (textRows >= topTextMaxRows && bRequestBottomLayout) {
+<wbr> <wbr> <wbr>// toptext最后一个可见字符的位置
+<wbr> <wbr> <wbr>int lastindex = mTopText.getLayout().getLineVisibleEnd(</p><p> <wbr> <wbr> <wbr>
+<wbr> <wbr> <wbr>
+<wbr> <wbr> <wbr>ClickableSpan[] cs = mTopText.getSpans();
+<wbr> <wbr> <wbr>int spanstart = 0;
+<wbr> <wbr> <wbr>int spanend = 0;
+<wbr> <wbr> <wbr>spanstring = “”;
+<wbr> <wbr> <wbr>STATE = 0; // 1网页 2人名 3话题
+<wbr> <wbr> <wbr>for (ClickableSpan c : cs) {
+<wbr> <wbr> <wbr> <wbr>spanstart = mTopText.getSpanStart(c);
+<wbr> <wbr> <wbr> <wbr>spanend = mTopText.getSpanEnd(c);
+<wbr> <wbr> <wbr> <wbr>if (spanstart &lt;= lastindex && spanend > lastindex) {
+<wbr> <wbr> <wbr> <wbr> <wbr>if (c instanceof LinkClickableSpan) {
+// <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Log.e(“转角span类型”, “网页”);
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>spanstring = ((LinkClickableSpan) c).getLink();
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>STATE = 1;
+<wbr> <wbr> <wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr> <wbr> <wbr>if (c instanceof NameClickableSpan) {
+// <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Log.e(“转角span类型”, “人名”);
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>spanstring = ((NameClickableSpan) c).getName();
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>STATE = 2;
+<wbr> <wbr> <wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr> <wbr> <wbr>if (c instanceof TopicClickableSpan) {
+// <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Log.e(“转角span类型”, “话题”);
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>spanstring = ((TopicClickableSpan) c).getTopic();
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>STATE = 3;
+<wbr> <wbr> <wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr> <wbr> <wbr>break;
+<wbr> <wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr></p><p> <wbr> <wbr> <wbr>mTopText.setText(mTextContent.substring(0, lastindex));
+<wbr> <wbr> <wbr>mTopText.setVisibility(View.VISIBLE);
+<wbr> <wbr> <wbr>// 当行数不是整数时，调整内容会有下面半行没遮住，所以干脆都处理完以后再显示出来
+<wbr> <wbr> <wbr>mBottomText.setText(mTextContent.substring(lastindex,
+<wbr> <wbr> <wbr> <wbr> <wbr>mTextContent.length()) + mBottomText.getText().toString());
+<wbr> <wbr> <wbr>if (mBottomText.getText().length() > 0 && bRequestBottomLayout){
+<wbr> <wbr> <wbr> <wbr>mBottomText.setVisibility(View.VISIBLE);
+<wbr> <wbr> <wbr> <wbr>mHandler.post(new Runnable() {
+<wbr> <wbr> <wbr> <wbr> <wbr>
+<wbr> <wbr> <wbr> <wbr> <wbr>@Override
+<wbr> <wbr> <wbr> <wbr> <wbr>public void run() {
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>// TODO Auto-generated method stub
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>mBottomText.requestLayout();
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr>bRequestBottomLayout = false;
+<wbr> <wbr> <wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr> <wbr>});
+<wbr> <wbr> <wbr>}</p><p> <wbr> <wbr> <wbr></p><p> <wbr> <wbr> <wbr>if (STATE != 0 || !bRequestBottomLayout) {</p><p> <wbr> <wbr> <wbr> <wbr>Log.e(“spanstring”, spanstring);</p><p>// <wbr> <wbr> <wbr> <wbr>Log.e(“”, “移除转角span”);</p><p> <wbr> <wbr> <wbr> <wbr>switch (STATE) {
+<wbr> <wbr> <wbr> <wbr>case 1:
+<wbr> <wbr> <wbr> <wbr> <wbr>mTopText.getSpannable().setSpan(
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>mTopText.new LinkClickableSpan(spanstring),
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>spanstart,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>lastindex,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+<wbr> <wbr> <wbr> <wbr> <wbr>mBottomText.getSpannable().setSpan(
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>mBottomText.new LinkClickableSpan(spanstring),
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>0,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+// <wbr> <wbr> <wbr> <wbr> <wbr>Log.e(“”, “网页”);
+<wbr> <wbr> <wbr> <wbr> <wbr>break;
+<wbr> <wbr> <wbr> <wbr>case 2:
+<wbr> <wbr> <wbr> <wbr> <wbr>mTopText.getSpannable().setSpan(
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>mTopText.new NameClickableSpan(spanstring),
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>spanstart,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>lastindex,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+<wbr> <wbr> <wbr> <wbr> <wbr>mBottomText.getSpannable().setSpan(
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>mBottomText.new NameClickableSpan(spanstring),
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>0,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+// <wbr> <wbr> <wbr> <wbr> <wbr>Log.e(“”, “人名”);
+<wbr> <wbr> <wbr> <wbr> <wbr>break;
+<wbr> <wbr> <wbr> <wbr>case 3:
+<wbr> <wbr> <wbr> <wbr> <wbr>mTopText.getSpannable().setSpan(
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>mTopText.new TopicClickableSpan(spanstring),
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>spanstart,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>lastindex,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+<wbr> <wbr> <wbr> <wbr> <wbr>mBottomText.getSpannable().setSpan(
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>mBottomText.new TopicClickableSpan(spanstring),
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>0,
+<wbr> <wbr> <wbr> <wbr> <wbr> <wbr> <wbr>Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+// <wbr> <wbr> <wbr> <wbr> <wbr>Log.e(“”, “话题”);
+<wbr> <wbr> <wbr> <wbr> <wbr>break;
+<wbr> <wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr> <wbr>
+<wbr> <wbr> <wbr> <wbr>mTopText.setText(mTopText.getSpannable(), BufferType.SPANNABLE);
+<wbr> <wbr> <wbr> <wbr>mBottomText.setText(mBottomText.getSpannable(), BufferType.SPANNABLE);
+<wbr> <wbr> <wbr>}
+<wbr> <wbr> <wbr></p><p> <wbr> <wbr>}
+<wbr> <wbr>
+<wbr>}</p><p> <wbr></p><p> <wbr></p><p> <wbr> <wbr> <wbr> <span style=color:red><strong>说明下难点：</strong></span></p><p> <wbr> <wbr> <wbr> <span style=text-decoration:underline><span style=color:#4d6df3>第一，转角处可能存在Span，比如一个话题 #话题话题话题话题话题话题话题话题话题#，可能一半内容在mTopText里面的最后一行显示，而另一半显示不下了，这就需要剪切剩余的String显示到mBottomText里面去，可是Span的内容就会出错，这就需要重新设置下转角处的Span效果了</span></span></p><p><span style=text-decoration:underline><span style=color:#4d6df3> <wbr> <wbr> <wbr> 第二，由于存在图片Span，会导致行高不正确，所以需要在获取到mTopText能显示的最多行数以后，重新判断一次是否正确，如果不正确的话，需要重新调整，不然mTopText会有一部分内容显示不下。</span></span></p><p> <wbr></p><p>该View实现完成后，在布局中使用include条用，代码中find出来就可以直接使用了</p><p> <wbr></p><p><span style=color:#1c615d>不考虑Span的话，直接将代码中转角处理Span部分删除即可使用，我注释的挺清楚了</span></p><p> <wbr></p><p>代码写的较急，可能有点乱，仅作交流</p><pre><code>文章转自：http://blog.sina.com.cn/s/blog_47021dd401012szb.html
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E5%AE%89%E5%8D%93%E4%BB%8E%E6%BA%90%E7%A0%81%E7%9A%84%E8%A7%92%E5%BA%A6%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90scroller/><span class=title>« 上一页</span>
+<span>【安卓】从源码的角度深入分析Scroller</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android-ontouchevent-onclick%E5%8F%8Aonlongclick%E7%9A%84%E8%B0%83%E7%94%A8%E6%9C%BA%E5%88%B6/><span class=title>下一页 »</span>
+<span>Android onTouchEvent, onClick及onLongClick的调用机制</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

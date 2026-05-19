@@ -1,0 +1,952 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>为TabLayout添加角标的最简单方法 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="# 一、前言 {#一、前言} 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现: * [PagerSlidingTabStrip](https://github.com/astuetz/PagerSliding..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E4%B8%BAtablayout%E6%B7%BB%E5%8A%A0%E8%A7%92%E6%A0%87%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E6%96%B9%E6%B3%95/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E4%B8%BAtablayout%E6%B7%BB%E5%8A%A0%E8%A7%92%E6%A0%87%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E6%96%B9%E6%B3%95/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E4%B8%BAtablayout%E6%B7%BB%E5%8A%A0%E8%A7%92%E6%A0%87%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E6%96%B9%E6%B3%95/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="为TabLayout添加角标的最简单方法"><meta property="og:description" content="# 一、前言 {#一、前言} 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现: * [PagerSlidingTabStrip](https://github.com/astuetz/PagerSliding..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2018-04-04T03:54:23+00:00"><meta property="article:modified_time" content="2018-04-04T03:54:23+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="为TabLayout添加角标的最简单方法"><meta name=twitter:description content="# 一、前言 {#一、前言} 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现: * [PagerSlidingTabStrip](https://github.com/astuetz/PagerSliding..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"为TabLayout添加角标的最简单方法","item":"https://blog.zdltech.com/posts/%E4%B8%BAtablayout%E6%B7%BB%E5%8A%A0%E8%A7%92%E6%A0%87%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E6%96%B9%E6%B3%95/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"为TabLayout添加角标的最简单方法","name":"为TabLayout添加角标的最简单方法","description":"# 一、前言 {#一、前言} 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现: * [PagerSlidingTabStrip](https://github.com/astuetz/PagerSliding...","keywords":["android","移动开发"],"articleBody":"一、前言 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现:\nPagerSlidingTabStrip SmartTabLayout FlycoTabLayout ViewPagerIndicator … 而现在，我们可以使用Design support library库的TabLayout来实现了。\n二、最终效果图 三、TabLayout的使用 1. 添加依赖 由于TabLayout在design包内，所以首先需要在app目录下的build.gradle中添加以下依赖：\n``` 1 2 3 4 ``` ``` dependencies { … compile ‘com.android.support:design:23.4.0’ }\n## 2. 创建布局 {#2-创建布局} 布局相当简单，只要添加TabLayout和ViewPager的布局即可： ### layout/activity_main.xml {#layout-activity-main-xml} ``` 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 ``` ","wordCount":"1680","inLanguage":"zh","datePublished":"2018-04-04T03:54:23Z","dateModified":"2018-04-04T03:54:23Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E4%B8%BAtablayout%E6%B7%BB%E5%8A%A0%E8%A7%92%E6%A0%87%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E6%96%B9%E6%B3%95/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">为TabLayout添加角标的最简单方法</h1><div class=post-description># 一、前言 {#一、前言} 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现: * [PagerSlidingTabStrip](https://github.com/astuetz/PagerSliding...</div><div class=post-meta><span title='2018-04-04 03:54:23 +0000 UTC'>2018年4月4日</span>&nbsp;·&nbsp;<span>8 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e4%b8%80%e3%80%81%e5%89%8d%e8%a8%80 aria-label=一、前言>一、前言</a></li><li><a href=#%e4%ba%8c%e3%80%81%e6%9c%80%e7%bb%88%e6%95%88%e6%9e%9c%e5%9b%be aria-label=二、最终效果图>二、最终效果图</a></li><li><a href=#%e4%b8%89%e3%80%81TabLayout%e7%9a%84%e4%bd%bf%e7%94%a8 aria-label=三、TabLayout的使用>三、TabLayout的使用</a><ul><li><a href=#1-%e6%b7%bb%e5%8a%a0%e4%be%9d%e8%b5%96 aria-label="1. 添加依赖">1. 添加依赖</a></li></ul></li></ul></div></details><div class="post-content md-content"><h1 id=一、前言>一、前言<a hidden class=anchor aria-hidden=true href=#一、前言>#</a></h1><p>在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现:</p><ul><li><a href=https://github.com/astuetz/PagerSlidingTabStrip>PagerSlidingTabStrip</a></li><li><a href=https://github.com/ogaclejapan/SmartTabLayout>SmartTabLayout</a></li><li><a href=https://github.com/H07000223/FlycoTabLayout>FlycoTabLayout</a></li><li><a href=https://github.com/JakeWharton/ViewPagerIndicator>ViewPagerIndicator</a></li><li>…</li></ul><p>而现在，我们可以使用<code>Design support library</code>库的<code>TabLayout</code>来实现了。</p><h1 id=二、最终效果图>二、最终效果图<a hidden class=anchor aria-hidden=true href=#二、最终效果图>#</a></h1><p><img loading=lazy src=http://7xlpfl.com1.z0.glb.clouddn.com/sherlockshi/2016-11-03-demo2.gif></p><h1 id=三、TabLayout的使用>三、TabLayout的使用<a hidden class=anchor aria-hidden=true href=#三、TabLayout的使用>#</a></h1><h2 id=1-添加依赖>1. 添加依赖<a hidden class=anchor aria-hidden=true href=#1-添加依赖>#</a></h2><p>由于TabLayout在design包内，所以首先需要在app目录下的<code>build.gradle</code>中添加以下依赖：<figure class="highlight groovy"></p><table><tr><td class=gutter>```
+<span class=line>1</span>
+<span class=line>2</span>
+<span class=line>3</span>
+<span class=line>4</span>
+```</td><pre><code>&lt;td class=&quot;code hljs bash&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p><span class=line>dependencies {</span>
+<span class=line>&mldr;</span>
+<span class=line>compile <span class=string><span class=hljs-string>&lsquo;com.android.support:design:23.4.0&rsquo;</span></span></span>
+<span class=line>}</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 2. 创建布局 {#2-创建布局}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>布局相当简单，只要添加TabLayout和ViewPager的布局即可：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>### layout/activity_main.xml {#layout-activity-main-xml}&lt;figure class=&#34;highlight xml&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;div class=&#34;alert-info&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>      &lt;/div&gt;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs xml&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p>&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"</p><pre><code>android:id=&amp;quot;@+id/activity_main&amp;quot;
+
+android:layout_width=&amp;quot;match_parent&amp;quot;
+
+android:layout_height=&amp;quot;match_parent&amp;quot;
+
+android:orientation=&amp;quot;vertical&amp;quot;&gt;
+
+&lt;android.support.design.widget.TabLayout
+    android:id=&amp;quot;@+id/tab_layout&amp;quot;
+
+    style=&amp;quot;@style/TabLayoutStyle&amp;quot;
+
+    android:layout_width=&amp;quot;match_parent&amp;quot;
+
+    android:layout_height=&amp;quot;wrap_content&amp;quot; /&gt;
+
+&lt;android.support.v4.view.ViewPager
+    android:id=&amp;quot;@+id/view_pager&amp;quot;
+
+    android:layout_width=&amp;quot;match_parent&amp;quot;
+
+    android:layout_height=&amp;quot;0dp&amp;quot;
+
+    android:layout_weight=&amp;quot;1&amp;quot;
+
+    android:background=&amp;quot;@android:color/white&amp;quot;/&gt;
+</code></pre></linearlayout><p>" data-snippet-id=&ldquo;ext.7e95e4aafc1011c962a1047c143edc4e&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;><span class=line><span class=php><span class=hljs-meta>&lt;?</span>xml version=<span class=hljs-string>&ldquo;1.0&rdquo;</span> encoding=<span class=hljs-string>&ldquo;utf-8&rdquo;</span><span class=hljs-meta>?></span></span></span>
+<span class=line><span class=tag><span class=hljs-tag>&lt;</span><span class=name><span class=hljs-tag><span class=hljs-name>LinearLayout</span></span></span> <span class=attr><span class=hljs-tag><span class=hljs-attr>xmlns:android</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;<a href=http://schemas.android.com/apk/res/android%22>http://schemas.android.com/apk/res/android"</a></span></span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>xmlns:tools</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;<a href=http://schemas.android.com/tools%22>http://schemas.android.com/tools"</a></span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:id</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&rdquo;@+id/activity_main&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_width</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;match_parent&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_height</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;match_parent&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:orientation</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;vertical&rdquo;</span></span></span><span class=hljs-tag>></span></span></p><p><span class=line><span class=tag><span class=hljs-tag>&lt;</span><span class=name><span class=hljs-tag><span class=hljs-name>android.support.design.widget.TabLayout</span></span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:id</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>"@+id/tab_layout"</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>style</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>"@style/TabLayoutStyle"</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_width</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;match_parent&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_height</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;wrap_content&rdquo;</span></span></span><span class=hljs-tag> /></span></span></p><p><span class=line><span class=tag><span class=hljs-tag>&lt;</span><span class=name><span class=hljs-tag><span class=hljs-name>android.support.v4.view.ViewPager</span></span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:id</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>"@+id/view_pager"</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_width</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;match_parent&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_height</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;0dp&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_weight</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;1&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:background</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>"@android:color/white"</span></span></span><span class=hljs-tag>/></span></span>
+<span class=line><span class=tag><span class=hljs-tag>&lt;/</span><span class=name><span class=hljs-tag><span class=hljs-name>LinearLayout</span></span></span><span class=hljs-tag>></span></span></span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>还有其他的属性我习惯在style文件中设置：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>### values/styles.xml {#values-styles-xml}&lt;figure class=&#34;highlight xml&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs xml&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p>" data-snippet-id=&ldquo;ext.3491be7a86f191eb534e54eaf54d5af9&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo; style=&ldquo;box-sizing: border-box; margin: 0px; display: block;"><span class=line><span class=comment><span class=hljs-comment>&lt;!&ndash; TabLayout样式 &ndash;></span></span></span>
+<span class=line><span class=tag><span class=hljs-tag>&lt;</span><span class=name><span class=hljs-tag><span class=hljs-name>style</span></span></span> <span class=attr><span class=hljs-tag><span class=hljs-attr>name</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;TabLayoutStyle&rdquo;</span></span></span> <span class=attr><span class=hljs-tag><span class=hljs-attr>parent</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;Widget.Design.TabLayout&rdquo;</span></span></span><span class=hljs-tag>></span></span>
+<span class=tag><span class=xml><span class=hljs-tag>&lt;</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span> <span class=attr><span class=xml><span class=hljs-tag><span class=hljs-attr>name</span></span></span></span><span class=xml><span class=hljs-tag>=</span></span><span class=string><span class=xml><span class=hljs-tag><span class=hljs-string>&ldquo;tabIndicatorColor&rdquo;</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span><span class=xml>@color/colorPrimary</span><span class=tag><span class=xml><span class=hljs-tag>&lt;/</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span>
+<span class=tag><span class=xml><span class=hljs-tag>&lt;</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span> <span class=attr><span class=xml><span class=hljs-tag><span class=hljs-attr>name</span></span></span></span><span class=xml><span class=hljs-tag>=</span></span><span class=string><span class=xml><span class=hljs-tag><span class=hljs-string>&ldquo;tabSelectedTextColor&rdquo;</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span><span class=xml>@color/colorPrimary</span><span class=tag><span class=xml><span class=hljs-tag>&lt;/</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span>
+<span class=tag><span class=xml><span class=hljs-tag>&lt;</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span> <span class=attr><span class=xml><span class=hljs-tag><span class=hljs-attr>name</span></span></span></span><span class=xml><span class=hljs-tag>=</span></span><span class=string><span class=xml><span class=hljs-tag><span class=hljs-string>&ldquo;tabTextAppearance&rdquo;</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span><span class=xml>@style/TabTextAppearence</span><span class=tag><span class=xml><span class=hljs-tag>&lt;/</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span>
+<span class=tag><span class=xml><span class=hljs-tag>&lt;</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span> <span class=attr><span class=xml><span class=hljs-tag><span class=hljs-attr>name</span></span></span></span><span class=xml><span class=hljs-tag>=</span></span><span class=string><span class=xml><span class=hljs-tag><span class=hljs-string>&ldquo;tabPaddingEnd&rdquo;</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span><span class=xml>0dp</span><span class=tag><span class=xml><span class=hljs-tag>&lt;/</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span>
+<span class=tag><span class=hljs-tag>&lt;/</span><span class=name><span class=hljs-tag><span class=hljs-name>style</span></span></span><span class=hljs-tag>></span></span></span>
+<span class=line><span class=tag><span class=hljs-tag>&lt;</span><span class=name><span class=hljs-tag><span class=hljs-name>style</span></span></span> <span class=attr><span class=hljs-tag><span class=hljs-attr>name</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;TabTextAppearence&rdquo;</span></span></span> <span class=attr><span class=hljs-tag><span class=hljs-attr>parent</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;TextAppearance.Design.Tab&rdquo;</span></span></span><span class=hljs-tag>></span></span>
+<span class=tag><span class=xml><span class=hljs-tag>&lt;</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span> <span class=attr><span class=xml><span class=hljs-tag><span class=hljs-attr>name</span></span></span></span><span class=xml><span class=hljs-tag>=</span></span><span class=string><span class=xml><span class=hljs-tag><span class=hljs-string>&ldquo;android:textSize&rdquo;</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span><span class=xml>16sp</span><span class=tag><span class=xml><span class=hljs-tag>&lt;/</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span>
+<span class=tag><span class=xml><span class=hljs-tag>&lt;</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span> <span class=attr><span class=xml><span class=hljs-tag><span class=hljs-attr>name</span></span></span></span><span class=xml><span class=hljs-tag>=</span></span><span class=string><span class=xml><span class=hljs-tag><span class=hljs-string>&ldquo;textAllCaps&rdquo;</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span><span class=xml>false</span><span class=tag><span class=xml><span class=hljs-tag>&lt;/</span></span><span class=name><span class=xml><span class=hljs-tag><span class=hljs-name>item</span></span></span></span><span class=xml><span class=hljs-tag>></span></span></span>
+<span class=tag><span class=hljs-tag>&lt;/</span><span class=name><span class=hljs-tag><span class=hljs-name>style</span></span></span><span class=hljs-tag>></span></span></span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 3. 创建Fragment {#3-创建Fragment}&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;div class=&#34;alert-info&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>      &lt;/div&gt;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs java&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p><span class=line><span class=keyword><span class=hljs-keyword>package</span></span> com.sherlockshi.badgedtablayoutpractise;</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.os.Bundle;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.annotation.Nullable;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.v4.app.Fragment;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.view.LayoutInflater;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.view.View;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.view.ViewGroup;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.widget.TextView;</span></p><p><span class=line><span class=comment><span class=hljs-comment>/**</span></span>
+<span class=hljs-comment>* Author: SherlockShi</span>
+<span class=hljs-comment>* Date: 2016-11-01 16:31</span>
+<span class=hljs-comment>* Description:</span>
+<span class=hljs-comment>*/</span></span>
+<span class=line><span class=keyword><span class=hljs-keyword>public</span></span> <span class=class><span class=keyword><span class=hljs-class><span class=hljs-keyword>class</span></span></span> <span class=title><span class=hljs-class><span class=hljs-title>PageFragment</span></span></span> <span class=keyword><span class=hljs-class><span class=hljs-keyword>extends</span></span></span> <span class=title><span class=hljs-class><span class=hljs-title>Fragment</span></span></span> </span>{</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>private</span></span> <span class=keyword><span class=hljs-keyword>static</span></span> <span class=keyword><span class=hljs-keyword>final</span></span> String PAGE_NAME_KEY = <span class=string><span class=hljs-string>&ldquo;PAGE_NAME_KEY&rdquo;</span></span>;</span></p><p><span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>public</span></span></span> <span class=keyword><span class=hljs-function><span class=hljs-keyword>static</span></span></span><span class=hljs-function> PageFragment </span><span class=title><span class=hljs-function><span class=hljs-title>getInstance</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>(String pageName)</span></span></span> </span>{</span>
+<span class=line>Bundle args = <span class=keyword><span class=hljs-keyword>new</span></span> Bundle();</span>
+<span class=line>args.putString(PAGE_NAME_KEY, pageName);</span>
+<span class=line>PageFragment pageFragment = <span class=keyword><span class=hljs-keyword>new</span></span> PageFragment();</span>
+<span class=line>pageFragment.setArguments(args);</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>return</span></span> pageFragment;</span>
+<span class=line>}</span></p><p><span class=line><span class=meta><span class=hljs-meta>@Nullable</span></span></span>
+<span class=line><span class=meta><span class=hljs-meta>@Override</span></span></span>
+<span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>public</span></span></span><span class=hljs-function> View </span><span class=title><span class=hljs-function><span class=hljs-title>onCreateView</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)</span></span></span> </span>{</span>
+<span class=line>View view = inflater.inflate(R.layout.fragment_page, container, <span class=keyword><span class=hljs-keyword>false</span></span>);</span>
+<span class=line>TextView textView = (TextView) view.findViewById(R.id.tv_page_name);</span>
+<span class=line>textView.setText(getArguments().getString(PAGE_NAME_KEY));</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>return</span></span> view;</span>
+<span class=line>}</span>
+<span class=line>}</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>其中Fragment的布局`layout/fragment_page.xml`:&lt;figure class=&#34;highlight xml&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs xml&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p>&lt;TextView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"</p><pre><code>android:id=&amp;quot;@+id/tv_page_name&amp;quot;
+
+android:layout_width=&amp;quot;match_parent&amp;quot;
+
+android:layout_height=&amp;quot;match_parent&amp;quot;
+
+android:gravity=&amp;quot;center&amp;quot;/&gt;
+</code></pre><p>" data-snippet-id=&ldquo;ext.370f013e7e86a8c7c5395e82126045d2&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;><span class=line><span class=php><span class=hljs-meta>&lt;?</span>xml version=<span class=hljs-string>&ldquo;1.0&rdquo;</span> encoding=<span class=hljs-string>&ldquo;utf-8&rdquo;</span><span class=hljs-meta>?></span></span></span>
+<span class=line><span class=tag><span class=hljs-tag>&lt;</span><span class=name><span class=hljs-tag><span class=hljs-name>TextView</span></span></span> <span class=attr><span class=hljs-tag><span class=hljs-attr>xmlns:android</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;<a href=http://schemas.android.com/apk/res/android%22>http://schemas.android.com/apk/res/android"</a></span></span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>xmlns:tools</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;<a href=http://schemas.android.com/tools%22>http://schemas.android.com/tools"</a></span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:id</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&rdquo;@+id/tv_page_name&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_width</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;match_parent&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:layout_height</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;match_parent&rdquo;</span></span></span>
+<span class=attr><span class=hljs-tag><span class=hljs-attr>android:gravity</span></span></span><span class=hljs-tag>=</span><span class=string><span class=hljs-tag><span class=hljs-string>&ldquo;center&rdquo;</span></span></span><span class=hljs-tag>/></span></span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 4. ViewPager的适配器 {#4-ViewPager的适配器}&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;div class=&#34;alert-info&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>      &lt;/div&gt;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs java&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p>mFragmentList;</p><pre><code>private List&lt;String&gt; mPageTitleList;
+
+private List&lt;Integer&gt; mBadgeCountList;
+
+public SimpleFragmentPagerAdapter(Context context,
+                                  FragmentManager fm,
+
+                                  List&lt;Fragment&gt; fragmentList,
+
+                                  List&lt;String&gt; pageTitleList,
+
+                                  List&lt;Integer&gt; badgeCountList)
+</code></pre><p>{</p><pre><code>    super(fm);
+
+    this.mContext = context;
+
+    this.mFragmentList = fragmentList;
+
+    this.mPageTitleList = pageTitleList;
+
+    this.mBadgeCountList = badgeCountList;
+
+}
+
+@Override
+
+public Fragment getItem(int position) {
+
+    return mFragmentList.get(position);
+
+}
+
+@Override
+
+public int getCount() {
+
+    return mFragmentList.size();
+
+}
+
+@Override
+
+public CharSequence getPageTitle(int position) {
+
+    return mPageTitleList.get(position);
+
+}
+</code></pre><p>}</p><p>" data-snippet-id=&ldquo;ext.f1ef424453dae480ac7d46b6bf9a7cfc&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;><span class=line><span class=keyword><span class=hljs-keyword>package</span></span> com.sherlockshi.badgedtablayoutpractise;</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.v4.app.Fragment;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.v4.app.FragmentManager;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.v4.app.FragmentPagerAdapter;</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>import</span></span> java.util.List;</span></p><p><span class=line><span class=comment><span class=hljs-comment>/**</span></span>
+<span class=hljs-comment>* Author: SherlockShi</span>
+<span class=hljs-comment>* Date: 2016-11-01 17:38</span>
+<span class=hljs-comment>* Description:</span>
+<span class=hljs-comment>*/</span></span>
+<span class=line><span class=keyword><span class=hljs-keyword>public</span></span> <span class=class><span class=keyword><span class=hljs-class><span class=hljs-keyword>class</span></span></span> <span class=title><span class=hljs-class><span class=hljs-title>SimpleFragmentPagerAdapter</span></span></span> <span class=keyword><span class=hljs-class><span class=hljs-keyword>extends</span></span></span> <span class=title><span class=hljs-class><span class=hljs-title>FragmentPagerAdapter</span></span></span> </span>{</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>private</span></span> Context mContext;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>private</span></span> List&lt;Fragment> mFragmentList;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>private</span></span> List&lt;String> mPageTitleList;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>private</span></span> List&lt;Integer> mBadgeCountList;</span></p><p><span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>public</span></span></span> <span class=title><span class=hljs-function><span class=hljs-title>SimpleFragmentPagerAdapter</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>(Context context,</span></span></span>
+<span class=hljs-function><span class=hljs-params>FragmentManager fm,</span></span>
+<span class=hljs-function><span class=hljs-params>List&lt;Fragment> fragmentList,</span></span>
+<span class=hljs-function><span class=hljs-params>List&lt;String> pageTitleList,</span></span>
+<span class=hljs-function><span class=hljs-params>List&lt;Integer> badgeCountList)</span></span> </span>{</span>
+<span class=line><span class=keyword><span class=hljs-keyword>super</span></span>(fm);</span>
+<span class=line><span class=keyword><span class=hljs-keyword>this</span></span>.mContext = context;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>this</span></span>.mFragmentList = fragmentList;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>this</span></span>.mPageTitleList = pageTitleList;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>this</span></span>.mBadgeCountList = badgeCountList;</span>
+<span class=line>}</span></p><p><span class=line><span class=meta><span class=hljs-meta>@Override</span></span></span>
+<span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>public</span></span></span><span class=hljs-function> Fragment </span><span class=title><span class=hljs-function><span class=hljs-title>getItem</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>(</span></span><span class=keyword><span class=hljs-function><span class=hljs-params><span class=hljs-keyword>int</span></span></span></span><span class=hljs-function><span class=hljs-params> position)</span></span></span> </span>{</span>
+<span class=line><span class=keyword><span class=hljs-keyword>return</span></span> mFragmentList.get(position);</span>
+<span class=line>}</span></p><p><span class=line><span class=meta><span class=hljs-meta>@Override</span></span></span>
+<span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>public</span></span></span> <span class=keyword><span class=hljs-function><span class=hljs-keyword>int</span></span></span> <span class=title><span class=hljs-function><span class=hljs-title>getCount</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>()</span></span></span> </span>{</span>
+<span class=line><span class=keyword><span class=hljs-keyword>return</span></span> mFragmentList.size();</span>
+<span class=line>}</span></p><p><span class=line><span class=meta><span class=hljs-meta>@Override</span></span></span>
+<span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>public</span></span></span><span class=hljs-function> CharSequence </span><span class=title><span class=hljs-function><span class=hljs-title>getPageTitle</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>(</span></span><span class=keyword><span class=hljs-function><span class=hljs-params><span class=hljs-keyword>int</span></span></span></span><span class=hljs-function><span class=hljs-params> position)</span></span></span> </span>{</span>
+<span class=line><span class=keyword><span class=hljs-keyword>return</span></span> mPageTitleList.get(position);</span>
+<span class=line>}</span>
+<span class=line>}</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 5. 设置TabLayout {#5-设置TabLayout}&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;div class=&#34;alert-info&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>      &lt;/div&gt;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;48&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;49&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;50&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;51&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;52&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;53&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;54&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;55&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;56&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;57&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs java&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p>mPageTitleList = new ArrayList<string>();</p><pre><code>private List&lt;Fragment&gt; mFragmentList = new ArrayList&lt;Fragment&gt;();
+
+private List&lt;Integer&gt; mBadgeCountList = new ArrayList&lt;Integer&gt;();
+
+private SimpleFragmentPagerAdapter mPagerAdapter;
+
+private TabLayout mTabLayout;
+
+private ViewPager mViewPager;
+
+@Override
+
+protected void onCreate(Bundle savedInstanceState) {
+
+    super.onCreate(savedInstanceState);
+
+    setContentView(R.layout.activity_main);
+
+    initFragments();
+
+    initView();
+
+}
+
+private void initFragments() {
+
+    mPageTitleList.add(&amp;quot;Tab1&amp;quot;);
+
+    mPageTitleList.add(&amp;quot;Tab2&amp;quot;);
+
+    mPageTitleList.add(&amp;quot;Tab3&amp;quot;);
+
+    mBadgeCountList.add(6);
+
+    mBadgeCountList.add(16);
+
+    mBadgeCountList.add(166);
+
+    for (int i = 0; i &lt; mPageTitleList.size(); i++) {
+
+        mFragmentList.add(PageFragment.getInstance(mPageTitleList.get(i)));
+
+    }
+
+}
+
+private void initView() {
+
+    mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
+    mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+    mPagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList, mPageTitleList);
+
+    mViewPager.setAdapter(mPagerAdapter);
+
+    mTabLayout.setupWithViewPager(mViewPager);
+
+    initBadgeViews();
+
+    setUpTabBadge();
+
+}
+</code></pre><p>}</p><p>" data-snippet-id=&ldquo;ext.70f381a93ec7f8d5b4c401b6ed6c0077&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;><span class=line><span class=keyword><span class=hljs-keyword>package</span></span> com.sherlockshi.badgedtablayoutpractise;</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.os.Bundle;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.design.widget.TabLayout;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.v4.app.Fragment;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.v4.view.ViewPager;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.support.v7.app.AppCompatActivity;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> android.view.ViewGroup;</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>import</span></span> java.util.ArrayList;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>import</span></span> java.util.List;</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>public</span></span> <span class=class><span class=keyword><span class=hljs-class><span class=hljs-keyword>class</span></span></span> <span class=title><span class=hljs-class><span class=hljs-title>MainActivity</span></span></span> <span class=keyword><span class=hljs-class><span class=hljs-keyword>extends</span></span></span> <span class=title><span class=hljs-class><span class=hljs-title>AppCompatActivity</span></span></span> </span>{</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>private</span></span> List&lt;String> mPageTitleList = <span class=keyword><span class=hljs-keyword>new</span></span> ArrayList&lt;String>();</span>
+<span class=line><span class=keyword><span class=hljs-keyword>private</span></span> List&lt;Fragment> mFragmentList = <span class=keyword><span class=hljs-keyword>new</span></span> ArrayList&lt;Fragment>();</span>
+<span class=line><span class=keyword><span class=hljs-keyword>private</span></span> List&lt;Integer> mBadgeCountList = <span class=keyword><span class=hljs-keyword>new</span></span> ArrayList&lt;Integer>();</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>private</span></span> SimpleFragmentPagerAdapter mPagerAdapter;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>private</span></span> TabLayout mTabLayout;</span>
+<span class=line><span class=keyword><span class=hljs-keyword>private</span></span> ViewPager mViewPager;</span></p><p><span class=line><span class=meta><span class=hljs-meta>@Override</span></span></span>
+<span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>protected</span></span></span> <span class=keyword><span class=hljs-function><span class=hljs-keyword>void</span></span></span> <span class=title><span class=hljs-function><span class=hljs-title>onCreate</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>(Bundle savedInstanceState)</span></span></span> </span>{</span>
+<span class=line><span class=keyword><span class=hljs-keyword>super</span></span>.onCreate(savedInstanceState);</span>
+<span class=line>setContentView(R.layout.activity_main);</span></p><p><span class=line>initFragments();</span>
+<span class=line>initView();</span>
+<span class=line>}</span></p><p><span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>private</span></span></span> <span class=keyword><span class=hljs-function><span class=hljs-keyword>void</span></span></span> <span class=title><span class=hljs-function><span class=hljs-title>initFragments</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>()</span></span></span> </span>{</span>
+<span class=line>mPageTitleList.add(<span class=string><span class=hljs-string>&ldquo;Tab1&rdquo;</span></span>);</span>
+<span class=line>mPageTitleList.add(<span class=string><span class=hljs-string>&ldquo;Tab2&rdquo;</span></span>);</span>
+<span class=line>mPageTitleList.add(<span class=string><span class=hljs-string>&ldquo;Tab3&rdquo;</span></span>);</span></p><p><span class=line>mBadgeCountList.add(<span class=number><span class=hljs-number>6</span></span>);</span>
+<span class=line>mBadgeCountList.add(<span class=number><span class=hljs-number>16</span></span>);</span>
+<span class=line>mBadgeCountList.add(<span class=number><span class=hljs-number>166</span></span>);</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>for</span></span> (<span class=keyword><span class=hljs-keyword>int</span></span> i = <span class=number><span class=hljs-number></span></span>; i &lt; mPageTitleList.size(); i++) {</span>
+<span class=line>mFragmentList.add(PageFragment.getInstance(mPageTitleList.get(i)));</span>
+<span class=line>}</span>
+<span class=line>}</span></p><p><span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>private</span></span></span> <span class=keyword><span class=hljs-function><span class=hljs-keyword>void</span></span></span> <span class=title><span class=hljs-function><span class=hljs-title>initView</span></span></span><span class=params><span class=hljs-function><span class=hljs-params>()</span></span></span> </span>{</span>
+<span class=line>mTabLayout = (TabLayout) findViewById(R.id.tab_layout);</span>
+<span class=line>mViewPager = (ViewPager) findViewById(R.id.view_pager);</span></p><p><span class=line>mPagerAdapter = <span class=keyword><span class=hljs-keyword>new</span></span> SimpleFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList, mPageTitleList);</span>
+<span class=line>mViewPager.setAdapter(mPagerAdapter);</span>
+<span class=line>mTabLayout.setupWithViewPager(mViewPager);</span></p><p><span class=line>initBadgeViews();</span>
+<span class=line>setUpTabBadge();</span>
+<span class=line>}</span>
+<span class=line>}</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># 四、设置角标 {#四、设置角标}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 1. 添加角标Badge {#1-添加角标Badge}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>添加角标的关键代码只需要一行：&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs css&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p><span class=line><span class=hljs-selector-tag>mBadgeViews</span><span class=hljs-selector-class>.get</span>(<span class=hljs-selector-tag>i</span>)<span class=hljs-selector-class>.setTargetView</span>(((<span class=hljs-selector-tag>ViewGroup</span>) <span class=hljs-selector-tag>mTabLayout</span><span class=hljs-selector-class>.getChildAt</span>(<span class=number></span>))<span class=hljs-selector-class>.getChildAt</span>(<span class=hljs-selector-tag>i</span>));</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>完整代码只需要在设置完TabLayout和ViewPager后，遍历每一个Tab，为Tab添加角标：&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs cs&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p><span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>private</span></span></span> <span class=keyword><span class=hljs-function><span class=hljs-keyword>void</span></span></span> <span class=title><span class=hljs-function><span class=hljs-title>setUpTabBadge</span></span></span><span class=params><span class=hljs-function>()</span></span> </span>{</span>
+<span class=line><span class=keyword><span class=hljs-keyword>for</span></span> (<span class=keyword><span class=hljs-keyword>int</span></span> i = <span class=number><span class=hljs-number></span></span>; i &lt; mFragmentList.size(); i++) {</span>
+<span class=line>mBadgeViews.<span class=hljs-keyword>get</span>(i).setTargetView(((ViewGroup) mTabLayout.getChildAt(<span class=number><span class=hljs-number></span></span>)).getChildAt(i));</span>
+<span class=line>mBadgeViews.<span class=hljs-keyword>get</span>(i).setText(formatBadgeNumber(mBadgeCountList.<span class=hljs-keyword>get</span>(i)));</span>
+<span class=line>}</span>
+<span class=line>}</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 2. 更新角标 {#2-更新角标}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>在需要更新角标的地方，只要调用以下方法就可实现：&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs bash&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p><span class=line>mBadgeCountList.set(<span class=number>1</span>, count++);</span>
+<span class=line><span class=hljs-built_in>set</span>UpTabBadge();</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>以上，就可以轻松地为TabLayout添加角标，并处理角标的更新了。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># 五、问题 {#五、问题}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 1. 重复选中的状态 {#1-重复选中的状态}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>但是如果需要更新角标，那么在`更新角标后`，再点击另一个Tab，会出现`上一个Tab`和`当前Tab`都是选中状态（如下图的Tab1和Tab2）：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>![](http://7xlpfl.com1.z0.glb.clouddn.com/sherlockshi/2016-11-03-Snip20161103_6.png) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 2. 角标位置不可控 {#2-角标位置不可控}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>而且如上图所示，角标的位置不好控制，有的离文字很近，有的离得很远，无法精确控制。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># 六、最实用的TabLayout加角标方法 {#六、最实用的TabLayout加角标方法}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 1. 添加getTabItemView()方法 {#1-添加getTabItemView-方法}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>在重写的FragmentPagerAdapter中添加自定义Tab布局方法：&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;div class=&#34;alert-info&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>      &lt;/div&gt;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs cs&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p><span class=line><span class=function><span class=keyword><span class=hljs-function><span class=hljs-keyword>public</span></span></span><span class=hljs-function> View </span><span class=title><span class=hljs-function><span class=hljs-title>getTabItemView</span></span></span><span class=params><span class=hljs-function>(</span><span class=keyword><span class=hljs-function><span class=hljs-params><span class=hljs-keyword>int</span></span></span></span><span class=hljs-function><span class=hljs-params> position</span>)</span></span> </span>{</span>
+<span class=line>View view = LayoutInflater.<span class=hljs-keyword>from</span>(mContext).inflate(R.layout.tab_layout_item, <span class=keyword><span class=hljs-literal>null</span></span>);</span>
+<span class=line>TextView textView = (TextView) view.findViewById(R.id.textview);</span>
+<span class=line>textView.setText(mPageTitleList.<span class=hljs-keyword>get</span>(position));</span></p><p><span class=line>View target = view.findViewById(R.id.badgeview_target);</span></p><p><span class=line>BadgeView badgeView = <span class=keyword><span class=hljs-keyword>new</span></span> BadgeView(mContext);</span>
+<span class=line>badgeView.setTargetView(target);</span>
+<span class=line>badgeView.setBadgeMargin(<span class=number><span class=hljs-number></span></span>, <span class=number><span class=hljs-number>6</span></span>, <span class=number><span class=hljs-number>10</span></span>, <span class=number><span class=hljs-number></span></span>);</span>
+<span class=line>badgeView.setTextSize(<span class=number><span class=hljs-number>10</span></span>);</span>
+<span class=line>badgeView.setText(formatBadgeNumber(mBadgeCountList.<span class=hljs-keyword>get</span>(position)));</span></p><p><span class=line><span class=keyword><span class=hljs-keyword>return</span></span> view;</span>
+<span class=line>}</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>对应的自定义布局为：&lt;figure class=&#34;highlight&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;div class=&#34;alert-info&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>      &lt;/div&gt;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs xml&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p>&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"</p><pre><code>xmlns:tools=&amp;quot;http://schemas.android.com/tools&amp;quot;
+
+android:layout_width=&amp;quot;match_parent&amp;quot;
+
+android:layout_height=&amp;quot;wrap_content&amp;quot;
+
+android:orientation=&amp;quot;horizontal&amp;quot;&gt;
+
+&lt;!-- LinearLayout的Height必须为wrap_content,如果为match_parent,那么在第二次加载Badge的时候,Tab布局会出现问题 --&gt;
+
+&lt;View
+
+    android:layout_width=&amp;quot;0dp&amp;quot;
+
+    android:layout_weight=&amp;quot;1&amp;quot;
+
+    android:layout_height=&amp;quot;wrap_content&amp;quot;/&gt;
+
+&lt;TextView
+
+    android:id=&amp;quot;@+id/textview&amp;quot;
+
+    android:layout_width=&amp;quot;wrap_content&amp;quot;
+
+    android:layout_height=&amp;quot;wrap_content&amp;quot;
+
+    android:layout_gravity=&amp;quot;center&amp;quot;
+
+    android:layout_marginLeft=&amp;quot;-30dp&amp;quot;
+
+    android:textColor=&amp;quot;@color/tab_text_color_selector&amp;quot;/&gt;
+
+&lt;View
+
+    android:id=&amp;quot;@+id/badgeview_target&amp;quot;
+
+    android:layout_width=&amp;quot;0dp&amp;quot;
+
+    android:layout_weight=&amp;quot;1&amp;quot;
+
+    android:layout_height=&amp;quot;40dp&amp;quot;
+
+    android:layout_marginLeft=&amp;quot;4dp&amp;quot;
+
+    android:layout_gravity=&amp;quot;center&amp;quot;/&gt;
+</code></pre></linearlayout><p>" data-snippet-id=&ldquo;ext.89ae1cafa820c0153ee8e464b7820214&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;><span class=line><span class=php><span class=hljs-meta>&lt;?</span>xml version=<span class=hljs-string>&ldquo;1.0&rdquo;</span> encoding=<span class=hljs-string>&ldquo;utf-8&rdquo;</span><span class=hljs-meta>?></span></span></span>
+<span class=line><span class=hljs-tag>&lt;<span class=hljs-name>LinearLayout</span> <span class=hljs-attr>xmlns:android</span>=<span class=hljs-string>&ldquo;<a href=http://schemas.android.com/apk/res/android%22>http://schemas.android.com/apk/res/android"</a></span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>xmlns:tools</span>=<span class=hljs-string>&ldquo;<a href=http://schemas.android.com/tools%22>http://schemas.android.com/tools"</a></span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_width</span>=<span class=hljs-string>&ldquo;match_parent&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_height</span>=<span class=hljs-string>&ldquo;wrap_content&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:orientation</span>=<span class=hljs-string>&ldquo;horizontal&rdquo;</span>></span></span>
+<span class=line><span class=hljs-comment>&lt;!&ndash; LinearLayout的Height必须为wrap_content,如果为match_parent,那么在第二次加载Badge的时候,Tab布局会出现问题 &ndash;></span></span></p><p><span class=line><span class=hljs-tag>&lt;<span class=hljs-name>View</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_width</span>=<span class=hljs-string>&ldquo;0dp&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_weight</span>=<span class=hljs-string>&ldquo;1&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_height</span>=<span class=hljs-string>&ldquo;wrap_content&rdquo;</span>/></span></span></p><p><span class=line><span class=hljs-tag>&lt;<span class=hljs-name>TextView</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:id</span>=<span class=hljs-string>&rdquo;@+id/textview&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_width</span>=<span class=hljs-string>&ldquo;wrap_content&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_height</span>=<span class=hljs-string>&ldquo;wrap_content&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_gravity</span>=<span class=hljs-string>&ldquo;center&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_marginLeft</span>=<span class=hljs-string>"-30dp&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:textColor</span>=<span class=hljs-string>"@color/tab_text_color_selector"</span>/></span></span></p><p><span class=line><span class=hljs-tag>&lt;<span class=hljs-name>View</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:id</span>=<span class=hljs-string>"@+id/badgeview_target"</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_width</span>=<span class=hljs-string>&ldquo;0dp&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_weight</span>=<span class=hljs-string>&ldquo;1&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_height</span>=<span class=hljs-string>&ldquo;40dp&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_marginLeft</span>=<span class=hljs-string>&ldquo;4dp&rdquo;</span></span></span>
+<span class=line><span class=hljs-tag><span class=hljs-attr>android:layout_gravity</span>=<span class=hljs-string>&ldquo;center&rdquo;</span>/></span></span>
+<span class=line><span class=hljs-tag>&lt;/<span class=hljs-name>LinearLayout</span>></span></span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>## 2. 设置自定义布局 {#2-设置自定义布局}&lt;figure class=&#34;highlight java&#34;&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>&lt;table&gt;
+</span></span><span style=display:flex><span>  &lt;tr&gt;
+</span></span><span style=display:flex><span>    &lt;td class=&#34;gutter&#34;&gt;
+</span></span><span style=display:flex><span>      &lt;div class=&#34;top-box hide&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;div class=&#34;alert-info&#34;&gt;
+</span></span><span style=display:flex><span>        &lt;/div&gt;
+</span></span><span style=display:flex><span>      &lt;/div&gt;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      ```
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;/td&gt;
+
+&lt;td class=&quot;code hljs coffeescript&quot;&gt;
+  &lt;div class=&quot;top-box hide&quot;&gt;
+    &lt;div class=&quot;alert-info&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  ```
+</code></pre><p><span class=line><span class=function><span class=keyword>private</span> <span class=keyword>void</span> <span class=title>setUpTabBadge</span><span class=params>()</span> </span>{</span>
+<span class=line><span class=keyword><span class=hljs-keyword>for</span></span> (<span class=keyword>int</span> i = <span class=number><span class=hljs-number></span></span>; i &lt; mFragmentList.size(); i++) {</span>
+<span class=line>TabLayout.Tab tab = mTabLayout.getTabAt(i);</span></p><p><span class=line><span class=comment><span class=hljs-regexp>//</span> 更新Badge前,先remove原来的customView,否则Badge无法更新</span></span>
+<span class=line>View customView = tab.getCustomView();</span>
+<span class=line><span class=keyword><span class=hljs-keyword>if</span></span> (customView != <span class=keyword><span class=hljs-literal>null</span></span>) {</span>
+<span class=line>ViewParent parent = customView.getParent();</span>
+<span class=line><span class=keyword><span class=hljs-keyword>if</span></span> (parent != <span class=keyword><span class=hljs-literal>null</span></span>) {</span>
+<span class=line>((ViewGroup) parent).removeView(customView);</span>
+<span class=line>}</span>
+<span class=line>}</span></p><p><span class=line><span class=comment><span class=hljs-regexp>//</span> 更新CustomView</span></span>
+<span class=line>tab.setCustomView(mPagerAdapter.getTabItemView(i));</span>
+<span class=line>}</span></p><p><span class=line><span class=comment><span class=hljs-regexp>//</span> 需加上以下代码,不然会出现更新Tab角标后,选中的Tab字体颜色不是选中状态的颜色</span></span>
+<span class=line>mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getCustomView().setSelected(<span class=keyword><span class=hljs-literal>true</span></span>);</span>
+<span class=line>}</span></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>    &lt;/td&gt;
+</span></span><span style=display:flex><span>  &lt;/tr&gt;
+</span></span><span style=display:flex><span>&lt;/table&gt;&lt;/figure&gt; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>上面的示例会有两个坑：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  * 一个坑是每次为TabLayout添加Badge后，会出现Tab的字体颜色不是选中状态的颜色，需要手动设置Tab为选中状态，可以参考上面的第19行代码解决，这应该是TabLayout的一个Bug；
+</span></span><span style=display:flex><span>  * 另一个坑是如果每次更新Badge的时候，直接重新tab.setCustomView的话，会出现Badge不更新，解决办法是先移除之前的自定义布局，然后再重新设置布局，具体可参考第6-12行代码解决。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># 七、总结 {#七、总结}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>以上是自己在使用TabLayout的过程中发现的一些问题及解决办法，如果大家有更好的解决方法，或者还有别的坑，欢迎留言。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>当然，大家也可以直接使用第三方控件来实现以上功能，现在主流的几个控件也都做得很好，也很省心。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>项目代码已共享到Github：[BadgedTabLayoutPractise](https://github.com/SherlockShi/BadgedTabLayoutPractise)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># 八、参考资料 {#八、参考资料}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[android design library提供的TabLayout的用法](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0731/3247.html)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[Google Play Style Tabs using TabLayout](https://guides.codepath.com/android/Google-Play-Style-Tabs-using-TabLayout#design-support-library)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[Android Tablayout tabs with notification badge like whatsApp](http://stackoverflow.com/questions/31968162/android-tablayout-tabs-with-notification-badge-like-whatsapp)
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E7%94%A8-webpack-%E5%92%8C-babel-%E9%85%8D%E7%BD%AE-react-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/><span class=title>« 上一页</span>
+<span>用 webpack 和 babel 配置 react 开发环境</span>
+</a><a class=next href=https://blog.zdltech.com/posts/kai-fa-ren-yuan-zhi-huan-jing-pei-zhi/><span class=title>下一页 »</span>
+<span>常用工具配置</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

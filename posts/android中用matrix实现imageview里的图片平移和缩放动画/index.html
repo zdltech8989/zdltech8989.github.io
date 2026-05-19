@@ -1,0 +1,411 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android中用Matrix实现ImageView里的图片平移和缩放动画 | ZDL Tech Blog</title>
+<meta name=keywords content="android,动画,移动开发"><meta name=description content="注： 这里说的图片的平移和缩放不是对ImageView整个view进行的，而是对ImageView里面的图片进行的（view本身没有什么变化），所以Android自带的动画效果不能满足需求。 **功能点**： 1、一开始可以像centerCrop一样显示图片（觉得scaleType为centerCr..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E4%B8%AD%E7%94%A8matrix%E5%AE%9E%E7%8E%B0imageview%E9%87%8C%E7%9A%84%E5%9B%BE%E7%89%87%E5%B9%B3%E7%A7%BB%E5%92%8C%E7%BC%A9%E6%94%BE%E5%8A%A8%E7%94%BB/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E4%B8%AD%E7%94%A8matrix%E5%AE%9E%E7%8E%B0imageview%E9%87%8C%E7%9A%84%E5%9B%BE%E7%89%87%E5%B9%B3%E7%A7%BB%E5%92%8C%E7%BC%A9%E6%94%BE%E5%8A%A8%E7%94%BB/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E4%B8%AD%E7%94%A8matrix%E5%AE%9E%E7%8E%B0imageview%E9%87%8C%E7%9A%84%E5%9B%BE%E7%89%87%E5%B9%B3%E7%A7%BB%E5%92%8C%E7%BC%A9%E6%94%BE%E5%8A%A8%E7%94%BB/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android中用Matrix实现ImageView里的图片平移和缩放动画"><meta property="og:description" content="注： 这里说的图片的平移和缩放不是对ImageView整个view进行的，而是对ImageView里面的图片进行的（view本身没有什么变化），所以Android自带的动画效果不能满足需求。 **功能点**： 1、一开始可以像centerCrop一样显示图片（觉得scaleType为centerCr..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-12-18T01:33:37+00:00"><meta property="article:modified_time" content="2014-12-18T01:33:37+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="动画"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android中用Matrix实现ImageView里的图片平移和缩放动画"><meta name=twitter:description content="注： 这里说的图片的平移和缩放不是对ImageView整个view进行的，而是对ImageView里面的图片进行的（view本身没有什么变化），所以Android自带的动画效果不能满足需求。 **功能点**： 1、一开始可以像centerCrop一样显示图片（觉得scaleType为centerCr..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android中用Matrix实现ImageView里的图片平移和缩放动画","item":"https://blog.zdltech.com/posts/android%E4%B8%AD%E7%94%A8matrix%E5%AE%9E%E7%8E%B0imageview%E9%87%8C%E7%9A%84%E5%9B%BE%E7%89%87%E5%B9%B3%E7%A7%BB%E5%92%8C%E7%BC%A9%E6%94%BE%E5%8A%A8%E7%94%BB/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android中用Matrix实现ImageView里的图片平移和缩放动画","name":"Android中用Matrix实现ImageView里的图片平移和缩放动画","description":"注： 这里说的图片的平移和缩放不是对ImageView整个view进行的，而是对ImageView里面的图片进行的（view本身没有什么变化），所以Android自带的动画效果不能满足需求。 **功能点**： 1、一开始可以像centerCrop一样显示图片（觉得scaleType为centerCr...","keywords":["android","动画","移动开发"],"articleBody":" 注： 这里说的图片的平移和缩放不是对ImageView整个view进行的，而是对ImageView里面的图片进行的（view本身没有什么变化），所以Android自带的动画效果不能满足需求。 **功能点**： 1、一开始可以像centerCrop一样显示图片（觉得scaleType为centerCrop时显示效果比较好，图片会铺满整个View，而且图片本身的分辨率不变） 2、对ImageView里的图片平移或放大 3、将这个平移或放大做成一个动画效果 **一、在ScaleType为matrix的情况下实现centerCrop的显示效果** 要充分利用Android的源码，看ImageView的源代码就可以简单很多，在configureBounds()方法中： ![Android中用Matrix实现ImageView里的图片平移和缩放动画 - Johnny - Lucky Johnnys blog](http://img1.ph.126.net/0bRpjujvQhurl7HNuYa99g==/4826169950781049609.png) 不过为了之后的平移，要保证图片的宽度比View的宽度大 public void setImage ( Drawable drawable ) { if ( null == drawable ) return; int dwidth = drawable.getIntrinsicWidth (); int dheight = drawable.getIntrinsicHeight (); int vwidth = mWidth; int vheight = mHeight; float scale = 1.0f; float dx = , dy = ; if ( dwidth * vheight \u003e vwidth * dheight ) { scale = ( float ) vheight / ( float ) dheight; dx = ( vwidth \u0026#8211; dwidth * scale ) * 0.5f + 0.5f; } else { scale = ( float ) vwidth / ( float ) dwidth; dy = ( vheight \u0026#8211; dheight * scale ) * 0.5f + 0.5f; } if ( dwidth * scale \u003c 2 * vwidth ) { scale = ( float ) vwidth / ( 2.0f * dwidth ); dx = \u0026#8211; dwidth / 2; dy = ( vheight \u0026#8211; dheight * scale ) * 0.5f + 0.5f; } Matrix matrix = new Matrix (); matrix.setScale ( scale, scale ); matrix.postTranslate ( dx, dy ); mImage.setImageMatrix ( matrix ); mImage.setImageDrawable ( drawable ); } // vwidth和vheight使用确定的值，因为如果在应用初始化时view.getWidth()可能为0 **二、利用Matrix实现平移和放大** 平移和放大都是在当前图片的基础上，先用mImage.getImageMatrix()得到当前的matrix，再用Matrix的postTranslate或postScale方法就可以了。 需要注意的是： 如果用Matrix matrix = mImage.getImageMatrix (); //matrix只是得到一个对象的引用 应该用Matrix matrix = new Matrix ( mImage.getImageMatrix () );//这样才是得到一个克隆对象 **三、用ValueAnimator实现动画效果** 1、平移 dx为负是向左平移，为正是向右平移 因为图片的宽度设置为至少是view的2倍，所以向左和向右平移的最大距离都是vwidth / 2。 private class MyTransXAnimatorListener implements AnimatorUpdateListener { private Matrix mPrimaryMatrix; public MyTransXAnimatorListener ( Matrix matrix ) { mPrimaryMatrix = new Matrix ( matrix ); } @Override public void onAnimationUpdate ( ValueAnimator animation ) { int dx = ( Integer ) animation.getAnimatedValue (); Matrix matrix = new Matrix ( mPrimaryMatrix ); matrix.postTranslate ( dx, ); mImage.setImageMatrix ( matrix ); } } public void setTranslateAnimation () { ValueAnimator animator = ValueAnimator.ofInt ( , \u0026#8211; 60 ); animator.addUpdateListener ( new MyTransXAnimatorListener ( mImage.getImageMatrix() ) ); animator.setDuration ( 1000 ); animator.setInterpolator ( new DecelerateInterpolator () ); animator.setStartDelay ( 500 ); animator.start (); } 2、放大 放大要设置中心点为ImageView的中心 private class MyScaleAnimatorListener implements AnimatorUpdateListener { private Matrix mPrimaryMatrix; public MyScaleAnimatorListener ( Matrix matrix ) { mPrimaryMatrix = matrix; } @Override public void onAnimationUpdate ( ValueAnimator animation ) { float scale = ( Float ) animation.getAnimatedValue (); Matrix matrix = new Matrix ( mPrimaryMatrix ); matrix.postScale ( scale, scale, mWidth / 2, mHeight / 2 ); mImage.setImageMatrix ( matrix ); } } public void setScaleAnimation () { ValueAnimator animator = ValueAnimator.ofFloat ( 1.0f, 1.2f ); animator.addUpdateListener ( new MyScaleAnimatorListener ( mImage.getImageMatrix () ) ); animator.setDuration ( 1000 ); animator.setInterpolator ( new DecelerateInterpolator () ); animator.setStartDelay ( 500 ); animator.start (); } 转自：http://xie2010.blog.163.com/blog/static/2113173652014221240951/ ","wordCount":"899","inLanguage":"zh","datePublished":"2014-12-18T01:33:37Z","dateModified":"2014-12-18T01:33:37Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E4%B8%AD%E7%94%A8matrix%E5%AE%9E%E7%8E%B0imageview%E9%87%8C%E7%9A%84%E5%9B%BE%E7%89%87%E5%B9%B3%E7%A7%BB%E5%92%8C%E7%BC%A9%E6%94%BE%E5%8A%A8%E7%94%BB/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android中用Matrix实现ImageView里的图片平移和缩放动画</h1><div class=post-description>注： 这里说的图片的平移和缩放不是对ImageView整个view进行的，而是对ImageView里面的图片进行的（view本身没有什么变化），所以Android自带的动画效果不能满足需求。 **功能点**： 1、一开始可以像centerCrop一样显示图片（觉得scaleType为centerCr...</div><div class=post-meta><span title='2014-12-18 01:33:37 +0000 UTC'>2014年12月18日</span>&nbsp;·&nbsp;<span>5 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><div>注： 这里说的图片的平移和缩放不是对ImageView整个view进行的，而是对ImageView里面的图片进行的（view本身没有什么变化），所以Android自带的动画效果不能满足需求。</div><div></div><div>**功能点**：</div><div>1、一开始可以像centerCrop一样显示图片（觉得scaleType为centerCrop时显示效果比较好，图片会铺满整个View，而且图片本身的分辨率不变）</div><div>2、对ImageView里的图片平移或放大</div><div>3、将这个平移或放大做成一个动画效果</div><div></div><div>**一、在ScaleType为matrix的情况下实现centerCrop的显示效果**</div><div></div><div>要充分利用Android的源码，看ImageView的源代码就可以简单很多，在configureBounds()方法中：</div><div><div>![Android中用Matrix实现ImageView里的图片平移和缩放动画 - Johnny - Lucky Johnnys blog](http://img1.ph.126.net/0bRpjujvQhurl7HNuYa99g==/4826169950781049609.png)</div><pre><code>不过为了之后的平移，要保证图片的宽度比View的宽度大
+</code></pre></div><div><pre><code>&lt;span class=&quot;kwd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; setImage &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Drawable&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; drawable &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; drawable &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; drawable&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;getIntrinsicWidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;();&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; drawable&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;getIntrinsicHeight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;();&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mWidth&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mHeight&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;1.0f&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dx &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dy &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dheight&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; dx &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;&amp;#8211;&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;0.5f&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;0.5f&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dwidth&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; dy &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;&amp;#8211;&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;0.5f&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;0.5f&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;&lt;&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;2.0f&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; dx &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;&amp;#8211;&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dwidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; dy &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; vheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;&amp;#8211;&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dheight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;0.5f&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;0.5f&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;();&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; matrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setScale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; matrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;postTranslate &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dx&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dy &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; mImage&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setImageMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; mImage&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setImageDrawable &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; drawable &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;com&quot;&gt;// vwidth和vheight使用确定的值，因为如果在应用初始化时view.getWidth()可能为0&lt;/span&gt;
+</code></pre></div><div>**二、利用Matrix实现平移和放大**</div><div></div><div>平移和放大都是在当前图片的基础上，先用mImage.getImageMatrix()得到当前的matrix，再用Matrix的postTranslate或postScale方法就可以了。</div><div>需要注意的是：</div><div>如果用Matrix matrix  = mImage.getImageMatrix ();  //matrix只是得到一个对象的引用</div><div>应该用Matrix matrix = new Matrix ( mImage.getImageMatrix () );//这样才是得到一个克隆对象</div><div></div><div>**三、用ValueAnimator实现动画效果**</div><div></div><div>1、平移</div><div></div><div>dx为负是向左平移，为正是向右平移</div><div>因为图片的宽度设置为至少是view的2倍，所以向左和向右平移的最大距离都是vwidth / 2。</div><div><pre><code>&lt;span class=&quot;kwd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;MyTransXAnimatorListener&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;AnimatorUpdateListener&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mPrimaryMatrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;MyTransXAnimatorListener&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; mPrimaryMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;lit&quot;&gt;@Override&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; onAnimationUpdate &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;ValueAnimator&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; animation &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dx &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; animation&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;getAnimatedValue &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;();&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mPrimaryMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; matrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;postTranslate &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; dx&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; mImage&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setImageMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; setTranslateAnimation &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;typ&quot;&gt;ValueAnimator&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; animator &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;ValueAnimator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;ofInt &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;&amp;#8211;&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;addUpdateListener &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;MyTransXAnimatorListener&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mImage&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;getImageMatrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setDuration &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setInterpolator &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;DecelerateInterpolator&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setStartDelay &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;500&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;start &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;();&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+</code></pre></div><div></div><div>2、放大</div><div></div><div>放大要设置中心点为ImageView的中心</div><div><pre><code>&lt;span class=&quot;kwd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;MyScaleAnimatorListener&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;AnimatorUpdateListener&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mPrimaryMatrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;MyScaleAnimatorListener&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; mPrimaryMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;lit&quot;&gt;@Override&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; onAnimationUpdate &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;ValueAnimator&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; animation &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Float&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; animation&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;getAnimatedValue &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;();&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;Matrix&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mPrimaryMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; matrix&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;postScale &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; scale&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mWidth &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mHeight &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; mImage&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setImageMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; matrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;kwd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; setScaleAnimation &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;{&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;typ&quot;&gt;ValueAnimator&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; animator &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;ValueAnimator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;ofFloat &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;1.0f&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;1.2f&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;addUpdateListener &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;MyScaleAnimatorListener&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; mImage&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;getImageMatrix &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setDuration &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;1000&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setInterpolator &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kwd&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;typ&quot;&gt;DecelerateInterpolator&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;setStartDelay &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;lit&quot;&gt;500&lt;/span&gt; &lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pln&quot;&gt; animator&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;start &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;();&lt;/span&gt;
+
+
+
+
+
+&lt;span class=&quot;pun&quot;&gt;}&lt;/span&gt;
+</code></pre></div><div>转自：http://xie2010.blog.163.com/blog/static/2113173652014221240951/</div></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E5%8A%A8%E7%94%BB/>动画</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%B9%8Bimageview%E6%89%8B%E5%8A%BF%E6%8B%96%E6%8B%BD%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC/><span class=title>« 上一页</span>
+<span>Android开发学习之ImageView手势拖拽、缩放、旋转</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E6%B5%8F%E8%A7%88%E5%9B%BE%E7%89%87%E7%82%B9%E5%87%BB%E6%94%BE%E5%A4%A7%E8%87%B3%E5%85%A8%E5%B1%8F%E6%95%88%E6%9E%9C/><span class=title>下一页 »</span>
+<span>Android浏览图片，点击放大至全屏效果</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

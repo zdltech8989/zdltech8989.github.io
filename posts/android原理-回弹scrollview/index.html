@@ -1,0 +1,199 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android原理——回弹ScrollView | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="### 回弹的ScrollView 网上看到的通常是`ElasticScrollView`， 有一个Bug：点击子控件滑动时，滑动无效， 所以针对此问题，我对`ElasticScrollView`做了改进。 ### 原理图 ![Android原理——回弹ScrollView](http://stat..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E5%8E%9F%E7%90%86-%E5%9B%9E%E5%BC%B9scrollview/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E5%8E%9F%E7%90%86-%E5%9B%9E%E5%BC%B9scrollview/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E5%8E%9F%E7%90%86-%E5%9B%9E%E5%BC%B9scrollview/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android原理——回弹ScrollView"><meta property="og:description" content="### 回弹的ScrollView 网上看到的通常是`ElasticScrollView`， 有一个Bug：点击子控件滑动时，滑动无效， 所以针对此问题，我对`ElasticScrollView`做了改进。 ### 原理图 ![Android原理——回弹ScrollView](http://stat..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-03-04T09:10:19+00:00"><meta property="article:modified_time" content="2015-03-04T09:10:19+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android原理——回弹ScrollView"><meta name=twitter:description content="### 回弹的ScrollView 网上看到的通常是`ElasticScrollView`， 有一个Bug：点击子控件滑动时，滑动无效， 所以针对此问题，我对`ElasticScrollView`做了改进。 ### 原理图 ![Android原理——回弹ScrollView](http://stat..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android原理——回弹ScrollView","item":"https://blog.zdltech.com/posts/android%E5%8E%9F%E7%90%86-%E5%9B%9E%E5%BC%B9scrollview/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android原理——回弹ScrollView","name":"Android原理——回弹ScrollView","description":"### 回弹的ScrollView 网上看到的通常是`ElasticScrollView`， 有一个Bug：点击子控件滑动时，滑动无效， 所以针对此问题，我对`ElasticScrollView`做了改进。 ### 原理图 ![Android原理——回弹ScrollView](http://stat...","keywords":["android","移动开发"],"articleBody":"回弹的ScrollView 网上看到的通常是ElasticScrollView，\n有一个Bug：点击子控件滑动时，滑动无效，\n所以针对此问题，我对ElasticScrollView做了改进。\n原理图 代码 我在注释中做了详细的说明\nimport android.content.Context; import android.graphics.Rect; import android.util.AttributeSet; import android.view.MotionEvent; import android.view.View; import android.view.animation.Animation; import android.view.animation.DecelerateInterpolator; import android.view.animation.TranslateAnimation; import android.widget.ScrollView; /** * Created by Tindle Wei. */ public class ElasticScrollView extends ScrollView { /** * 手指抖动误差 */ private static final int SHAKE_MOVE_VALUE = 8; /** * Scrollview内部的view */ private View innerView; /** * 记录innerView最初的Y位置 */ private float startY; /** * 记录原始innerView的大小位置 */ private Rect outRect = new Rect(); private boolean animationFinish = true; public ElasticScrollView(Context context) { super(context); } public ElasticScrollView(Context context, AttributeSet attrs) { super(context, attrs); } /** * 继承自View * 在xml的所有布局加载完之后执行 */ @Override protected void onFinishInflate() { if (getChildCount() \u003e 0) { innerView = getChildAt(0); } } /** * 继承自ViewGroup * 返回true, 截取触摸事件 * 返回false, 将事件传递给onTouchEvent()和子控件的dispatchTouchEvent() */ @Override public boolean onInterceptTouchEvent(MotionEvent ev) { // 判断 点击子控件 or 按住子控件滑动 // 如果点击子控件，则返回 false, 子控件响应点击事件 // 如果按住子控件滑动，则返回 true, 滑动布局 switch (ev.getAction()) { case MotionEvent.ACTION_DOWN: { startY = ev.getY(); break; } case MotionEvent.ACTION_MOVE: { float currentY = ev.getY(); float scrollY = currentY - startY; // 是否返回 true return Math.abs(scrollY) \u003e SHAKE_MOVE_VALUE; } } // 默认返回 false return super.onInterceptTouchEvent(ev); } @Override public boolean onTouchEvent(MotionEvent ev) { if (innerView == null) { return super.onTouchEvent(ev); } else { myTouchEvent(ev); } return super.onTouchEvent(ev); } public void myTouchEvent(MotionEvent ev) { if (animationFinish) { switch (ev.getAction()) { case MotionEvent.ACTION_DOWN: startY = ev.getY(); super.onTouchEvent(ev); break; case MotionEvent.ACTION_UP: startY = 0; if (isNeedAnimation()) { animation(); } super.onTouchEvent(ev); break; case MotionEvent.ACTION_MOVE: final float preY = startY == 0 ? ev.getY() : startY; float nowY = ev.getY(); int deltaY = (int) (preY - nowY); startY = nowY; // 当滚动到最上或者最下时就不会再滚动，这时移动布局 if (isNeedMove()) { if (outRect.isEmpty()) { // 保存正常的布局位置 outRect.set(innerView .getLeft(), innerView.getTop(), innerView.getRight(), innerView.getBottom()); } // 移动布局 // 这里 deltaY/2 为了操作体验更好 innerView.layout(innerView.getLeft(), innerView.getTop() - deltaY / 2, innerView.getRight(), innerView.getBottom() - deltaY / 2); } else { super.onTouchEvent(ev); } break; default: break; } } } /** * 开启移动动画 */ public void animation() { TranslateAnimation ta = new TranslateAnimation(0, 0, 0, outRect.top - innerView.getTop()); ta.setDuration(400); // 减速变化 为了用户体验更好 ta.setInterpolator(new DecelerateInterpolator()); ta.setAnimationListener(new Animation.AnimationListener() { @Override public void onAnimationStart(Animation animation) { animationFinish = false; } @Override public void onAnimationRepeat(Animation animation) { } @Override public void onAnimationEnd(Animation animation) { innerView.clearAnimation(); // 设置innerView回到正常的布局位置 innerView.layout(outRect.left, outRect.top, outRect.right, outRect.bottom); outRect.setEmpty(); animationFinish = true; } }); innerView.startAnimation(ta); } /** * 是否需要开启动画 */ public boolean isNeedAnimation() { return !outRect.isEmpty(); } /** * 是否需要移动布局 */ public boolean isNeedMove() { int offset = innerView.getMeasuredHeight() - getHeight(); offset = (offset \u003c 0) ? 0: offset; int scrollY = getScrollY(); return (offset == 0 || scrollY == offset); } } 其他说明 下面是继承关系：\nElasticScrollView extends ScrollView\nScrollView extends FrameLayout\nFrameLayout extends ViewGroup\nViewGroup extends View 解决子控件 截取滑动监听的代码在onInterceptTouchEvent() ,\n通过监听Y的变化，来判断是点击子控件还是上拉下拉 getMeasuredHeight()返回的是原始测量高度，与屏幕无关，\ngetHeight()返回的是在屏幕上显示的高度。\n实际上在当屏幕可以包裹内容的时候，他们的值是相等的，只有当view超出屏幕后，才能看出他们的区别。当超出屏幕后，getMeasuredHeight()等于getHeight()加上屏幕之外没有显示的高度。 getScrollY() 返回的是滑动View显示部分的顶部 转自：http://www.hotpost.co/8699.html\n","wordCount":"593","inLanguage":"zh","datePublished":"2015-03-04T09:10:19Z","dateModified":"2015-03-04T09:10:19Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E5%8E%9F%E7%90%86-%E5%9B%9E%E5%BC%B9scrollview/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android原理——回弹ScrollView</h1><div class=post-description>### 回弹的ScrollView 网上看到的通常是`ElasticScrollView`， 有一个Bug：点击子控件滑动时，滑动无效， 所以针对此问题，我对`ElasticScrollView`做了改进。 ### 原理图 ![Android原理——回弹ScrollView](http://stat...</div><div class=post-meta><span title='2015-03-04 09:10:19 +0000 UTC'>2015年3月4日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#%e5%9b%9e%e5%bc%b9%e7%9a%84scrollview aria-label=回弹的ScrollView>回弹的ScrollView</a></li><li><a href=#%e5%8e%9f%e7%90%86%e5%9b%be aria-label=原理图>原理图</a></li><li><a href=#%e4%bb%a3%e7%a0%81 aria-label=代码>代码</a></li><li><a href=#%e5%85%b6%e4%bb%96%e8%af%b4%e6%98%8e aria-label=其他说明>其他说明</a></li></ul></div></details><div class="post-content md-content"><h3 id=回弹的scrollview>回弹的ScrollView<a hidden class=anchor aria-hidden=true href=#回弹的scrollview>#</a></h3><p>网上看到的通常是<code>ElasticScrollView</code>，<br>有一个Bug：点击子控件滑动时，滑动无效，<br>所以针对此问题，我对<code>ElasticScrollView</code>做了改进。</p><h3 id=原理图>原理图<a hidden class=anchor aria-hidden=true href=#原理图>#</a></h3><p><img alt=Android原理——回弹ScrollView loading=lazy src=http://static.hotpost.co/images/2015/02/20150217_54e353a561c7e.png></p><p><img alt=Android原理——回弹ScrollView loading=lazy src=http://static.hotpost.co/images/2015/02/20150217_54e353a58d5ce.png></p><h3 id=代码>代码<a hidden class=anchor aria-hidden=true href=#代码>#</a></h3><p>我在注释中做了详细的说明</p><pre><code>&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.content.Context;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.graphics.Rect;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.util.AttributeSet;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.view.MotionEvent;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.view.View;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.view.animation.Animation;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.view.animation.DecelerateInterpolator;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.view.animation.TranslateAnimation;
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; android.widget.ScrollView;
+
+&lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+ * Created by Tindle Wei.
+ */&lt;/span&gt;
+&lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-class&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;ElasticScrollView&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;ScrollView&lt;/span&gt; {&lt;/span&gt;
+
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 手指抖动误差
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; SHAKE_MOVE_VALUE = &lt;span class=&quot;hljs-number&quot;&gt;8&lt;/span&gt;;
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * Scrollview内部的view
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;private&lt;/span&gt; View innerView;
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 记录innerView最初的Y位置
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;float&lt;/span&gt; startY;
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 记录原始innerView的大小位置
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;private&lt;/span&gt; Rect outRect = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; Rect();
+
+    &lt;span class=&quot;hljs-keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;boolean&lt;/span&gt; animationFinish = &lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;;
+
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;ElasticScrollView&lt;/span&gt;(Context context) {
+        &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;(context);
+    }
+
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;ElasticScrollView&lt;/span&gt;(Context context, AttributeSet attrs) {
+        &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;(context, attrs);
+    }
+
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 继承自View
+     * 在xml的所有布局加载完之后执行
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-annotation&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;onFinishInflate&lt;/span&gt;() {
+        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (getChildCount() &gt; &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;) {
+            innerView = getChildAt(&lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;);
+        }
+    }
+
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 继承自ViewGroup
+     * 返回true, 截取触摸事件
+     * 返回false, 将事件传递给onTouchEvent()和子控件的dispatchTouchEvent()
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-annotation&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;onInterceptTouchEvent&lt;/span&gt;(MotionEvent ev) {
+
+        &lt;span class=&quot;hljs-comment&quot;&gt;// 判断 点击子控件 or 按住子控件滑动&lt;/span&gt;
+        &lt;span class=&quot;hljs-comment&quot;&gt;// 如果点击子控件，则返回 false, 子控件响应点击事件&lt;/span&gt;
+        &lt;span class=&quot;hljs-comment&quot;&gt;// 如果按住子控件滑动，则返回 true, 滑动布局&lt;/span&gt;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;switch&lt;/span&gt; (ev.getAction()) {
+            &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_DOWN: {
+                startY = ev.getY();
+                &lt;span class=&quot;hljs-keyword&quot;&gt;break&lt;/span&gt;;
+            }
+            &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_MOVE: {
+                &lt;span class=&quot;hljs-keyword&quot;&gt;float&lt;/span&gt; currentY = ev.getY();
+                &lt;span class=&quot;hljs-keyword&quot;&gt;float&lt;/span&gt; scrollY = currentY - startY;
+
+                &lt;span class=&quot;hljs-comment&quot;&gt;// 是否返回 true&lt;/span&gt;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; Math.abs(scrollY) &gt; SHAKE_MOVE_VALUE;
+            }
+        }
+        &lt;span class=&quot;hljs-comment&quot;&gt;// 默认返回 false&lt;/span&gt;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;.onInterceptTouchEvent(ev);
+    }
+
+    &lt;span class=&quot;hljs-annotation&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;onTouchEvent&lt;/span&gt;(MotionEvent ev) {
+        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (innerView == &lt;span class=&quot;hljs-keyword&quot;&gt;null&lt;/span&gt;) {
+            &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;.onTouchEvent(ev);
+        } &lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt; {
+            myTouchEvent(ev);
+        }
+        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;.onTouchEvent(ev);
+    }
+
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;myTouchEvent&lt;/span&gt;(MotionEvent ev) {
+        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (animationFinish) {
+
+            &lt;span class=&quot;hljs-keyword&quot;&gt;switch&lt;/span&gt; (ev.getAction()) {
+                &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_DOWN:
+                    startY = ev.getY();
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;.onTouchEvent(ev);
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;break&lt;/span&gt;;
+
+                &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_UP:
+                    startY = &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;;
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (isNeedAnimation()) {
+                        animation();
+                    }
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;.onTouchEvent(ev);
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;break&lt;/span&gt;;
+
+                &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; MotionEvent.ACTION_MOVE:
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;float&lt;/span&gt; preY = 
+                          startY == &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt; ? ev.getY() : startY;
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;float&lt;/span&gt; nowY = ev.getY();
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; deltaY = (&lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt;) (preY - nowY);
+                    startY = nowY;
+
+                    &lt;span class=&quot;hljs-comment&quot;&gt;// 当滚动到最上或者最下时就不会再滚动，这时移动布局&lt;/span&gt;
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (isNeedMove()) {
+                        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (outRect.isEmpty()) {
+                            &lt;span class=&quot;hljs-comment&quot;&gt;// 保存正常的布局位置&lt;/span&gt;
+                            outRect.set(innerView
+                            .getLeft(),  innerView.getTop(), 
+                            innerView.getRight(), 
+                            innerView.getBottom());
+                        }
+                        &lt;span class=&quot;hljs-comment&quot;&gt;// 移动布局&lt;/span&gt;
+                        &lt;span class=&quot;hljs-comment&quot;&gt;// 这里 deltaY/2 为了操作体验更好&lt;/span&gt;
+                        innerView.layout(innerView.getLeft(),  
+                        innerView.getTop() - deltaY / &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;,  
+                        innerView.getRight(),  
+                        innerView.getBottom() - deltaY / &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;);
+                    } &lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt; {
+                        &lt;span class=&quot;hljs-keyword&quot;&gt;super&lt;/span&gt;.onTouchEvent(ev);
+                    }
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;break&lt;/span&gt;;
+                &lt;span class=&quot;hljs-keyword&quot;&gt;default&lt;/span&gt;:
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;break&lt;/span&gt;;
+            }
+        }
+    }
+
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 开启移动动画
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;animation&lt;/span&gt;() {
+        TranslateAnimation ta = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; TranslateAnimation(&lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;, outRect.top - innerView.getTop());
+        ta.setDuration(&lt;span class=&quot;hljs-number&quot;&gt;400&lt;/span&gt;);
+        &lt;span class=&quot;hljs-comment&quot;&gt;// 减速变化 为了用户体验更好&lt;/span&gt;
+        ta.setInterpolator(&lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; DecelerateInterpolator());
+        ta.setAnimationListener(&lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; Animation.AnimationListener() {
+            &lt;span class=&quot;hljs-annotation&quot;&gt;@Override&lt;/span&gt;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;onAnimationStart&lt;/span&gt;(Animation animation) {
+                animationFinish = &lt;span class=&quot;hljs-keyword&quot;&gt;false&lt;/span&gt;;
+            }
+
+            &lt;span class=&quot;hljs-annotation&quot;&gt;@Override&lt;/span&gt;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;onAnimationRepeat&lt;/span&gt;(Animation animation) {
+            }
+
+            &lt;span class=&quot;hljs-annotation&quot;&gt;@Override&lt;/span&gt;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;onAnimationEnd&lt;/span&gt;(Animation animation) {
+                innerView.clearAnimation();
+                &lt;span class=&quot;hljs-comment&quot;&gt;// 设置innerView回到正常的布局位置&lt;/span&gt;
+                innerView.layout(outRect.left, 
+                outRect.top, outRect.right, outRect.bottom);
+                outRect.setEmpty();
+                animationFinish = &lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;;
+            }
+        });
+        innerView.startAnimation(ta);
+    }
+
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 是否需要开启动画
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;isNeedAnimation&lt;/span&gt;() {
+        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; !outRect.isEmpty();
+    }
+
+    &lt;span class=&quot;hljs-javadoc&quot;&gt;/**
+     * 是否需要移动布局
+     */&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;isNeedMove&lt;/span&gt;() {
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; offset = innerView.getMeasuredHeight() - getHeight();
+        offset = (offset &lt; &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;) ? &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;: offset;
+        &lt;span class=&quot;hljs-keyword&quot;&gt;int&lt;/span&gt; scrollY = getScrollY();
+        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; (offset == &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt; || scrollY == offset);
+    }
+}
+</code></pre><h3 id=其他说明>其他说明<a hidden class=anchor aria-hidden=true href=#其他说明>#</a></h3><ol><li>下面是继承关系：<br><code>ElasticScrollView extends ScrollView</code><br><code>ScrollView extends FrameLayout</code><br><code>FrameLayout extends ViewGroup</code><br><code>ViewGroup extends View</code></li><li>解决子控件 截取滑动监听的代码在<code>onInterceptTouchEvent()</code> ,<br>通过监听Y的变化，来判断是点击子控件还是上拉下拉</li><li><code>getMeasuredHeight()</code>返回的是原始测量高度，与屏幕无关，<br><code>getHeight()</code>返回的是在屏幕上显示的高度。<br>实际上在当屏幕可以包裹内容的时候，他们的值是相等的，只有当<code>view</code>超出屏幕后，才能看出他们的区别。当超出屏幕后，<code>getMeasuredHeight()</code>等于<code>getHeight()</code>加上屏幕之外没有显示的高度。</li><li><code>getScrollY()</code> 返回的是滑动View显示部分的顶部</li></ol><p>转自：http://www.hotpost.co/8699.html</p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E7%9B%B4%E6%8E%A5%E6%8B%BF%E6%9D%A5%E7%94%A8%E6%9C%80%E7%81%AB%E7%9A%84android%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/><span class=title>« 上一页</span>
+<span>直接拿来用！最火的Android开源项目</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E6%BA%90%E7%A0%81%E5%A4%A7%E6%94%BE%E9%80%81%E5%AE%9E%E6%88%98%E5%BC%80%E5%8F%91%E5%BF%85%E5%A4%87/><span class=title>下一页 »</span>
+<span>android源码大放送（实战开发必备）</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

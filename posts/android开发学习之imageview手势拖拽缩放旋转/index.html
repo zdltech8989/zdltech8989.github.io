@@ -1,0 +1,210 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android开发学习之ImageView手势拖拽、缩放、旋转 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="在Android应用中，图片随手势的拖拽、缩放、旋转在很多场景中都会用到，今天我们要做的就是在ImageView的基础上实现一个可以拖拽、缩放、转转的TouchView。 &amp;nbsp; 一、实现原理 OnTouch事件捕捉+Matrix矩阵变换 二、核心方法 拖拽：Matrix.postTransl..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%B9%8Bimageview%E6%89%8B%E5%8A%BF%E6%8B%96%E6%8B%BD%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%B9%8Bimageview%E6%89%8B%E5%8A%BF%E6%8B%96%E6%8B%BD%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%B9%8Bimageview%E6%89%8B%E5%8A%BF%E6%8B%96%E6%8B%BD%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android开发学习之ImageView手势拖拽、缩放、旋转"><meta property="og:description" content="在Android应用中，图片随手势的拖拽、缩放、旋转在很多场景中都会用到，今天我们要做的就是在ImageView的基础上实现一个可以拖拽、缩放、转转的TouchView。   一、实现原理 OnTouch事件捕捉+Matrix矩阵变换 二、核心方法 拖拽：Matrix.postTransl..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-12-18T01:35:24+00:00"><meta property="article:modified_time" content="2014-12-18T01:35:24+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android开发学习之ImageView手势拖拽、缩放、旋转"><meta name=twitter:description content="在Android应用中，图片随手势的拖拽、缩放、旋转在很多场景中都会用到，今天我们要做的就是在ImageView的基础上实现一个可以拖拽、缩放、转转的TouchView。   一、实现原理 OnTouch事件捕捉+Matrix矩阵变换 二、核心方法 拖拽：Matrix.postTransl..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android开发学习之ImageView手势拖拽、缩放、旋转","item":"https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%B9%8Bimageview%E6%89%8B%E5%8A%BF%E6%8B%96%E6%8B%BD%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android开发学习之ImageView手势拖拽、缩放、旋转","name":"Android开发学习之ImageView手势拖拽、缩放、旋转","description":"在Android应用中，图片随手势的拖拽、缩放、旋转在很多场景中都会用到，今天我们要做的就是在ImageView的基础上实现一个可以拖拽、缩放、转转的TouchView。 \u0026nbsp; 一、实现原理 OnTouch事件捕捉+Matrix矩阵变换 二、核心方法 拖拽：Matrix.postTransl...","keywords":["android","移动开发"],"articleBody":"在Android应用中，图片随手势的拖拽、缩放、旋转在很多场景中都会用到，今天我们要做的就是在ImageView的基础上实现一个可以拖拽、缩放、转转的TouchView。\n一、实现原理\nOnTouch事件捕捉+Matrix矩阵变换\n二、核心方法\n拖拽：Matrix.postTranslate(DeltalX, DeltalY);\n缩放：Matrix.postScale(mScale, mScale, mPoint.x, mPoint.y);\n旋转：Matrix.postRotate(Angle, mPoint.x, mPoint.y);\n三、具体实现\npackage com.Android.TouchView; /* * Android多点触控技术练习 * @Author：Robin * @Date：2013年12月29日 * @边界处理暂时不知道怎么写啊 * 目前的问题有： * 手势识别不是很顺畅，经常出现该放缩时放缩不了的情况 * 由于没有边界判断，程序可能会出现崩溃 */ import android.annotation.SuppressLint; import android.app.Activity; import android.graphics.Bitmap; import android.graphics.Bitmap.Config; import android.graphics.BitmapFactory; import android.graphics.Canvas; import android.graphics.Matrix; import android.graphics.Paint; import android.graphics.PaintFlagsDrawFilter; import android.graphics.PointF; import android.util.DisplayMetrics; import android.util.FloatMath; import android.view.MotionEvent; import android.widget.ImageView; @SuppressLint({ \"ViewConstructor\", \"FloatMath\" }) public class MultiTouchView extends ImageView { //本地图像资源 private int mDrawable; //图像位图 private Bitmap mBitmap; //屏幕宽度 private int ScreenWidth; //屏幕高度 private int ScreenHeight; //原始图像矩阵 private Matrix mMatrix=new Matrix(); //过程图像矩阵 private Matrix mSavedMatrix=new Matrix(); //结果图像矩阵 private Matrix mResultMatrix=new Matrix(); //定义三种模式：None、Drag、Zoom public static final int Mode_None=0; public static final int Mode_Drag=1; public static final int Mode_Zoom=2; //当前操作模式 private int mMode=Mode_None; //当前坐标 private float mDownX,mDownY; //存储两点间的距离 private float mDistance=0f; //存储旋转角 @SuppressWarnings(\"unused\") private float mAngle=0f; //存储中点 private PointF mPoint; //最大缩放比例 //private float MaxScale=3f; //最小缩放比例 //private float MinScale=0.5f; public MultiTouchView(Activity mActivity ,int Drawable) { super(mActivity); //设置当前图片资源 this.mDrawable=Drawable; //获取Bitmap mBitmap=BitmapFactory.decodeResource(getResources(), mDrawable); DisplayMetrics dm=new DisplayMetrics(); mActivity.getWindowManager().getDefaultDisplay().getMetrics(dm); //获取屏幕宽度和高度 ScreenWidth=dm.widthPixels; ScreenHeight=dm.heightPixels; mMatrix=new Matrix(); } @SuppressLint(\"DrawAllocation\") @Override protected void onDraw(Canvas canvas) { //消除图像锯齿 canvas.setDrawFilter(new PaintFlagsDrawFilter(0,Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG)); canvas.save(); //绘制图像 canvas.drawBitmap(mBitmap, mMatrix, null); canvas.restore(); } @Override public boolean onTouchEvent(MotionEvent Event) { switch(Event.getAction()) { //单点触控处理 case MotionEvent.ACTION_DOWN: //设置当前操作模式为Drag mMode=Mode_Drag; //获取当前坐标 mDownX=Event.getX(); mDownY=Event.getY(); mSavedMatrix.set(mMatrix); break; //多点触控处理 case MotionEvent.ACTION_POINTER_DOWN: mMode=Mode_Zoom; //获取两点间距离 mDistance=getDistance(Event); //获取旋转角 mAngle=getAngle(Event); //获取中点 mPoint=getMidPoint(Event); mSavedMatrix.set(mMatrix); break; case MotionEvent.ACTION_MOVE: //缩放处理 if(mMode==Mode_Zoom) { mResultMatrix.set(mSavedMatrix); //获取缩放比率 float mScale=getDistance(Event)/mDistance; //获取旋转角，这里可以不用 //float Angle=getAngle(Event)-mAngle; //以中点为中心，进行缩放 mResultMatrix.postScale(mScale, mScale, mPoint.x, mPoint.y); //以中点为中心，进行旋转，这里可以不用 //mResultMatrix.postRotate(Angle, mPoint.x, mPoint.y); mMatrix.set(mResultMatrix); invalidate(); }else if(mMode==Mode_Drag)//平移处理 { mResultMatrix.set(mSavedMatrix); //计算平移量 float DeltalX=Event.getX()-mDownX; float DeltalY=Event.getY()-mDownY; //平移 mResultMatrix.postTranslate(DeltalX, DeltalY); mMatrix.set(mResultMatrix); invalidate(); } break; case MotionEvent.ACTION_UP: //这里要不要处理呢,如果需要,怎么办 case MotionEvent.ACTION_POINTER_UP: mMode = Mode_None; break; } return true; } //返回两点间的距离 public float getDistance(MotionEvent Event) { //计算X的变化量 float DeltalX=Event.getX(0)-Event.getX(1); //计算Y的变化量 float DeltalY=Event.getY(0)-Event.getY(1); //计算距离 return FloatMath.sqrt(DeltalX*DeltalX+DeltalY*DeltalY); } //返回两点的中点 @SuppressLint(\"FloatMath\") public PointF getMidPoint(MotionEvent Event) { float X=Event.getX(0)+Event.getX(1); float Y=Event.getY(0)+Event.getY(1); return new PointF(X/2,Y/2); } //获得旋转角 public float getAngle(MotionEvent Event) { double DeltalX=Event.getX(0)-Event.getX(1); double DeltalY=Event.getY(0)-Event.getY(1); return (float)Math.atan2(DeltalX, DeltalY); } //边界处理,暂时没找到比较好的方法 public boolean CheckBounary() { return false; } //存储当前图片 public Bitmap SaveImage() { Bitmap mBitmap = Bitmap.createBitmap(ScreenWidth, ScreenHeight,Config.ARGB_8888); Canvas mCanvas = new Canvas(mBitmap); mCanvas.drawBitmap(mBitmap, mMatrix, null); mCanvas.save(Canvas.ALL_SAVE_FLAG); mCanvas.restore(); return mBitmap; } } 四、 运行效果\n","wordCount":"346","inLanguage":"zh","datePublished":"2014-12-18T01:35:24Z","dateModified":"2014-12-18T01:35:24Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%B9%8Bimageview%E6%89%8B%E5%8A%BF%E6%8B%96%E6%8B%BD%E7%BC%A9%E6%94%BE%E6%97%8B%E8%BD%AC/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android开发学习之ImageView手势拖拽、缩放、旋转</h1><div class=post-description>在Android应用中，图片随手势的拖拽、缩放、旋转在很多场景中都会用到，今天我们要做的就是在ImageView的基础上实现一个可以拖拽、缩放、转转的TouchView。 &amp;nbsp; 一、实现原理 OnTouch事件捕捉+Matrix矩阵变换 二、核心方法 拖拽：Matrix.postTransl...</div><div class=post-meta><span title='2014-12-18 01:35:24 +0000 UTC'>2014年12月18日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>在Android应用中，图片随手势的拖拽、缩放、旋转在很多场景中都会用到，今天我们要做的就是在ImageView的基础上实现一个可以拖拽、缩放、转转的TouchView。</p><p> </p><p>一、实现原理</p><p>OnTouch事件捕捉+Matrix矩阵变换</p><p>二、核心方法</p><p>拖拽：Matrix.postTranslate(DeltalX, DeltalY);</p><p>缩放：Matrix.postScale(mScale, mScale, mPoint.x, mPoint.y);</p><p>旋转：Matrix.postRotate(Angle, mPoint.x, mPoint.y);</p><p>三、具体实现</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span>package com<span style=color:#ff79c6>.</span>Android<span style=color:#ff79c6>.</span>TouchView;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>/*</span>
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> Android多点触控技术练习
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> @Author：Robin
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> @Date：<span style=color:#bd93f9>2013</span>年<span style=color:#bd93f9>12</span>月<span style=color:#bd93f9>29</span>日
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> @边界处理暂时不知道怎么写啊
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> 目前的问题有：
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> 手势识别不是很顺畅，经常出现该放缩时放缩不了的情况
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*</span> 由于没有边界判断，程序可能会出现崩溃
+</span></span><span style=display:flex><span> <span style=color:#ff79c6>*/</span>
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>annotation<span style=color:#ff79c6>.</span>SuppressLint;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>app<span style=color:#ff79c6>.</span>Activity;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>Bitmap;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>Bitmap<span style=color:#ff79c6>.</span>Config;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>BitmapFactory;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>Canvas;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>Matrix;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>Paint;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>PaintFlagsDrawFilter;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>graphics<span style=color:#ff79c6>.</span>PointF;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>util<span style=color:#ff79c6>.</span>DisplayMetrics;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>util<span style=color:#ff79c6>.</span>FloatMath;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>view<span style=color:#ff79c6>.</span>MotionEvent;
+</span></span><span style=display:flex><span>import android<span style=color:#ff79c6>.</span>widget<span style=color:#ff79c6>.</span>ImageView;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@SuppressLint({ <span style=color:#f1fa8c>&#34;ViewConstructor&#34;</span>, <span style=color:#f1fa8c>&#34;FloatMath&#34;</span> })
+</span></span><span style=display:flex><span>public <span style=color:#ff79c6>class</span> MultiTouchView <span style=color:#ff79c6>extends</span> ImageView
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>本地图像资源
+</span></span><span style=display:flex><span>    private int mDrawable;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>图像位图
+</span></span><span style=display:flex><span>	private Bitmap mBitmap;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>屏幕宽度
+</span></span><span style=display:flex><span>	private int ScreenWidth;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>屏幕高度
+</span></span><span style=display:flex><span>	private int ScreenHeight;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>原始图像矩阵
+</span></span><span style=display:flex><span>	private Matrix mMatrix<span style=color:#ff79c6>=</span>new Matrix();
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>过程图像矩阵
+</span></span><span style=display:flex><span>	private Matrix mSavedMatrix<span style=color:#ff79c6>=</span>new Matrix();
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>结果图像矩阵
+</span></span><span style=display:flex><span>	private Matrix mResultMatrix<span style=color:#ff79c6>=</span>new Matrix();
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>定义三种模式：None、Drag、Zoom
+</span></span><span style=display:flex><span>    public <span style=color:#ff79c6>static</span> final int Mode_None<span style=color:#ff79c6>=</span><span style=color:#bd93f9>0</span>;
+</span></span><span style=display:flex><span>    public <span style=color:#ff79c6>static</span> final int Mode_Drag<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1</span>;
+</span></span><span style=display:flex><span>    public <span style=color:#ff79c6>static</span> final int Mode_Zoom<span style=color:#ff79c6>=</span><span style=color:#bd93f9>2</span>;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>当前操作模式
+</span></span><span style=display:flex><span>    private int mMode<span style=color:#ff79c6>=</span>Mode_None;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>当前坐标
+</span></span><span style=display:flex><span>    private float mDownX,mDownY;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>存储两点间的距离
+</span></span><span style=display:flex><span>    private float mDistance<span style=color:#ff79c6>=</span><span style=color:#bd93f9>0</span>f;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>存储旋转角
+</span></span><span style=display:flex><span>    @SuppressWarnings(<span style=color:#f1fa8c>&#34;unused&#34;</span>)
+</span></span><span style=display:flex><span>	private float mAngle<span style=color:#ff79c6>=</span><span style=color:#bd93f9>0</span>f;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>存储中点
+</span></span><span style=display:flex><span>    private PointF mPoint;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>最大缩放比例
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>private float MaxScale<span style=color:#ff79c6>=</span><span style=color:#bd93f9>3</span>f;
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>最小缩放比例
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>//</span>private float MinScale<span style=color:#ff79c6>=</span><span style=color:#bd93f9>0.5</span>f;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>	public MultiTouchView(Activity mActivity ,int Drawable) 
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		super(mActivity);
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>设置当前图片资源
+</span></span><span style=display:flex><span>		this<span style=color:#ff79c6>.</span>mDrawable<span style=color:#ff79c6>=</span>Drawable;
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>获取Bitmap
+</span></span><span style=display:flex><span>		mBitmap<span style=color:#ff79c6>=</span>BitmapFactory<span style=color:#ff79c6>.</span>decodeResource(getResources(), mDrawable);
+</span></span><span style=display:flex><span>		DisplayMetrics dm<span style=color:#ff79c6>=</span>new DisplayMetrics();
+</span></span><span style=display:flex><span>		mActivity<span style=color:#ff79c6>.</span>getWindowManager()<span style=color:#ff79c6>.</span>getDefaultDisplay()<span style=color:#ff79c6>.</span>getMetrics(dm);
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>获取屏幕宽度和高度
+</span></span><span style=display:flex><span>		ScreenWidth<span style=color:#ff79c6>=</span>dm<span style=color:#ff79c6>.</span>widthPixels;
+</span></span><span style=display:flex><span>		ScreenHeight<span style=color:#ff79c6>=</span>dm<span style=color:#ff79c6>.</span>heightPixels;
+</span></span><span style=display:flex><span>		mMatrix<span style=color:#ff79c6>=</span>new Matrix();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	@SuppressLint(<span style=color:#f1fa8c>&#34;DrawAllocation&#34;</span>)
+</span></span><span style=display:flex><span>	@Override
+</span></span><span style=display:flex><span>	protected void onDraw(Canvas canvas) 
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>消除图像锯齿
+</span></span><span style=display:flex><span>		canvas<span style=color:#ff79c6>.</span>setDrawFilter(new PaintFlagsDrawFilter(<span style=color:#bd93f9>0</span>,Paint<span style=color:#ff79c6>.</span>ANTI_ALIAS_FLAG<span style=color:#ff79c6>|</span>Paint<span style=color:#ff79c6>.</span>FILTER_BITMAP_FLAG));
+</span></span><span style=display:flex><span>		canvas<span style=color:#ff79c6>.</span>save();
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>绘制图像
+</span></span><span style=display:flex><span>		canvas<span style=color:#ff79c6>.</span>drawBitmap(mBitmap, mMatrix, null);
+</span></span><span style=display:flex><span>		canvas<span style=color:#ff79c6>.</span>restore();
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	@Override
+</span></span><span style=display:flex><span>	public boolean onTouchEvent(MotionEvent Event)
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>switch</span>(Event<span style=color:#ff79c6>.</span>getAction())
+</span></span><span style=display:flex><span>		{
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>单点触控处理
+</span></span><span style=display:flex><span>		  <span style=color:#ff79c6>case</span> MotionEvent<span style=color:#ff79c6>.</span>ACTION_DOWN:
+</span></span><span style=display:flex><span>			  <span style=color:#ff79c6>//</span>设置当前操作模式为Drag
+</span></span><span style=display:flex><span>			  mMode<span style=color:#ff79c6>=</span>Mode_Drag;
+</span></span><span style=display:flex><span>			  <span style=color:#ff79c6>//</span>获取当前坐标
+</span></span><span style=display:flex><span>			  mDownX<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getX();
+</span></span><span style=display:flex><span>			  mDownY<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getY();
+</span></span><span style=display:flex><span>              mSavedMatrix<span style=color:#ff79c6>.</span>set(mMatrix);
+</span></span><span style=display:flex><span>			  <span style=color:#ff79c6>break</span>;
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>多点触控处理
+</span></span><span style=display:flex><span>		  <span style=color:#ff79c6>case</span> MotionEvent<span style=color:#ff79c6>.</span>ACTION_POINTER_DOWN:
+</span></span><span style=display:flex><span>			     mMode<span style=color:#ff79c6>=</span>Mode_Zoom;
+</span></span><span style=display:flex><span>			     <span style=color:#ff79c6>//</span>获取两点间距离
+</span></span><span style=display:flex><span>			     mDistance<span style=color:#ff79c6>=</span>getDistance(Event);
+</span></span><span style=display:flex><span>			     <span style=color:#ff79c6>//</span>获取旋转角
+</span></span><span style=display:flex><span>			     mAngle<span style=color:#ff79c6>=</span>getAngle(Event);
+</span></span><span style=display:flex><span>			     <span style=color:#ff79c6>//</span>获取中点
+</span></span><span style=display:flex><span>			     mPoint<span style=color:#ff79c6>=</span>getMidPoint(Event);
+</span></span><span style=display:flex><span>			     mSavedMatrix<span style=color:#ff79c6>.</span>set(mMatrix);
+</span></span><span style=display:flex><span>			  <span style=color:#ff79c6>break</span>;
+</span></span><span style=display:flex><span>		  <span style=color:#ff79c6>case</span> MotionEvent<span style=color:#ff79c6>.</span>ACTION_MOVE:
+</span></span><span style=display:flex><span>			  <span style=color:#ff79c6>//</span>缩放处理
+</span></span><span style=display:flex><span>			  <span style=color:#ff79c6>if</span>(mMode<span style=color:#ff79c6>==</span>Mode_Zoom)
+</span></span><span style=display:flex><span>			  {
+</span></span><span style=display:flex><span>				  mResultMatrix<span style=color:#ff79c6>.</span>set(mSavedMatrix);
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>获取缩放比率
+</span></span><span style=display:flex><span>				  float mScale<span style=color:#ff79c6>=</span>getDistance(Event)<span style=color:#ff79c6>/</span>mDistance;
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>获取旋转角，这里可以不用
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>float Angle<span style=color:#ff79c6>=</span>getAngle(Event)<span style=color:#ff79c6>-</span>mAngle;
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>以中点为中心，进行缩放
+</span></span><span style=display:flex><span>				  mResultMatrix<span style=color:#ff79c6>.</span>postScale(mScale, mScale, mPoint<span style=color:#ff79c6>.</span>x, mPoint<span style=color:#ff79c6>.</span>y);
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>以中点为中心，进行旋转，这里可以不用
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>mResultMatrix<span style=color:#ff79c6>.</span>postRotate(Angle, mPoint<span style=color:#ff79c6>.</span>x, mPoint<span style=color:#ff79c6>.</span>y);
+</span></span><span style=display:flex><span>				  mMatrix<span style=color:#ff79c6>.</span>set(mResultMatrix);
+</span></span><span style=display:flex><span>				  invalidate();
+</span></span><span style=display:flex><span>			  }<span style=color:#ff79c6>else</span> <span style=color:#ff79c6>if</span>(mMode<span style=color:#ff79c6>==</span>Mode_Drag)<span style=color:#ff79c6>//</span>平移处理
+</span></span><span style=display:flex><span>			  {
+</span></span><span style=display:flex><span>				  mResultMatrix<span style=color:#ff79c6>.</span>set(mSavedMatrix);
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>计算平移量
+</span></span><span style=display:flex><span>				  float DeltalX<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getX()<span style=color:#ff79c6>-</span>mDownX;
+</span></span><span style=display:flex><span>				  float DeltalY<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getY()<span style=color:#ff79c6>-</span>mDownY;
+</span></span><span style=display:flex><span>				  <span style=color:#ff79c6>//</span>平移
+</span></span><span style=display:flex><span>				  mResultMatrix<span style=color:#ff79c6>.</span>postTranslate(DeltalX, DeltalY);
+</span></span><span style=display:flex><span>				  mMatrix<span style=color:#ff79c6>.</span>set(mResultMatrix);
+</span></span><span style=display:flex><span>				  invalidate();
+</span></span><span style=display:flex><span>			  }
+</span></span><span style=display:flex><span>			  <span style=color:#ff79c6>break</span>;
+</span></span><span style=display:flex><span>		  
+</span></span><span style=display:flex><span>		  <span style=color:#ff79c6>case</span> MotionEvent<span style=color:#ff79c6>.</span>ACTION_UP:
+</span></span><span style=display:flex><span>			 <span style=color:#ff79c6>//</span>这里要不要处理呢,如果需要,怎么办
+</span></span><span style=display:flex><span>		  <span style=color:#ff79c6>case</span> MotionEvent<span style=color:#ff79c6>.</span>ACTION_POINTER_UP:
+</span></span><span style=display:flex><span>				mMode <span style=color:#ff79c6>=</span> Mode_None;
+</span></span><span style=display:flex><span>				<span style=color:#ff79c6>break</span>;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>return</span> <span style=font-style:italic>true</span>;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>返回两点间的距离
+</span></span><span style=display:flex><span>	public float getDistance(MotionEvent Event)
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>计算X的变化量
+</span></span><span style=display:flex><span>		float DeltalX<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getX(<span style=color:#bd93f9>0</span>)<span style=color:#ff79c6>-</span>Event<span style=color:#ff79c6>.</span>getX(<span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>计算Y的变化量
+</span></span><span style=display:flex><span>		float DeltalY<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getY(<span style=color:#bd93f9>0</span>)<span style=color:#ff79c6>-</span>Event<span style=color:#ff79c6>.</span>getY(<span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>//</span>计算距离
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>return</span> FloatMath<span style=color:#ff79c6>.</span>sqrt(DeltalX<span style=color:#ff79c6>*</span>DeltalX<span style=color:#ff79c6>+</span>DeltalY<span style=color:#ff79c6>*</span>DeltalY);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>返回两点的中点
+</span></span><span style=display:flex><span>	@SuppressLint(<span style=color:#f1fa8c>&#34;FloatMath&#34;</span>)
+</span></span><span style=display:flex><span>	public PointF getMidPoint(MotionEvent Event)
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		float X<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getX(<span style=color:#bd93f9>0</span>)<span style=color:#ff79c6>+</span>Event<span style=color:#ff79c6>.</span>getX(<span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>		float Y<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getY(<span style=color:#bd93f9>0</span>)<span style=color:#ff79c6>+</span>Event<span style=color:#ff79c6>.</span>getY(<span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>return</span> new PointF(X<span style=color:#ff79c6>/</span><span style=color:#bd93f9>2</span>,Y<span style=color:#ff79c6>/</span><span style=color:#bd93f9>2</span>);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>获得旋转角
+</span></span><span style=display:flex><span>	public float getAngle(MotionEvent Event)
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		double DeltalX<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getX(<span style=color:#bd93f9>0</span>)<span style=color:#ff79c6>-</span>Event<span style=color:#ff79c6>.</span>getX(<span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>		double DeltalY<span style=color:#ff79c6>=</span>Event<span style=color:#ff79c6>.</span>getY(<span style=color:#bd93f9>0</span>)<span style=color:#ff79c6>-</span>Event<span style=color:#ff79c6>.</span>getY(<span style=color:#bd93f9>1</span>);
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>return</span> (float)Math<span style=color:#ff79c6>.</span>atan2(DeltalX, DeltalY);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>边界处理,暂时没找到比较好的方法
+</span></span><span style=display:flex><span>	public boolean CheckBounary()
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>return</span> <span style=font-style:italic>false</span>;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#ff79c6>//</span>存储当前图片
+</span></span><span style=display:flex><span>	public Bitmap SaveImage()
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>		Bitmap mBitmap <span style=color:#ff79c6>=</span> Bitmap<span style=color:#ff79c6>.</span>createBitmap(ScreenWidth, ScreenHeight,Config<span style=color:#ff79c6>.</span>ARGB_8888);
+</span></span><span style=display:flex><span>		Canvas mCanvas <span style=color:#ff79c6>=</span> new Canvas(mBitmap); 
+</span></span><span style=display:flex><span>		mCanvas<span style=color:#ff79c6>.</span>drawBitmap(mBitmap, mMatrix, null);
+</span></span><span style=display:flex><span>		mCanvas<span style=color:#ff79c6>.</span>save(Canvas<span style=color:#ff79c6>.</span>ALL_SAVE_FLAG);
+</span></span><span style=display:flex><span>		mCanvas<span style=color:#ff79c6>.</span>restore();
+</span></span><span style=display:flex><span>		<span style=color:#ff79c6>return</span> mBitmap;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p> </p><p>四、 运行效果</p><p><img loading=lazy src=http://img.blog.csdn.net/20140102101103359><img loading=lazy src=http://img.blog.csdn.net/20140102101114484></p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/androidui%E8%AE%BE%E8%AE%A1-%E4%B9%8B-%E5%9B%BE%E7%89%87%E6%B5%8F%E8%A7%88%E5%99%A8/><span class=title>« 上一页</span>
+<span>AndroidUI设计 之 图片浏览器</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E4%B8%AD%E7%94%A8matrix%E5%AE%9E%E7%8E%B0imageview%E9%87%8C%E7%9A%84%E5%9B%BE%E7%89%87%E5%B9%B3%E7%A7%BB%E5%92%8C%E7%BC%A9%E6%94%BE%E5%8A%A8%E7%94%BB/><span class=title>下一页 »</span>
+<span>Android中用Matrix实现ImageView里的图片平移和缩放动画</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

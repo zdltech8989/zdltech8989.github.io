@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Android Studio工具 | ZDL Tech Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="技术博客 - Linux · DevOps · 开发">
+<meta name="author" content="zhangdl">
+<link rel="canonical" href="http://localhost:1313/categories/android-studio%E5%B7%A5%E5%85%B7/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css" integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/categories/android-studio%E5%B7%A5%E5%85%B7/index.xml" title="rss">
+<link rel="alternate" hreflang="zh" href="http://localhost:1313/categories/android-studio%E5%B7%A5%E5%85%B7/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="搜索 (Alt &#43; /)" accesskey=/>
+                    <span>搜索</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    <a href='http://localhost:1313/'>主页</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="http://localhost:1313/categories/">Categories</a></nav>
+  <h1>
+    Android Studio工具
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Android studio项目java文件过大导致的问题记录
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>最近在做一个项目的时候，出现了一个很奇怪的问题，我的java文件前面出现了一个奇怪的蓝色j，
+这使得我的代码其他地方无法对它进行调用，所以程序一运行，调用到它的地方就会报错，（因为我的这个代码是用protobuffer协议自动生成的java文件，比较大，大概有5M多）。
+后来上网查了一下，发现是IDEA对能关联的文件大小做了限制，主要是为了保护内存，默认值为2500kb或者5000kb，对于一般的java文件也够用了，只是这里我用protocbuf生成的java文件过大，所以要对它这个默认的值进行修改。
+找到Android studio 的安装目录下bin 下的idea.properties文件（默认安装路径：C:\Program Files\Android\Android Studio\bin）。
+打开这个文件，对里面的idea.max.intellisense.filesizej进行设置，保存( 单位是kb）
+然后重启Android studio即可。
+</p>
+  </div>
+  <footer class="entry-footer"><span title='2018-10-28 07:02:24 +0000 +0000'>2018年10月28日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Android studio项目java文件过大导致的问题记录" href="http://localhost:1313/posts/android-studio%E9%A1%B9%E7%9B%AEjava%E6%96%87%E4%BB%B6%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Android开发中Gradle配置使用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Android开发中Gradle配置使用 前言 每次创建私有项目都需要配置gradle文件，没什么技术含量，还要多劳动（程序员就是懒），为了能方便使用，才有了本仓库的诞生。
+欢迎各位小伙伴们来砸场，喜欢请star下…
+私有仓库使用 在下载config.properties文件放到工厂根目录（和gradle.properties同级） 如果使用Artifactory仓库配置工程build.gradle文件请看详细文件 在项目build.gradle文件中使用 apply from:&amp;#39;https://coding.net/u/zdl_411437734/p/gradle/git/raw/master/nexusBintry.gradle&amp;#39; 或者 apply from:&amp;#39;https://coding.net/u/zdl_411437734/p/gradle/git/raw/master/artifactBintry.gradle&amp;#39; 执行相关命令即可 gradle uploadArchives （nexus仓库） 或者 gradle assembleRelease artifactoryPublish (artifactory仓库) 详细使用文档
+Sonarqube使用 详细使用文档
+pack（打包）使用 经常打包apk，有一个困扰，怎么修改打包后的名称，怎么区分打包的是release版本还是debug版本，想了解请继续看
+在项目的buil.gradle文件配置打包的版本和输出的名称 //打包APK根据不同的环境打包不同的名称 ext{ productName = project.name versionName = &#34;1.0.1&#34; } //productName 打包出来的名称 //versionName 打包显示版本号 2 . 引入packe.gradle文件下载packe.gradle
+apply from:&#34;./pack.gradle&#34; 或者 apply from:&#34;https://coding.net/u/zdl_411437734/p/gradle/git/raw/master/pack.gradle&#34; 3 . 打包即可（~~）
+sign（签名）使用 有时候，在集成第三方时候，需要我们输入签名，在开发中和发布中一般默认都是2个keystroe，在这种情况下，开发很不方便，不断要打包成正式包才能测试，为了解决这个问题，我们配置gradle在开发时就使用正式签名开发，想了解请继续看
+在项目的buil.gradle文件配置打包的版本和输出的名称 //打包APK根据不同的环境打包不同的名称 ext{ productName = &#34;CommonProject&#34; versionName = &#34;2.0.1&#34; keyPassword = &#34;android&#34; keyFilePath = &#34;/Users/jason/Documents/keystore/android.keystore&#34; storePassword = &#34;android&#34; keyAlias = &#34;android&#34; } //productName 打包出来的名称 //versionName 打包显示版本号 //keyPassword 密码 //keyFilePath 正式全路径 //storePassword 密码 //keyAlias 别名 2 . 引入sign.gradle文件下载sign.gradle
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2017-06-07 23:15:10 +0000 +0000'>2017年6月7日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Android开发中Gradle配置使用" href="http://localhost:1313/posts/androidgradle/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">使用Artifactory搭建本地maven仓库
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>引言
+前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第一次写成以后一般都会有一些小bug的，这样，同事A在自己电脑上修改代码，然后再次修改代码分别传给B和C。B和C需要替换之前的module，重新运行。这相当的麻烦，如果还有同事D,E,F..做起来真是噩梦，可能有有人想问，为什么不用svn或者git，用版本控制工具当然会好非常多，但每次pull其实也比较麻烦。还有另一种方法，使用本地maven仓库，使用过android studio的开发者都应该体会过其中的好处，当需要依赖一个新的模块(或者叫library)时，只需要这样
+填写需要的模块及对应的版本号，同步一下就行了，很方便。本篇文章就教各位如何使用Artifactory来搭建本地仓库，来完成上图的效果
+什么是Artifactory?
+一句话，开源的Maven仓库管理者
+搭建Artifactory
+1.检测你的jdk版本是否为1.8及以上
+打开cmd，输入java -version，如果输出结果如下所示即可，如果是1.6或者1.7，去官网下载最新版本替换
+C:\Users\Administrator&gt;java -version&lt;br /&gt; java version &#34;1.8.0_31&#34;&lt;br /&gt; Java(TM) SE Runtime Environment (build 1.8.0_31-b13)&lt;br /&gt; Java HotSpot(TM) 64-Bit Server VM (build 25.31-b07, mixed mode) 2.下载Artifactory，解压下载好的安装包，打开解压后文件夹下的bin文件夹，运行artifactory.bat，大概等待1分钟左右就安装完成了
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2017-03-21 08:06:38 +0000 +0000'>2017年3月21日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to 使用Artifactory搭建本地maven仓库" href="http://localhost:1313/posts/%E4%BD%BF%E7%94%A8artifactory%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0maven%E4%BB%93%E5%BA%93/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">AS中Git与GitHub的使用入门
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>一直想把自己的写的开源小项目放到github中，这两天才花时间来学学Git。遇到些问题，百度了很多才解决。跟SVN一样，值得写一篇总结记录下，虽然上资源很多，但作为入门，自己遇到的写出来完全不一样。
+一、 Git与GitHub的简单介绍 Git是一个开源的分布式版本控制工具。
+GitHub是一个使用Git作为版本控制的项目托管平台，它是一个网站。
+详细请参考：http://www.cnblogs.com/cocowool/archive/2012/02/17/2356125.html
+二、 Git的安装 下载地址：https://git-scm.com/download/win 或 https://git-for-windows.github.io/
+安装时，全部默认选择即可。
+三、 AS中配置Git与GitHub 1. Git的配置 在Settings设置中。
+Path to Git executable: 【Git安装后的路径】
+然后“Test”测试一下，成功才可以。
+2. GitHub的配置 Host: github.com
+Login: 【你的github用户名】
+Password: 【github登录密码】
+填好后，也进行“Test”测试一下，同样成功才可以。
+测试完后按确定，会提示你是否设置密码，看个人需求。
+四、 上传代码到GitHub 1. 创建GitHub仓库 在Github上创建一个仓库：
+创建好后，将是这个样子，里面包括一个.gitignore忽略配置文件和一个README.md
+git地址如下：
+2. 创建Git本地仓库 选择工程 —— VCS —— ……
+此时，VCS的5个图标显示出来了，且要提交的文件名都是暗红色
+3. 把工程add添加到仓库 选择工程 —— 右键 —— Git —— Add
+Add后待提交的文件名是绿色
+4. commit提交 CommitMessage：填入提交说明信息。主要用于说明你做了哪些修改。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-11-22 15:02:31 +0000 +0000'>2016年11月22日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to AS中Git与GitHub的使用入门" href="http://localhost:1313/posts/as%E4%B8%ADgit%E4%B8%8Egithub%E7%9A%84%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Android 使用Gradle打包APP名称和版本号
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>需求：我想根据不同的类型，打包不同的版本号，在Android中怎么实现？
+例如：release（发布）版本号 1.0.1,debug（测试）版本号1.0.1.20160924
+在Android开发中，我们会不断的进行版本打包，打包分为2类：
+1、release（正式发布上线版）
+2、debug（测试版）。
+我们可以通过每次打包前修改build.gradle中android-&gt;versionName实现，作为一个程序员，有不断探索的精神，能懒就懒（重复没有意义的工作懒的做）。
+知识介绍 1、gradle中定义变量和函数 通过关键字 def 来定义 例如：def versionStr = &#34;1.0.1&#34; def myFunction() { return &#34;xxxxx&#34; } 2、gradle中时间使用 new Date().format(&#34;yyyyMMdd&#34;, TimeZone.getTimeZone(&#34;UTC&#34;); 这行代码的意思是“当前时间是UTC时区，已yyyyMMdd格式化时间输出” 3、gradle中variant.mergedFlavor使用 variant.mergedFlavor.versionName 表示修改打包时versionName的值 4、gradle中variant.outputs使用 variant.outputs表示输出相关配置 下面是我的build.gradle文件 apply plugin: &amp;#39;com.android.application&amp;#39; apply plugin: &amp;#39;android-apt&amp;#39; //定义时间 def releaseTime() { return new Date().format(&#34;yyyyMMdd&#34;, TimeZone.getTimeZone(&#34;UTC&#34;)) } //设置发布的显示的版本号 def getVersionName(){ return &#34;1.2.0&#34; } android { compileSdkVersion 23 buildToolsVersion &#34;24.0.0&#34; defaultConfig { applicationId &#34;com.xxx.xxxx&#34; minSdkVersion 14 targetSdkVersion 23 versionCode 3 //versionName getVersionName() } buildTypes { debug { buildConfigField(&#34;boolean&#34;,&#34;API_DEBUG&#34;,&#34;true&#34;) minifyEnabled false proguardFiles getDefaultProguardFile(&amp;#39;proguard-android.txt&amp;#39;), &amp;#39;proguard-rules.pro&amp;#39; } release { buildConfigField(&#34;boolean&#34;,&#34;API_DEBUG&#34;,&#34;false&#34;) minifyEnabled false proguardFiles getDefaultProguardFile(&amp;#39;proguard-android.txt&amp;#39;), &amp;#39;proguard-rules.pro&amp;#39; } } compileOptions { sourceCompatibility JavaVersion.VERSION_1_7 targetCompatibility JavaVersion.VERSION_1_7 } //修改打包不能成功配置 lintOptions { checkReleaseBuilds false abortOnError false } //配置自定义打包名称 applicationVariants.all { variant -&gt; variant.outputs.each { output -&gt; def outputFile = output.outputFile def fileName if (outputFile != null &amp;&amp; outputFile.name.endsWith(&amp;#39;.apk&amp;#39;)) { if (variant.buildType.name.equals(&amp;#39;release&amp;#39;)) { variant.mergedFlavor.versionName = getVersionName() fileName = &#34;XXXX_&lt;span class=&#34;katex math inline&#34;&gt;{variant.mergedFlavor.versionName}_release.apk&#34; } else if (variant.buildType.name.equals(&amp;#39;debug&amp;#39;)) { variant.mergedFlavor.versionName = getVersionName()&#43;&#34;.&#34;&#43;releaseTime() fileName = &#34;XXXX_&lt;/span&gt;{variant.mergedFlavor.versionName}_debug.apk&#34; } output.outputFile = new File(outputFile.parent, fileName) } } } } dependencies { compile fileTree(include: [&amp;#39;*.jar&amp;#39;], dir: &amp;#39;libs&amp;#39;) testCompile &amp;#39;junit:junit:4.12&amp;#39; } tasks.withType(JavaCompile) { options.encoding = &#34;UTF-8&#34; } 大家可以举一反三
+例如想修改versionCode可以这么写
+variant.mergedFlavor.versionCode = xxxx；
+现在试试吧！
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2016-09-24 11:54:43 +0000 +0000'>2016年9月24日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Android 使用Gradle打包APP名称和版本号" href="http://localhost:1313/posts/android-shi-yonggradle-da-baoapp-ming-cheng-he-ban/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">win10 android studio Terminal无法输入
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> win R -&gt; 输入 cmd 回车 ，打开命令行界面 在标题栏上右键，属性 勾选使用旧版控制台 转自：http://www.jianshu.com/p/0ed41f13fd6a </p>
+  </div>
+  <footer class="entry-footer"><span title='2016-04-12 01:41:14 +0000 +0000'>2016年4月12日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to win10 android studio Terminal无法输入" href="http://localhost:1313/posts/win10-android-studio-terminal%E6%97%A0%E6%B3%95%E8%BE%93%E5%85%A5/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">[Android Studio] Android Studio移除的Module如何恢复
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 如果你执行了从module列表中移除module的操作，但是没有执行delete module文件夹的操作，那如何恢复被移除掉的module呢。 关于如何移除请戳这：Android Studio如何删除module 这种场景还是很多见的，比如我 移除了module app，但是后面我又想用这个module了，要恢复的话，很简单，看下图，编辑settings.gradle即可，当然里面的module名称必须得 和你移除的module名称要一致，编辑完了记得点sycn gradle按钮。 </p>
+  </div>
+  <footer class="entry-footer"><span title='2015-08-22 01:49:30 +0000 +0000'>2015年8月22日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to [Android Studio] Android Studio移除的Module如何恢复" href="http://localhost:1313/posts/android-studio-android-studio%E7%A7%BB%E9%99%A4%E7%9A%84module%E5%A6%82%E4%BD%95%E6%81%A2%E5%A4%8D/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">AndroidStudio快捷键
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Ctrl&#43;G / Ctrl&#43;Alt&#43;Shift&#43;G：查询变量或者函数或者类在哪里被使用或被调用，后者是前者的复杂表现，可以选择查询范围等。
+Alt&#43;H：查找功能，全局查找
+F4：查看类继承关系
+F2：查看文档说明（函数使用说明）
+Ctrl&#43;E：查看最近打开过的文件
+Ctrl&#43;Shift&#43;E：查看最近编辑过的文件
+double Shift：全局查找，这个查看和Alt&#43;H稍稍有些不同，这个是全局文件查找，到文件名称层面。
+Ctrl&#43;Shift&#43;R：快速定位到你所想打开的文件。
+Alt&#43;↑：光标所在位置那行代码往上移动
+Alt&#43;↓：光标所在位置那行代码往下移动
+Ctrl&#43;D：删除光标所在位置那行代码
+Ctrl&#43;X：剪切光标所在位置那行代码
+Alt&#43;Shift&#43;↓/Ctrl&#43;C：复制光标所在行代码到下一行
+Ctrl&#43;O:快捷查找当前类中的函数，变量
+Ctrl&#43;Shift&#43;R：修改名称
+Alt&#43;Enter：导入包
+Alt&#43;←：后退，定位到上个查看或者编辑的地方
+Alt&#43;→：往前定位，比如你定位到上个点后，想回去，就可以用这个快捷键
+Ctrl&#43;/：当行注释，反注释再按一次即可
+Ctrl&#43;Shift&#43;/：模块注释，反注释再按一次即可,注意这边的”/“不能用小键盘的
+Ctrl&#43;Shift&#43;小键盘/：折叠代码（Ctrl&#43;Shift&#43;小键盘*这个不灵了，今天没空了，后面会针对这个问题做解决，并更新上来），当然笔记本没小键盘，你可以自己改快捷键
+Ctrl&#43;Alt&#43;S：打开settings界面
+Ctrl&#43;Alt&#43;Shift&#43;S：打开Project Structure界面
+Alt&#43;Shift&#43;X：运行（Run）
+Alt&#43;Shift&#43;D：调试运行（Debug）
+Ctrl&#43;F9：编译工程
+Ctrl&#43;Shift&#43;K：push文件到Server（git）
+Debug类快捷键
+F5：但不调试进入函数内部。
+F6：但不调试不进入函数内部。
+F7：由函数内部返回调用处。
+F8：执行到下一个断点，没断点则执行完成。
+Action Mac OSX Win/Linux 注释代码(//) Cmd &#43; / Ctrl &#43; / 注释代码(/**/) Cmd &#43; Option &#43; / Ctrl &#43; Shift &#43; / 格式化代码 Cmd &#43; Option &#43; L Ctrl &#43; Alt &#43; L 清除无效包引用 Option &#43; Control &#43; O Alt &#43; Ctrl &#43; O 查找 Cmd &#43; F Ctrl &#43; F 查找&#43;替换 Cmd &#43; R Ctrl &#43; R 上下移动代码 Option &#43; Shift &#43; Up/Down Alt &#43; Shift &#43; Up/Down 删除行 Cmd &#43; Delete Ctrl &#43; Y 扩大缩小选中范围 Option &#43; Up/Down Ctrl &#43; W/Ctrl &#43; Shift &#43; W 快捷生成结构体 Cmd &#43; Option &#43; T Ctrl &#43; Alt &#43; T 快捷覆写方法 Ctrl &#43; O Ctrl &#43; O 快捷定位到行首/尾 Cmd &#43; Left/Right Ctrl &#43; Left/Right 折叠展开代码块 Cmd &#43; Plus,Minus Ctrl &#43; Plus/Minus 折叠展开全部代码块 Cmd &#43; Shift &#43; Plus,Minus Ctrl &#43; Shift &#43; Plus,Minus 文件方法结构 Cmd &#43; F12 Ctrl &#43; F12 查找调用的位置 Ctrl &#43; Option &#43; H Ctrl &#43; Alt &#43; H 大小写转换 Cmd &#43; Shift &#43; U Ctrl &#43; Shift &#43; U ...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-08-07 05:58:22 +0000 +0000'>2015年8月7日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to AndroidStudio快捷键" href="http://localhost:1313/posts/androidstudio%E5%BF%AB%E6%8D%B7%E9%94%AE/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Android studio使用Annotations框架
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>首页创建Android studio项目
+在项目的build.gradle中添加如下代码（如此简单）
+buildscript {
+repositories {
+mavenCentral()
+}
+dependencies {
+// replace with the current version of the Android plugin
+classpath ‘com.android.tools.build:gradle:1.2.3’
+// the latest version of the android-apt plugin
+classpath ‘com.neenbedankt.gradle.plugins:android-apt:1.4’
+}
+}
+repositories {
+mavenCentral()
+mavenLocal()
+}
+apply plugin: ‘com.android.application’
+apply plugin: ‘android-apt’
+def AAVersion = ‘3.3.2’//这个是Annotations的版本号，这个可以去Annotations官网查看，也可以在Android studio中Jcenter或者mavenCentral中查找最新版本号
+dependencies {
+compile fileTree(include: [‘*.jar’], dir: ‘libs’)
+compile ‘com.android.support:appcompat-v7:22.2.0’
+apt “org.androidannotations:androidannotations:AAVersion”
+compile “org.androidannotations:androidannotations-api:AAVersion”
+}
+apt {
+arguments {
+androidManifestFile variant.outputs[0].processResources.manifestFile
+// if you have multiple outputs (when using splits), you may want to have other index than 0
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-07-17 07:56:53 +0000 +0000'>2015年7月17日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Android studio使用Annotations框架" href="http://localhost:1313/posts/android-studio%E4%BD%BF%E7%94%A8annotations%E6%A1%86%E6%9E%B6/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Android studio第一次导入项目遇到的问题，和解决方案
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在github或者其他的git平台下载的android studio项目导入到自己的Android studio中会出现一堆问题，
+首先在导入之前先用自己的Android studio创建一个测试工程，主要使用测试工程下的2个文件，分别是：./build.gradle和./gradle/wrapper/gradle-wrapper.properties文件
+例如1.build.gradle
+dependencies {
+classpath ‘com.android.tools.build:gradle:1.2.3’
+}
+修改classpath中的gradle修改为你当前android studio环境中的配置
+例如2.gradle/wrapper/gradle-wrapper.properties
+distributionUrl=https://services.gradle.org/distributions/gradle-2.2.1-all.zip
+替换文件中的这句话，使用自己Android studio中相应语句
+修改完成以上以后，打开Android studio选择/import project按照提示导入。
+如何遇到导入的项目没有办法运行，这个时候我们运行 build/Rebuild Project进行重新编译项目。
+在此过程中遇到
+FAILURE: Build failed with an exception.
+What went wrong:
+Task ‘build.gradle’ not found in root project ‘XXX’.
+Try:
+Run gradle tasks to get a list of available tasks. Run with –info or –debug option to get more log output.
+说明我们导入的项目还没有符合我们的环境，我们需要进一步配置。
+打开cmd ,进入项目更目录执行
+gradlew
+gradlew build
+检查环境变量是否配置了gradle环境，没有自己配置下，在执行gradlew时会出现解压的目录地址，自己手动配置到环境变量就行了。
+紧接着执行
+gradle build
+gradle tasks //查看android gradle的所有任务
+gradle compileReleaseSource //生成debug apk ，在build/outpus/apk 文件夹下
+（下面2句可以不执行）
+到此项目导入配置完成，关闭项目，使用Android studio重新打开项目，如果能开到某个文件夹上面有一个手机图标，恭喜你，项目配置成功了。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-07-09 09:39:10 +0000 +0000'>2015年7月9日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer>
+  <a class="entry-link" aria-label="post link to Android studio第一次导入项目遇到的问题，和解决方案" href="http://localhost:1313/posts/android-studio%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%AF%BC%E5%85%A5%E9%A1%B9%E7%9B%AE%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">ZDL Tech Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

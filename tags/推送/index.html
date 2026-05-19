@@ -1,0 +1,259 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>推送 | ZDL Tech Blog</title>
+<meta name=keywords content><meta name=description content="技术博客 - Linux · DevOps · 开发"><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/tags/%E6%8E%A8%E9%80%81/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/tags/%E6%8E%A8%E9%80%81/index.xml title=rss><link rel=alternate hreflang=zh href=https://blog.zdltech.com/tags/%E6%8E%A8%E9%80%81/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/tags/%E6%8E%A8%E9%80%81/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="推送"><meta property="og:description" content="技术博客 - Linux · DevOps · 开发"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="推送"><meta name=twitter:description content="技术博客 - Linux · DevOps · 开发"></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><header class=page-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/tags/>Tags</a></nav><h1>推送</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>HTML5服务器推送事件（Server-sent-event）</h2></header><div class=entry-content><p>HTML5服务器推送事件（Server-sent-event） 在前端开发中，实现界面推送的方式，这里大概总结下三种方式
+轮询（ajax），比较耗费服务器资源。COMET方式（COMET 技术并不是 HTML 5 ） websocket 双向数据推送，灵活，功能强大 Server-sent-event(简称SSE)，单项数据推送（Server-sent Events 规范是 HTML 5 规范的一个组成部分） 这里我们只讨论SSE
+SSE的本质：严格地说，HTTP协议无法做到服务器主动推送信息。但是有一种变通的发光法，就是服务器向客户端声明，接下来要发送的是流信息，也就是说，发送的不是一次性的数据包，而是一个数据流，会连续不断的发送过来。这是客户端不会关闭连接，会一直等待服务器发过来的数据流，视频播放就是这样的例子。本质上这种通信就是以流信息的方式，完成一次用时很长的下载。
+SSE就是利用这种机制，使用流信息想浏览器推送信息。它基于HTTP协议，除了IE/Edge，其他浏览器都支持
+闲谈 在Web开发中，浏览器和服务器之间使用请求/响应的交互模式。浏览器发出请求，服务器根据请求来生成响应。这种交互方式，服务器端产生数据变化后不能及时的通知给浏览，只能在浏览器下次请求的时候，才能获取（对于某些对数据实时性要求很高的应用，这种延迟是不能接受的）。
+使用浏览器原生的EventSource对象的一个比较大的问题是IE并不支持（为实现在IE上COMET或轮询，第二种使用polyfill技术）
+SSE的客户端API部署在EventSource对象上，使用之前检测浏览器是否支持SSE
+if(typeof(EventSource)!=="undefined") { // 浏览器支持 Server-Sent // 一些代码..... } else { // 浏览器不支持 Server-Sent.. } var source = new EventSource(url); // url可以在当前网址同域，也可以跨域，跨域时可以指定第二个参数withCredentials 表示是否一起发送Cookies > > EventSource的readyState 表明连接的当前状态，该属性只读 > > * 0: 相当于常量EventSource.CONNECTIONG 表示连接还未建立，或者断线正在重连 > * 1:相当于常量EventSource.OPEN 表示连接已经建立，可以接受数据 > * 2:相当于常量EventSource.CLOSED 表示连接已断，且不会重连 ### Server-sent Events {#toc_2} > Server-sent Events 规范是 HTML 5 规范的一个组成部分,该规范比较简单，主要由两部分组成： > > 第一部分：服务器端与浏览器之间的通讯协议 > > 第二部分：浏览器端可以提供JavaScript中使用EventSource对象。 > > 通讯协议是基于纯文本的简单协议 > > 服务器端响应的内容类型为：text/event-stream，响应文本内容可以看成是一个事件流，有不同的事件组成。 > > 每个事件由类型和数据两个部分组成，同时每个事件可以有一个可选的标识符。不同事件的内容之间通过仅包含回车符和换行符的空行来分隔。每个事件的数据可能由多行组成。 > > 清单1 > > > ``` `data: first event data: second event id: 100 event: myevent data: third event id: 101 : this is a comment data: fourth event data: fourth event continue ` 每个事件之间通过空行来分隔。对于每行来说，冒号（：）前面表示的该行的类型，冒号后面则是对应的值。
+...</p></div><footer class=entry-footer><span title='2020-08-19 03:19:23 +0000 UTC'>2020年8月19日</span>&nbsp;·&nbsp;<span>8 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to HTML5服务器推送事件（Server-sent-event）" href=https://blog.zdltech.com/posts/html5fu-wu-qi-tui-song-shi-jian-serversentevent/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Android实现推送方式解决方案</h2></header><div class=entry-content><p>**　本文介绍在Android中实现推送方式的基础知识及相关解决方案。推送功能在手机开发中应用的场景是越来起来了，不说别的，就我们手机上的新闻客户端就时不j时的推送过来新的消息，很方便的阅读最新的新闻信息。这种推送功能是好的一面，但是也会经常看到很多推送过来的垃圾信息，这就让我们感到厌烦了，关于这个我们就不能多说什么了，毕竟很多商家要做广告。本文就是来探讨下Android中实现推送功能的一些解决方案，也希望能够起到抛砖引玉的作用。^_^**
+**　1.推送方式基础知识： **
+在移动互联网时代以前的手机，如果有事情发生需要通知用户，则会有一个窗口弹出，将告诉用户正在发生什么事情。可能是未接电话的提示，日历的提醒，或是一封新的彩信。推送功能最早是被用于Email中，用来提示我们新的信息。由于时代的发展和移动互联网的热潮，推送功能更加地普及，已经不再仅仅用在推送邮件了，更多地用在我们的APP中了。
+当我们开发需要和服务器交互的应用程序时，基本上都需要获取服务器端的数据，比如《地震应急通》就需要及时获取服务器上最新的地震信息。要获取服务器上不定时更新的信息，一般来说有两种方法：第一种是客户端使用Pull（拉）的方式，就是隔一段时间就去服务器上获取一下信息，看是否有更新的信息出现。第二种就是 服务器使用Push（推送）的方式，当服务器端有新信息了，则把最新的信息Push到客户端上。这样，客户端就能自动的接收到消息。
+虽然Pull和Push两种方式都能实现获取服务器端更新信息的功能，但是明显来说Push方式比Pull方式更优越。因为Pull方式更费客户端的网络流量，更主要的是费电量，还需要我们的程序不停地去监测服务端的变化。
+在开发Android和iPhone应用程序时，我们往往需要从服务器不定的向手机客户端即时推送各种通知消息。我们只需要在Android或IPhone的通知栏处向下一拉，就展开了Notification Panel，可以集中一览各种各样通知消息。目前IOS平台上已经有了比较简单的和完美的推送通知解决方案，我会在以后详细介绍IPhone中的解决方案，可是Android平台上实现起来却相对比较麻烦。
+最近利用几天的时间对Android的推送通知服务进行初步的研究，也希望能和大家共同探讨一下。
+**　2. 几种常见的解决方案实现原理：**
+1）轮询(Pull)方式：应用程序应当阶段性的与服务器进行连接并查询是否有新的消息到达，你必须自己实现与服务器之间的通信，例如消息排队等。而且你还要考虑轮询的频率，如果太慢可能导致某些消息的延迟，如果太快，则会大量消耗网络带宽和电池。
+2）SMS(Push)方式：在Android平台上，你可以通过拦截SMS消息并且解析消息内容来了解服务器的意图，并获取其显示内容进行处理。这是一个不错的想法，我就见过采用这个方案的应用程序。这个方案的好处是，可以实现完全的实时操作。但是问题是这个方案的成本相对比较高，我们需要向移动公司缴纳相应的费用。我们目前很难找到免费的短消息发送网关来实现这种方案。
+3）持久连接(Push)方式：这个方案可以解决由轮询带来的性能问题，但是还是会消耗手机的电池。IOS平台的推送服务之所以工作的很好，是因为每一台手机仅仅保持一个与服务器之间的连接，事实上C2DM也是这么工作的。不过刚才也讲了，这个方案存在着很多的不足之处，就是我们很难在手机上实现一个可靠的服务，目前也无法与IOS平台的推送功能相比。
+Android操作系统允许在低内存情况下杀死系统服务，所以我们的推送通知服务很有可能就被操作系统Kill掉了。 轮询(Pull)方式和SMS(Push)方式这两个方案也存在明显的不足。至于持久连接(Push)方案也有不足，不过我们可以通过良好的设计来弥补，以便于让该方案可以有效的工作。毕竟，我们要知道GMail，GTalk以及GoogleVoice都可以实现实时更新的。
+3.第一种解决方案：C2DM云端推送功能。
+在Android手机平台上，Google提供了C2DM（Cloudto Device Messaging）服务，起初我就是准备采用这个服务来实现自己手机上的推送功能，并将其带入自己的项目中。
+Android Cloud to Device Messaging (C2DM)是一个用来帮助开发者从服务器向Android应用程序发送数据的服务。该服务提供了一个简单的、轻量级的机制，允许服务器可以通知移动应用程序直接与服务器进行通信，以便于从服务器获取应用程序更新和用户数据。C2DM服务负责处理诸如消息排队等事务并向运行于目标设备上的应用程序分发这些消息。关于C2DM具体使用过程，大家可以去查阅相关的资料，在这里先让我们了解下大致方案情况。
+下面是C2DM操作过程示例图:
+但是经过一番研究发现，这个服务存在很大的问题：
+1）C2DM内置于Android的2.2系统上，无法兼容老的1.6到2.1系统;
+2）C2DM需要依赖于Google官方提供的C2DM服务器，由于国内的网络环境，这个服务经常不可用，如果想要很好的使用，我们的App Server必须也在国外，这个恐怕不是每个开发者都能够实现的;
+3) 不像在iPhone中，他们把硬件系统集成在一块了。所以对于我们开发者来说，如果要在我们的应用程序中使用C2DM的推送功能，因为对于不同的这种硬件厂商平台，比如摩托罗拉、华为、中兴做一个手机，他们可能会把Google的这种服务去掉，尤其像在国内就很多这种，把Google这种原生的服务去掉。买了一些像什么山寨机或者是华为这种国产机，可能Google的服务就没有了。而像在国外出的那些可能会内置。
+有了上述几个方面的制约，导致我最终放弃了这个方案，不过我想利用另外一篇文章来详细的介绍C2DM的框架以及客户端和App Server的相应设置方法，可以作为学习资源让我们有个参考的资料。 即然C2DM无法满足我们的要求，那么我们就需要自己来实现Android手机客户端与App Server之间的通信协议，保证在App Server想向指定的Android设备发送消息时，Android设备能够及时的收到。
+**　4. **第二种解决方案：MQTT协议实现Android推送功能。
+采用MQTT协议实现Android推送功能也是一种解决方案。MQTT是一个轻量级的消息发布/订阅协议，它是实现基于手机客户端的消息推送服务器的理想解决方案。
+wmqtt.jar 是IBM提供的MQTT协议的实现。我们可以从这里（https://github.com/tokudu/AndroidPushNotificationsDemo）下载该项目的实例代码，并且可以找到一个采用PHP书写的服务器端实现（https://github.com/tokudu/PhpMQTTClient）。
+架构如下图所示：
+**　wmqtt.jar** 是IBM提供的MQTT协议的实现。我们可以从如下站点下载（http://www-01.ibm.com/support/docview.wss?rs=171&amp;uid=swg24006006）它。我们可以将该jar包加入自己的Android应用程序中。
+**　5.**第三种解决方案：RSMB实现推送功能。
+Really Small Message Broker (RSMB) ，他是一个简单的MQTT代理，同样由IBM提供，其查看地址是：http://www.alphaworks.ibm.com/tech/rsmb。缺省打开1883端口，应用程序当中，它负责接收来自服务器的消息并将其转发给指定的移动设备。
+SAM是一个针对MQTT写的[PHP库](http://pecl.php.net/package/sam/download/0.2.0)。我们可以从这个[http://pecl.php.net/package/sam/download/0.2.](http://pecl.php.net/package/sam/download/0.2.)[](http://pecl.php.net/package/sam/download/0.2.0)地址下载它. send_mqtt.php是一个通过POST接收消息并且通过SAM将消息发送给RSMB的PHP脚本。
+**　6. **第四种解决方案：XMPP协议实现Android推送功能。
+这是我希望在项目中采用的方案，因为目前它是开源的，对于其简单的推送功能它还是能够实现的。我们可以修改其源代码来适应我们的应用程序。
+...</p></div><footer class=entry-footer><span title='2015-07-10 01:29:09 +0000 UTC'>2015年7月10日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Android实现推送方式解决方案" href=https://blog.zdltech.com/posts/android%E5%AE%9E%E7%8E%B0%E6%8E%A8%E9%80%81%E6%96%B9%E5%BC%8F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Android消息推送完美解决方案全析</h2></header><div class=entry-content><p>推送功能在手机应用开发中越来越重要，已经成为手机开发的必须。在Android应用开发中，由于众所周知的原因，Android消息推送我们不得不大费周折。本文就是用来和大家共同探讨一种Android消息推送的完美解决方案。
+一、消息推送基础
+消息推送，就是在互联网上通过定期传送用户需要的信息来减少信息过载的一项新技术。推送技术通过自动传送信息给用户，来减少用于网络上搜索的时间。它根据用户的兴趣来搜索、过滤信息，并将其定期推给用户，帮助用户高效率地发掘有价值的信息
+当我们开发需要和服务器交互的移动应用时，基本上都需要和服务器进行交互，包括上传数据到服务器，同时从服务器上获取数据。
+一般情况下，客户端与服务器之间通讯客户端是主动的，但这就存在一个问题就是一旦服务器数据有更新或者服务器要下发通知给客户端只能等客户端连接的时候才能实现。这种方式使消息失去了实时性。
+如何使客户端能够实时的收到服务器的消息和通知，总体来说有两种方式，第一种是客户端使用Pull（拉）的方式，就是隔一段时间就去服务器上获取一下信息，看是否有更新的信息出现。第二种就是 服务器使用Push（推送）的方式，当服务器端有新信息了，则把最新的信息Push到客户端上。这样，客户端就能自动的接收到消息。
+虽然Pull和Push两种方式都能实现获取服务器端更新信息的功能，但是明显来说Push方式比Pull方式更优越。因为Pull方式更费客户端的网络流量，更主要的是费电量，还需要我们的程序不停地去监测服务端的变化。
+二、几种常见的解决方案实现原理
+1）轮询(Pull)方式：客户端定时向服务器发送询问消息，一旦服务器有变化则立即同步消息。
+2）SMS(Push)方式：通过拦截SMS消息并且解析消息内容来了解服务器的命令，但这种方式一般用户在经济上很难承受。
+3）持久连接(Push)方式：客户端和服务器之间建立长久连接，这样就可以实现消息的及时行和实时性。
+三、消息推送解决方案概述
+A、C2DM云端推送方案
+在Android手机平台上，Google提供了C2DM（Cloudto Device Messaging）服务。Android Cloud to Device Messaging (C2DM)是一个用来帮助开发者从服务器向Android应用程序发送数据的服务。该服务提供了一个简单的、轻量级的机制，允许服务器可以通知移动应用程序直接与服务器进行通信，以便于从服务器获取应用程序更新和用户数据。
+该方案存在的主要问题是C2DM需要依赖于Google官方提供的C2DM服务器，由于国内的网络环境，这个服务经常不可用。
+B、MQTT协议实现Android推送
+采用MQTT协议实现Android推送功能也是一种解决方案。MQTT是一个轻量级的消息发布/订阅协议，它是实现基于手机客户端的消息推送服务器的理想解决方案。
+wmqtt.jar 是IBM提供的MQTT协议的实现。我们可以从这里（https://github.com/tokudu/AndroidPushNotificationsDemo）下载该项目的实例代码，并且可以找到一个采用PHP书写的服务器端实现（https://github.com/tokudu/PhpMQTTClient）。
+C、RSMB实现推送功能
+Really Small Message Broker (RSMB) ，是一个简单的MQTT代理，同样由IBM提供，其查看地址是：http://www.alphaworks.ibm.com/tech/rsmb。缺省打开1883端口，应用程序当中，它负责接收来自服务器的消息并将其转发给指定的移动设备。SAM是一个针对MQTT写的PHP库。我们可以从这个http://pecl.php.net/package/sam/download/0.2.0地址下载它.
+D、XMPP协议实现Android推送
+Google官方的C2DM服务器底层也是采用XMPP协议进行的封装。XMPP(可扩展通讯和表示协议)是基于可扩展标记语言（XML）的协议，它用于即时消息（IM）以及在线探测。这个协议可能最终允许因特网用户向因特网上的其他任何人发送即时消息。
+androidpn是一个基于XMPP协议的java开源Android push notification实现。它包含了完整的客户端和服务器端。但也存在一些不足之处：
+1） 比如时间过长时，就再也收不到推送的信息了。
+2）性能上也不够稳定。
+3）如果将消息从服务器上推送出去，就不再管理了，不管消息是否成功到达客户端手机上。
+如果我们要使用androidpn，则还需要做大量的工作，需要理解XMPP协议、理解Androidpn的实现机制，需要调试内部存在的BUG。
+E、使用第三方平台
+目前国内、国外有一些推送平台可供使用，但是涉及到收费问题、保密问题、服务质量问题、扩展问题等等，又不得不是我们望而却步。
+四、消息推送完美方案
+综合以上论述，在建立Android消息推送方面可谓方案多多，但每一款方案都有其优缺点。但无论如何，还是自己搭建一个推送平台是上策。因为你有、他有不如自己有。
+举个例子，在搭建自有推送平台上建议使用《某某Android消息推送组件》。该组不仅可以拿来即用，并且还可以提供源码以便扩展，实现自己的特殊需求。
+A、推送原理
+Android消息推送组件基于XMPP协议实现Android推送。XMPP（可扩展通讯和表示协议）是基于可扩展标记语言（XML）的协议，它用于即时消息（IM）以及在线探测。这个协议可能最终允许因特网用户向因特网上的其他任何人发送即时消息。
+Android消息推送组件实现原理见下图：
+图1-消息推送原理图
+Android消息推送组件由服务器部分和客户端部分组成。每一部分都由XMPP协议组件和外部接口组件构成。XMPP协议组件负责服务器和Android客户端间的连接管理、消息通讯，外部接口组件负责接收应用系统、客户端应用的命令，向应用系统发送接收到的通知消息。
+Android消息组件提供基于Tomcat的服务器应用和Android开发jar包。其中基于Tomcat的服务器应用直接在Tomcat上部署即可，Android开发jar包引入Android项目即可。
+B 集成方式
+1）服务器部署
+Android消息组件Tomcat的服务器应用直接部署在Tomcat中，端口号任意设定。
+2）客户端jar包引用
+在Android项目中建立libs目录，然后将提供的Android开发jar包复制到该目录即可。见下图：
+图2-jar包引入图
+3）Android项目AndroidManifest.xml文件修改
+在该文件中增加以下权限：
+&lt;uses-permission android:name=“android.permission.READ_PHONE_STATE” />
+&lt;uses-permission android:name=“android.permission.ACCESS_NETWORK_STATE” />
+...</p></div><footer class=entry-footer><span title='2015-05-21 01:33:50 +0000 UTC'>2015年5月21日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Android消息推送完美解决方案全析" href=https://blog.zdltech.com/posts/android%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%85%A8%E6%9E%90/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>XMPP Android基础介绍</h2></header><div class=entry-content><p>XMPP Android基础介绍
+在android中使用到的库为Asmack（下载地址：http://code.google.com/p/asmack/）
+Asmack的相关介绍
+1.ConnectionConfiguration 通过该类设置用于与XMPP服务器建立连接的配置。它能配置连接是否使用TLS、SASL加密等
+2.XMPPConnection 通过该类连接XMPP服务。通过connect()建立连接disconnect（）断开连接
+3.ChatManager 用于监控当前所有Chat，可以使用createChat（String userJID,MessageListener listener）创建一个聊天
+4.Chat 用于监控两个用户间的一系列消息。使用addMessageListener（MessageListener listener），当有任何消息到达时将会触发listener的processMessage（Chat chat,Message msg）方法。
+5.Message 用来表示一个消息包。Message有2个内部类Message.Body表示消息体，Message.Type消息类型
+（1）Message.Type.NORMAL 默认文本消息
+（2）Message.Type.CHAT 典型的短消息，如QQ聊天时一行一行的显示消息
+（3）Message.Type.GROUP_CHAT 群聊消息
+（4）Message.Type.HEADLINE 滚动显示消息
+（5）Message.Type.ERROR 错误消息
+6.Roster 表示存储了一个花名册，其中包含很多RosterEntry。为了易于管理，花名册的项被分配到了各个group中，当建立与XMPP服务的连接后可以使用connection.getRoster()获得Roster对象。别的用户可以使用一个订阅请求（相当于QQ添加好友）尝试订阅目的用户。可以使用Roster.SubscriptionMode的值处理这些请求，accept_all表示接收所有订阅请求，reject_all表示拒绝所有订阅请求，manual表示手工处理订阅请求。
+//创建组的方法
+RosterGroup group=roster.createGroup(“同事”);
+//可以向组中添加RosterEntry对象
+group.addEntry(entry);
+7.RosterGroup表示Roster中的每条记录，它包含了用户的JID、用户名、用户分配的昵称。
+8.RosterGroup表示RosterEntry的组。可以使用addEnty(RosterEntry entry)添加，contains(String user)判读某用户是在组中，removeEntry(RosterEnty entry)从组中移除，getEntries()获取所有RosterEntry
+9.Presence表示XMPP状态的packet，每个presence packet都是一个状态，用户枚举类型Presence.Type的值表示。
+Presence.Type值
+（1）available 用户空闲状态
+（2）unavailable 用户没空看消息
+（3）subscribe 请求定义别人，即请求加对方为好友
+（4）subscribed 统一被别人订阅，也就是确认被对方加为好友
+（5）unsubscribe 取消订阅别人，请求删除某好友
+（6）unsubscribed 拒绝被别人订阅，即拒绝对方的添加请求
+（7） error 当前状态packet有错误
+登陆XMPP服务器
+首先创建用户，然后建立与XMPP服务器的连接，最后使用用户登陆到XMPP服务器
+//指定连接到服务器的参数
+ConnectionConfiguration mConnectionConfiguration=new ConnectonConfiguration(“192.168.1.105”,5222);
+//初始化XMPPconnection连接
+XMPPConnection mXMPPConnection=new XMPPConnection(mConnectionConfiguration);
+//连接上XMPP服务器
+try{
+mXMPPConnection.connect();
+//实例化用户管理
+AccountManager mAccountManager=mXMPPConnection.getAccountManager();
+//用指定的用户名和密码创建用户
+mAccountManager.createAccount(‘zhang’,’123456′);
+}catch(XMPPException e){
+...</p></div><footer class=entry-footer><span title='2015-02-13 09:08:46 +0000 UTC'>2015年2月13日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to XMPP Android基础介绍" href=https://blog.zdltech.com/posts/xmpp-android%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Html5无刷新修改Url,history pushState/replaceState</h2></header><div class=entry-content><p>一、认识window.history window.history表示window对象的历史记录，是由用户主动产生，并且接受javascript脚本控制的全局对象。window对象通过history对象提供对览器历史记录的访问能力。它暴露了一些非常有用的方法和属性，让你在历史记录中自由前进和后退。
+1、历史记录的前进和后退 在历史记录中后退，可以这么做：
+1. window.history.back();
+这就像用户点击浏览器的后退按钮一样。
+类似的，你可以前进，就像在浏览器中点击前进按钮，像这样：
+window.history.forward();
+2、移动到指定历史记录点 通过指定一个相对于当前页面位置的数值，你可以使用go()方法从当前会话的历史记录中加载页面（当前页面位置索引值为0，上一页就是-1，下一页为1）。
+要后退一页（相当于调用back()）：
+1. window.history.go(-1);
+向前移动一页（相当于调用forward()）：
+1. window.history.go(1);
+类似的，传递参数“2”，你就可以向前移动2个记录点。你可以查看length属性值，了解历史记录栈中一共有多少个记录点：
+1. window.history.length;
+二、修改历史记录点 HTML5的新API扩展了window.history，使历史记录点更加开放了。可以存储当前历史记录点、替换当前历史记录点、监听历史记录点，下面逐一简要说明一下。
+1、存储当前历史记录点 存储的方式类似于数组的入栈（Array.push()），在window.history里新增一个历史记录点，例如：
+1. // 当前的url为：http://www.qingdou.me/index.html
+2. var json={time:new Date().getTime()};
+3. // @状态对象：记录历史记录点的额外对象，可以为空
+4. // @页面标题：目前所有浏览器都不支持
+5. // @可选的url：浏览器不会检查url是否存在，只改变url，url必须同域，不能跨域
+6. window.history.pushState(json,””,”http://www.qingdou.me/post-1.html”);
+执行了pushState方法后，页面的url地址为http://www.qingdou.me/post-1.html。
+2、替换当前历史记录点 window.history.replaceState和window.history.pushState类似，不同之处在于replaceState不会在window.history里新增历史记录点，其效果类似于window.location.replace(url)，都是不会在历史记录点里新增一个记录点的。当你为了响应用户的某些操作，而要更新当前历史记录条目的状态对象或URL时，使用replaceState()方法会特别合适。
+3、监听历史记录点 监听历史记录点，直观的可认为是监听URL的变化，但会忽略URL的hash部分，监听URL的hash部分，HTML5有新的API为onhashchange，我的博客里也有说到该方法和跨浏览器的兼容解决方案。可以通过window.onpopstate来监听url的变化，并且可以获取存储在该历史记录点的状态对象，也就是上文说到的json对象，如：
+1. // 当前的url为：http://www.qingdou.me/post-1.html
+2. window.onpopstate=function()
+3. {
+4. // 获得存储在该历史记录点的json对象
+5. var json=window.history.state;
+6. // 点击一次回退到：http://www.qingdou.me/index.html
+7. // 获得的json为null
+8. // 再点击一次前进到：http://www.qingdou.me/post-1.html
+...</p></div><footer class=entry-footer><span title='2014-10-17 06:50:46 +0000 UTC'>2014年10月17日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Html5无刷新修改Url,history pushState/replaceState" href=https://blog.zdltech.com/posts/html5%E6%97%A0%E5%88%B7%E6%96%B0%E4%BF%AE%E6%94%B9urlhistory-pushstatereplacestate/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Android 平台推送方案</h2></header><div class=entry-content><p>前段时间做的项目需要添加一个推送的功能,现在应用里边加入推送也很普遍,所以查了查相关的资料,总结了以下几种方案!
+【1】使用XMPP协议（Openfire + Spark + Smack）
+简介：基于XML协议的通讯协议，前身是Jabber，目前已由IETF国际标准化组织完成了标准化工作。
+优点：协议成熟、强大、可扩展性强、目前主要应用于许多聊天系统中，且已有开源的Java版的开发实例androidpn。
+缺点：协议较复杂、冗余（基于XML）、费流量、费电，部署硬件成本高。
+这种方法需要服务端配合，需要整合openfire服务器，我们的服务端用的php，而这个需要用Java，客户端的代码也需要花一段时间去研究，由于时间有限并没有使用这种方法。不过在后来的开发中，想在程序里加入类似于微信的语音聊天的功能，所以对于这种方式又进行了一段开发，以后我会写一篇文章介绍一下。
+【2】使用MQTT协议
+简介：轻量级的、基于代理的“发布/订阅”模式的消息传输协议。
+优点：协议简洁、小巧、可扩展性强、省流量、省电，目前已经应用到企业领域（参考：http://mqtt.org/），且已有C++版的服务端组件rsmb。
+【3】使用第三方推送服务
+**　1**.Google 云推送服务
+鉴于国内的特殊情况，大部分国产手机都砍掉了Google服务，所以这种实现方式不太现实
+**2. **百度云推送服务（http://open.baidu.com/）
+这个推送方案实施起来比较简单，直接集成相关的sdk，就可以实现推送，而且服务端的sdk有PHP，Java，Python版本，也可以直接通过url推送相关消息
+**3. **极光推送（https://www.jpush.cn/）
+这个文档比较全，号称3分钟快速Demo，集成起来相对就简单多了
+今天主要介绍一下第二种推送方案，之前查资料的时候没有找到百度云推送和极光推送，也是后来一个偶然的机会发现百度推出了云推送服务，今天总结一下,也希望以后各位朋友在开发中少走弯路,
+1.首先下载rsmb包,并解压,找到对应服务器的文件夹,我的是linux_ia32,这个支持多种服务器
+(下载地址:http://www.alphaworks.ibm.com/tech/rsmb,或者 http://pan.baidu.com/share/link?shareid=305439419&amp;uk=137542493)
+2.把目录及里面的文件上传到服务器上,(我的是linux服务器)进入到用命令行进入到该目录 然后自行 ./broker 如此这般便启动了推送服务,
+3.准备推送页面(通过网页进行推送测试)下载PHP端的推送代码 (http://pan.baidu.com/share/link?shareid=311569022&amp;uk=137542493),解压进入 etc目录更改 config.php里的IP地址为你的服务器IP地址
+4.打开对应的url既可以看到如下的页面
+Server status显示为 Online说明服务器正常启动了,
+5.下面开始准备android客户端(下载地址https://github.com/tokudu/AndroidPushNotificationsDemo )
+启动推送服务,然后在上边的网页上把那一串字符输入到上边的输入框,下边输入要推送的内容
+不幸的是报错了,错误如下
+08-05 13:56:34.472: E/AndroidRuntime(30976): java.lang.VerifyError: com/tokudu/demo/PushService
+08-05 13:56:34.472: E/AndroidRuntime(30976): at com.tokudu.demo.PushActivity$1.onClick(PushActivity.java:32)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at android.view.View.performClick(View.java:4240)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at android.view.View$PerformClick.run(View.java:17721)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at android.os.Handler.handleCallback(Handler.java:730)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at android.os.Handler.dispatchMessage(Handler.java:92)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at android.os.Looper.loop(Looper.java:137)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at android.app.ActivityThread.main(ActivityThread.java:5103)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at java.lang.reflect.Method.invokeNative(Native Method)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at java.lang.reflect.Method.invoke(Method.java:525)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:737)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:553)
+08-05 13:56:34.472: E/AndroidRuntime(30976): at dalvik.system.NativeStart.main(Native Method)
+...</p></div><footer class=entry-footer><span title='2014-04-25 03:36:30 +0000 UTC'>2014年4月25日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Android 平台推送方案" href=https://blog.zdltech.com/posts/android-%E5%B9%B3%E5%8F%B0%E6%8E%A8%E9%80%81%E6%96%B9%E6%A1%88/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Android Push Notification实现信息推送使用</h2></header><div class=entry-content><p>在上一篇文章中提到在Android中实现推送方式的解决方案，其中一个比较成熟的解决方案便是使用XMPP协议实现。而AndroidPn项目就是使用XMPP协议实现信息推送的一个开源项目。在这里给大家介绍其使用过程。
+**　Apndroid Push Notification的特点： **
+快速集成:提供一种比C2DM更加快捷的使用方式,避免各种限制.
+无需架设服务器:通过使用”云服务”,减少额外服务器负担.
+可以同时推送消息到网站页面,android 手机
+耗电少,占用流量少.
+**　具体配置过程： **
+首先， 我们需要下载androidpn-client-0.5.0.zip和androidpn-server-0.5.0-bin.zip。
+下载地址：http://sourceforge.net/projects/androidpn/
+解压两个包，Eclipse导入client，配置好目标平台，打开raw/androidpn.properties文件，配置客户端程序。
+1. 如果是模拟器来运行客户端程序,把xmppHost配置成10.0.2.2[模拟器把10.0.2.2认为是所在主机的地址，127.0.0.1是模拟器本身的回环地址，10.0.2.1表示网关地址，10.0.2.3表示DNS地址，10.0.2.15表示目标设备的网络地址]，关于模拟器的详细信息，大家可参阅相关资料，这里不再详述.
+xmppPort=5222 是服务器的xmpp服务监听端口 运行androidpn-server-0.5.0\bin\run.bat启动服务器，从浏览器访问http://127.0.0.1:7070/index.do (androidPN Server有个轻量级的web服务器，在7070端口监听请求，接受用户输入的文本消息) 运行客户端，客户端会向服务器发起连接请求，注册成功后，服务器能识别客户端，并维护和客户端的IP长连接。 **　2. 如果是在同一个局域网内的其他机器的模拟器测试(或者使用同一无线路由器wifi上网的真机) ，则需要把这个值设置为服务器机器的局域网ip. **
+**　例如 你的电脑和android手机 都通过同一个无线路由器wifi上网, 电脑的ip地址为 192.168.1.2 而 手机的ip地址为 192.168.1.3, 这个时候 需要把这个值修改为 xmppHost=192.168.1.1 或是电脑的IP地址，就可以在手机上使用了. **
+如果是不在同一个局域网的真机测试，我们需要将这个值设置为服务器的IP地址。 **　具体配置如下图所示：**
+**　我的电脑IP是：192.168.8.107 **
+服务器运行主界面：
+推送信息如下界面所示：
+测试结果如下图所示：
+最后在我的模拟器和真机中测试通过。^_^
+最后，希望转载的朋友能够尊重作者的劳动成果，加上转载地址：http://www.cnblogs.com/hanyonglu/archive/2012/03/16/2399655.html 谢谢。</p></div><footer class=entry-footer><span title='2014-04-17 08:46:48 +0000 UTC'>2014年4月17日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Android Push Notification实现信息推送使用" href=https://blog.zdltech.com/posts/android-push-notification%E5%AE%9E%E7%8E%B0%E4%BF%A1%E6%81%AF%E6%8E%A8%E9%80%81%E4%BD%BF%E7%94%A8/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>XMPP协议实现原理介绍</h2></header><div class=entry-content><p>**XMPP协议简介 **
+XMPP（Extensible Messageing and Presence Protocol：可扩展消息与存在协议）是目前主流的四种IM（IM：instant messaging,即时消息）协议之一，其他三种分别为：即时信息和空间协议(IMPP)、空间和即时信息协议(PRIM)、针对即时通讯和空间平衡扩充的进程开始协议SIP(SIMPLE)。
+在这四种协议中，XMPP是最灵活的。XMPP是一种基于XML的协议，它继承了在XML环境中灵活的发展性。因此，基于XMPP的应用具有超强的可扩展性。经过扩展以后的XMPP可以通过发送扩展的信息来处理用户的需求，以及在XMPP的顶端建立如内容发布系统和基于地址的服务等应用程 序。而且，XMPP包含了针对服务器端的软件协议，使之能与另一个进行通话，这使得开发者更容易建立客户应用程序或给一个配好系统添加功能。
+1. 什么是XMPP ？
+XMPP的前身是Jabber，一个开源形式组织产生的网络即时通信协议。XMPP目前被IETF国际标准组织完成了标准化工作。标准化的核心结果分为两部分； 核心的XML流传输协议 基于XML流传输的即时通讯扩展应用 XMPP的核心XML流传输协议的定义使得XMPP能够在一个比以往网络通信协议更规范的平台上。借助于XML易于解析和阅读的特性，使得XMPP的协议能够非常漂亮。 XMPP的即时通讯扩展应用部分是根据IETF在这之前对即时通讯的一个抽象定义的，与其他业已得到广泛使用的即时通讯协议，诸如AIM，QQ等有功能完整，完善等先进性。
+2. XMPP的基本网络结构是怎样的？
+XMPP中定义了三个角色，客户端，服务器，网关。通信能够在这三者的任意两个之间双向发生。服务器同时承担了客户端信息记录，连接管理和信息的路由功能。网关承担着与异构即时通信系统的互联互通，异构系统可以包括SMS（短信），MSN，ICQ等。基本的网络形式是单客户端通过TCP/IP连接到单服务器，然后在之上传输XML。
+3. XMPP通过TCP传什么了？
+传输的是与即时通讯相关的指令。在以前这些命令要么用2进制的形式发送（比如QQ），要么用纯文本指令加空格加参数加换行苻的方式发送（比如MSN）。而XMPP传输的即时通讯指令的逻辑与以往相仿，只是协议的形式变成了XML格式的纯文本。这不但使得解析容易了，人也容易阅读了，方便了开发和查错。而XMPP的核心部分就是一个在网络上分片断发送XML的流协议。这个流协议是XMPP的即时通讯指令的传递基础，也是一个非常重要的可以被进一步利用的网络基础协议。所以可以说，XMPP用TCP传的是XML流。
+XMPP协议工作原理：
+4. XMPP协议地址格式：
+**5. XMPP消息格式： **
+6. 核心的XML流传输协议
+基于XML FreeEIM流传输的即时通讯扩展应用
+XMPP的核心XML流传输协议的定义使得XMPP能够在一个比以往网络通信协议更规范的平台上。借助于XML易于解析和阅读的特性，使得XMPP的协议能够非常漂亮。
+XMPP的即时通讯扩展应用部分是根据IETF在这之前对即时通讯的一个抽象定义的，与其他业已得到广泛使用的即时通讯协议，诸如AIM，QQ等有功能完整，完善等先进性。
+XMPP的扩展协议Jingle使得其支持语音和视频。
+XMPP的官方文档时RFC 3920.
+7. XMPP应用示例
+举个例子看看所谓的XML流是什么样子的？
+客户端：&lt;?xml version=&amp;#8217;1.0&amp;#8242;?> &lt;stream:stream to=&amp;#8217;example_com&amp;#8217; xmlns=&amp;#8217;jabber:client&amp;#8217; xmlns:stream=&amp;#8217;http_etherx_jabber_org/streams&amp;#8217; version=&amp;#8217;1.0&amp;#8242;> 服务器：&lt;?xml version=&amp;#8217;1.0&amp;#8242;?> &lt;stream:stream from=&amp;#8217;example_com&amp;#8217; id=&amp;#8217;someid&amp;#8217; xmlns=&amp;#8217;jabber:client&amp;#8217; xmlns:stream=&amp;#8217;http_etherx_jabber_org/streams&amp;#8217; version=&amp;#8217;1.0&amp;#8242;> &amp;#8230;其他通信&amp;#8230; 客户端：&lt;message from=&amp;#8217;juliet_example_com&amp;#8217; to=&amp;#8217;romeo_example_net&amp;#8217; xml:lang=&amp;#8217;en&amp;#8217;> 客户端： &lt;body>Art thou not Romeo, and a Montague?&lt;/body> 客户端：&lt;/message> 服务器：&lt;message from=&amp;#8217;romeo_example_net&amp;#8217; to=&amp;#8217;juliet_example_com&amp;#8217; xml:lang=&amp;#8217;en&amp;#8217;> 服务器：&lt;body>Neither, fair saint, if either thee dislike.&lt;/body> 服务器：&lt;/message> 客户端：&lt;/stream:stream> 服务器：&lt;/stream:stream>
+...</p></div><footer class=entry-footer><span title='2014-04-17 08:44:23 +0000 UTC'>2014年4月17日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to XMPP协议实现原理介绍" href=https://blog.zdltech.com/posts/xmpp%E5%8D%8F%E8%AE%AE%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Comet：基于 HTTP 长连接的“服务器推”技术</h2></header><div class=entry-content><p>“服务器推”技术的应用
+传统模式的 Web 系统以客户端发出请求、服务器端响应的方式工作。这种方式并不能满足很多现实应用的需求，譬如：
+监控系统：后台硬件热插拔、LED、温度、电压发生变化； 即时通信系统：其它用户登录、发送信息； 即时报价系统：后台数据库内容发生变化； 这些应用都需要服务器能实时地将更新的信息传送到客户端，而无须客户端发出请求。“服务器推”技术在现实应用中有一些解决方案，本文将这些解决方案分为两类：一类需要在浏览器端安装插件，基于套接口传送信息，或是使用 RMI、CORBA 进行远程调用；而另一类则无须浏览器安装任何插件、基于 HTTP 长连接。
+将“服务器推”应用在 Web 程序中，首先考虑的是如何在功能有限的浏览器端接收、处理信息：
+客户端如何接收、处理信息，是否需要使用套接口或是使用远程调用。客户端呈现给用户的是 HTML 页面还是 Java applet 或 Flash 窗口。如果使用套接口和远程调用，怎么和 JavaScript 结合修改 HTML 的显示。 客户与服务器端通信的信息格式，采取怎样的出错处理机制。 客户端是否需要支持不同类型的浏览器如 IE、Firefox，是否需要同时支持 Windows 和 Linux 平台。 回页首
+基于客户端套接口的“服务器推”技术
+Flash XMLSocket
+如果 Web 应用的用户接受应用只有在安装了 Flash 播放器才能正常运行， 那么使用 Flash 的 XMLSocket 也是一个可行的方案。
+这种方案实现的基础是：
+Flash 提供了 XMLSocket 类。 JavaScript 和 Flash 的紧密结合：在 JavaScript 可以直接调用 Flash 程序提供的接口。 具体实现方法：在 HTML 页面中内嵌入一个使用了 XMLSocket 类的 Flash 程序。JavaScript 通过调用此 Flash 程序提供的套接口接口与服务器端的套接口进行通信。JavaScript 在收到服务器端以 XML 格式传送的信息后可以很容易地控制 HTML 页面的内容显示。
+...</p></div><footer class=entry-footer><span title='2014-04-17 05:00:50 +0000 UTC'>2014年4月17日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></footer><a class=entry-link aria-label="post link to Comet：基于 HTTP 长连接的“服务器推”技术" href=https://blog.zdltech.com/posts/comet%E5%9F%BA%E4%BA%8E-http-%E9%95%BF%E8%BF%9E%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8E%A8%E6%8A%80%E6%9C%AF/></a></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

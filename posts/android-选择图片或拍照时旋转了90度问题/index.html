@@ -1,0 +1,154 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>android 选择图片或拍照时旋转了90度问题 | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="由于前面的博文中忽略了点内容，所以在这里补上，下面内容就是解决拍照或者选择图片显示的时候图片旋转了90度或者其他度数问题，以便照片可以正面显示：具体如下： 首先直接看上面博文下的拍完照或者选完图后处理部分： Java代码 ![收藏代码](http://104zz.iteye.com/images/i..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87%E6%88%96%E6%8B%8D%E7%85%A7%E6%97%B6%E6%97%8B%E8%BD%AC%E4%BA%8690%E5%BA%A6%E9%97%AE%E9%A2%98/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87%E6%88%96%E6%8B%8D%E7%85%A7%E6%97%B6%E6%97%8B%E8%BD%AC%E4%BA%8690%E5%BA%A6%E9%97%AE%E9%A2%98/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87%E6%88%96%E6%8B%8D%E7%85%A7%E6%97%B6%E6%97%8B%E8%BD%AC%E4%BA%8690%E5%BA%A6%E9%97%AE%E9%A2%98/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="android 选择图片或拍照时旋转了90度问题"><meta property="og:description" content="由于前面的博文中忽略了点内容，所以在这里补上，下面内容就是解决拍照或者选择图片显示的时候图片旋转了90度或者其他度数问题，以便照片可以正面显示：具体如下： 首先直接看上面博文下的拍完照或者选完图后处理部分： Java代码 ![收藏代码](http://104zz.iteye.com/images/i..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-08-28T02:05:13+00:00"><meta property="article:modified_time" content="2014-08-28T02:05:13+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="android 选择图片或拍照时旋转了90度问题"><meta name=twitter:description content="由于前面的博文中忽略了点内容，所以在这里补上，下面内容就是解决拍照或者选择图片显示的时候图片旋转了90度或者其他度数问题，以便照片可以正面显示：具体如下： 首先直接看上面博文下的拍完照或者选完图后处理部分： Java代码 ![收藏代码](http://104zz.iteye.com/images/i..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"android 选择图片或拍照时旋转了90度问题","item":"https://blog.zdltech.com/posts/android-%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87%E6%88%96%E6%8B%8D%E7%85%A7%E6%97%B6%E6%97%8B%E8%BD%AC%E4%BA%8690%E5%BA%A6%E9%97%AE%E9%A2%98/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"android 选择图片或拍照时旋转了90度问题","name":"android 选择图片或拍照时旋转了90度问题","description":"由于前面的博文中忽略了点内容，所以在这里补上，下面内容就是解决拍照或者选择图片显示的时候图片旋转了90度或者其他度数问题，以便照片可以正面显示：具体如下： 首先直接看上面博文下的拍完照或者选完图后处理部分： Java代码 ![收藏代码](http://104zz.iteye.com/images/i...","keywords":["android","移动开发"],"articleBody":"由于前面的博文中忽略了点内容，所以在这里补上，下面内容就是解决拍照或者选择图片显示的时候图片旋转了90度或者其他度数问题，以便照片可以正面显示：具体如下：\n首先直接看上面博文下的拍完照或者选完图后处理部分： Java代码 ![收藏代码](http://104zz.iteye.com/images/icon_star.png) - @Override - protected void onActivityResult(int requestCode, int resultCode, Intent data) { - - switch (resultCode) { - case 1: - if (data != null) { - // 取得返回的Uri,基本上选择照片的时候返回的是以Uri形式，但是在拍照中有得机子呢Uri是空的，所以要特别注意 - Uri mImageCaptureUri = data.getData(); - // 返回的Uri不为空时，那么图片信息数据都会在Uri中获得。如果为空，那么我们就进行下面的方式获取 - if (mImageCaptureUri != null) { - setImage(mImageCaptureUri);// 根据Uri处理并显示图片 - } - } - break; - default: - break; - - } - } 第二：处理90度问题并显示： Java代码 ![收藏代码](http://104zz.iteye.com/images/icon_star.png) - private void setImage(Uri mImageCaptureUri) { - - // 不管是拍照还是选择图片每张图片都有在数据中存储也存储有对应旋转角度orientation值 - // 所以我们在取出图片是把角度值取出以便能正确的显示图片,没有旋转时的效果观看 - - ContentResolver cr = this.getContentResolver(); - Cursor cursor = cr.query(mImageCaptureUri, null, null, null, null);// 根据Uri从数据库中找 - if (cursor != null) { - cursor.moveToFirst();// 把游标移动到首位，因为这里的Uri是包含ID的所以是唯一的不需要循环找指向第一个就是了 - String filePath = cursor.getString(cursor.getColumnIndex(\u0026#8220;_data\u0026#8221;));// 获取图片路 - String orientation = cursor.getString(cursor - .getColumnIndex(\u0026#8220;orientation\u0026#8221;));// 获取旋转的角度 - cursor.close(); - if (filePath != null) { - Bitmap bitmap = BitmapFactory.decodeFile(filePath);//根据Path读取资源图片 - int angle = ; - if (orientation != null \u0026\u0026 !\u0026#8220;\u0026#8221;.equals(orientation)) { - angle = Integer.parseInt(orientation); - } - if (angle != ) { - // 下面的方法主要作用是把图片转一个角度，也可以放大缩小等 - Matrix m = new Matrix(); - int width = bitmap.getWidth(); - int height = bitmap.getHeight(); - m.setRotate(angle); // 旋转angle度 - bitmap = Bitmap.createBitmap(bitmap, , , width, height, - m, true);// 从新生成图片 - - } - photo.setImageBitmap(bitmap); - } - } - } OK完成 ","wordCount":"673","inLanguage":"zh","datePublished":"2014-08-28T02:05:13Z","dateModified":"2014-08-28T02:05:13Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E9%80%89%E6%8B%A9%E5%9B%BE%E7%89%87%E6%88%96%E6%8B%8D%E7%85%A7%E6%97%B6%E6%97%8B%E8%BD%AC%E4%BA%8690%E5%BA%A6%E9%97%AE%E9%A2%98/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">android 选择图片或拍照时旋转了90度问题</h1><div class=post-description>由于前面的博文中忽略了点内容，所以在这里补上，下面内容就是解决拍照或者选择图片显示的时候图片旋转了90度或者其他度数问题，以便照片可以正面显示：具体如下： 首先直接看上面博文下的拍完照或者选完图后处理部分： Java代码 ![收藏代码](http://104zz.iteye.com/images/i...</div><div class=post-meta><span title='2014-08-28 02:05:13 +0000 UTC'>2014年8月28日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>由于前面的博文中忽略了点内容，所以在这里补上，下面内容就是解决拍照或者选择图片显示的时候图片旋转了90度或者其他度数问题，以便照片可以正面显示：具体如下：</p><pre><code>首先直接看上面博文下的拍完照或者选完图后处理部分：
+
+
+
+
+
+&lt;div id=&quot;&quot; class=&quot;dp-highlighter&quot; style=&quot;color: #000000;&quot;&gt;
+  &lt;div class=&quot;bar&quot;&gt;
+    &lt;div class=&quot;tools&quot; style=&quot;font-weight: bold;&quot;&gt;
+      Java代码  &lt;a style=&quot;color: #108ac6;&quot; title=&quot;收藏这段代码&quot;&gt;![收藏代码](http://104zz.iteye.com/images/icon_star.png)&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  
+    - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;annotation&quot; style=&quot;color: #646464;&quot;&gt;@Override&lt;/span&gt;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;void&lt;/span&gt; onActivityResult(&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;int&lt;/span&gt; requestCode, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;int&lt;/span&gt; resultCode, Intent data) {  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;switch&lt;/span&gt; (resultCode) {  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;1&lt;/span&gt;:  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;if&lt;/span&gt; (data != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 取得返回的Uri,基本上选择照片的时候返回的是以Uri形式，但是在拍照中有得机子呢Uri是空的，所以要特别注意&lt;/span&gt;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;                Uri mImageCaptureUri = data.getData();  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 返回的Uri不为空时，那么图片信息数据都会在Uri中获得。如果为空，那么我们就进行下面的方式获取&lt;/span&gt;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;if&lt;/span&gt; (mImageCaptureUri != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;                    setImage(mImageCaptureUri);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 根据Uri处理并显示图片&lt;/span&gt;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;                }  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;break&lt;/span&gt;;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;default&lt;/span&gt;:  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;break&lt;/span&gt;;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+    
+    - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+    
+  
+&lt;/div&gt;
+
+
+
+   第二：处理90度问题并显示：
+
+
+
+
+
+  &lt;div id=&quot;&quot; class=&quot;dp-highlighter&quot; style=&quot;color: #000000;&quot;&gt;
+    &lt;div class=&quot;bar&quot;&gt;
+      &lt;div class=&quot;tools&quot; style=&quot;font-weight: bold;&quot;&gt;
+        Java代码  &lt;a style=&quot;color: #108ac6;&quot; title=&quot;收藏这段代码&quot;&gt;![收藏代码](http://104zz.iteye.com/images/icon_star.png)&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    
+    
+      - &lt;span style=&quot;color: black;&quot;&gt;&lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;void&lt;/span&gt; setImage(Uri mImageCaptureUri) {  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 不管是拍照还是选择图片每张图片都有在数据中存储也存储有对应旋转角度orientation值&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 所以我们在取出图片是把角度值取出以便能正确的显示图片,没有旋转时的效果观看&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;    ContentResolver cr = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;this&lt;/span&gt;.getContentResolver();  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;    Cursor cursor = cr.query(mImageCaptureUri, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 根据Uri从数据库中找&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;    &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;if&lt;/span&gt; (cursor != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;        cursor.moveToFirst();&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 把游标移动到首位，因为这里的Uri是包含ID的所以是唯一的不需要循环找指向第一个就是了&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;        String filePath = cursor.getString(cursor.getColumnIndex(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;_data&amp;#8221;&lt;/span&gt;));&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 获取图片路&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;        String orientation = cursor.getString(cursor  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                .getColumnIndex(&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;orientation&amp;#8221;&lt;/span&gt;));&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 获取旋转的角度&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;        cursor.close();  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;        &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;if&lt;/span&gt; (filePath != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt;) {  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;            Bitmap bitmap = BitmapFactory.decodeFile(filePath);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;//根据Path读取资源图片&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;int&lt;/span&gt; angle = &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;if&lt;/span&gt; (orientation != &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;null&lt;/span&gt; &amp;&amp; !&lt;span class=&quot;string&quot; style=&quot;color: blue;&quot;&gt;&amp;#8220;&amp;#8221;&lt;/span&gt;.equals(orientation)) {  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                angle = Integer.parseInt(orientation);  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;            &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;if&lt;/span&gt; (angle != &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;) {  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 下面的方法主要作用是把图片转一个角度，也可以放大缩小等&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                Matrix m = &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;new&lt;/span&gt; Matrix();  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;int&lt;/span&gt; width = bitmap.getWidth();  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;int&lt;/span&gt; height = bitmap.getHeight();  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                m.setRotate(angle); &lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 旋转angle度&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                bitmap = Bitmap.createBitmap(bitmap, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, &lt;span class=&quot;number&quot; style=&quot;color: #c00000;&quot;&gt;&lt;/span&gt;, width, height,  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                        m, &lt;span class=&quot;keyword&quot; style=&quot;font-weight: bold; color: #7f0055;&quot;&gt;true&lt;/span&gt;);&lt;span class=&quot;comment&quot; style=&quot;color: #008200;&quot;&gt;// 从新生成图片&lt;/span&gt;  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;                  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;            }  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;            photo.setImageBitmap(bitmap);  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;        }  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;    }  &lt;/span&gt;
+      
+      - &lt;span style=&quot;color: black;&quot;&gt;}  &lt;/span&gt;
+      
+    
+  &lt;/div&gt;
+  
+  
+
+    &lt;span style=&quot;color: #000000;&quot;&gt; OK完成&lt;/span&gt;
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/alarmmanager%E7%B1%BB%E7%9A%84%E5%BA%94%E7%94%A8%E5%AE%9E%E7%8E%B0%E9%97%B9%E9%92%9F%E5%8A%9F%E8%83%BD/><span class=title>« 上一页</span>
+<span>AlarmManager类的应用（实现闹钟功能）</span>
+</a><a class=next href=https://blog.zdltech.com/posts/android%E5%BC%80%E5%8F%91%E4%B9%8B%E6%8B%8D%E7%85%A7%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%E9%99%84%E6%BA%90%E7%A0%81/><span class=title>下一页 »</span>
+<span>Android开发之拍照功能实现（附源码）</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

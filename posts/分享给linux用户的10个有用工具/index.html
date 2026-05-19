@@ -1,0 +1,138 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>分享给Linux用户的10个有用工具 | ZDL Tech Blog</title>
+<meta name=keywords content="linux"><meta name=description content="**引言** 在本教程中，我已经收集了10个给 Linux 用户的有用工具，其中包括各种网络监控，系统审计和一些其它实用的命令，它可以帮助用户提高工作效率。我希望你会喜欢他们。 ![](http://static.codeceo.com/images/2015/10/213053smh9raz1cr..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/%E5%88%86%E4%BA%AB%E7%BB%99linux%E7%94%A8%E6%88%B7%E7%9A%8410%E4%B8%AA%E6%9C%89%E7%94%A8%E5%B7%A5%E5%85%B7/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/%E5%88%86%E4%BA%AB%E7%BB%99linux%E7%94%A8%E6%88%B7%E7%9A%8410%E4%B8%AA%E6%9C%89%E7%94%A8%E5%B7%A5%E5%85%B7/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/%E5%88%86%E4%BA%AB%E7%BB%99linux%E7%94%A8%E6%88%B7%E7%9A%8410%E4%B8%AA%E6%9C%89%E7%94%A8%E5%B7%A5%E5%85%B7/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="分享给Linux用户的10个有用工具"><meta property="og:description" content="**引言** 在本教程中，我已经收集了10个给 Linux 用户的有用工具，其中包括各种网络监控，系统审计和一些其它实用的命令，它可以帮助用户提高工作效率。我希望你会喜欢他们。 ![](http://static.codeceo.com/images/2015/10/213053smh9raz1cr..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2015-11-26T01:14:14+00:00"><meta property="article:modified_time" content="2015-11-26T01:14:14+00:00"><meta property="article:tag" content="Linux"><meta name=twitter:card content="summary"><meta name=twitter:title content="分享给Linux用户的10个有用工具"><meta name=twitter:description content="**引言** 在本教程中，我已经收集了10个给 Linux 用户的有用工具，其中包括各种网络监控，系统审计和一些其它实用的命令，它可以帮助用户提高工作效率。我希望你会喜欢他们。 ![](http://static.codeceo.com/images/2015/10/213053smh9raz1cr..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"分享给Linux用户的10个有用工具","item":"https://blog.zdltech.com/posts/%E5%88%86%E4%BA%AB%E7%BB%99linux%E7%94%A8%E6%88%B7%E7%9A%8410%E4%B8%AA%E6%9C%89%E7%94%A8%E5%B7%A5%E5%85%B7/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"分享给Linux用户的10个有用工具","name":"分享给Linux用户的10个有用工具","description":"**引言** 在本教程中，我已经收集了10个给 Linux 用户的有用工具，其中包括各种网络监控，系统审计和一些其它实用的命令，它可以帮助用户提高工作效率。我希望你会喜欢他们。 ![](http://static.codeceo.com/images/2015/10/213053smh9raz1cr...","keywords":["linux"],"articleBody":"引言\n在本教程中，我已经收集了10个给 Linux 用户的有用工具，其中包括各种网络监控，系统审计和一些其它实用的命令，它可以帮助用户提高工作效率。我希望你会喜欢他们。 1. w\n显示谁登录了系统并执行了哪些程序。\n$ w 不显示头部信息（LCTT译注：原文此处有误）\nw -h 显示指定用户的信息 w 2. nmon\nNmon（nigel’s monitor 的简写）是一个显示系统性能信息的工具。\nsudo apt-get install nmon nmon nmon 可以显示与 netwrok，cpu, memory 和磁盘使用情况的信息。 nmon 显示 cpu 信息 (按 c) nmon 显示 network 信息 (按 n) nman 显示 disk 信息 (按 d) 3. ncdu\n是一个支持光标的du程序，这个命令是用来分析各种目录占用的磁盘空间。\napt-get install ncdu ncdu / 最终的输出: 按 n 则通过文件名来排序，按 s 则按文件大小来排序（默认的）。\n4. slurm\n一个基于网络接口的带宽监控命令行程序，它会用字符来显示文本图形。\napt-get install slurm 例如: slurm -i $ slurm -i eth1 选项 按 l 显示 lx/tx 指示灯.\n按 c 切换到经典模式.\n按 r 刷新屏幕.\n按 q 退出.\n**5.findmnt** Findmnt 命令用于查找挂载的文件系统。它用来列出安装设备，当需要时也可以挂载或卸载设备，它是 util-linux 软件包的一部分。 例子:\n$ findmnt 以列表格式输出。\n$ findmnt -l 列出在 fstab 中挂载的文件系统。\n$ findmnt -s 按文件类型列出已挂载的文件系统。\n$ findmnt -t ext4 **6. dstat** 一种灵活的组合工具，它可用于监控内存，进程，网络和磁盘性能，它可以用来取代 ifstat, iostat, dmstat 等。 apt-get install dstat 例如: 查看有关 cpu，硬盘和网络的详细信息。 dstat -c cpu\n$ dstat -c -d 磁盘\n$ dstat -d 显示 cpu、磁盘等的详细信息。\n$ dstat -cdl -D sda1 **7. saidar** 另一种基于命令行的系统统计数据[监控工具](http://www.codeceo.com/article/7-monitor-tools.html)，提供了有关磁盘使用，网络，内存，交换分区等信息。 sudo apt-get install saidar 例如: saidar 启用彩色输出\n$ saider -c **8. ss** ss（socket statistics）是一个很好的替代 netstat 的选择，它从内核空间收集信息，比 netstat 的性能更好。 例如: 列出所有的连接\n$ ss |less 列出 tcp 流量\n$ ss -A tcp 列出进程名和 pid\n$ ss -ltp **9. ccze** 一个美化日志显示的工具![](http://www.codeceo.com/wp-content/themes/d-simple/img/smilies/icon_smile.gif). apt-get install ccze 例如: tailf /var/log/syslog | ccze 列出 ccze 模块:\n$ ccze -l 将日志保存为 html 文件。\ntailf /var/log/syslog | ccze -h \u003e /home/tux/Desktop/rajneesh.html **10. ranwhen.py** 一种基于 Python 的终端工具，它可以用来以图形方式显示系统活动状态。详细信息以一个丰富多彩的柱状图来展示。 安装 python（LCTT 译注：一般来说，你应该已经有了 python，不需要此步）：\nsudo apt-add-repository ppa:fkrull/deadsnakes 更新系统: sudo apt-get update 下载 python:\n$ sudo apt-get install python3.2 点此下载 ranwhen.py\nunzip ranwhen-master.zip \u0026\u0026 cd ranwhen-master 运行工具。 python3.2 ranwhen.py **结论** 这都是些不常见但重要的 Linux 管理工具。他们可以在日常生活中帮助用户。在我们即将发表的文章中，我们会尽量多带来些管理员/用户工具。 玩得愉快！\n原文：[http://www.unixmen.com/10-useful-utilities-linux-users/](http://www.unixmen.com/10-useful-utilities-linux-users/) 译文：LCTT [https://linux.cn/article-6467-1.html](https://linux.cn/article-6467-1.html) ","wordCount":"265","inLanguage":"zh","datePublished":"2015-11-26T01:14:14Z","dateModified":"2015-11-26T01:14:14Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/%E5%88%86%E4%BA%AB%E7%BB%99linux%E7%94%A8%E6%88%B7%E7%9A%8410%E4%B8%AA%E6%9C%89%E7%94%A8%E5%B7%A5%E5%85%B7/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">分享给Linux用户的10个有用工具</h1><div class=post-description>**引言** 在本教程中，我已经收集了10个给 Linux 用户的有用工具，其中包括各种网络监控，系统审计和一些其它实用的命令，它可以帮助用户提高工作效率。我希望你会喜欢他们。 ![](http://static.codeceo.com/images/2015/10/213053smh9raz1cr...</div><div class=post-meta><span title='2015-11-26 01:14:14 +0000 UTC'>2015年11月26日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p><span style=font-size:medium><strong>引言</strong></p><p>在本教程中，我已经收集了10个给 Linux 用户的有用工具，其中包括各种网络监控，系统审计和一些其它实用的命令，它可以帮助用户提高工作效率。我希望你会喜欢他们。
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213053smh9raz1crdcxhxn.png></p><p><strong>1. w</strong></p><p>显示谁登录了系统并执行了哪些程序。</p><p>$ w
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213054zxz7ymhb0hqp27im.png>
+不显示头部信息（LCTT译注：原文此处有误）</p><p><span class="katex math inline">w -h
+显示指定用户的信息</span> w <username><img loading=lazy src=http://static.codeceo.com/images/2015/10/213055w0ci5sj4w66jzvvx.png></p><p><strong>2. nmon</strong></p><p>Nmon（nigel’s monitor 的简写）是一个显示系统性能信息的工具。</p><p><span class="katex math inline">sudo apt-get install nmon</span> nmon
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213058ceu5qhx85kkui83q.png>
+nmon 可以显示与 netwrok，cpu, memory 和磁盘使用情况的信息。
+<strong>nmon 显示 cpu 信息 (按 c)</strong>
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213100w2zlbbqjlrkjbja8.png>
+<strong>nmon 显示 network 信息 (按 n)</strong>
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213103e6z0pl7m6mzr6xlx.png>
+<strong>nman 显示 disk 信息 (按 d)</strong>
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213107wlzt138x0cff03sw.png></p><p><strong>3. ncdu</strong></p><p>是一个支持光标的du程序，这个命令是用来分析各种目录占用的磁盘空间。</p><p><span class="katex math inline">apt-get install ncdu</span> ncdu /
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213110i7oowmiwuowmxrns.png>
+最终的输出:
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213112vx0kh36dzldwd49l.png>
+按 n 则通过文件名来排序，按 s 则按文件大小来排序（默认的）。</p><p><strong>4. slurm</strong></p><p>一个基于网络接口的带宽监控命令行程序，它会用字符来显示文本图形。</p><p><span class="katex math inline">apt-get install slurm
+例如:</span> slurm -i <interface></p><p>$ slurm -i eth1
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213115qy1h2h0zpxxg20sy.png>
+<strong>选项</strong></span></p><ul><li><p><span style=font-size:medium>按 <strong>l</strong> 显示 lx/tx 指示灯.</span></p></li><li><p><span style=font-size:medium>按 <strong>c</strong> 切换到经典模式.</span></p></li><li><p><span style=font-size:medium>按 <strong>r</strong> 刷新屏幕.</span></p></li><li><p><span style=font-size:medium>按 <strong>q</strong> 退出.</span></p></li></ul><span style=font-size:medium><pre><code>**5.findmnt**
+
+
+
+
+
+Findmnt 命令用于查找挂载的文件系统。它用来列出安装设备，当需要时也可以挂载或卸载设备，它是 util-linux 软件包的一部分。
+</code></pre><p>例子:</p><pre><code>$ findmnt
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213123rm60r7dm1u10dhk1.png>
+以列表格式输出。</p><pre><code>$ findmnt -l
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213131bdd2zjxpanqaopzj.png>
+列出在 fstab 中挂载的文件系统。</p><pre><code>$ findmnt -s
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213135lgnrmxhgttmx6nrh.png>
+按文件类型列出已挂载的文件系统。</p><pre><code>$ findmnt -t ext4
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213137e3633933dd99j3jf.png></p><pre><code>**6. dstat**
+
+
+
+
+
+一种灵活的组合工具，它可用于监控内存，进程，网络和磁盘性能，它可以用来取代 ifstat, iostat, dmstat 等。
+
+
+
+
+
+&lt;span class=&quot;katex math inline&quot;&gt;apt-get install dstat
+</code></pre><p>例如:
+查看有关 cpu，硬盘和网络的详细信息。</span> dstat
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213142ctmaqi6fmdzxr5jq.png>
+<strong>-c</strong> cpu</p><pre><code>$ dstat -c
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213143z2e03n353mcontdr.png>
+<strong>-d</strong> 磁盘</p><pre><code>$ dstat -d
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213144l0j9mbdr00j4vb1n.png>
+显示 cpu、磁盘等的详细信息。</p><pre><code>$ dstat -cdl -D sda1
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213146bvvp9f4ovvl228vo.png></p><pre><code>**7. saidar**
+
+
+
+
+
+另一种基于命令行的系统统计数据[监控工具](http://www.codeceo.com/article/7-monitor-tools.html)，提供了有关磁盘使用，网络，内存，交换分区等信息。
+
+
+
+
+
+&lt;span class=&quot;katex math inline&quot;&gt;sudo apt-get install saidar
+</code></pre><p>例如:</span> saidar
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213153ke9zptqdytqp4el7.png>
+启用彩色输出</p><pre><code>$ saider -c
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213203tb3pbpkukllb3xx0.png></p><pre><code>**8. ss**
+
+
+
+
+
+ss（socket statistics）是一个很好的替代 netstat 的选择，它从内核空间收集信息，比 netstat 的性能更好。
+</code></pre><p>例如:
+列出所有的连接</p><pre><code>$ ss |less
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213208fcnyymcow2yc2wcm.png>
+列出 tcp 流量</p><pre><code>$ ss -A tcp
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213210fkn6aa05djtbjsn6.png>
+列出进程名和 pid</p><pre><code>$ ss -ltp
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213212xvwzr62n3virhtft.png></p><pre><code>**9. ccze**
+
+
+
+
+
+一个美化日志显示的工具![](http://www.codeceo.com/wp-content/themes/d-simple/img/smilies/icon_smile.gif).
+
+
+
+
+
+&lt;span class=&quot;katex math inline&quot;&gt;apt-get install ccze
+</code></pre><p>例如:</span> tailf /var/log/syslog | ccze
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213215ozciuov66ggivv9u.png>
+列出 ccze 模块:</p><pre><code>$ ccze -l
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213218x4h8585w5yddf64l.png>
+将日志保存为 html 文件。</p><pre><code>tailf /var/log/syslog | ccze -h &gt; /home/tux/Desktop/rajneesh.html
+</code></pre><p><img loading=lazy src=http://static.codeceo.com/images/2015/10/213223clfig6jgzjr3l38i.png></p><pre><code>**10. ranwhen.py**
+
+
+
+
+
+一种基于 Python 的终端工具，它可以用来以图形方式显示系统活动状态。详细信息以一个丰富多彩的柱状图来展示。
+</code></pre><p>安装 python（LCTT 译注：一般来说，你应该已经有了 python，不需要此步）：</p><pre><code>&lt;span class=&quot;katex math inline&quot;&gt;sudo apt-add-repository ppa:fkrull/deadsnakes
+</code></pre><p>更新系统:</span> sudo apt-get update
+下载 python:</p><pre><code>$ sudo apt-get install python3.2
+</code></pre><p><a href=https://github.com/p-e-w/ranwhen/archive/master.zip>点此下载 ranwhen.py</a></p><pre><code>&lt;span class=&quot;katex math inline&quot;&gt;unzip ranwhen-master.zip &amp;&amp; cd ranwhen-master
+</code></pre><p>运行工具。</span> python3.2 ranwhen.py
+<img loading=lazy src=http://static.codeceo.com/images/2015/10/213226zl1vb8el8bnbbc1z.png></p><pre><code>**结论**
+
+
+
+
+
+这都是些不常见但重要的 Linux 管理工具。他们可以在日常生活中帮助用户。在我们即将发表的文章中，我们会尽量多带来些管理员/用户工具。
+</code></pre><p>玩得愉快！</p><pre><code>原文：[http://www.unixmen.com/10-useful-utilities-linux-users/](http://www.unixmen.com/10-useful-utilities-linux-users/)
+
+
+
+
+
+译文：LCTT  [https://linux.cn/article-6467-1.html](https://linux.cn/article-6467-1.html) &lt;/span&gt;
+</code></pre></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/linux/>Linux</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/android-6-0-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90%E5%A4%84%E7%90%86/><span class=title>« 上一页</span>
+<span>Android 6.0 运行时权限处理</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E7%BE%8E%E5%9B%A2android-dex%E8%87%AA%E5%8A%A8%E6%8B%86%E5%8C%85%E5%8F%8A%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%AE%80%E4%BB%8B-2/><span class=title>下一页 »</span>
+<span>美团Android DEX自动拆包及动态加载简介</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,563 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片) | ZDL Tech Blog</title>
+<meta name=keywords content="android,移动开发"><meta name=description content="这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下: [Android](http://lib.csdn.net/base/android):clipChildren=&amp;#8221;false&amp;#8221; 因为如果c..."><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8viewpager%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCgallery%E7%94%BB%E5%BB%8A%E7%9A%84%E6%95%88%E6%9E%9C%E7%94%BB%E5%BB%8A%E6%95%88%E6%9E%9C%E4%B9%8Bviewpager%E6%98%BE%E7%A4%BA/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8viewpager%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCgallery%E7%94%BB%E5%BB%8A%E7%9A%84%E6%95%88%E6%9E%9C%E7%94%BB%E5%BB%8A%E6%95%88%E6%9E%9C%E4%B9%8Bviewpager%E6%98%BE%E7%A4%BA/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8viewpager%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCgallery%E7%94%BB%E5%BB%8A%E7%9A%84%E6%95%88%E6%9E%9C%E7%94%BB%E5%BB%8A%E6%95%88%E6%9E%9C%E4%B9%8Bviewpager%E6%98%BE%E7%A4%BA/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)"><meta property="og:description" content="这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下: [Android](http://lib.csdn.net/base/android):clipChildren=”false” 因为如果c..."><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-08-29T01:44:09+00:00"><meta property="article:modified_time" content="2017-08-29T01:44:09+00:00"><meta property="article:tag" content="Android"><meta property="article:tag" content="移动开发"><meta name=twitter:card content="summary"><meta name=twitter:title content="Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)"><meta name=twitter:description content="这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下: [Android](http://lib.csdn.net/base/android):clipChildren=”false” 因为如果c..."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)","item":"https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8viewpager%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCgallery%E7%94%BB%E5%BB%8A%E7%9A%84%E6%95%88%E6%9E%9C%E7%94%BB%E5%BB%8A%E6%95%88%E6%9E%9C%E4%B9%8Bviewpager%E6%98%BE%E7%A4%BA/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)","name":"Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)","description":"这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下: [Android](http://lib.csdn.net/base/android):clipChildren=\u0026#8221;false\u0026#8221; 因为如果c...","keywords":["android","移动开发"],"articleBody":"这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下:\nAndroid:clipChildren=”false”\n因为如果clipChildren属性设置为true,就表明我们要将children给clip掉，就是说对于子元素来说，超出当前view的部分都会被切掉，那我们在这里把它设置成false，就表明超出view的部分，不要切掉，依然显示。\nxml代码部分：\n","wordCount":"364","inLanguage":"zh","datePublished":"2017-08-29T01:44:09Z","dateModified":"2017-08-29T01:44:09Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8viewpager%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCgallery%E7%94%BB%E5%BB%8A%E7%9A%84%E6%95%88%E6%9E%9C%E7%94%BB%E5%BB%8A%E6%95%88%E6%9E%9C%E4%B9%8Bviewpager%E6%98%BE%E7%A4%BA/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)</h1><div class=post-description>这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下: [Android](http://lib.csdn.net/base/android):clipChildren=&amp;#8221;false&amp;#8221; 因为如果c...</div><div class=post-meta><span title='2017-08-29 01:44:09 +0000 UTC'>2017年8月29日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><div class="post-content md-content"><p>这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下:</p><p><a href=http://lib.csdn.net/base/android>Android</a>:clipChildren=”false”</p><p>因为如果clipChildren属性设置为true,就表明我们要将children给clip掉，就是说对于子元素来说，超出当前view的部分都会被切掉，那我们在这里把它设置成false，就表明超出view的部分，不要切掉，依然显示。</p><p>xml代码部分：</p><p>&lt;LinearLayout<br><a href=http://lib.csdn.net/base/android>android</a>:id=”@+id/container”<br>android:layout_width=”match_parent”<br>android:layout_height=”100dp”<br>android:clipChildren=”false”<br>android:gravity=”center_horizontal”<br>android:layerType=”software”<br>android:orientation=”horizontal” ></p><p>&lt;android.support.v4.view.ViewPager<br>android:id=”@+id/viewpager”<br>android:layout_width=”match_parent”<br>android:layout_height=”match_parent”<br>android:layout_marginLeft=”110dp”<br>android:layout_marginRight=”110dp”<br>android:clipChildren=”false” ><br>&lt;/android.support.v4.view.ViewPager><br></linearlayout></p><p><a href=http://lib.csdn.net/base/java>Java</a>代码部分：</p><p>// 1.设置幕后item的缓存数目<br>mViewPager.setOffscreenPageLimit(3);<br>// 2.设置页与页之间的间距<br>mViewPager.setPageMargin(10);<br>// 3.将父类的touch事件分发至viewPgaer，否则只能滑动中间的一个view对象<br>container.setOnTouchListener(new View.OnTouchListener() {<br>@Override<br>public boolean onTouch(View v, MotionEvent event) {<br>return mViewPager.dispatchTouchEvent(event);<br>}<br>});</p><p>参考效果图（上面代码并不能实现效果图，仅供参考）：</p><p><img loading=lazy src=http://a1.eoeandroid.com/attachment/forum/201403/19/104709u3r9hyirjrzywm33.png></p><p> </p><p> </p><div>正常情况下, ViewPager  一页只能显示一项数据,</div><div>但是如果需求是,  除了小显示本页数据, 还有包 左右两半的数据 也都露出一点来呢?</div><div></div><div>这该怎么处理?</div><div></div><div>后面在网上了搜了一下, 发现有不少这样得到文章, 这里自己也写一篇总结一下.</div><div></div><div>其实 主要就是用到 View 的 android:clipChildren 属性.</div><div>简单来说这个属性,  就是 父View 是否 束缚 子View 的显示范围.</div><div>如果 父View  有 padding , 那么 子View 则在 padding区域是不能显示内容的,</div><div>但是如果 设置 android:clipChildren 为 false 时, 则子View 就可以在 父View 的padding屈戌显示内容了.</div><div></div><div>ok 基本了解了 android:clipChildren  那么来处理一下  ViewPager吧</div><div></div><p>先看一下我做的demo:</p><p><img loading=lazy src="http://img.blog.csdn.net/20160105172854530?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p><div>基本就是上面那样, 除了可以显示 当先项的内容, 还可以显示 左右两边的内容.</div><div></div><div>下面贴一下主要代码:</div><div>布局文件:</div><div class="top-box hide"></div><div class="dp-highlighter bg_html" style="font-family:Consolas,courier new,Courier,mono,serif;font-size:12px;background-color:#e7e5dc;width:700.906px;overflow-x:auto;overflow-y:hidden;padding-top:1px;text-align:left;margin:18px 0!important;position:relative;color:#333;font-style:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weight:400;letter-spacing:normal;orphans:2;text-indent:0;text-transform:none;white-space:normal;widows:2;word-spacing:0;-webkit-text-stroke-width:0;text-decoration-style:initial;text-decoration-color:initial" data-original-code='[html] view plain copy print?<?xml version="1.0" encoding="utf-8"?> <RelativeLayout android:id="@+id/view_pager_box" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="360dp" android:layout_marginTop="30dp" android:clipChildren="false" > <android.support.v4.view.ViewPager android:id="@+id/view_pager" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="50dp" android:layout_marginRight="50dp" android:clipChildren="false" /> </RelativeLayout> ' data-snippet-id=ext.bfe437214f7ed85d7a7229f745c8c0ae data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[html]** [view plain](http://blog.csdn.net/chen930724/article/details/50464069#)&lt;span data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/chen930724/article/details/50464069#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_1&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_1&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;tag&quot;&gt;&lt;?&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;version&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;1.0&amp;#8221;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;encoding&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;utf-8&amp;#8221;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;?&gt;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/view_pager_box&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;xmlns:android&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;http://schemas.android.com/apk/res/android&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;360dp&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_marginTop&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;30dp&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:clipChildren&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;false&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;android.support.v4.view.ViewPager&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:id&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;@+id/view_pager&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_width&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_height&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;match_parent&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_marginLeft&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;50dp&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:layout_marginRight&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;50dp&amp;#8221;&lt;/span&gt;
+
+- &lt;span class=&quot;attribute&quot;&gt;android:clipChildren&lt;/span&gt;=&lt;span class=&quot;attribute-value&quot;&gt;&amp;#8220;false&amp;#8221;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;/&gt;&lt;/span&gt;
+
+- 
+- &lt;span class=&quot;tag&quot;&gt;&lt;/&lt;/span&gt;&lt;span class=&quot;tag-name&quot;&gt;RelativeLayout&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&gt;&lt;/span&gt;
+</code></pre></div><p> </p><div>可以在看到</div><div>外层的 RelativeLayout 设置了android:clipChildren 为false</div><div>ViewPager 同样页设置了 android:clipChildren 为false</div><div>需要两个都设置, 不然会出问题</div><div></div><div>activity 相关代码</div><div class="top-box hide"></div><div class="dp-highlighter bg_java" data-original-code="[java] view plain copy print?public class MainActivity extends AppCompatActivity { ViewPager mViewPager; RelativeLayout mViewPagerBox; private ViewPagerAdapter1 mViewPagerAdapter1; @Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setContentView(R.layout.activity_main); mViewPager = (ViewPager) findViewById(R.id.view_pager); mViewPagerBox = (RelativeLayout) findViewById(R.id.view_pager_box); mViewPager.setOffscreenPageLimit(3); mViewPagerAdapter1 = new ViewPagerAdapter1(this); mViewPager.setAdapter(mViewPagerAdapter1); mViewPagerBox.setOnTouchListener(new View.OnTouchListener() { @Override public boolean onTouch(View v, MotionEvent event) { return mViewPager.dispatchTouchEvent(event); } }); } } " data-snippet-id=ext.12d88b08c9c76f753767584271824c67 data-snippet-saved=false data-codota-status=done><div class=bar><div class=tools><pre><code>    **[java]** [view plain](http://blog.csdn.net/chen930724/article/details/50464069#)&lt;span data-mod=&quot;popu_168&quot;&gt; [copy](http://blog.csdn.net/chen930724/article/details/50464069#)&lt;/span&gt;
+  
+
+  
+  &lt;div&gt;
+    &lt;embed id=&quot;ZeroClipboardMovie_2&quot; src=&quot;http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;18&quot; height=&quot;18&quot; align=&quot;middle&quot; name=&quot;ZeroClipboardMovie_2&quot; data-mce-fragment=&quot;1&quot;&gt;
+    &lt;/embed&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div><pre><code>- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; MainActivity &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; AppCompatActivity {
+
+- 
+- ViewPager mViewPager;
+
+- RelativeLayout mViewPagerBox;
+
+- 
+- &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ViewPagerAdapter1 mViewPagerAdapter1;
+
+- 
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; onCreate(Bundle savedInstanceState) {
+
+- &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);
+
+- setContentView(R.layout.activity_main);
+
+- 
+- mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+- mViewPagerBox = (RelativeLayout) findViewById(R.id.view_pager_box);
+
+- 
+- mViewPager.setOffscreenPageLimit(&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;);
+
+- 
+- mViewPagerAdapter1 = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ViewPagerAdapter1(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);
+
+- mViewPager.setAdapter(mViewPagerAdapter1);
+
+- 
+- mViewPagerBox.setOnTouchListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; View.OnTouchListener() {
+
+- &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;
+
+- &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; onTouch(View v, MotionEvent event) {
+
+- &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; mViewPager.dispatchTouchEvent(event);
+
+- }
+
+- });
+
+- 
+- }
+
+- }
+</code></pre></div><p> </p><div></div><div>可以看到 和使用普通的 Viewpager 没有任何的区别,</div><div>需要注意的是, 为了能够滑动 左右漏出的两边时,  也能滑动 ViewPager</div><div>需要吧 Viewpager 的 父View收到的事件 传递给 viewpager</div><div></div><div></div><div></div><div></div><div></div><div><div>我们在使用Viewpager 的时候, 经常 会加入一些好看的滑动效果这个是怎么实现的呢?</div><div>其实很简单,  google 以及为我提供了相应的方法.</div><div>通过 setPageTransformer 就可以设置 Viewpager的滑动效果.</div><div></div><div>Android 官方文档 已经提供了两种 滑动效果:</div><div>[http://developer.android.com/intl/zh-cn/training/animation/screen-slide.html](http://developer.android.com/intl/zh-cn/training/animation/screen-slide.html)</div><div></div><pre><code>ZoomOutPageTransformer:
+
+
+
+
+
+![](http://img.blog.csdn.net/20160106001346888)
+</code></pre><div class="dp-highlighter bg_java" data-original-code='[java] view plain copy print?public class ZoomOutPageTransformer implements ViewPager.PageTransformer {  
+    private static final float MIN_SCALE = 0.85f;  
+    private static final float MIN_ALPHA = 0.5f;  
+<pre><code>public void transformPage(View view, float position) {  
+    int pageWidth = view.getWidth();  
+    int pageHeight = view.getHeight();  
+
+    if (position < -1) { // [-Infinity,-1)  
+        // This page is way off-screen to the left.  
+        view.setAlpha(0);  
+
+    } else if (position <= 1) { // [-1,1]  
+        // Modify the default slide transition to shrink the page as well  
+        float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));  
+        float vertMargin = pageHeight * (1 - scaleFactor) / 2;  
+        float horzMargin = pageWidth * (1 - scaleFactor) / 2;  
+        if (position < 0) {  
+            view.setTranslationX(horzMargin - vertMargin / 2);  
+        } else {  
+            view.setTranslationX(-horzMargin + vertMargin / 2);  
+        }  
+
+        // Scale the page down (between MIN_SCALE and 1)  
+        view.setScaleX(scaleFactor);  
+        view.setScaleY(scaleFactor);  
+
+        // Fade the page relative to its size.  
+        view.setAlpha(MIN_ALPHA +  
+                (scaleFactor - MIN_SCALE) /  
+                (1 - MIN_SCALE) * (1 - MIN_ALPHA));  
+
+    } else { // (1,+Infinity]  
+        // This page is way off-screen to the right.  
+        view.setAlpha(0);  
+    }  
+}  
+</code></pre>
+<p>}<br>
+" data-snippet-id=&ldquo;ext.1cdadd523baa8c310b2f80d6d8603b31&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;></p>
+<pre><code><div class="bar">
+  <div class="tools">
+    **[java]**[view plain](http://blog.csdn.net/chen930724/article/details/50466199#)<span data-mod="popu_168"> [copy](http://blog.csdn.net/chen930724/article/details/50466199#)</span>
+
+    
+    <div>
+      <embed id="ZeroClipboardMovie_1" src="http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf" type="application/x-shockwave-flash" width="18" height="18" align="middle" name="ZeroClipboardMovie_1" data-mce-fragment="1">
+      </embed>
+    </div>
+  </div>
+</div>
+
+
+  - <span class="keyword">public</span> <span class="keyword">class</span> ZoomOutPageTransformer <span class="keyword">implements</span> ViewPager.PageTransformer {
+  
+  - <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> MIN_SCALE = <span class="number"></span>.85f;
+  
+  - <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> MIN_ALPHA = <span class="number"></span>.5f;
+  
+  - <span class="keyword">public</span> <span class="keyword">void</span> transformPage(View view, <span class="keyword">float</span> position) {
+  
+  - <span class="keyword">int</span> pageWidth = view.getWidth();
+  
+  - <span class="keyword">int</span> pageHeight = view.getHeight();
+  
+  
+  - <span class="comment">// This page is way off-screen to the left.</span>
+  
+  - view.setAlpha(<span class="number"></span>);
+  
+  - } <span class="keyword">else</span> <span class="keyword">if</span> (position <= <span class="number">1</span>) { <span class="comment">// [-1,1]</span>
+  
+  - <span class="comment">// Modify the default slide transition to shrink the page as well</span>
+  
+  
+  
+  
+  - <span class="keyword">if</span> (position < <span class="number"></span>) {
+  
+  
+  - } <span class="keyword">else</span> {
+  
+  - view.setTranslationX(-horzMargin + vertMargin / <span class="number">2</span>);
+  
+  - }
+  
+  - <span class="comment">// Scale the page down (between MIN_SCALE and 1)</span>
+  
+  - view.setScaleX(scaleFactor);
+  
+  - view.setScaleY(scaleFactor);
+  
+  - <span class="comment">// Fade the page relative to its size.</span>
+  
+  - view.setAlpha(MIN_ALPHA +
+  
+  
+  
+  - } <span class="keyword">else</span> { <span class="comment">// (1,+Infinity]</span>
+  
+  - <span class="comment">// This page is way off-screen to the right.</span>
+  
+  - view.setAlpha(<span class="number"></span>);
+  
+  - }
+  
+  - }
+  
+  - }
+</code></pre>
+  </div>
+<pre><code>DepthPageTransformer:
+</code></pre>
+<p><img loading=' lazy" src=http://img.blog.csdn.net/20160106001356215></p><div class="dp-highlighter bg_java" data-original-code='[java] view plain copy print?public class DepthPageTransformer implements ViewPager.PageTransformer {  
+    private static final float MIN_SCALE = 0.75f;  
+<pre><code>public void transformPage(View view, float position) {  
+    int pageWidth = view.getWidth();  
+
+    if (position < -1) { // [-Infinity,-1)  
+        // This page is way off-screen to the left.  
+        view.setAlpha(0);  
+
+    } else if (position <= 0) { // [-1,0]  
+        // Use the default slide transition when moving to the left page  
+        view.setAlpha(1);  
+        view.setTranslationX(0);  
+        view.setScaleX(1);  
+        view.setScaleY(1);  
+
+    } else if (position <= 1) { // (0,1]  
+        // Fade the page out.  
+        view.setAlpha(1 - position);  
+
+        // Counteract the default slide transition  
+        view.setTranslationX(pageWidth * -position);  
+
+        // Scale the page down (between MIN_SCALE and 1)  
+        float scaleFactor = MIN_SCALE  
+                + (1 - MIN_SCALE) * (1 - Math.abs(position));  
+        view.setScaleX(scaleFactor);  
+        view.setScaleY(scaleFactor);  
+
+    } else { // (1,+Infinity]  
+        // This page is way off-screen to the right.  
+        view.setAlpha(0);  
+    }  
+}  
+</code></pre>
+<p>}<br>
+" data-snippet-id=&ldquo;ext.a39f0f319acca8d45fd5b3a530d1b867&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;></p>
+<pre><code><div class="bar">
+  <div class="tools">
+    **[java]**[view plain](http://blog.csdn.net/chen930724/article/details/50466199#)<span data-mod="popu_168"> [copy](http://blog.csdn.net/chen930724/article/details/50466199#)</span>
+
+    
+    <div>
+      <embed id="ZeroClipboardMovie_2" src="http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf" type="application/x-shockwave-flash" width="18" height="18" align="middle" name="ZeroClipboardMovie_2" data-mce-fragment="1">
+      </embed>
+    </div>
+  </div>
+</div>
+
+
+  - <span class="keyword">public</span> <span class="keyword">class</span> DepthPageTransformer <span class="keyword">implements</span> ViewPager.PageTransformer {
+  
+  - <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> MIN_SCALE = <span class="number"></span>.75f;
+  
+  - <span class="keyword">public</span> <span class="keyword">void</span> transformPage(View view, <span class="keyword">float</span> position) {
+  
+  - <span class="keyword">int</span> pageWidth = view.getWidth();
+  
+  
+  - <span class="comment">// This page is way off-screen to the left.</span>
+  
+  - view.setAlpha(<span class="number"></span>);
+  
+  - } <span class="keyword">else</span> <span class="keyword">if</span> (position <= <span class="number"></span>) { <span class="comment">// [-1,0]</span>
+  
+  - <span class="comment">// Use the default slide transition when moving to the left page</span>
+  
+  - view.setAlpha(<span class="number">1</span>);
+  
+  - view.setTranslationX(<span class="number"></span>);
+  
+  - view.setScaleX(<span class="number">1</span>);
+  
+  - view.setScaleY(<span class="number">1</span>);
+  
+  - } <span class="keyword">else</span> <span class="keyword">if</span> (position <= <span class="number">1</span>) { <span class="comment">// (0,1]</span>
+  
+  - <span class="comment">// Fade the page out.</span>
+  
+  
+  - <span class="comment">// Counteract the default slide transition</span>
+  
+  - view.setTranslationX(pageWidth * -position);
+  
+  - <span class="comment">// Scale the page down (between MIN_SCALE and 1)</span>
+  
+  - <span class="keyword">float</span> scaleFactor = MIN_SCALE
+  
+  
+  - view.setScaleX(scaleFactor);
+  
+  - view.setScaleY(scaleFactor);
+  
+  - } <span class="keyword">else</span> { <span class="comment">// (1,+Infinity]</span>
+  
+  - <span class="comment">// This page is way off-screen to the right.</span>
+  
+  - view.setAlpha(<span class="number"></span>);
+  
+  - }
+  
+  - }
+  
+  - }
+</code></pre>
+  </div>
+  <div>
+    其实从google 给的两个demo 的注释中可以看出一些端倪.
+  </div>
+  <div>
+    在 transformPage 方法中, 会传递两个参数,
+  </div>
+  <div>
+    且 该View  对应 当前的 position
+  </div>
+  <div>
+  </div>
+  <div>
+    从注释中可以看到,
+  </div>
+  <div>
+    position 有一下几个区间:
+  </div>
+  <div>
+    [-∞ , -1)  :
+  </div>
+  <div>
+         表示左边 的View 且已经看不到了
+  </div>
+  <div>
+    [-1 ,   0]  :
+  </div>
+  <div>
+         表示左边的 View ,且可以看见
+  </div>
+  <div>
+    ( 0 ,   1]  :
+  </div>
+  <div>
+         表示右边的VIew , 且可以看见了
+  </div>
+  <div>
+    ( 1 , -∞)  :
+  </div>
+  <div>
+         表示右边的 View 且已经看不见了
+  </div>
+  <div>
+  </div>
+  <div>
+    上面讲的有些模糊,  举个例子
+  </div>
+  <div>
+  </div>
+  <div>
+    a 是第一页
+  </div>
+  <div>
+    b 是第二页
+  </div>
+  <div>
+    当前页为 a, 当  a  向左滑动,  直到滑到 b 时:
+  </div>
+  <div>
+    a 的position变化是  [-1 ,   0]   由  0  慢慢变到 -1
+  </div>
+  <div>
+    b 的position变化是  ( 0 ,   1]   由  1  慢慢变到  0
+  </div>
+  <div>
+  </div>
+  <div>
+    当前页为b,  当 b 向右滑动, 直到滑到a 时:
+  </div>
+  <div>
+    a 的position变化是  [-1 ,   0]   由  -1  慢慢变到 0
+  </div>
+  <div>
+    b 的position变化是  ( 0 ,   1]   由   0   慢慢变到 1
+  </div>
+  <div>
+  </div>
+  <div>
+    了解了这些后, 那么其他的事情 就是在更具position 来写不同的动画了
+  </div>
+  <div>
+  </div>
+  <div>
+  </div>
+  <div>
+    ok  之前有一篇博客 是写到 关于 Viewpager 来实现 画廊效果, 但是 没有滑动效果.
+  </div>
+  <div>
+    这里自定义一个  PageTransformer 来实现滑动效果:
+  </div>
+  <div>
+    先看图
+  </div>
+<pre><code>![](http://img.blog.csdn.net/20160106001405094)
+</code></pre>
+<p>可以看到 较 之前那篇博客 好看了很多, 下面上代码:</p>
+  <div class=' dp-highlighter bg_java" data-original-code='[java] view plain copy print?private static float defaultScale = (float) 14 / (float) 15;  
+<p>public class MyPageTransformer implements ViewPager.PageTransformer {<br>
+@Override<br>
+public void transformPage(View view, float position) {<br>
+View cardView = view.findViewById(R.id.img_box);<br>
+View img = view.findViewById(R.id.img);</p>
+<pre><code>    int diffWidth = (cardView.getWidth() - img.getWidth()) / 2;  
+
+    if (position < -1) { // [-Infinity,-1)  
+        cardView.setScaleX(defaultScale);  
+        cardView.setScaleY(defaultScale);  
+        img.setTranslationX(diffWidth);  
+
+    } else if (position <= 0) { // [-1,0]  
+        cardView.setScaleX((float) 1 + position / (float) 15);  
+        cardView.setScaleY((float) 1 + position / (float) 15);  
+        img.setTranslationX((0 - position) * diffWidth);  
+
+    } else if (position <= 1) { // (0,1]  
+        cardView.setScaleX((float) 1 - position / (float) 15);  
+        cardView.setScaleY((float) 1 - position / (float) 15);  
+        img.setTranslationX((0 - position) * diffWidth);  
+
+    } else { // (1,+Infinity]  
+        cardView.setScaleX(defaultScale);  
+        cardView.setScaleY(defaultScale);  
+        img.setTranslationX(-diffWidth);  
+    }  
+}  
+</code></pre>
+<p>}<br>
+" data-snippet-id=&ldquo;ext.298fee734f9e5340942e2b90e52cc354&rdquo; data-snippet-saved=&ldquo;false&rdquo; data-codota-status=&ldquo;done&rdquo;></p>
+<pre><code><div class="bar">
+  <div class="tools">
+    **[java]**[view plain](http://blog.csdn.net/chen930724/article/details/50466199#)<span data-mod="popu_168"> [copy](http://blog.csdn.net/chen930724/article/details/50466199#)</span>
+
+    
+    <div>
+      <embed id="ZeroClipboardMovie_3" src="http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf" type="application/x-shockwave-flash" width="18" height="18" align="middle" name="ZeroClipboardMovie_3" data-mce-fragment="1">
+      </embed>
+    </div>
+  </div>
+</div>
+
+
+  - <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">float</span> defaultScale = (<span class="keyword">float</span>) <span class="number">14</span> / (<span class="keyword">float</span>) <span class="number">15</span>;
+  
+  - <span class="keyword">public</span> <span class="keyword">class</span> MyPageTransformer <span class="keyword">implements</span> ViewPager.PageTransformer {
+  
+  - <span class="annotation">@Override</span>
+  
+  - <span class="keyword">public</span> <span class="keyword">void</span> transformPage(View view, <span class="keyword">float</span> position) {
+  
+  - View cardView = view.findViewById(R.id.img_box);
+  
+  - View img = view.findViewById(R.id.img);
+  
+  
+  
+  - cardView.setScaleX(defaultScale);
+  
+  - cardView.setScaleY(defaultScale);
+  
+  - img.setTranslationX(diffWidth);
+  
+  - } <span class="keyword">else</span> <span class="keyword">if</span> (position <= <span class="number"></span>) { <span class="comment">// [-1,0]</span>
+  
+  - cardView.setScaleX((<span class="keyword">float</span>) <span class="number">1</span> + position / (<span class="keyword">float</span>) <span class="number">15</span>);
+  
+  - cardView.setScaleY((<span class="keyword">float</span>) <span class="number">1</span> + position / (<span class="keyword">float</span>) <span class="number">15</span>);
+  
+  
+  - } <span class="keyword">else</span> <span class="keyword">if</span> (position <= <span class="number">1</span>) { <span class="comment">// (0,1]</span>
+  
+  
+  
+  
+  - } <span class="keyword">else</span> { <span class="comment">// (1,+Infinity]</span>
+  
+  - cardView.setScaleX(defaultScale);
+  
+  - cardView.setScaleY(defaultScale);
+  
+  - img.setTranslationX(-diffWidth);
+  
+  - }
+  
+  - }
+  
+  - }
+</code></pre>
+  </div>
+  <div>
+    其实很简单, 就是更具 position 处理向右的属性动画
+  </div>
+  <div>
+    当处于 [-Infinity,-1) 时,  是左边的看不见的, 则设在 scaleXY 缩小
+  </div>
+  <div>
+    当处于 [-Infinity,-1) 时,  是右边的看不见的, 则设在 scaleXY 缩小
+  </div>
+  <div>
+    当处于 [-Infinity,-1) 时,  是右边的看不见的, 则设在 scaleXY (float) 1 + position / (float) 15 更具 position来变化
+  </div>
+  <div>
+  </div>
+  <div>
+    需要注意的是,  除了设在 scaleXY  我还设置了 translationX
+  </div>
+  <div>
+    这是因为, 没 Item里面的土坯那 是wrap_content 且剧中
+  </div>
+  <div>
+    所以如果是长条状的图,  那么即使设在 android:clipChildren = false  页还是看不到 那张图,
+  </div>
+  <div>
+    这里 设在 setTranslationX 就是 吧 处于中间的长条状的图, 移到边上来,
+  </div>
+  <div>
+    这样即使 左右两面 是 长条状的图, 也能看到了
+  </div>
+</div>
+<div>
+</div>
+
+  </div>
+
+  <footer class=' post-footer"><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/android/>Android</a></li><li><a href=https://blog.zdltech.com/tags/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/>移动开发</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/vm%E8%99%9A%E6%8B%9F%E6%9C%BA-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81ip%E5%9C%B0%E5%9D%80centos/><span class=title>« 上一页</span>
+<span>vm虚拟机 配置静态ip地址（centos）</span>
+</a><a class=next href=https://blog.zdltech.com/posts/maven%E6%B7%BB%E5%8A%A0%E6%9C%AC%E5%9C%B0jar%E7%9A%84%E6%96%B9%E6%B3%95/><span class=title>下一页 »</span>
+<span>Maven添加本地jar的方法</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

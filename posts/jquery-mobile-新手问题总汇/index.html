@@ -1,0 +1,489 @@
+<!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Jquery mobile 新手问题总汇 | ZDL Tech Blog</title>
+<meta name=keywords content="html5,前端"><meta name=description content='``` Jquery Mobile中的自定义对话框 http://dev.jtsage.com/jQM-SimpleDialog/demos2/button.html 设置按钮的点击和划过的效果 &amp;lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Tran...'><meta name=author content="zhangdl"><link rel=canonical href=https://blog.zdltech.com/posts/jquery-mobile-%E6%96%B0%E6%89%8B%E9%97%AE%E9%A2%98%E6%80%BB%E6%B1%87/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/jquery-mobile-%E6%96%B0%E6%89%8B%E9%97%AE%E9%A2%98%E6%80%BB%E6%B1%87/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/jquery-mobile-%E6%96%B0%E6%89%8B%E9%97%AE%E9%A2%98%E6%80%BB%E6%B1%87/"><meta property="og:site_name" content="ZDL Tech Blog"><meta property="og:title" content="Jquery mobile 新手问题总汇"><meta property="og:description" content='``` Jquery Mobile中的自定义对话框 http://dev.jtsage.com/jQM-SimpleDialog/demos2/button.html 设置按钮的点击和划过的效果 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Tran...'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2014-11-29T14:16:29+00:00"><meta property="article:modified_time" content="2014-11-29T14:16:29+00:00"><meta property="article:tag" content="Html5"><meta property="article:tag" content="前端"><meta name=twitter:card content="summary"><meta name=twitter:title content="Jquery mobile 新手问题总汇"><meta name=twitter:description content='``` Jquery Mobile中的自定义对话框 http://dev.jtsage.com/jQM-SimpleDialog/demos2/button.html 设置按钮的点击和划过的效果 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Tran...'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"},{"@type":"ListItem","position":2,"name":"Jquery mobile 新手问题总汇","item":"https://blog.zdltech.com/posts/jquery-mobile-%E6%96%B0%E6%89%8B%E9%97%AE%E9%A2%98%E6%80%BB%E6%B1%87/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Jquery mobile 新手问题总汇","name":"Jquery mobile 新手问题总汇","description":"``` Jquery Mobile中的自定义对话框 http://dev.jtsage.com/jQM-SimpleDialog/demos2/button.html 设置按钮的点击和划过的效果 \u0026lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Tran...","keywords":["html5","前端"],"articleBody":"Jquery Mobile中的自定义对话框 http://dev.jtsage.com/jQM-SimpleDialog/demos2/button.html 设置按钮的点击和划过的效果 \u0026lt;!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"[http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd](http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd)\"\u0026gt; \u0026lt;html xmlns=\"[http://www.w3.org/1999/xhtml](http://www.w3.org/1999/xhtml)\"\u0026gt; \u0026lt;head\u0026gt; \u0026lt;meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /\u0026gt; \u0026lt;title\u0026gt;手写html\u0026lt;/title\u0026gt; \u0026lt;script type=\"text/javascript\" src=\"jquery-1.7.js\"\u0026gt;\u0026lt;/script\u0026gt;\u0026lt;!--换成自己的Jquery引用--\u0026gt; \u0026lt;!-- 写javascript --\u0026gt; \u0026lt;script type=\"text/javascript\"\u0026gt; (function(){(\"#1\").mouseenter(function(){(this).css(\"background\",\"red\");});//鼠标在按钮上,设置red(\"#1\").mousedown(function(){(this).css(\"background\",\"yellow\");}).mouseup(function(){(this).css(\"background\",\"black\");});//mousedown数遍按下时 设置为yellow，mouseup点击后变black }); \u0026lt;/script\u0026gt; \u0026lt;/head\u0026gt; \u0026lt;body\u0026gt; \u0026lt;input type=\"button\" value=\"点击\" id=\"1\"/\u0026gt; \u0026lt;/body\u0026gt; \u0026lt;/html\u0026gt; html中运行在移动客户端的浏览器中没有放大和缩小按钮。 jQuery Mobile Data 属性 http://www.w3cschool.cc/jquerymobile/jquerymobile-ref-data.html\n此文章将会持续更新，主要收录一些新手比较常见的问题。\n欢迎 向我推荐比较典型的常见问题，我会记录并整理进文章，方便自己更方便大家。\n#### 文章导读： - [1、页面缩放显示问题](http://www.wglong.com/main/artical!details?id=4#q1) - [2、页面跳转后样式丢失js失效](http://www.wglong.com/main/artical!details?id=4#q2) - [3、跳转时重复调用pageinit方法的解决办法](http://www.wglong.com/main/artical!details?id=4#q3) - [4、如何调用loading效果](http://www.wglong.com/main/artical!details?id=4#q4) - [5、动态改变了list的内容，但是内容并没有变化](http://www.wglong.com/main/artical!details?id=4#q5) - [6、把所有内容放到一个页面好,还是分开多页面好](http://www.wglong.com/main/artical!details?id=4#q6) - [7、如何禁掉ajax跳转](http://www.wglong.com/main/artical!details?id=4#q7) - [8、为什么android2.3系统转屏无效果？](http://www.wglong.com/main/artical!details?id=4#q8) - [9、如何去掉jqm自带的组件样式？](http://www.wglong.com/main/artical!details?id=4#q9) - [10、jquery mobile “闪屏” 问题](http://www.wglong.com/main/artical!details?id=4#q10) 2013/4/30 更新内容： - [11、按钮按下/划过的状态感觉反应有些迟缓？](http://www.wglong.com/main/artical!details?id=4#q11) 2013/5/1 更新内容： - [12、jquery mobile各类组件刷新方法](http://www.wglong.com/main/artical!details?id=4#q12) 2013/5/7 更新内容： - [13、在页面动态添加组件，发现css消失了](http://www.wglong.com/main/artical!details?id=4#q13) 2013/5/22 更新内容： - [14、关于checkbox取值问题](http://www.wglong.com/main/artical!details?id=4#q14) 2013/5/28 更新内容： - [15、点击屏幕，header和footer会略微抖动？](http://www.wglong.com/main/artical!details?id=4#q15) 2013/6/20 更新内容： - [16、jqm图标|图标定位|隐藏图片上的文字|去除图标阴影|自定义图标|去除按钮阴影/圆角](http://www.wglong.com/main/artical!details?id=4#q16) - [17、jqm组件显示正常，但是小图标是“空的”，没有正常显示](http://www.wglong.com/main/artical!details?id=4#q17) - [18、$.mobile.changePage方法不能正常跳转](http://www.wglong.com/main/artical!details?id=4#q18) ##### 1页面缩放显示问题 问题描述： 页面似乎被缩小了，屏幕太宽了。 解决办法： 在head标签内加入： \u0026lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"\u0026gt; \u0026nbsp; 2 页面跳转后样式丢失js失效 问题描述： 用ajax跳转的时候，从a.html跳转到b.html后，b.html的css以及js都失效了。 解决办法： 将当前页面需要用到的css以及js放在 div内。\n原理： 由于jqm的ajax跳转的时候，只会把b.html中 内的内容加载进dom,而 外的代码都不会加载，所以导致在 外的js和css都失效了。\n\u0026nbsp; 3 跳转时重复调用pageinit方法的解决办法 问题描述： 用ajax跳转的时候，从a.html跳转到b.html，用从b.html返回a.html等等这种反复跳转的时候，pageinit方法内的代码会调用多次。 解决办法： 在page中加入 data-dom-cache=\u0026#8221;true\u0026#8221;属性，如： \u0026lt;div data-role=\"page\" id=\"myPage\" data-dom-cache=\"true\"\u0026gt; 然后把pageinit方法换为pageshow,如： \u0026nbsp; $(\"#myPage\").live(\"pageshow\", function() { //...do something }); \u0026nbsp; 4 如何调用loading效果 js代码： //显示loading function showLoading(){ \u003cspan class=\"katex math inline\"\u003e.mobile.loadingMessageTextVisible = true;\u003c/span\u003e.mobile.showPageLoadingMsg(\"a\", \"加载中...\" ); } //隐藏loading function hideLoading(){ $.mobile.hidePageLoadingMsg(); } [查看Demo »](http://www.wglong.com/index/demos/loading/index.html) 扫描查看Demo： \u0026nbsp; 5 动态改变了list的内容，但是内容并没有变化 解决办法： 调用组件的refresh方法，刷新list,如： $(\"#contentList\").append(content).listview('refresh'); 原理： jqm组件的显示原理是把原始的web组件隐藏，而用jqm自定义的UI组件来代替原始的web组件显示。动态的改变了list的值，其实改变的是原始组件list的值，而jqm的list组件的值并没有被更新，所以需要调用list组件的refresh方法来使其更新并显示。 ##### 注意: 此问题不只局限于list组件，基本所有的jqm UI组件在改变值之后都需要调用组件对应的refresh方法，例如button组件( $(\u0026#8216;#id\u0026#8217;).button(\u0026#8216;refresh\u0026#8217;) )等等。更多刷新方法请查看：[jquery mobile各类组件刷新方法](http://www.wglong.com/main/artical!details?id=4#q12) \u0026nbsp; 6 把所有内容放到一个页面好,还是分开多页面好？ 对于这个问题，说说笔者的个人见解： #1所有内容放到同一页面 #2分页面存放内容 对于#1，如果是比较简单的网页内容，可以考虑把内容都放在同一个页面。但是如果页面结构很复杂，跳转页面比较多的话，那#1就会显得很臃肿，增加维护的复杂度。 而#2比较适合页面结构以及页面比较多的情况，易维护。 性能方面，笔者查了一些资料，也亲自做了些实验，并没有发现性能上的明显差异。 结论：根据个人编码习惯，两种选择都是可以的。推荐#1和#2混合使用。\n\u0026nbsp; 7 如何禁掉ajax跳转？ 问题描述： 尽管ajax跳转有很炫的转屏动画，但是在某些时候为了性能或者为了业务需求还是需要禁掉ajax跳转的。 解决办法： 禁止ajxa跳转有两种情况： 1、禁止局部ajax跳转 2、禁止全局ajax跳转 对于#1只需要在a标签中添加下面的属性： data-ajax=“false” 有时我们要用正常的http请求而不用Ajax请求，比如链接到别的网站等情况。通过给a标签加下面的属性，可以将链接指定为正常的http请求: rel=external 对于#2我们需要设置一个全局的禁止ajax跳转的方式，js代码如下： $(document).bind(\"mobileinit\",function(){// disable ajax nav $.mobile.ajaxEnabled=false}); 注意：上面的代码片段需要放在jquery.mobile-xxx.min.js引入之前。 顺便说一句，初始化的设置都需要放在此处，例如加载错误信息的设置： $.mobile.pageLoadErrorMessage ='Sorry, something went wrong. Please try again.'; \u0026nbsp; 8 为什么android2.3系统转屏无效果？ 问题描述： 发现在android2.X系统测试的时候slide等转屏效果并没有很好的显示，而是一闪而过了。但是在android4.0+显示却正常。 问题分析： 之所以android2.X系统对slide等转屏效果支持不是很好，是因为slide等效果都需要3D支持，而android2.X系统不支持3D, 而JQM遇到这种情况的时候把slide等效果“退化”到淡入淡出效果，根据笔者的测试即使这种淡入淡出效果也不尽人意，感觉有点像“闪屏”，在这种情况下直接把转屏效果设置为none，反而比这种淡入淡出看着更舒服。 既然android2.X不支持3D转场，但是android4.0支持，我想在4.0系统保留转场效果，而在2.X上去除转场效果怎么办？ 解决办法很简单，只需要加入下面的代码即可： $.mobile.transitionFallbacks.slideout =\"none\" 更多关于“闪屏”的问题，请看：[10、jquery mobile “闪屏” 问题](http://www.wglong.com/main/artical!details?id=4#q10) \u0026nbsp; 9 如何去掉jqm自带的组件样式？ 问题描述： 尽管jqm提供了比较美观的组件样式，但是有些时候我们需要去掉jqm自带的样式。 解决办法： 解决办法很简单，只需要在组件中加上如下属性就可以了： data-role='none' \u0026nbsp; 10 jquery mobile “闪屏” 问题 官方描述： Important:Some platforms currently have issues with transitions.We are working on a solution to solve the problem for everyone.If you are experiencing flickers and flashes during or at the end of a transition we suggest the following workaround.Please note that this workaround should be thoroughly tested on the target platform before deployment.This workaround is known to cause performance issues and browser crashes on some platforms, especially Android.Add the following code to your custom css..ui-page {-webkit-backface-visibility: hidden;} 即使加上官方提供的css代码片段，效果仍旧不尽人意，这个问题到现在仍旧是jqm的一个比较严重的问题，希望下个版本可以解决此问题。 除了在[8、为什么android2.3系统转屏无效果？](http://www.wglong.com/main/artical!details?id=4#q8) 中提到的内容外，近日在群里聊天，[**南京-恰恰虎**](http://www.wglong.com/main/artical!details?id=4#)提出一个可以缓解的方案，即：可以更改jqm的css,让闪的背景色和页面的一致，具体修改以下css: .ui-body-c,.ui-overlay-c { border:1px solid #AAA; color:#333; background:#F9F9F9; //修改这里的颜色代码} 我想这是一个很好的思路，是个值得一试的方法，但是笔者还没有亲自实验，需要的朋友可以亲自试一试，有空的话记得回来在评论里发表一下实验结果哦。 \u0026nbsp; 11 按钮按下/划过的状态感觉反应有些迟缓？ 解决办法很简单，只需要加上如下设置就可以了： $.mobile.buttonMarkup.hoverDelay = \"false\"; \u0026nbsp; 12 jquery mobile各类组件刷新方法 1、Combobox or select dropdowns \u003cspan class=\"pln\" style=\"color: #48484c;\"\u003evar myselect = \u003cspan class=\"katex math inline\"\u003e(\"#sCountry\"); myselect[0].selectedIndex = 3; myselect.selectmenu('refresh'); or\u003c/span\u003e( \".selector\" ).selectmenu( \"refresh\", true );\u003c/span\u003e 2、Listviews $('#mylist').listview('refresh'); 3、Slider control $('#slider').val(80).slider('refresh'); 4、Toggle switch \u003cspan class=\"pln\" style=\"color: #48484c;\"\u003evar myswitch = $(\"#toggle\"); myswitch[0].selectedIndex = 1; myswitch .slider(\"refresh\");\u003c/span\u003e 5、Radio buttons $(\"input[value=grid]\").attr('checked',true).checkboxradio('refresh'); or $( \".selector\" ).prop( \"checked\", true ).checkboxradio( \"refresh\" ); 6、Checkboxes $('#checkbox-1').attr('checked',true).checkboxradio('refresh'); or $( \".selector\" ).prop( \"checked\", true ).checkboxradio( \"refresh\" ); 7、Buttons $( \"[type='submit']\" ).button( \"refresh\" ); or $( \".selector\" ).buttonMarkup( \"refresh\" ); 8、Column-Toggle Table $( \".selector\" ).table-columntoggle( \"refresh\" ); 9、Reflow Table $( \".selector\" ).table( \"refresh\" ); \u0026nbsp; 13 在页面动态添加组件，发现css消失了 首先请试一试上面问题12的解决方案，如果没有效果的话，那就试试加上.trigger(\u0026#8216;create\u0026#8217;)，例如： $(\"#id\").html(content).trigger('create'); or $.mobile.pageContainer.trigger(\"create\"); \u0026nbsp; 14 关于checkbox取值问题 网友[**流浪的旋律**](http://www.wglong.com/main/artical!details?id=4#)在checkbox取值的时候，发现官网并没有提供相关方法，通过查阅资料终于找到了取值方法，并找到我分享在此，再次感谢[**流浪的旋律**](http://www.wglong.com/main/artical!details?id=4#)的分享精神！ 取值方式如下： $(.checkbox)[0].checked [查看checkbox取值Demo »](http://www.wglong.com/index/demos/checkboxGetValue/checkboxGetValue.html) [下载checkbox取值Demo »](http://www.wglong.com/index/demos/checkboxGetValue/checkboxGetValue.zip) \u0026nbsp; 15 点击屏幕，header和footer会略微抖动？ 问题描述： 在真机运行的时候，轻击屏幕会发现header和footer有略微的抖动。 解决办法： 在header和footer中添加如下属性： data-tap-toggle=\"false\" 添加这个属性也可以解决点击屏幕header或footer消失问题。 \u0026nbsp; 16 jqm图标|图标定位|隐藏图片上的文字|去除图标阴影|自定义图标|去除按钮阴影/圆角 **1、图标定位 data-iconpos** 默认情况下，所有的图标都放在按钮的按钮文本左。此默认可以覆盖使用 data-iconpos 属性来设置图标的右上方（top）、底部（bottom）、右侧（right）、左侧（left）的文本 **2、隐藏图片上的文字 data-iconpos=”notext”** 你也可以创建一个图标按钮，设置 data-iconpos=”notext”。按钮插件将隐藏的文字在屏幕上，但把它作为给屏幕阅读器和设备支持工具提示上下文链接标题属性。例如，data-iconpos=”right”，data-iconpos=”notext”： **3、自定义图标 data-icon=”自定义值”** 使用自定义图标，需要指定 data-icon 值。Jquery Mobile的button插件会将生成一个CSS类，它的前缀是ui-icon- ，后面的是data-icon值。假如：有一个按钮 data-icon 属性的值为 myapp-email，即 data-icon=“ myapp-email”。那么生产的CSS类是：ui-icon-myapp-email。 然后你可以在你的样式表写一个CSS规则来定义 ui-icon-myapp-email。然后在css中指定这个类的背景图片地址。为了保持与其他图标的视觉上的一致性，请创建一个白色18×18像素的PNG-8图标，并且保存为Alpha透明度。 .ui-icon-myapp-email { background-image: url(\"app-icon-email.png\");} 这将创建标准分辨率的图标，但许多设备都有非常高的分辨率的显示器，就像iPhone 4的视网膜显示器。添加一个高清图标，创建一个图标，36X36像素（18像素大小完全相同的两倍），并添加第二个规则使用WebKit分钟装置像素比例：2。媒体查询到目标的规则只有以高分辨率显示器。指定背景图片高清图标文件和设置背景像素大小18×18将安装36个像素图标到同一个18像素的空间。传媒查询块可以用多个图标规则：\n@media only screen and(-webkit-min-device-pixel-ratio:2){.ui-icon-myapp-email { background-image: url(\"app-icon-email-highres.png\"); background-size:18px18px;}...more HD icon rules go here...} 4、去除按钮阴影/圆角\ndata-shadow=”false” data-corners=”false” 本小结引自：http://www.wpdic.com/?p=59\n\u0026nbsp; 17 jqm组件显示正常，但是小图标是“空的”，没有正常显示 问题描述： 例如header中的返回按钮，按钮的显示和功能都正常，但是按钮上的“返回小图标”没有显示。 解决办法： 这是由于没有引入jqm的图片文件引起的，解决方法是在jqm的资源包里找到images文件夹，并把images文件夹引入自己的项目，与jqm的css文件放在同一级目录里。 \u0026nbsp; 18 $.mobile.changePage方法不能正常跳转 问题描述： $.mobile.changePage不能跳转，而window.location.href却可以正常跳转。 原理： 这个问题牵扯到jqm的跳转机制了，简单的说jqm的默认跳转方式，也就是$.mobile.changePage这种方式，原理是ajax跳转。听起来很神秘，其实就是通过ajax动态的把目标页面的内容加载到当前的dom中。当多页面跳转的时候，通过ajax跳转，就存在ajax跨域的问题。所以解决目前的问题，其实就是解决ajax跨域的问题。 解决办法： 为了解决跨域问题，我们需要把项目放在服务器环境下。好多朋友不知道什么叫服务器环境，说白了就是把项目部署到WAMP或者TOMCAT等等的服务器下，然后通过http://localhost/xxx 这样的方式访问项目。 小结：这里提到了jqm的跳转机制了，笔者之前写过一篇文章：[JQM进阶:转屏效果的模拟实现](http://www.wglong.com/main/artical!details?id=17)，这篇文章完全没有用jqm，而是模拟了jqm的跳转过程，想深入了解jqm跳转的朋友可以看一看这篇文章的实现原理。 19 …还有什么需要补充问题？ 请联系我\n原创文章，转载请注明出处：http://www.wglong.com/main/artical!details?id=4\n","wordCount":"1303","inLanguage":"zh","datePublished":"2014-11-29T14:16:29Z","dateModified":"2014-11-29T14:16:29Z","author":{"@type":"Person","name":"zhangdl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.zdltech.com/posts/jquery-mobile-%E6%96%B0%E6%89%8B%E9%97%AE%E9%A2%98%E6%80%BB%E6%B1%87/"},"publisher":{"@type":"Organization","name":"ZDL Tech Blog","logo":{"@type":"ImageObject","url":"https://blog.zdltech.com/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="ZDL Tech Blog (Alt + H)">ZDL Tech Blog</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
+<a href=https://blog.zdltech.com/posts/>Posts</a></nav><h1 class="post-title entry-hint-parent">Jquery mobile 新手问题总汇</h1><div class=post-description>``` Jquery Mobile中的自定义对话框 http://dev.jtsage.com/jQM-SimpleDialog/demos2/button.html 设置按钮的点击和划过的效果 &amp;lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Tran...</div><div class=post-meta><span title='2014-11-29 14:16:29 +0000 UTC'>2014年11月29日</span>&nbsp;·&nbsp;<span>7 分钟</span>&nbsp;·&nbsp;<span>zhangdl</span></div></header><details class=toc><summary accesskey=c title="(Alt + C)"><span class=title>目录</span></summary><div class=inner><ul><li><a href=#jquery-mobiledata-%e5%b1%9e%e6%80%a7 aria-label="jQuery Mobile Data 属性">jQuery Mobile Data 属性</a><ul><ul><li><a href=#2013430-%e6%9b%b4%e6%96%b0%e5%86%85%e5%ae%b9 aria-label="2013/4/30 更新内容：">2013/4/30 更新内容：</a></li><li><a href=#201351-%e6%9b%b4%e6%96%b0%e5%86%85%e5%ae%b9 aria-label="2013/5/1 更新内容：">2013/5/1 更新内容：</a></li><li><a href=#201357-%e6%9b%b4%e6%96%b0%e5%86%85%e5%ae%b9 aria-label="2013/5/7 更新内容：">2013/5/7 更新内容：</a></li><li><a href=#2013522-%e6%9b%b4%e6%96%b0%e5%86%85%e5%ae%b9 aria-label="2013/5/22 更新内容：">2013/5/22 更新内容：</a></li><li><a href=#2013528-%e6%9b%b4%e6%96%b0%e5%86%85%e5%ae%b9 aria-label="2013/5/28 更新内容：">2013/5/28 更新内容：</a></li><li><a href=#2013620-%e6%9b%b4%e6%96%b0%e5%86%85%e5%ae%b9 aria-label="2013/6/20 更新内容：">2013/6/20 更新内容：</a><ul><ul><li><a href=#2%e9%a1%b5%e9%9d%a2%e8%b7%b3%e8%bd%ac%e5%90%8e%e6%a0%b7%e5%bc%8f%e4%b8%a2%e5%a4%b1js%e5%a4%b1%e6%95%88 aria-label=2 页面跳转后样式丢失js失效>2 页面跳转后样式丢失js失效</a></li><li><a href=#3%e8%b7%b3%e8%bd%ac%e6%97%b6%e9%87%8d%e5%a4%8d%e8%b0%83%e7%94%a8pageinit%e6%96%b9%e6%b3%95%e7%9a%84%e8%a7%a3%e5%86%b3%e5%8a%9e%e6%b3%95 aria-label=3 跳转时重复调用pageinit方法的解决办法>3 跳转时重复调用pageinit方法的解决办法</a></li><li><a href=#4%e5%a6%82%e4%bd%95%e8%b0%83%e7%94%a8loading%e6%95%88%e6%9e%9c aria-label=4 如何调用loading效果>4 如何调用loading效果</a></li><li><a href=#5%e5%8a%a8%e6%80%81%e6%94%b9%e5%8f%98%e4%ba%86list%e7%9a%84%e5%86%85%e5%ae%b9%e4%bd%86%e6%98%af%e5%86%85%e5%ae%b9%e5%b9%b6%e6%b2%a1%e6%9c%89%e5%8f%98%e5%8c%96 aria-label=5 动态改变了list的内容，但是内容并没有变化>5 动态改变了list的内容，但是内容并没有变化</a></li><li><a href=#6%e6%8a%8a%e6%89%80%e6%9c%89%e5%86%85%e5%ae%b9%e6%94%be%e5%88%b0%e4%b8%80%e4%b8%aa%e9%a1%b5%e9%9d%a2%e5%a5%bd%e8%bf%98%e6%98%af%e5%88%86%e5%bc%80%e5%a4%9a%e9%a1%b5%e9%9d%a2%e5%a5%bd aria-label=6 把所有内容放到一个页面好,还是分开多页面好？>6 把所有内容放到一个页面好,还是分开多页面好？</a></li><li><a href=#7%e5%a6%82%e4%bd%95%e7%a6%81%e6%8e%89ajax%e8%b7%b3%e8%bd%ac aria-label=7 如何禁掉ajax跳转？>7 如何禁掉ajax跳转？</a></li><li><a href=#8%e4%b8%ba%e4%bb%80%e4%b9%88android23%e7%b3%bb%e7%bb%9f%e8%bd%ac%e5%b1%8f%e6%97%a0%e6%95%88%e6%9e%9c aria-label=8 为什么android2.3系统转屏无效果？>8 为什么android2.3系统转屏无效果？</a></li><li><a href=#9%e5%a6%82%e4%bd%95%e5%8e%bb%e6%8e%89jqm%e8%87%aa%e5%b8%a6%e7%9a%84%e7%bb%84%e4%bb%b6%e6%a0%b7%e5%bc%8f aria-label=9 如何去掉jqm自带的组件样式？>9 如何去掉jqm自带的组件样式？</a></li><li><a href=#10jquery-mobile-%e9%97%aa%e5%b1%8f-%e9%97%ae%e9%a2%98 aria-label="10 jquery mobile “闪屏” 问题">10 jquery mobile “闪屏” 问题</a></li><li><a href=#11%e6%8c%89%e9%92%ae%e6%8c%89%e4%b8%8b%e5%88%92%e8%bf%87%e7%9a%84%e7%8a%b6%e6%80%81%e6%84%9f%e8%a7%89%e5%8f%8d%e5%ba%94%e6%9c%89%e4%ba%9b%e8%bf%9f%e7%bc%93 aria-label=11 按钮按下/划过的状态感觉反应有些迟缓？>11 按钮按下/划过的状态感觉反应有些迟缓？</a></li><li><a href=#12jquery-mobile%e5%90%84%e7%b1%bb%e7%bb%84%e4%bb%b6%e5%88%b7%e6%96%b0%e6%96%b9%e6%b3%95 aria-label="12 jquery mobile各类组件刷新方法">12 jquery mobile各类组件刷新方法</a></li><li><a href=#13%e5%9c%a8%e9%a1%b5%e9%9d%a2%e5%8a%a8%e6%80%81%e6%b7%bb%e5%8a%a0%e7%bb%84%e4%bb%b6%e5%8f%91%e7%8e%b0css%e6%b6%88%e5%a4%b1%e4%ba%86 aria-label=13 在页面动态添加组件，发现css消失了>13 在页面动态添加组件，发现css消失了</a></li><li><a href=#14%e5%85%b3%e4%ba%8echeckbox%e5%8f%96%e5%80%bc%e9%97%ae%e9%a2%98 aria-label=14 关于checkbox取值问题>14 关于checkbox取值问题</a></li><li><a href=#15%e7%82%b9%e5%87%bb%e5%b1%8f%e5%b9%95header%e5%92%8cfooter%e4%bc%9a%e7%95%a5%e5%be%ae%e6%8a%96%e5%8a%a8 aria-label=15 点击屏幕，header和footer会略微抖动？>15 点击屏幕，header和footer会略微抖动？</a></li><li><a href=#16jqm%e5%9b%be%e6%a0%87%e5%9b%be%e6%a0%87%e5%ae%9a%e4%bd%8d%e9%9a%90%e8%97%8f%e5%9b%be%e7%89%87%e4%b8%8a%e7%9a%84%e6%96%87%e5%ad%97%e5%8e%bb%e9%99%a4%e5%9b%be%e6%a0%87%e9%98%b4%e5%bd%b1%e8%87%aa%e5%ae%9a%e4%b9%89%e5%9b%be%e6%a0%87%e5%8e%bb%e9%99%a4%e6%8c%89%e9%92%ae%e9%98%b4%e5%bd%b1%e5%9c%86%e8%a7%92 aria-label=16 jqm图标|图标定位|隐藏图片上的文字|去除图标阴影|自定义图标|去除按钮阴影/圆角>16 jqm图标|图标定位|隐藏图片上的文字|去除图标阴影|自定义图标|去除按钮阴影/圆角</a></li><li><a href=#17jqm%e7%bb%84%e4%bb%b6%e6%98%be%e7%a4%ba%e6%ad%a3%e5%b8%b8%e4%bd%86%e6%98%af%e5%b0%8f%e5%9b%be%e6%a0%87%e6%98%af%e7%a9%ba%e7%9a%84%e6%b2%a1%e6%9c%89%e6%ad%a3%e5%b8%b8%e6%98%be%e7%a4%ba aria-label=17 jqm组件显示正常，但是小图标是“空的”，没有正常显示>17 jqm组件显示正常，但是小图标是“空的”，没有正常显示</a></li><li><a href=#18mobilechangepage%e6%96%b9%e6%b3%95%e4%b8%8d%e8%83%bd%e6%ad%a3%e5%b8%b8%e8%b7%b3%e8%bd%ac aria-label=18 $.mobile.changePage方法不能正常跳转>18 $.mobile.changePage方法不能正常跳转</a></li></ul></ul></li></ul></ul></li></ul></div></details><div class="post-content md-content"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>Jquery Mobile中的自定义对话框
+</span></span><span style=display:flex><span>http://dev.jtsage.com/jQM-SimpleDialog/demos2/button.html
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>设置按钮的点击和划过的效果
+</span></span><span style=display:flex><span>&amp;lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;[http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd](http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd)&#34;&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;html xmlns=&#34;[http://www.w3.org/1999/xhtml](http://www.w3.org/1999/xhtml)&#34;&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;head&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html; charset=utf-8&#34; /&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;title&amp;gt;手写html&amp;lt;/title&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;script type=&#34;text/javascript&#34; src=&#34;jquery-1.7.js&#34;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;!--换成自己的Jquery引用--&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;!-- 写javascript --&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;script type=&#34;text/javascript&#34;&amp;gt;
+</span></span><span style=display:flex><span>&lt;span class=&#34;katex math inline&#34;&gt;(function(){&lt;/span&gt;(&#34;#1&#34;).mouseenter(function(){&lt;span class=&#34;katex math inline&#34;&gt;(this).css(&#34;background&#34;,&#34;red&#34;);});//鼠标在按钮上,设置red&lt;/span&gt;(&#34;#1&#34;).mousedown(function(){&lt;span class=&#34;katex math inline&#34;&gt;(this).css(&#34;background&#34;,&#34;yellow&#34;);}).mouseup(function(){&lt;/span&gt;(this).css(&#34;background&#34;,&#34;black&#34;);});//mousedown数遍按下时 设置为yellow，mouseup点击后变black
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>&amp;lt;/script&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;/head&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;body&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;input type=&#34;button&#34; value=&#34;点击&#34;  id=&#34;1&#34;/&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;/body&amp;gt;
+</span></span><span style=display:flex><span>&amp;lt;/html&amp;gt;
+</span></span></code></pre></div><pre><code>html中运行在移动客户端的浏览器中没有放大和缩小按钮。 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+</code></pre><h1></h1><h1 id=jquery-mobiledata-属性>jQuery Mobile <span class=color_h1 style=color:#8ac007>Data 属性</span><a hidden class=anchor aria-hidden=true href=#jquery-mobiledata-属性>#</a></h1><p><a href=http://www.w3cschool.cc/jquerymobile/jquerymobile-ref-data.html>http://www.w3cschool.cc/jquerymobile/jquerymobile-ref-data.html</a></p><p>此文章将会持续更新，主要收录一些新手比较常见的问题。</p><p>欢迎 <a href=http://www.wglong.com/main/index!aboutMe#contact>向我推荐</a>比较典型的常见问题，我会记录并整理进文章，方便自己更方便大家。</p><div>#### 文章导读：<pre><code>  - [1、页面缩放显示问题](http://www.wglong.com/main/artical!details?id=4#q1)
+  
+  - [2、页面跳转后样式丢失js失效](http://www.wglong.com/main/artical!details?id=4#q2)
+  
+  - [3、跳转时重复调用pageinit方法的解决办法](http://www.wglong.com/main/artical!details?id=4#q3)
+  
+  - [4、如何调用loading效果](http://www.wglong.com/main/artical!details?id=4#q4)
+  
+  - [5、动态改变了list的内容，但是内容并没有变化](http://www.wglong.com/main/artical!details?id=4#q5)
+  
+  - [6、把所有内容放到一个页面好,还是分开多页面好](http://www.wglong.com/main/artical!details?id=4#q6)
+  
+  - [7、如何禁掉ajax跳转](http://www.wglong.com/main/artical!details?id=4#q7)
+  
+  - [8、为什么android2.3系统转屏无效果？](http://www.wglong.com/main/artical!details?id=4#q8)
+  
+  - [9、如何去掉jqm自带的组件样式？](http://www.wglong.com/main/artical!details?id=4#q9)
+  
+  - [10、jquery mobile “闪屏” 问题](http://www.wglong.com/main/artical!details?id=4#q10)
+</code></pre><h3 id=2013430-更新内容>2013/4/30 更新内容：<a hidden class=anchor aria-hidden=true href=#2013430-更新内容>#</a></h3><pre><code>  - [11、按钮按下/划过的状态感觉反应有些迟缓？](http://www.wglong.com/main/artical!details?id=4#q11)
+</code></pre><h3 id=201351-更新内容>2013/5/1 更新内容：<a hidden class=anchor aria-hidden=true href=#201351-更新内容>#</a></h3><pre><code>  - [12、jquery mobile各类组件刷新方法](http://www.wglong.com/main/artical!details?id=4#q12)
+</code></pre><h3 id=201357-更新内容>2013/5/7 更新内容：<a hidden class=anchor aria-hidden=true href=#201357-更新内容>#</a></h3><pre><code>  - [13、在页面动态添加组件，发现css消失了](http://www.wglong.com/main/artical!details?id=4#q13)
+</code></pre><h3 id=2013522-更新内容>2013/5/22 更新内容：<a hidden class=anchor aria-hidden=true href=#2013522-更新内容>#</a></h3><pre><code>  - [14、关于checkbox取值问题](http://www.wglong.com/main/artical!details?id=4#q14)
+</code></pre><h3 id=2013528-更新内容>2013/5/28 更新内容：<a hidden class=anchor aria-hidden=true href=#2013528-更新内容>#</a></h3><pre><code>  - [15、点击屏幕，header和footer会略微抖动？](http://www.wglong.com/main/artical!details?id=4#q15)
+</code></pre><h3 id=2013620-更新内容>2013/6/20 更新内容：<a hidden class=anchor aria-hidden=true href=#2013620-更新内容>#</a></h3><pre><code>- [16、jqm图标|图标定位|隐藏图片上的文字|去除图标阴影|自定义图标|去除按钮阴影/圆角](http://www.wglong.com/main/artical!details?id=4#q16)
+
+- [17、jqm组件显示正常，但是小图标是“空的”，没有正常显示](http://www.wglong.com/main/artical!details?id=4#q17)
+
+- [18、$.mobile.changePage方法不能正常跳转](http://www.wglong.com/main/artical!details?id=4#q18)
+</code></pre><hr></div><div id=q1>##### <span class="badge badge-warning" style=color:#fff>1</span>页面缩放显示问题<pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+页面似乎被缩小了，屏幕太宽了。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+在head标签内加入：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&amp;lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1&#34;&amp;gt;
+</span></span></code></pre></div></div><div id=q2><pre><code>&amp;nbsp;
+</code></pre><h5 id=2页面跳转后样式丢失js失效><span class="badge badge-warning" style=color:#fff>2</span> 页面跳转后样式丢失js失效<a hidden class=anchor aria-hidden=true href=#2页面跳转后样式丢失js失效>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+用ajax跳转的时候，从a.html跳转到b.html后，b.html的css以及js都失效了。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+将当前页面需要用到的css以及js放在
+</code></pre><p>div内。</p><pre><code>&lt;span class=&quot;label label-success&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;原理：&lt;/span&gt;
+
+
+
+
+
+由于jqm的ajax跳转的时候，只会把b.html中
+</code></pre><p>内的内容加载进dom,而
+外的代码都不会加载，所以导致在
+外的js和css都失效了。</p></div><div id=q3><pre><code>&amp;nbsp;
+</code></pre><h5 id=3跳转时重复调用pageinit方法的解决办法><span class="badge badge-warning" style=color:#fff>3</span> 跳转时重复调用pageinit方法的解决办法<a hidden class=anchor aria-hidden=true href=#3跳转时重复调用pageinit方法的解决办法>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+用ajax跳转的时候，从a.html跳转到b.html，用从b.html返回a.html等等这种反复跳转的时候，pageinit方法内的代码会调用多次。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+在page中加入 data-dom-cache=&amp;#8221;true&amp;#8221;属性，如：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&amp;lt;div data-role=&#34;page&#34; id=&#34;myPage&#34; data-dom-cache=&#34;true&#34;&amp;gt;
+</span></span></code></pre></div><pre><code>然后把pageinit方法换为pageshow,如：
+
+
+
+
+
+&amp;nbsp;
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$(&#34;#myPage&#34;).live(&#34;pageshow&#34;, function() {
+</span></span><span style=display:flex><span>//...do something
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div></div><div id=q4><pre><code>&amp;nbsp;
+</code></pre><h5 id=4如何调用loading效果><span class="badge badge-warning" style=color:#fff>4</span> 如何调用loading效果<a hidden class=anchor aria-hidden=true href=#4如何调用loading效果>#</a></h5><pre><code>&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;js代码：&lt;/span&gt;
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span><span style=color:#ff79c6>//</span>显示loading
+</span></span><span style=display:flex><span>function showLoading(){
+</span></span><span style=display:flex><span><span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;katex math inline&#34;</span><span style=color:#ff79c6>&gt;.</span>mobile<span style=color:#ff79c6>.</span>loadingMessageTextVisible <span style=color:#ff79c6>=</span> <span style=font-style:italic>true</span>;<span style=color:#ff79c6>&lt;/</span>span<span style=color:#ff79c6>&gt;.</span>mobile<span style=color:#ff79c6>.</span>showPageLoadingMsg(<span style=color:#f1fa8c>&#34;a&#34;</span>, <span style=color:#f1fa8c>&#34;加载中...&#34;</span> );
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span><span style=color:#ff79c6>//</span>隐藏loading
+</span></span><span style=display:flex><span>function hideLoading(){
+</span></span><span style=display:flex><span><span style=color:#ff79c6>$.</span>mobile<span style=color:#ff79c6>.</span>hidePageLoadingMsg();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><pre><code>[查看Demo »](http://www.wglong.com/index/demos/loading/index.html)
+
+
+
+
+
+扫描查看Demo：
+</code></pre><p><img alt=jqmDemo loading=lazy src=http://www.wglong.com/index/demos/loading/loading.png></p></div><div id=q5><pre><code>&amp;nbsp;
+</code></pre><h5 id=5动态改变了list的内容但是内容并没有变化><span class="badge badge-warning" style=color:#fff>5</span> 动态改变了list的内容，但是内容并没有变化<a hidden class=anchor aria-hidden=true href=#5动态改变了list的内容但是内容并没有变化>#</a></h5><pre><code>&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+调用组件的refresh方法，刷新list,如：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$(&#34;#contentList&#34;).append(content).listview(&#39;refresh&#39;);
+</span></span></code></pre></div><pre><code>&lt;span class=&quot;label label-success&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;原理：&lt;/span&gt;
+
+
+
+
+
+jqm组件的显示原理是把原始的web组件隐藏，而用jqm自定义的UI组件来代替原始的web组件显示。动态的改变了list的值，其实改变的是原始组件list的值，而jqm的list组件的值并没有被更新，所以需要调用list组件的refresh方法来使其更新并显示。
+</code></pre><div class="alert alert-block alert-error" style=color:#b94a48>##### 注意:<pre><code>  此问题不只局限于list组件，基本所有的jqm UI组件在改变值之后都需要调用组件对应的refresh方法，例如button组件( $(&amp;#8216;#id&amp;#8217;).button(&amp;#8216;refresh&amp;#8217;) )等等。更多刷新方法请查看：[jquery mobile各类组件刷新方法](http://www.wglong.com/main/artical!details?id=4#q12)
+</code></pre></div></div><div id=q6><pre><code>&amp;nbsp;
+</code></pre><h5 id=6把所有内容放到一个页面好还是分开多页面好><span class="badge badge-warning" style=color:#fff>6</span> 把所有内容放到一个页面好,还是分开多页面好？<a hidden class=anchor aria-hidden=true href=#6把所有内容放到一个页面好还是分开多页面好>#</a></h5><pre><code>对于这个问题，说说笔者的个人见解：
+</code></pre><p><strong>#1所有内容放到同一页面</strong>
+<strong>#2分页面存放内容</strong>
+对于#1，如果是比较简单的网页内容，可以考虑把内容都放在同一个页面。但是如果页面结构很复杂，跳转页面比较多的话，那#1就会显得很臃肿，增加维护的复杂度。
+而#2比较适合页面结构以及页面比较多的情况，易维护。
+性能方面，笔者查了一些资料，也亲自做了些实验，并没有发现性能上的明显差异。
+<span class="label label-important" style=font-weight:700;color:#fff>结论：</span>根据个人编码习惯，两种选择都是可以的。推荐#1和#2混合使用。</p></div><div id=q7><pre><code>&amp;nbsp;
+</code></pre><h5 id=7如何禁掉ajax跳转><span class="badge badge-warning" style=color:#fff>7</span> 如何禁掉ajax跳转？<a hidden class=anchor aria-hidden=true href=#7如何禁掉ajax跳转>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+尽管ajax跳转有很炫的转屏动画，但是在某些时候为了性能或者为了业务需求还是需要禁掉ajax跳转的。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+禁止ajxa跳转有两种情况：
+
+
+
+
+
+1、禁止局部ajax跳转
+
+
+
+
+
+2、禁止全局ajax跳转
+
+
+
+
+
+对于#1只需要在a标签中添加下面的属性：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;data-ajax=“false”&lt;/span&gt;
+</span></span></code></pre></div><pre><code>有时我们要用正常的http请求而不用Ajax请求，比如链接到别的网站等情况。通过给a标签加下面的属性，可以将链接指定为正常的http请求:
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;rel&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;external&lt;/span&gt;
+</span></span></code></pre></div><pre><code>对于#2我们需要设置一个全局的禁止ajax跳转的方式，js代码如下：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;bind&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;str&#34; style=&#34;color: #dd1144;&#34;&gt;&#34;mobileinit&#34;&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;function&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;com&#34; style=&#34;color: #93a1a1;&#34;&gt;// disable ajax nav&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;
+</span></span><span style=display:flex><span>  		$&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;mobile&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;ajaxEnabled&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;});&lt;/span&gt;
+</span></span></code></pre></div><pre><code>&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;注意：&lt;/span&gt;上面的代码片段需要放在jquery.mobile-xxx.min.js引入之前。
+
+
+
+
+
+顺便说一句，初始化的设置都需要放在此处，例如加载错误信息的设置：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;mobile&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;pageLoadErrorMessage &lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;str&#34; style=&#34;color: #dd1144;&#34;&gt;&#39;Sorry, something went wrong. Please try again.&#39;&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;;&lt;/span&gt;
+</span></span></code></pre></div></div><div id=q8><pre><code>&amp;nbsp;
+</code></pre><h5 id=8为什么android23系统转屏无效果><span class="badge badge-warning" style=color:#fff>8</span> 为什么android2.3系统转屏无效果？<a hidden class=anchor aria-hidden=true href=#8为什么android23系统转屏无效果>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+发现在android2.X系统测试的时候slide等转屏效果并没有很好的显示，而是一闪而过了。但是在android4.0+显示却正常。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题分析：&lt;/span&gt;
+
+
+
+
+
+之所以android2.X系统对slide等转屏效果支持不是很好，是因为slide等效果都需要3D支持，而android2.X系统不支持3D,
+
+
+
+
+
+而JQM遇到这种情况的时候把slide等效果“退化”到淡入淡出效果，根据笔者的测试即使这种淡入淡出效果也不尽人意，感觉有点像“闪屏”，在这种情况下直接把转屏效果设置为none，反而比这种淡入淡出看着更舒服。
+
+
+
+
+
+既然android2.X不支持3D转场，但是android4.0支持，我想在4.0系统保留转场效果，而在2.X上去除转场效果怎么办？
+
+
+
+
+
+解决办法很简单，只需要加入下面的代码即可：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;mobile&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;transitionFallbacks&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;slideout &lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;str&#34; style=&#34;color: #dd1144;&#34;&gt;&#34;none&#34;&lt;/span&gt;
+</span></span></code></pre></div><pre><code>更多关于“闪屏”的问题，请看：[10、jquery mobile “闪屏” 问题](http://www.wglong.com/main/artical!details?id=4#q10)
+</code></pre></div><div id=q9><pre><code>&amp;nbsp;
+</code></pre><h5 id=9如何去掉jqm自带的组件样式><span class="badge badge-warning" style=color:#fff>9</span> 如何去掉jqm自带的组件样式？<a hidden class=anchor aria-hidden=true href=#9如何去掉jqm自带的组件样式>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+尽管jqm提供了比较美观的组件样式，但是有些时候我们需要去掉jqm自带的样式。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+解决办法很简单，只需要在组件中加上如下属性就可以了：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;data-role=&#39;none&#39;&lt;/span&gt;
+</span></span></code></pre></div></div><div id=q10><pre><code>&amp;nbsp;
+</code></pre><h5 id=10jquery-mobile-闪屏-问题><span class="badge badge-warning" style=color:#fff>10</span> jquery mobile “闪屏” 问题<a hidden class=anchor aria-hidden=true href=#10jquery-mobile-闪屏-问题>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;官方描述：&lt;/span&gt;
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;Important&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;Some&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; platforms currently have issues &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;with&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; transitions&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;We&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; are working on a solution to solve the problem &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; everyone&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;If&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; you are experiencing flickers &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;and&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; flashes during &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;or&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; at the &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;end&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; of a transition we suggest the following workaround&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;Please&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; note that &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; workaround should be thoroughly tested on the target platform before deployment&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;This&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; workaround &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;is&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; known to cause performance issues &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;and&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; browser crashes on some platforms&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; especially &lt;/span&gt;&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;Android&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;typ&#34; style=&#34;color: teal;&#34;&gt;Add&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; the following code to your custom css&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;ui&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;page &lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;webkit&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;backface&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;visibility&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; hidden&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;}&lt;/span&gt;
+</span></span></code></pre></div><pre><code>即使加上官方提供的css代码片段，效果仍旧不尽人意，这个问题到现在仍旧是jqm的一个比较严重的问题，希望下个版本可以解决此问题。
+
+
+
+
+
+除了在[8、为什么android2.3系统转屏无效果？](http://www.wglong.com/main/artical!details?id=4#q8) 中提到的内容外，近日在群里聊天，[**南京-恰恰虎**](http://www.wglong.com/main/artical!details?id=4#)提出一个可以缓解的方案，即：可以更改jqm的css,让闪的背景色和页面的一致，具体修改以下css:
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;ui&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;body&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;ui&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;overlay&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;c &lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;
+</span></span><span style=display:flex><span>border&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;lit&#34; style=&#34;color: #195f91;&#34;&gt;1px&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; solid &lt;/span&gt;&lt;span class=&#34;com&#34; style=&#34;color: #93a1a1;&#34;&gt;#AAA;&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;
+</span></span><span style=display:flex><span>color&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;com&#34; style=&#34;color: #93a1a1;&#34;&gt;#333;&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;
+</span></span><span style=display:flex><span>background&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;com&#34; style=&#34;color: #93a1a1;&#34;&gt;#F9F9F9; //修改这里的颜色代码&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;}&lt;/span&gt;
+</span></span></code></pre></div><pre><code>我想这是一个很好的思路，是个值得一试的方法，但是笔者还没有亲自实验，需要的朋友可以亲自试一试，有空的话记得回来在评论里发表一下实验结果哦。
+</code></pre></div><p> </p><div id=q11><pre><code>&amp;nbsp;
+</code></pre><h5 id=11按钮按下划过的状态感觉反应有些迟缓><span class="badge badge-warning" style=color:#fff>11</span> 按钮按下/划过的状态感觉反应有些迟缓？<a hidden class=anchor aria-hidden=true href=#11按钮按下划过的状态感觉反应有些迟缓>#</a></h5><pre><code>解决办法很简单，只需要加上如下设置就可以了：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$.mobile.buttonMarkup.hoverDelay = &#34;false&#34;;&lt;/span&gt;
+</span></span></code></pre></div></div><div id=q12><pre><code>&amp;nbsp;
+</code></pre><h5 id=12jquery-mobile各类组件刷新方法><span class="badge badge-warning" style=color:#fff>12</span> jquery mobile各类组件刷新方法<a hidden class=anchor aria-hidden=true href=#12jquery-mobile各类组件刷新方法>#</a></h5><pre><code>1、Combobox or select dropdowns
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span><span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;pln&#34;</span> style<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;color: #48484c;&#34;</span><span style=color:#ff79c6>&gt;</span><span style=color:#ff79c6>var</span> myselect <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;katex math inline&#34;</span><span style=color:#ff79c6>&gt;</span>(<span style=color:#f1fa8c>&#34;#sCountry&#34;</span>);
+</span></span><span style=display:flex><span>myselect[<span style=color:#bd93f9>0</span>]<span style=color:#ff79c6>.</span>selectedIndex <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>3</span>;
+</span></span><span style=display:flex><span>myselect<span style=color:#ff79c6>.</span>selectmenu(<span style=color:#f1fa8c>&#39;refresh&#39;</span>);
+</span></span><span style=display:flex><span><span style=color:#ff79c6>or</span><span style=color:#ff79c6>&lt;/</span>span<span style=color:#ff79c6>&gt;</span>( <span style=color:#f1fa8c>&#34;.selector&#34;</span> )<span style=color:#ff79c6>.</span>selectmenu( <span style=color:#f1fa8c>&#34;refresh&#34;</span>, <span style=font-style:italic>true</span> );<span style=color:#ff79c6>&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span></code></pre></div><pre><code>2、Listviews
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$(&#39;#mylist&#39;).listview(&#39;refresh&#39;);&lt;/span&gt;
+</span></span></code></pre></div><pre><code>3、Slider control
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$(&#39;#slider&#39;).val(80).slider(&#39;refresh&#39;);&lt;/span&gt;
+</span></span></code></pre></div><pre><code>4、Toggle switch
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-gdscript3 data-lang=gdscript3><span style=display:flex><span><span style=color:#ff79c6>&lt;</span>span <span style=color:#ff79c6>class</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;pln&#34;</span> style<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;color: #48484c;&#34;</span><span style=color:#ff79c6>&gt;</span><span style=color:#ff79c6>var</span> myswitch <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>$</span>(<span style=color:#f1fa8c>&#34;#toggle&#34;</span>);
+</span></span><span style=display:flex><span>myswitch[<span style=color:#bd93f9>0</span>]<span style=color:#ff79c6>.</span>selectedIndex <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>1</span>;
+</span></span><span style=display:flex><span>myswitch <span style=color:#ff79c6>.</span>slider(<span style=color:#f1fa8c>&#34;refresh&#34;</span>);<span style=color:#ff79c6>&lt;/</span>span<span style=color:#ff79c6>&gt;</span>
+</span></span></code></pre></div><pre><code>5、Radio buttons
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$(&#34;input[value=grid]&#34;).attr(&#39;checked&#39;,true).checkboxradio(&#39;refresh&#39;);
+</span></span><span style=display:flex><span>or
+</span></span><span style=display:flex><span>$( &#34;.selector&#34; ).prop( &#34;checked&#34;, true ).checkboxradio( &#34;refresh&#34; );&lt;/span&gt;
+</span></span></code></pre></div><pre><code>6、Checkboxes
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$(&#39;#checkbox-1&#39;).attr(&#39;checked&#39;,true).checkboxradio(&#39;refresh&#39;);
+</span></span><span style=display:flex><span>or
+</span></span><span style=display:flex><span>$( &#34;.selector&#34; ).prop( &#34;checked&#34;, true ).checkboxradio( &#34;refresh&#34; );&lt;/span&gt;
+</span></span></code></pre></div><pre><code>7、Buttons
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$( &#34;[type=&#39;submit&#39;]&#34; ).button( &#34;refresh&#34; );
+</span></span><span style=display:flex><span>or
+</span></span><span style=display:flex><span>$( &#34;.selector&#34; ).buttonMarkup( &#34;refresh&#34; );&lt;/span&gt;
+</span></span></code></pre></div><pre><code>8、Column-Toggle Table
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$( &#34;.selector&#34; ).table-columntoggle( &#34;refresh&#34; );&lt;/span&gt;
+</span></span></code></pre></div><pre><code>9、Reflow Table
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$( &#34;.selector&#34; ).table( &#34;refresh&#34; );&lt;/span&gt;
+</span></span></code></pre></div></div><div id=q13><pre><code>&amp;nbsp;
+</code></pre><h5 id=13在页面动态添加组件发现css消失了><span class="badge badge-warning" style=color:#fff>13</span> 在页面动态添加组件，发现css消失了<a hidden class=anchor aria-hidden=true href=#13在页面动态添加组件发现css消失了>#</a></h5><pre><code>首先请试一试上面问题12的解决方案，如果没有效果的话，那就试试加上.trigger(&amp;#8216;create&amp;#8217;)，例如：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$(&#34;#id&#34;).html(content).trigger(&#39;create&#39;);
+</span></span><span style=display:flex><span>or
+</span></span><span style=display:flex><span>$.mobile.pageContainer.trigger(&#34;create&#34;);&lt;/span&gt;
+</span></span></code></pre></div></div><div id=q14><pre><code>&amp;nbsp;
+</code></pre><h5 id=14关于checkbox取值问题><span class="badge badge-warning" style=color:#fff>14</span> 关于checkbox取值问题<a hidden class=anchor aria-hidden=true href=#14关于checkbox取值问题>#</a></h5><pre><code>网友[**流浪的旋律**](http://www.wglong.com/main/artical!details?id=4#)在checkbox取值的时候，发现官网并没有提供相关方法，通过查阅资料终于找到了取值方法，并找到我分享在此，再次感谢[**流浪的旋律**](http://www.wglong.com/main/artical!details?id=4#)的分享精神！
+
+
+
+
+
+取值方式如下：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;$(.checkbox)[0].checked&lt;/span&gt;
+</span></span></code></pre></div><pre><code>[查看checkbox取值Demo »](http://www.wglong.com/index/demos/checkboxGetValue/checkboxGetValue.html)
+
+
+
+
+
+[下载checkbox取值Demo »](http://www.wglong.com/index/demos/checkboxGetValue/checkboxGetValue.zip)
+</code></pre></div><div id=q15><pre><code>&amp;nbsp;
+</code></pre><h5 id=15点击屏幕header和footer会略微抖动><span class="badge badge-warning" style=color:#fff>15</span> 点击屏幕，header和footer会略微抖动？<a hidden class=anchor aria-hidden=true href=#15点击屏幕header和footer会略微抖动>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+在真机运行的时候，轻击屏幕会发现header和footer有略微的抖动。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+在header和footer中添加如下属性：
+</code></pre><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;data-tap-toggle=&#34;false&#34;&lt;/span&gt;
+</span></span></code></pre></div><pre><code>添加这个属性也可以解决点击屏幕header或footer消失问题。
+</code></pre></div><div id=q16><pre><code>&amp;nbsp;
+</code></pre><h5 id=16jqm图标图标定位隐藏图片上的文字去除图标阴影自定义图标去除按钮阴影圆角><span class="badge badge-warning" style=color:#fff>16</span> jqm图标|图标定位|隐藏图片上的文字|去除图标阴影|自定义图标|去除按钮阴影/圆角<a hidden class=anchor aria-hidden=true href=#16jqm图标图标定位隐藏图片上的文字去除图标阴影自定义图标去除按钮阴影圆角>#</a></h5><pre><code>**1、图标定位 data-iconpos**
+
+
+
+
+
+默认情况下，所有的图标都放在按钮的按钮文本左。此默认可以覆盖使用 data-iconpos 属性来设置图标的右上方（top）、底部（bottom）、右侧（right）、左侧（left）的文本
+
+
+
+
+
+**2、隐藏图片上的文字 data-iconpos=”notext”**
+
+
+
+
+
+你也可以创建一个图标按钮，设置 data-iconpos=”notext”。按钮插件将隐藏的文字在屏幕上，但把它作为给屏幕阅读器和设备支持工具提示上下文链接标题属性。例如，data-iconpos=”right”，data-iconpos=”notext”：
+
+
+
+
+
+**3、自定义图标 data-icon=”自定义值”**
+
+
+
+
+
+使用自定义图标，需要指定 data-icon 值。Jquery Mobile的button插件会将生成一个CSS类，它的前缀是ui-icon- ，后面的是data-icon值。假如：有一个按钮 data-icon 属性的值为 myapp-email，即 data-icon=“ myapp-email”。那么生产的CSS类是：ui-icon-myapp-email。
+
+
+
+
+
+然后你可以在你的样式表写一个CSS规则来定义 ui-icon-myapp-email。然后在css中指定这个类的背景图片地址。为了保持与其他图标的视觉上的一致性，请创建一个白色18×18像素的PNG-8图标，并且保存为Alpha透明度。
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;ui&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;icon&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;myapp&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;email &lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;
+</span></span><span style=display:flex><span>  background&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; url&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;str&#34; style=&#34;color: #dd1144;&#34;&gt;&#34;app-icon-email.png&#34;&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;}&lt;/span&gt;
+</span></span></code></pre></div><p>这将创建标准分辨率的图标，但许多设备都有非常高的分辨率的显示器，就像iPhone 4的视网膜显示器。添加一个高清图标，创建一个图标，36X36像素（18像素大小完全相同的两倍），并添加第二个规则使用WebKit分钟装置像素比例：2。媒体查询到目标的规则只有以高分辨率显示器。指定背景图片高清图标文件和设置背景像素大小18×18将安装36个像素图标到同一个18像素的空间。传媒查询块可以用多个图标规则：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;lit&#34; style=&#34;color: #195f91;&#34;&gt;@media&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; only screen &lt;/span&gt;&lt;span class=&#34;kwd&#34; style=&#34;color: #1e347b;&#34;&gt;and&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;(-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;webkit&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;min&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;device&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;pixel&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;ratio&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;lit&#34; style=&#34;color: #195f91;&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;ui&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;icon&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;myapp&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;email &lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;
+</span></span><span style=display:flex><span>    background&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt; url&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;str&#34; style=&#34;color: #dd1144;&#34;&gt;&#34;app-icon-email-highres.png&#34;&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;
+</span></span><span style=display:flex><span>    background&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;lit&#34; style=&#34;color: #195f91;&#34;&gt;18px&lt;/span&gt;&lt;span class=&#34;lit&#34; style=&#34;color: #195f91;&#34;&gt;18px&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;more HD icon rules go here&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;pun&#34; style=&#34;color: #93a1a1;&#34;&gt;}&lt;/span&gt;
+</span></span></code></pre></div><p><strong>4、去除按钮阴影/圆角</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;span class=&#34;pln&#34; style=&#34;color: #48484c;&#34;&gt;data-shadow=”false”
+</span></span><span style=display:flex><span>data-corners=”false”&lt;/span&gt;
+</span></span></code></pre></div><p>本小结引自：<a href="http://www.wpdic.com/?p=59">http://www.wpdic.com/?p=59</a></p><div id=q17><pre><code>&amp;nbsp;
+</code></pre><h5 id=17jqm组件显示正常但是小图标是空的没有正常显示><span class="badge badge-warning" style=color:#fff>17</span> jqm组件显示正常，但是小图标是“空的”，没有正常显示<a hidden class=anchor aria-hidden=true href=#17jqm组件显示正常但是小图标是空的没有正常显示>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+例如header中的返回按钮，按钮的显示和功能都正常，但是按钮上的“返回小图标”没有显示。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+这是由于没有引入jqm的图片文件引起的，解决方法是在jqm的资源包里找到images文件夹，并把images文件夹引入自己的项目，与jqm的css文件放在同一级目录里。
+</code></pre></div><div id=q18><pre><code>&amp;nbsp;
+</code></pre><h5 id=18mobilechangepage方法不能正常跳转><span class="badge badge-warning" style=color:#fff>18</span> $.mobile.changePage方法不能正常跳转<a hidden class=anchor aria-hidden=true href=#18mobilechangepage方法不能正常跳转>#</a></h5><pre><code>&lt;span class=&quot;label label-info&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;问题描述：&lt;/span&gt;
+
+
+
+
+
+$.mobile.changePage不能跳转，而window.location.href却可以正常跳转。
+
+
+
+
+
+&lt;span class=&quot;label label-success&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;原理：&lt;/span&gt;
+
+
+
+
+
+这个问题牵扯到jqm的跳转机制了，简单的说jqm的默认跳转方式，也就是$.mobile.changePage这种方式，原理是ajax跳转。听起来很神秘，其实就是通过ajax动态的把目标页面的内容加载到当前的dom中。当多页面跳转的时候，通过ajax跳转，就存在ajax跨域的问题。所以解决目前的问题，其实就是解决ajax跨域的问题。
+
+
+
+
+
+&lt;span class=&quot;label label-important&quot; style=&quot;font-weight: bold; color: #ffffff;&quot;&gt;解决办法：&lt;/span&gt;
+
+
+
+
+
+为了解决跨域问题，我们需要把项目放在服务器环境下。好多朋友不知道什么叫服务器环境，说白了就是把项目部署到WAMP或者TOMCAT等等的服务器下，然后通过http://localhost/xxx 这样的方式访问项目。
+
+
+
+
+
+小结：这里提到了jqm的跳转机制了，笔者之前写过一篇文章：[JQM进阶:转屏效果的模拟实现](http://www.wglong.com/main/artical!details?id=17)，这篇文章完全没有用jqm，而是模拟了jqm的跳转过程，想深入了解jqm跳转的朋友可以看一看这篇文章的实现原理。
+</code></pre></div><p> </p><p><span class="badge badge-warning" style=font-weight:700;color:#fff>19</span> …还有什么需要补充问题？ <a href=http://www.wglong.com/main/index!aboutMe#contact>请联系我</a></p><p> </p><p>原创文章，转载请注明出处：<a href="http://www.wglong.com/main/artical!details?id=4">http://www.wglong.com/main/artical!details?id=4</a></p><p> </p></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.zdltech.com/tags/html5/>Html5</a></li><li><a href=https://blog.zdltech.com/tags/%E5%89%8D%E7%AB%AF/>前端</a></li></ul><nav class=paginav><a class=prev href=https://blog.zdltech.com/posts/%E6%8A%98%E8%85%BE2%E9%A2%97%E6%98%9F%E6%98%9F%E7%BA%AFcss%E5%AE%9E%E7%8E%B0%E6%98%9F%E6%98%9F%E8%AF%84%E5%88%86%E4%BA%A4%E4%BA%92%E6%95%88%E6%9E%9C/><span class=title>« 上一页</span>
+<span>折腾：2颗星星+纯CSS实现星星评分交互效果</span>
+</a><a class=next href=https://blog.zdltech.com/posts/%E6%9E%84%E5%BB%BA%E8%B7%A8%E5%B9%B3%E5%8F%B0appjquery-mobile%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98%E8%BF%9E%E8%BD%BD%E5%85%AD-%E8%AE%BE%E8%AE%A1%E6%92%AD/><span class=title>下一页 »</span>
+<span>《构建跨平台APP：jQuery Mobile移动应用实战》连载六-设计播放器APP</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>ZDL Tech Blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var toplink=document.getElementById("top-link");window.onscroll=function(){const e=window.innerHeight;document.body.scrollTop>e||document.documentElement.scrollTop>e?toplink.classList.remove("hidden"):toplink.classList.add("hidden")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="复制";function s(){t.innerHTML="已复制！",setTimeout(()=>{t.innerHTML="复制"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
