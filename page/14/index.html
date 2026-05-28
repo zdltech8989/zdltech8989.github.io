@@ -1,5 +1,66 @@
 <!doctype html><html lang=zh dir=auto data-theme=auto><head><meta name=generator content="Hugo 0.147.4"><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>领风沐雨</title>
-<meta name=description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/index.xml title=rss><link rel=alternate type=application/json href=https://blog.zdltech.com/index.json title=json><link rel=alternate hreflang=zh href=https://blog.zdltech.com/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="领风沐雨"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="领风沐雨"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"领风沐雨","url":"https://blog.zdltech.com/","description":"领风沐雨 - Android · Java · Web开发 · Linux运维","logo":"https://blog.zdltech.com/favicon.ico","sameAs":["https://github.com/zdltech8989"]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>新布局节点ConstraintLayout基本使用</h2></header><div class=entry-content><p>Android ConstraintLayout详解 AndroidStudio2.2开始，就推出了一个牛逼的布局，ConstraintLayout,此布局像是一个升级版的RelativeLayout，但是功能比RelativeLayout强大许多，号称一层布局就可以搞定复杂页面。在AS2.2下还可以用拖拽控件的方式就行布局（设计师的福音），不过本篇不讲解拖拽控件的相关用法，主要讲解一些相关属性含义。
+<meta name=description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/index.xml title=rss><link rel=alternate type=application/json href=https://blog.zdltech.com/index.json title=json><link rel=alternate hreflang=zh href=https://blog.zdltech.com/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="领风沐雨"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="领风沐雨"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"领风沐雨","url":"https://blog.zdltech.com/","description":"领风沐雨 - Android · Java · Web开发 · Linux运维","logo":"https://blog.zdltech.com/favicon.ico","sameAs":["https://github.com/zdltech8989"]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)</h2></header><div class=entry-content><p>这个画廊的效果利用到了View的clipChildren属性，我们在这里要把ViewPager以及它的父窗体都设置为false，如下:
+Android:clipChildren=”false”
+因为如果clipChildren属性设置为true,就表明我们要将children给clip掉，就是说对于子元素来说，超出当前view的部分都会被切掉，那我们在这里把它设置成false，就表明超出view的部分，不要切掉，依然显示。
+xml代码部分：
+&lt;LinearLayout
+android:id=”@+id/container”
+android:layout_width=”match_parent”
+android:layout_height=”100dp”
+android:clipChildren=”false”
+android:gravity=”center_horizontal”
+android:layerType=”software”
+android:orientation=”horizontal” >
+&lt;android.support.v4.view.ViewPager
+android:id=”@+id/viewpager”
+android:layout_width=”match_parent”
+android:layout_height=”match_parent”
+android:layout_marginLeft=”110dp”
+android:layout_marginRight=”110dp”
+android:clipChildren=”false” >
+&lt;/android.support.v4.view.ViewPager>
+Java代码部分：
+// 1.设置幕后item的缓存数目
+mViewPager.setOffscreenPageLimit(3);
+// 2.设置页与页之间的间距
+mViewPager.setPageMargin(10);
+// 3.将父类的touch事件分发至viewPgaer，否则只能滑动中间的一个view对象
+container.setOnTouchListener(new View.OnTouchListener() {
+@Override
+public boolean onTouch(View v, MotionEvent event) {
+return mViewPager.dispatchTouchEvent(event);
+}
+});
+参考效果图（上面代码并不能实现效果图，仅供参考）：
+正常情况下, ViewPager 一页只能显示一项数据, 但是如果需求是, 除了小显示本页数据, 还有包 左右两半的数据 也都露出一点来呢? 这该怎么处理? 后面在网上了搜了一下, 发现有不少这样得到文章, 这里自己也写一篇总结一下. 其实 主要就是用到 View 的 android:clipChildren 属性. 简单来说这个属性, 就是 父View 是否 束缚 子View 的显示范围. 如果 父View 有 padding , 那么 子View 则在 padding区域是不能显示内容的, 但是如果 设置 android:clipChildren 为 false 时, 则子View 就可以在 父View 的padding屈戌显示内容了. ok 基本了解了 android:clipChildren 那么来处理一下 ViewPager吧 先看一下我做的demo:
+...</p></div><footer class=entry-footer><span title='2017-08-29 01:44:09 +0000 UTC'>2017年8月29日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android 使用ViewPager实现类似gallery画廊的效果(画廊效果之ViewPager显示多个图片)" href=https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8viewpager%E5%AE%9E%E7%8E%B0%E7%B1%BB%E4%BC%BCgallery%E7%94%BB%E5%BB%8A%E7%9A%84%E6%95%88%E6%9E%9C%E7%94%BB%E5%BB%8A%E6%95%88%E6%9E%9C%E4%B9%8Bviewpager%E6%98%BE%E7%A4%BA/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Maven添加本地jar的方法</h2></header><div class=entry-content><p>在pox.xml文件中添加
+org.apache apache-ant-zip 2.3 system ${basedir}/lib/apache-ant-zip-2.3.jar jsp中获取当前的url
+&lt;%
+String path = request.getContextPath();
+String bastPath = request.getScheme()+”://”+request.getServerName()+”:”+request.getServerPort()+path+”/”;
+%>
+” id=”base_url”> The username you provided is not allowed to use the text-based Tomcat Manager (error 403)
+Tomcat管理
+http://blog.csdn.net/jay_1989/article/details/52861620</p></div><footer class=entry-footer><span title='2017-08-26 14:48:19 +0000 UTC'>2017年8月26日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Maven添加本地jar的方法" href=https://blog.zdltech.com/posts/maven%E6%B7%BB%E5%8A%A0%E6%9C%AC%E5%9C%B0jar%E7%9A%84%E6%96%B9%E6%B3%95/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>MyBatis的返回参数类型</h2></header><div class=entry-content><p>MyBatis的返回参数类型分两种
+1. 对应的分类为：
+1.1.resultMap:
+1.2.resultType:
+2 .对应返回值类型：
+2.1.resultMap:结果集
+2.2.resultType:int,string ,long ,class
+3. 注意点：
+在MyBatis进行查询映射时，其实查询出来的每一个属性都是放在一个对应的Map里面的，其中键是属性名，值则是其对应的值。
+3.1 当提供的返回类型属性是resultType时，MyBatis会将Map里面的键值对取出赋给resultType所指定的对象对应的属性。所以其实MyBatis的每一个查询映射的返回类型都是ResultMap，只是当提供的返回类型属性是resultType的时
+候，MyBatis对自动的给把对应的值赋给resultType所指定对象的属性。
+3.2 当提供的返回类型是resultMap时，因为Map不能很好表示领域模型，就需要自己再进一步的把它转化为对应的对象，这常常在复杂查询中很有作用。
+4.案例
+4.1：resultMap案例
+**[html]** [view plain](http://blog.csdn.net/u010235716/article/details/51698787#) [copy](http://blog.csdn.net/u010235716/article/details/51698787#) &lt;div> &lt;embed id="ZeroClipboardMovie_1" src="http://static.blog.csdn.net/scripts/ZeroClipboard/ZeroClipboard.swf" type="application/x-shockwave-flash" width="18" height="18" align="middle" name="ZeroClipboardMovie_1" data-mce-fragment="1"> &lt;/embed> &lt;/div> &lt;/div> - &lt;span class="tag">&lt;&lt;/span>&lt;span class="tag-name">select&lt;/span> &lt;span class="attribute">id&lt;/span>=&lt;span class="attribute-value">&amp;#8220;selectByPrimaryKey&amp;#8221;&lt;/span> &lt;span class="attribute">resultMap&lt;/span>=&lt;span class="attribute-value">&amp;#8220;BaseResultMap&amp;#8221;&lt;/span> &lt;span class="attribute">parameterType&lt;/span>=&lt;span class="attribute-value">&amp;#8220;java.lang.Long&amp;#8221;&lt;/span> &lt;span class="tag">>&lt;/span> - select - &lt;span class="tag">&lt;&lt;/span>&lt;span class="tag-name">include&lt;/span> &lt;span class="attribute">refid&lt;/span>=&lt;span class="attribute-value">&amp;#8220;Base_Column_List&amp;#8221;&lt;/span> &lt;span class="tag">/>&lt;/span> - from common_car_make - where &lt;span class="attribute">id&lt;/span> = #{id,&lt;span class="attribute">jdbcType&lt;/span>=&lt;span class="attribute-value">BIGINT&lt;/span>} - &lt;span class="tag">&lt;/&lt;/span>&lt;span class="tag-name">select&lt;/span>&lt;span class="tag">>&lt;/span> 4.2 resultType–long案例
+...</p></div><footer class=entry-footer><span title='2017-08-26 14:44:38 +0000 UTC'>2017年8月26日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to MyBatis的返回参数类型" href=https://blog.zdltech.com/posts/mybatis%E7%9A%84%E8%BF%94%E5%9B%9E%E5%8F%82%E6%95%B0%E7%B1%BB%E5%9E%8B/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android ToolBar 使用完全解析</h2></header><div class=entry-content><p>ToolBar简介 ToolBar是Android 5.0推出的一个新的导航控件用于取代之前的ActionBar，由于其高度的可定制性、灵活性、具有Material Design风格等优点，越来越多的应用也用上了ToolBar，比如常用的知乎软件其顶部导航栏正是使用ToolBar。官方考虑到仍有一部分用户的手机版本号低于5.0，所以，ToolBar也放进了support v7包内，使得低版本的系统也能使用上ToolBar。本文将使用support v7支持包的ToolBar来进行讲解，包括其基本用法、样式定制等知识点。
+ToolBar的基本使用 引入support v7支持包 在你项目的build.gradle内输入如下代码，即能引入支持包，该支持包内有能向下兼容的ToolBar:
+`dependencies { compile fileTree(dir: &amp;lt;span class="hljs-string">'libs'&amp;lt;/span>, include: [&amp;lt;span class="hljs-string">'*.jar'&amp;lt;/span>]) compile &amp;lt;span class="hljs-string">'com.android.support:appcompat-v7:23.1.1'&amp;lt;/span> }`&lt;a target="_blank" name="t3">&lt;/a> 更改主题 为了能够正常使用ToolBar，我们需要隐藏原来的ActionBar，这个可以在主题中修改，在values/styles.xml中做出如下修改：
+" width="20" data-original-code="![]( data-wp-preserve=)1 2 1 2 " data-snippet-id="ext.2bc0da59d9ff7d2cc4639972565d3679" data-snippet-saved="false" data-codota-status="done" style="white-space: nowrap; word-wrap: break-word; box-sizing: border-box; position: relative; overflow-y: hidden; overflow-x: auto; margin: 0px 0px 1.1em; font-family: "Source Code Pro", monospace; display: block; padding: 5px 5px 5px 60px; font-size: 14px; line-height: 1.45; word-break: break-all; color: rgb(51, 51, 51); background-color: rgba(128, 128, 128, 0.05); border: 0px solid rgb(136, 136, 136); border-radius: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"&amp;gt;`&amp;lt;span class="hljs-tag">&amp;lt;&amp;lt;span class="hljs-title">style&amp;lt;/span> &amp;lt;span class="hljs-attribute">name&amp;lt;/span>=&amp;lt;span class="hljs-value">"AppTheme"&amp;lt;/span> &amp;lt;span class="hljs-attribute">parent&amp;lt;/span>=&amp;lt;span class="hljs-value">"Theme.AppCompat.Light.NoActionBar"&amp;lt;/span>&amp;gt;&amp;lt;/span> &amp;lt;span class="hljs-tag">&amp;lt;/&amp;lt;span class="hljs-title">style&amp;lt;/span>&amp;gt;&amp;lt;/span>` 继承了Theme.Appcompat.Light.NoActionBar主题，这里提一下，这个Theme.AppCompat是支持包内的主题，对应着5.0版本的Theme.Material主题。然后在manifest文件中引用这个主题。
+...</p></div><footer class=entry-footer><span title='2017-08-26 14:40:23 +0000 UTC'>2017年8月26日</span>&nbsp;·&nbsp;<span>6 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android ToolBar 使用完全解析" href=https://blog.zdltech.com/posts/android-toolbar-%E4%BD%BF%E7%94%A8%E5%AE%8C%E5%85%A8%E8%A7%A3%E6%9E%90/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>新布局节点ConstraintLayout基本使用</h2></header><div class=entry-content><p>Android ConstraintLayout详解 AndroidStudio2.2开始，就推出了一个牛逼的布局，ConstraintLayout,此布局像是一个升级版的RelativeLayout，但是功能比RelativeLayout强大许多，号称一层布局就可以搞定复杂页面。在AS2.2下还可以用拖拽控件的方式就行布局（设计师的福音），不过本篇不讲解拖拽控件的相关用法，主要讲解一些相关属性含义。
 想学习拖拽控件设计ConstraintLayout的请点这里。
 Android官方教程在此。
 本文讲解参考这里，需自备梯子。
@@ -67,135 +128,7 @@ sign（签名）使用 有时候，在集成第三方时候，需要我们输入
 在项目的buil.gradle文件配置打包的版本和输出的名称 //打包APK根据不同的环境打包不同的名称 ext{ productName = "CommonProject" versionName = "2.0.1" keyPassword = "android" keyFilePath = "/Users/jason/Documents/keystore/android.keystore" storePassword = "android" keyAlias = "android" } //productName 打包出来的名称 //versionName 打包显示版本号 //keyPassword 密码 //keyFilePath 正式全路径 //storePassword 密码 //keyAlias 别名 2 . 引入sign.gradle文件下载sign.gradle
 ...</p></div><footer class=entry-footer><span title='2017-06-07 23:15:10 +0000 UTC'>2017年6月7日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android开发中Gradle配置使用" href=https://blog.zdltech.com/posts/androidgradle/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>brew 中node-7.6.0 already installed, it’s just not linked.错误修改</h2></header><div class=entry-content><p>`sudo brew uninstall node brew update brew upgrade brew cleanup brew install node sudo chown -R 用户组（一般当前用户名） /usr/local brew link --overwrite node`</p></div><footer class=entry-footer><span title='2017-06-02 09:54:46 +0000 UTC'>2017年6月2日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to brew 中node-7.6.0 already installed, it’s just not linked.错误修改" href=https://blog.zdltech.com/posts/brew-%E4%B8%ADnode-7-6-0-already-installed-its-just-not-linked-%E9%94%99%E8%AF%AF%E4%BF%AE%E6%94%B9/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>自定义ImageView 宽度自适应屏幕，高度等比缩放</h2></header><div class=entry-content><p>实现方法很简单，根据图片文件的宽度与ImageView的宽度比例关系算出ImageView的高度。
 package com.etongwl.commonlibs.view; import android.annotation.SuppressLint; import android.content.Context; import android.graphics.Bitmap; import android.graphics.Canvas; import android.graphics.drawable.BitmapDrawable; import android.graphics.drawable.Drawable; import android.graphics.drawable.NinePatchDrawable; import android.util.AttributeSet; import android.view.ViewGroup; import android.widget.ImageView; /* * @Override public void setImageDrawable(final Drawable drawable) { super.setImageDrawable(drawable); if (drawable != null) { post(new Runnable() { @Override public void run() { float mWidth = getWidth(); float pWidth = drawable.getBounds().width(); float pHeight = drawable.getBounds().height(); int mHeight = (int) ((mWidth / pWidth) * pHeight); LayoutParams params = getLayoutParams(); params.height = mHeight; params.width = (int) mWidth; setLayoutParams(params); } }); } } 首先, 如果drawable不为空, 则通过drawable.getBounds()去获取drawable边界的宽和高. 在根据ImageView的宽与drawable的宽的比例去计算高度, 最后通过LayoutParams设置ImageView的高度 * */ /* &amp;lt;com.etongwl.commonlibs.view.AdaptiveImageView android:id="@+id/detail_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_marginTop="15dp" android:scaleType="centerCrop" android:background="@drawable/diandianxinwen" android:visibility="visible" /&amp;gt; */ /** * 按比例缩放 */ @SuppressLint("AppCompatCustomView") public class AdaptiveImageView extends ImageView { // 控件默认长、宽 private int defaultWidth = 0; private int defaultHeight = 0; // 比例 private float scale = 0; public AdaptiveImageView(Context context) { super(context); } public AdaptiveImageView(Context context, AttributeSet attrs) { super(context, attrs); } public AdaptiveImageView(Context context, AttributeSet attrs, int defStyle) { super(context, attrs, defStyle); } @Override protected void onDraw(Canvas canvas) { Drawable drawable = getDrawable(); if (drawable == null) { return; } if (getWidth() == 0 || getHeight() == 0) { return; } this.measure(0, 0); if (drawable.getClass() == NinePatchDrawable.class) return; Bitmap b = ((BitmapDrawable) drawable).getBitmap(); Bitmap bitmap = b.copy(Bitmap.Config.ARGB_8888, true); if (bitmap.getWidth() == 0 || bitmap.getHeight() == 0) { return; } if (defaultWidth == 0) { defaultWidth = getWidth(); } if (defaultHeight == 0) { defaultHeight = getHeight(); } scale = (float) defaultWidth / (float) bitmap.getWidth(); defaultHeight = Math.round(bitmap.getHeight() * scale); ViewGroup.LayoutParams params = this.getLayoutParams(); params.width = defaultWidth; params.height = defaultHeight; this.setLayoutParams(params); super.onDraw(canvas); } } 简单实现ImageView宽度填满屏幕，高度自适应的两种方式 两种方式 1.重写View的onMeasure方法参考这里easion_zms的专栏 核心代码
-...</p></div><footer class=entry-footer><span title='2017-05-02 08:35:05 +0000 UTC'>2017年5月2日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 自定义ImageView 宽度自适应屏幕，高度等比缩放" href=https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android 中的CreatePackageContext()</h2></header><div class=entry-content><p>/**
-* Return a new Context object for the given application name. This
-* Context is the same as what the named application gets when it is
-* launched, containing the same resources and class loader. Each call to
-* this method returns a new instance of a Context object; Context objects
-* are not shared, however they share common state (Resources, ClassLoader,
-* etc) so the Context instance itself is fairly lightweight.
-...</p></div><footer class=entry-footer><span title='2017-04-25 07:25:29 +0000 UTC'>2017年4月25日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android 中的CreatePackageContext()" href=https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android动态加载基础 ClassLoader工作机制</h2></header><div class=entry-content><p>类加载器ClassLoader
-早期使用过Eclipse等Java编写的软件的同学可能比较熟悉，Eclipse可以加载许多第三方的插件（或者叫扩展），这就是动态加载。这些插件大多是一些Jar包，而使用插件其实就是动态加载Jar包里的Class进行工作。这其实非常好理解，Java代码都是写在Class里面的，程序运行在虚拟机上时，虚拟机需要把需要的Class加载进来才能创建实例对象并工作，而完成这一个加载工作的角色就是ClassLoader。
-对于Java程序来说，编写程序就是编写类，运行程序也就是运行类（编译得到的class文件），其中起到关键作用的就是类加载器ClassLoader。
-Android的Dalvik/ART虚拟机如同标准JAVA的JVM虚拟机一样，在运行程序时首先需要将对应的类加载到内存中。因此，我们可以利用这一点，在程序运行时手动加载Class，从而达到代码动态加载可执行文件的目的。Android的Dalvik/ART虚拟机虽然与标准Java的JVM虚拟机不一样，ClassLoader具体的加载细节不一样，但是工作机制是类似的，也就是说在Android中同样可以采用类似的动态加载插件的功能，只是在Android应用中动态加载一个插件的工作要比Eclipse加载一个插件复杂许多（这点后面在解释说明）。
-有几个ClassLoader实例？ 动态加载的基础是ClassLoader，从名字也可以看出，ClassLoader就是专门用来处理类加载工作的，所以这货也叫类加载器，而且一个运行中的APP 不仅只有一个类加载器。 其实，在Android系统启动的时候会创建一个Boot类型的ClassLoader实例，用于加载一些系统Framework层级需要的类，我们的Android应用里也需要用到一些系统的类，所以APP启动的时候也会把这个Boot类型的ClassLoader传进来。
-此外，APP也有自己的类，这些类保存在APK的dex文件里面，所以APP启动的时候，也会创建一个自己的ClassLoader实例，用于加载自己dex文件中的类。下面我们在项目里验证看看
-` &amp;lt;span class="hljs-annotation">@Override&amp;lt;/span> &amp;lt;span class="hljs-function">&amp;lt;span class="hljs-keyword">protected&amp;lt;/span> &amp;lt;span class="hljs-keyword">void&amp;lt;/span> &amp;lt;span class="hljs-title">onCreate&amp;lt;/span>&amp;lt;span class="hljs-params">(Bundle savedInstanceState)&amp;lt;/span> &amp;lt;/span>{ &amp;lt;span class="hljs-keyword">super&amp;lt;/span>.onCreate(savedInstanceState); ClassLoader classLoader = getClassLoader(); &amp;lt;span class="hljs-keyword">if&amp;lt;/span> (classLoader != &amp;lt;span class="hljs-keyword">null&amp;lt;/span>){ Log.i(TAG, &amp;lt;span class="hljs-string">"[onCreate] classLoader "&amp;lt;/span> + i + &amp;lt;span class="hljs-string">" : "&amp;lt;/span> + classLoader.toString()); &amp;lt;span class="hljs-keyword">while&amp;lt;/span> (classLoader.getParent()!=&amp;lt;span class="hljs-keyword">null&amp;lt;/span>){ classLoader = classLoader.getParent(); Log.i(TAG,&amp;lt;span class="hljs-string">"[onCreate] classLoader "&amp;lt;/span> + i + &amp;lt;span class="hljs-string">" : "&amp;lt;/span> + classLoader.toString()); } } }` 输出结果为
-...</p></div><footer class=entry-footer><span title='2017-04-25 06:25:27 +0000 UTC'>2017年4月25日</span>&nbsp;·&nbsp;<span>7 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android动态加载基础 ClassLoader工作机制" href=https://blog.zdltech.com/posts/android%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%9F%BA%E7%A1%80-classloader%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>深入浅出ClassLoader ，超详细java中的ClassLoader详解</h2></header><div class=entry-content><p>你真的了解ClassLoader吗？ 这篇文章翻译自zeroturnaround.com的 Do You Really Get Classloaders? ，融入和补充了笔者的一些实践、经验和样例。本文的例子比原文更加具有实际意义，文字内容也更充沛一些，非常感谢作者 Jevgeni Kabanov 能够共享如此优秀的文档。
-1. 为什么你需要了解和敬畏ClassLoader ClassLoader在Java语言中占据了核心地位，Java应用服务器，OSGi，以及大量的网络框架，它们大多数都用到了ClassLoader。如果在使用过程中出现了类加载错误，你能解决它吗？
-我们将从JVM和开发者两个角度讲述ClassLoader，将会选择一些典型的案例，然后演示如何解决它们。NoClassDefFoundError，LinkageError等很多错误都会有特定的表征，我们分析每个例子，然后进行解决。
-2. 进入ClassLoader 每个ClassLoader对象都是一个java.lang.ClassLoader的实例。每个Class对象都被这些ClassLoader对象所加载，通过继承java.lang.ClassLoader可以扩展出自定义ClassLoader，并使用这些自定义的ClassLoader对类进行加载。
-先大体了解一下ClassLoader的API：
-`01` &lt;td class="content"> `package` `java.lang;` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `02` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `03` &lt;/td> &lt;td class="content"> `public` `abstract` `class` `ClassLoader {` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `04` &lt;/td> &lt;td class="content"> ` ``public` `Class loadClass(String name);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `05` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `06` &lt;/td> &lt;td class="content"> ` ``protected` `Class defineClass(``byte``[] b);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `07` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `08` &lt;/td> &lt;td class="content"> ` ``public` `URL getResource(String name);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `09` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `10` &lt;/td> &lt;td class="content"> ` ``public` `Enumeration getResources(String name);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `11` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `12` &lt;/td> &lt;td class="content"> ` ``public` `ClassLoader getParent();` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `13` &lt;/td> &lt;td class="content"> `}` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> 最重要的是ClassLoader的&lt;span lang="EN-US">loadClass&lt;/span>方法，它接受一个全类名，然后返回一个Class类型的实例。
-...</p></div><footer class=entry-footer><span title='2017-04-25 05:38:10 +0000 UTC'>2017年4月25日</span>&nbsp;·&nbsp;<span>39 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 深入浅出ClassLoader ，超详细java中的ClassLoader详解" href=https://blog.zdltech.com/posts/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAclassloader/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>资源收藏</h2></header><div class=entry-content><p>Android实现图片相似度
-http://zzimoo.com/similar/
-OpenCV笔记大集锦
-http://blog.csdn.net/langb2014/article/details/51379326
-ThinkPHP5.0完全开发手册
-http://www.kancloud.cn/manual/thinkphp5
-GitHub秘籍（中文版）
-http://www.kancloud.cn/thinkphp/github-tips
-REST API 安全设计指南
-http://www.kancloud.cn/kancloud/rest-api-design-safety
-Atom IDE极速入门
-http://www.kancloud.cn/kinghs/atom
-OHSCE官方教程免费版
-http://www.kancloud.cn/ohsce/ohscebook
-深入浅出ES6
-http://www.kancloud.cn/kancloud/es6-in-depth
-ECMAScript 6入门
-http://www.kancloud.cn/kancloud/ecmascript6-guide
-Sublime Text 全程指南
-http://www.kancloud.cn/digest/sublime-text-complete-guide
-深入浅出React
-http://www.kancloud.cn/kancloud/react-in-depth
-图像处理算法
-http://www.kancloud.cn/digest/imageproebow
-iOS 高级
-http://www.kancloud.cn/digest/data
-Flex 布局教程：语法篇
-http://www.kancloud.cn/digest/flex-grammar
-Android性能优化
-http://www.kancloud.cn/digest/android-performance
-设计模式C++实现
-http://www.kancloud.cn/digest/walker1
-系统架构师技能学习
-http://www.kancloud.cn/digest/archi
-Java工具类专栏
-http://www.kancloud.cn/digest/java-utility-classes
-C++开发人脸性别识别教程
-http://www.kancloud.cn/digest/genderrecogtion
-UiAutomator从入门到原理
-http://www.kancloud.cn/digest/uiautomatorpriciple
-Android NDK开发学习
-http://www.kancloud.cn/digest/zlndk
-React Native学习指南
-http://www.kancloud.cn/digest/rnative
-RabbitMQ Java入门教程
-http://www.kancloud.cn/digest/rabbitmq-for-java
-FFmpeg入门实践与分析
-http://www.kancloud.cn/digest/ffmpegtutorial
-开源物联网系统设计
-http://www.kancloud.cn/digest/bare-minimum-iot-system
-IOS 网络编程
-http://www.kancloud.cn/digest/ios-data
-Android流媒体播放
-http://www.kancloud.cn/digest/rtmp-android
-Cocos2d游戏开发
-http://www.kancloud.cn/digest/cocos2d
-Android核心分析
-http://www.kancloud.cn/digest/androidcore
-OpenCV 应用笔记
-http://www.kancloud.cn/digest/usingopencv
-游戏引擎开发
-http://www.kancloud.cn/digest/game-engine-dev
-电商系统
-http://www.kancloud.cn/digest/b2c-it
-无线局域网开发
-http://www.kancloud.cn/digest/wlan
-android SDK开发
-http://www.kancloud.cn/digest/phoebe
-大数据开源框架
-http://www.kancloud.cn/digest/bigdata-open
-android源码解析
-http://www.kancloud.cn/digest/androidframeworks
-Android Studio详细教程
-http://www.kancloud.cn/stormzhang/android_studio
-iOS开发进阶
-http://www.kancloud.cn/digest/iosdevelopment001
-Android特效专辑
-http://www.kancloud.cn/digest/liuguilin
-Android开发高手进阶
-http://www.kancloud.cn/digest/androidadvanced
-vue
-http://www.kancloud.cn/dingyiming/vue
-JNI/NDK开发指南
-http://www.kancloud.cn/xyang0917/blogjnindk
-《架构师成长之路》漫画连载
-http://www.kancloud.cn/qiniu/architect-growth
-Android（OpenCV）开发
-http://www.kancloud.cn/yanzi1225627/android-opencv
-Android JNI入门
-http://www.kancloud.cn/digest/android-jni
-设计模式与系统架构
-http://www.kancloud.cn/longxuan/my-designpattern
-轻松搞定RabbitMQ
-http://www.kancloud.cn/longxuan/rabbitmq-arron
-android应用安全
-http://www.kancloud.cn/digest/android-safe
-Java线程
-http://www.kancloud.cn/digest/java-thread
-微信硬件平台解决方案
-http://www.kancloud.cn/yueqian_scut/iot-wechat
-Appium之android平台的源码分析
-http://www.kancloud.cn/digest/itfootball-appium
-Gradle学习系列
-http://www.kancloud.cn/digest/itfootball-gradle
-react-native试玩
-http://www.kancloud.cn/digest/doctorqrn
-《机器学习实战》笔记
-http://www.kancloud.cn/digest/machinglearninginact
-...</p></div><footer class=entry-footer><span title='2017-03-22 14:34:40 +0000 UTC'>2017年3月22日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 资源收藏" href=https://blog.zdltech.com/posts/%E8%B5%84%E6%BA%90%E6%94%B6%E8%97%8F/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/page/13/>«&nbsp;上一页&nbsp;
+...</p></div><footer class=entry-footer><span title='2017-05-02 08:35:05 +0000 UTC'>2017年5月2日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 自定义ImageView 宽度自适应屏幕，高度等比缩放" href=https://blog.zdltech.com/posts/%E8%87%AA%E5%AE%9A%E4%B9%89imageview-%E5%AE%BD%E5%BA%A6%E8%87%AA%E9%80%82%E5%BA%94%E5%B1%8F%E5%B9%95%E9%AB%98%E5%BA%A6%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/page/13/>«&nbsp;上一页&nbsp;
 </a><a class=next href=https://blog.zdltech.com/page/15/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>领风沐雨</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &

@@ -1,5 +1,58 @@
 <!doctype html><html lang=zh dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Posts | 领风沐雨</title>
-<meta name=keywords content><meta name=description content="Posts - 领风沐雨"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/posts/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/posts/index.xml title=rss><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="Posts"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="Posts"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"}]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><header class=page-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a></nav><h1>Posts</h1></header><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>为TabLayout添加角标的最简单方法</h2></header><div class=entry-content><p>一、前言 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现:
+<meta name=keywords content><meta name=description content="Posts - 领风沐雨"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/posts/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/posts/index.xml title=rss><link rel=alternate hreflang=zh href=https://blog.zdltech.com/posts/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/posts/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="Posts"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="Posts"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.zdltech.com/posts/"}]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><header class=page-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=https://blog.zdltech.com/>主页</a></nav><h1>Posts</h1></header><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>使用 Doxygen 生成源码文档</h2></header><div class=entry-content><p>Doxygen 是一个开源跨平台的，以类似 JavaDoc 风格编写软件参考文檔的工具
+Getting started 创建配置文件
+`doxygen -g &amp;lt;config-&amp;lt;span class="hljs-built_in">file&amp;lt;/span>&amp;gt;` 运行 doxygen
+`doxygen &amp;lt;config-&amp;lt;span class="hljs-built_in">file&amp;lt;/span>&amp;gt;` Configuration 项目名称
+`&amp;lt;span class="hljs-attr">PROJECT_NAME&amp;lt;/span> = My Project` 项目简介
+`&amp;lt;span class="hljs-attr">PROJECT_BRIEF&amp;lt;/span> = What a project` 项目 Logo
+`&amp;lt;span class="hljs-attr">PROJECT_LOGO&amp;lt;/span> = src/images/logo.png` 主页面
+`&amp;lt;span class="hljs-attr">USE_MDFILE_AS_MAINPAGE&amp;lt;/span> = README.md` 文档的语言
+`&amp;lt;span class="hljs-attr">OUTPUT_LANGUAGE&amp;lt;/span> = Chinese` 指定需要生成文档的文件，以空格分割
+`&amp;lt;span class="hljs-attr">INPUT&amp;lt;/span> = ./src` 排除的文件
+`&amp;lt;span class="hljs-keyword">EXCLUDE&amp;lt;/span> = .&amp;lt;span class="hljs-regexp">/src/&amp;lt;/span>Demo` 写入文档的路径
+`&amp;lt;span class="hljs-attr">OUTPUT_DIRECTORY&amp;lt;/span> = ./docs` 是否搜索子目录
+`&amp;lt;span class="hljs-attr">RECURSIVE&amp;lt;/span> = &amp;lt;span class="hljs-literal">YES&amp;lt;/span>` 标记指定一个或多个通配符模式
+...</p></div><footer class=entry-footer><span title='2018-05-29 06:20:22 +0000 UTC'>2018年5月29日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 使用 Doxygen 生成源码文档" href=https://blog.zdltech.com/posts/%E4%BD%BF%E7%94%A8-doxygen-%E7%94%9F%E6%88%90%E6%BA%90%E7%A0%81%E6%96%87%E6%A1%A3/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android 优化工具收集</h2></header><div class=entry-content><p>在开发Android的过程中，我们会遇到各种问题，有时候为了满足某一个需求（或者快速的上线完成一个版本）， 我们会使用各种框架，代码编写可能随意一些，造成一些冗余的代码，整个工程越跑越慢，APP越跑越慢， 当达到一定阶段的时候，就不得不需要我们进行工程的优化，今天就来说说优化过程中使用到的工具。
+Android的应用性能的指标主要有： 布局复杂度：布局复杂会导致布局需要更长的时间，从而导致进入应用慢、页面切换慢； 耗电量：耗电量大会导致机器发热、缩短机器的有效使用时长； 内存：内存消耗大会导致频繁GC，GC时会暂停其它工作，导致页面卡顿；内存泄露会导致剩余可用内存越来越小；内存不足会导致应用异常； 网络：频繁的网络访问会导致耗电和影响应用的性能；网络交互数据大小会影响网络传输的效率； 程序执行效率：糟糕的代码会严重影响程序的运行效率，UI线程过多的任务会阻塞应用的正常运行，长时间持有某个对象会导致潜在的内存泄露，频繁的IO操作、网络操作而不用缓存会严重影响程序的运行效率。 工具 Memory Monitor：查看整个app所占用的内存，以及发生GC的时刻
+Allocation Tracker：使用此工具来追踪内存的分配。
+Heap Tool：查看当前内存快照，便于对比分析哪些对象有可能是泄漏了的。
+Battery History Tool 电量审查工具（Android 5.0，不属于编译器的工具）
+traceview 工具（计算每个方法占用CPU时间）
+Networking Traffic Tool （android studio）网络请求发生的时间，每次请求的数据量等信息
+Hierarchy viewer 层级显示工具（检测布局复杂度，各视图的布局耗时情况）
+Lint 代码审查工具 给出代码优化建议
+耗电量：Android开发者模式中的电量统计
+leakcanary：square/leakcanary · GitHub，通过集成到程序中的方式，在程序运行时检测应用中存在的内存泄露，并在页面中显示，在应用中集成leancanry后，程序运行时会存在卡顿的情况，这个是正常的，因为leancanry就是通过gc操作来检测内存泄露的，gc会知道应用卡顿，说明文档：LeakCanary 中文使用说明、LeakCanary: 让内存泄露无所遁形。
+GT：GT Home，GT是腾讯开发的一款APP的随身调测平台，利用GT，可以对CPU、内存、流量、点亮、帧率/流畅度进行测试，还可以查看开发日志、crash日志、抓取网络数据包、APP内部参数调试、真机代码耗时统计等等，需要说明的是，应用需要集成GT的sdk后，GT这个apk才能在应用运行时对各个性能进行检测。
+iTest：iTest，业内首创的Android自动化性能监控工具，它能够记录特定应用的性能消耗情况，包括cpu、内存、流量、电量等信息，支持浮窗实时查看应用的具体信息，iTest不需要集成sdk到应用中，在itest中选中需要测试的应用即可进行测试；
+Emmagee：Emmagee下载、NetEase/Emmagee · GitHub，网易开发的性能检测工具，Emmage和iTest一样，不需要在应用中集成sdk，能够对应用的常用性能指标进行检测，并以csv的格式保存方便查看应用的各项参数
+APT：Tencent/apt | CODE，腾讯出的。
+FPSService：百度一位开发者写的帧率测试工具，需要集成到应用中才可查看
+AndroidGodEye:AndroidGodEye是一个可以在PC浏览器中实时监控Android数据指标（比如性能指标，但是不局限于性能）的工具，你可以通过wifi/usb连接手机和pc，通过pc浏览器实时监控手机性能。
+系统分为三部分：
+Core 核心部分，提供所有模块; Debug Monitor部分，提供Debug阶段开发者面板; Toolbox 快速接入工具集，给开发者提供各种便捷接入的工具。
+AndroidGodEye提供了多种监控模块，比如cpu、内存、卡顿、内存泄漏等等，并且提供了Debug阶段的Monitor看板实时展示这 些数据。而且提供了api供开发者在release阶段进行数据上报。 慢慢一个个工具使用吧
+参考引用 https://blog.csdn.net/u010255127/article/details/49135551
+https://segmentfault.com/a/1190000012413613</p></div><footer class=entry-footer><span title='2018-05-23 06:25:09 +0000 UTC'>2018年5月23日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android 优化工具收集" href=https://blog.zdltech.com/posts/android-you-hua-gong-ju-shou-ji/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>RxJava 从入门到放弃再到不离不弃</h2></header><div class=entry-content><p>作者寄语 很久之前就想写一个专题，专写Android开发框架，专题的名字叫 XXX 从入门到放弃 ，沉淀了这么久，看过网络诸多大神的博客，静下心来开始写这个专题，为什么叫入门到放弃呢；相信大家学习新框架的时候，尤其是像Rxjava或者Dagger等等这种新的编程思想；需要一定的阅读理解能力和思维逻辑；那么本专题旨在帮助大家不要太过急功近利，不要被冗长的代码和文章，晦涩的思想所打败，相信大家只要坚持看完，一定会有所收获的；废话不多说，那么这个专题开篇就以RxJava来讲吧，预计后面还会有几篇大型框架的讲解，想想还有点小激动；
+友情提示：文章较长，请耐心看完；
+前言 RxJava等编程思想正在Android开发者中变的越来越流行。唯一的问题就是上手不容易，尤其是大部分人之前都是使用命令式编程语言。
+首先要先理清这么一个问题：Rxjava和我们平时写的程序有什么不同。相信稍微对Rxjava有点认知的朋友都会深深感受到用这种方式写的程序和我们一般写的程序有很明显的不同。我们一般写的程序 统称为命令式程序，是以流程为核心的，每一行代码实际上都是机器实际上要执行的指令。而Rxjava这样的编程风格，称为函数响应式编程。函数响应式编程是以数据流为核心，处理数据的输入，处理以及输出的。这种思路写出来的代码就会跟机器实际执行的指令大相径庭。所以对于已经习惯命令式编程的我们来说，刚开始接触Rxjava的时候必然会很不适应，而且也不太符合我们平时的思维习惯。但是久而久之你会发现这个框架的精髓，尤其是你运用到大项目中的时候，简直爱不释手，随着程序逻辑变得越来越复杂，它依然能够保持代码简洁。
+RxJava是什么 a library for composing asynchronous and event-based programs using observable sequences for the Java VM
+解释：一个对于构成使用的Java虚拟机观察序列异步和基于事件的程序库
+RxJava 是一个响应式编程框架，采用观察者设计模式。所以自然少不了 Observable 和 Subscriber 这两个东东了。
+RxJava 是一个开源项目，地址：https://github.com/ReactiveX/RxJava
+RxAndroid，用于 Android 开发，添加了 Android 用的接口。地址： https://github.com/ReactiveX/RxAndroid
+基本概念 网上关于RxJava的博文也有很多，我也看过许多，其中不乏有优秀的文章，但绝大部分文章都有一个共同点，就是侧重于讲RxJava中各种强大的操作符，而忽略了最基本的东西——概念，所以一开始我也看的一脸懵逼，看到后面又忘了前面的，脑子里全是问号，这个是什么，那个又是什么，这两个长得怎么那么像。举个不太恰当的例子，概念之于初学者，就像食物之于人，当你饿了，你会想吃面包、牛奶，那你为什么不去吃土呢，因为你知道面包牛奶是用来干嘛的，土是用来干嘛的。同理，前面已经说过，RxJava无非是发送数据与接收数据，那么什么是发射源，什么是接收源，这就是你应该明确的事，也是RxJava的入门条件之一，下面就依我个人理解，对发射源和接收源做个归类，以及RxJava中频繁出现的几个“单词”解释一通;
+Observable：发射源，英文释义“可观察的”，在观察者模式中称为“被观察者”或“可观察对象”； Observer：接收源，英文释义“观察者”，没错！就是观察者模式中的“观察者”，可接收Observable、Subject发射的数据； Subject：Subject是一个比较特殊的对象，既可充当发射源，也可充当接收源，为避免初学者被混淆，本章将不对Subject做过多的解释和使用，重点放在Observable和Observer上，先把最基本方法的使用学会，后面再学其他的都不是什么问题； Subscriber：“订阅者”，也是接收源，那它跟Observer有什么区别呢？Subscriber实现了Observer接口，比Observer多了一个最重要的方法unsubscribe( )，用来取消订阅，当你不再想接收数据了，可以调用unsubscribe( )方法停止接收，Observer 在 subscribe() 过程中,最终也会被转换成 Subscriber 对象，一般情况下，建议使用Subscriber作为接收源； Subscription ：Observable调用subscribe( )方法返回的对象，同样有unsubscribe( )方法，可以用来取消订阅事件； Action0：RxJava中的一个接口，它只有一个无参call（）方法，且无返回值，同样还有Action1，Action2…Action9等，Action1封装了含有 1 个参的call（）方法，即call（T t），Action2封装了含有 2 个参数的call方法，即call（T1 t1，T2 t2），以此类推； Func0：与Action0非常相似，也有call（）方法，但是它是有返回值的，同样也有Func0、Func1…Func9; RxJava最核心的两个东西是Observables（被观察者，事件源）和Subscribers（观察者）。Observables发出一系列事件，Subscribers处理这些事件。这里的事件可以是任何你感兴趣的东西（触摸事件，web接口调用返回的数据…）
+...</p></div><footer class=entry-footer><span title='2018-04-28 02:15:33 +0000 UTC'>2018年4月28日</span>&nbsp;·&nbsp;<span>15 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to RxJava 从入门到放弃再到不离不弃" href=https://blog.zdltech.com/posts/rxjava-%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%E5%86%8D%E5%88%B0%E4%B8%8D%E7%A6%BB%E4%B8%8D%E5%BC%83/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>用 webpack 和 babel 配置 react 开发环境</h2></header><div class=entry-content><p>1. 安装 react 要使用 react，就必须装下面两个包的。
+`$ npm &amp;lt;span class="hljs-keyword">install&amp;lt;/span> &amp;lt;span class="hljs-comment">--save react react-dom&amp;lt;/span> ` 2. 建立 babel 可能你不懂 babel 是什么，你可以把它理解为编译器，它能把 react 代码转成一般浏览器可读可执行的代码，通常可以用它来转化 react 或 vue 这样的前端代码，或者把 es6 代码转成普通的 javascript 代码等等。
+如果还不理解的话，可以看我这篇文章 babel 入门指南。
+要让 babel 很好的转化 react 代码，首先要安装好 babel，再装 babel 转化 react 的包。
+运行下面的命令。
+`$ npm &amp;lt;span class="hljs-keyword">install&amp;lt;/span> &amp;lt;span class="hljs-comment">--save-dev babel-core babel-preset-react babel-preset-env&amp;lt;/span> ` 创建 .babelrc 文件。
+{ &lt;span class="hljs-attr">"presets"&lt;/span>: [&lt;span class="hljs-string">"env"&lt;/span>, &lt;span class="hljs-string">"react"&lt;/span>] } 为什么我知道要这么做呢？
+因为我是分别结合 babel 和 react 的官网给的最新官方指南。
+...</p></div><footer class=entry-footer><span title='2018-04-04 15:07:43 +0000 UTC'>2018年4月4日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 用 webpack 和 babel 配置 react 开发环境" href=https://blog.zdltech.com/posts/%E7%94%A8-webpack-%E5%92%8C-babel-%E9%85%8D%E7%BD%AE-react-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>为TabLayout添加角标的最简单方法</h2></header><div class=entry-content><p>一、前言 在开发中，我们常常需要ViewPager结合Fragment一起使用，来实现多页签的切换效果。在以前，我们有以下一系列第三方库来帮我们实现:
 PagerSlidingTabStrip SmartTabLayout FlycoTabLayout ViewPagerIndicator … 而现在，我们可以使用Design support library库的TabLayout来实现了。
 二、最终效果图 三、TabLayout的使用 1. 添加依赖 由于TabLayout在design包内，所以首先需要在app目录下的build.gradle中添加以下依赖：
 ``` 1 2 3 4 ``` &lt;td class="code hljs bash"> &lt;div class="top-box hide"> &lt;div class="alert-info"> &lt;/div> &lt;/div> ``` dependencies { … compile ‘com.android.support:design:23.4.0’ }
@@ -40,69 +93,7 @@ pod setup 重新设置下 pod仓库
 2、在终端输入：sudo gem install cocoapods -v指定版本号
 输出：Fetching: cocoapods-1.1.1.gem (100%)
 ERROR: While executing gem … (Errno::EPERM)
-3、上面的方法不行，那咱们就换一种输入：sudo gem install -n /usr/local/bin cocoapods -v 指定版本</p></div><footer class=entry-footer><span title='2018-01-22 03:25:35 +0000 UTC'>2018年1月22日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to cocospod 版本更新与更新到指定版本" href=https://blog.zdltech.com/posts/cocospod-%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0%E4%B8%8E%E6%9B%B4%E6%96%B0%E5%88%B0%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>android 使用命令查找apk</h2></header><div class=entry-content><p>第一步：查找apk的包名
-adb shell pm list package
-查找所有安装的包名
-adb shell pm list package -3
-查找所有安装的第三方的包名
-adb shell ps
-查找正在执行的进程
-adb shell dumpsys activity activities ，它会列出当前手机中所有正在运行的应用的详细信息，按打开顺序排列，最后打开的APK信息会放在输出的最前面。
-第二步根据包名或者到安装的路径
-adb shell path 包名 （例如adb shell pm path phxDroid.phxDroid）
-第三步导出
-adb pull apk的路径 apk导出路径 （例如 adb pull /data/app/phxDroid.phxDroid-1.apk ~/Desktop/ 导出apk到桌面）</p></div><footer class=entry-footer><span title='2017-12-18 02:58:51 +0000 UTC'>2017年12月18日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to android 使用命令查找apk" href=https://blog.zdltech.com/posts/android-%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E6%9F%A5%E6%89%BEapk/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Mac下制作简单的ox应用</h2></header><div class=entry-content><p>先上张图片
-制作mac下面确定Jenkis的应用
-on run {input, parameters}
-display dialog “输入执行动作：（1是启动，2是关闭）.” default answer “1” buttons {“确定”, “取消”} with title “启动Jenkins” default button 1
-if the button returned of the result is “确定” then
-set executeType to text returned of the result
-end if
-end run
-echo +———————————————————-+
-echo + 1是启动，2是停止 +
-echo +———————————————————-+
-printf ‘Input your want execute Parameter:’
-read executeType
-printf ‘you Input 类型 is executeType’ printf “\n”
-cd /Users/jason/Documents/developer_tools/Tomcat/bin pwd
-...</p></div><footer class=entry-footer><span title='2017-12-06 07:42:34 +0000 UTC'>2017年12月6日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Mac下制作简单的ox应用" href=https://blog.zdltech.com/posts/mac%E4%B8%8B%E5%88%B6%E4%BD%9C%E7%AE%80%E5%8D%95%E7%9A%84ox%E5%BA%94%E7%94%A8/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Java 执行运行Jar文件</h2></header><div class=entry-content><p>java执行jar文件命令
-java -jar 文件.jar
-到此就成功执行jar了，
-我的jar中有多个入口，我想执行其他的入口，怎么搞？
-不着急慢慢看下去
-java运行jar包中指定Class的main方法，这时可以通过：
-java -cp xxx.jar xxx.com.xxxx [args]
-其中-cp命令是将xxx.jar加入到classpath，这样java class loader就会在这里面查找匹配的类。
-mac中执行apple script运行jar的命令
-on run {input, parameters}
-set p to POSIX path of (path to me)
-do shell script “java -jar ” & p & “Contents/Jar/JavaSwingTest.jar”
-end run</p></div><footer class=entry-footer><span title='2017-12-05 09:49:58 +0000 UTC'>2017年12月5日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Java 执行运行Jar文件" href=https://blog.zdltech.com/posts/java-%E6%89%A7%E8%A1%8C%E8%BF%90%E8%A1%8Cjar%E6%96%87%E4%BB%B6/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Mac 下制作icns 图标</h2></header><div class=entry-content><p>使用mac中自带的工具iconutil
-iconutil -c icns iconset文件夹
-生成icns文件
-例如：iconutil -c icns abc.iconset
-iconutil -c iconset icns文件
-生成iconset文件夹，里面包含多种png图片
-制作iconset文件时文件中文件名称必须是下面的命名，否则可能转换不成功
-Filename Image Size (in pixels)
-icon_512x512@2x.png 1024 x 1024
-icon_512x512.png 512 x 512
-icon_256x256@2x.png 512 x 512
-icon_256x256.png 256 x 256
-icon_128x128@2x.png 256 x 256
-icon_128x128.png 128 x 128
-icon_32x32@2x.png 64 x 64
-icon_32x32.png 32 x 32
-icon_16x16@2x.png 32 x 32
-icon_16x16.png 16 x 16
-这样就可以生成icns文件，我们就可以替换mac下的app的图标了
-步骤为；
-1.选择应用
-2.右键-点击显示简介
-3.拖动生成的icns文件到简介的左上角的图标处
-4.看看应用的图标是否已经替换了，~~
-记录下，防止大家走弯路~~</p></div><footer class=entry-footer><span title='2017-12-05 09:43:35 +0000 UTC'>2017年12月5日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Mac 下制作icns 图标" href=https://blog.zdltech.com/posts/mac-%E4%B8%8B%E5%88%B6%E4%BD%9Cicns-%E5%9B%BE%E6%A0%87/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/posts/page/10/>«&nbsp;上一页&nbsp;
+3、上面的方法不行，那咱们就换一种输入：sudo gem install -n /usr/local/bin cocoapods -v 指定版本</p></div><footer class=entry-footer><span title='2018-01-22 03:25:35 +0000 UTC'>2018年1月22日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to cocospod 版本更新与更新到指定版本" href=https://blog.zdltech.com/posts/cocospod-%E7%89%88%E6%9C%AC%E6%9B%B4%E6%96%B0%E4%B8%8E%E6%9B%B4%E6%96%B0%E5%88%B0%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/posts/page/10/>«&nbsp;上一页&nbsp;
 </a><a class=next href=https://blog.zdltech.com/posts/page/12/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>领风沐雨</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &

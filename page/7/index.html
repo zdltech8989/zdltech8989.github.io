@@ -1,5 +1,63 @@
 <!doctype html><html lang=zh dir=auto data-theme=auto><head><meta name=generator content="Hugo 0.147.4"><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>领风沐雨</title>
-<meta name=description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/index.xml title=rss><link rel=alternate type=application/json href=https://blog.zdltech.com/index.json title=json><link rel=alternate hreflang=zh href=https://blog.zdltech.com/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="领风沐雨"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="领风沐雨"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"领风沐雨","url":"https://blog.zdltech.com/","description":"领风沐雨 - Android · Java · Web开发 · Linux运维","logo":"https://blog.zdltech.com/favicon.ico","sameAs":["https://github.com/zdltech8989"]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>SpringBoot消失的Web.xml</h2></header><div class=entry-content><p>Filter 过滤器作为web.xml中重要的一部分，有着相当高的出场率，SpringBoot会默认注册几个Filter
+<meta name=description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/index.xml title=rss><link rel=alternate type=application/json href=https://blog.zdltech.com/index.json title=json><link rel=alternate hreflang=zh href=https://blog.zdltech.com/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="领风沐雨"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="领风沐雨"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"领风沐雨","url":"https://blog.zdltech.com/","description":"领风沐雨 - Android · Java · Web开发 · Linux运维","logo":"https://blog.zdltech.com/favicon.ico","sameAs":["https://github.com/zdltech8989"]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Mysql日期处理</h2></header><div class=entry-content><p>1.时间格式：在这个项目中，或许是由不同的人建立的数据库表结构吧，对时间的格式步统一，有的表中存储的long类型的时间戳，有的表中是存储的日期，有的表中存储的是时间，同时格式有20171225，2017-12-25等，一点都不统一。这样做，会对项目增加一些额外的工作量，同时会衍生出一些问题出来。比如，在写后台代码时，需要对时间做出处理，以适应数据库的时间格式；在进行夺标联合查询时，时间格式不统一，又会对sql语句进行时间格式转换，造成sql语句臃肿的情况。所以，在同一个项目中，时间格式应该保持统一。个人觉得long 类型的时间戳，以及String类型的yyyy-MM-dd HH:mm:ss 这两种方式时比较不错的。
+long类型的时间戳，是因为后台java代码将date类型的时间转化为时间戳很容易。
+String类型时因为，我们假如经常使用时间这个字段，在应用时不需要额外将Date类型转化为String类型，使用起来比较直观，方便。
+2.常用时间语句
+SELECT CURDATE()：2017-12-25　//此时日期
+SELECT NOW() : 2017-12-25 22:20:21　//此刻时间
+SELECT YEAR(‘2017-12-25 22:27:45’): 2017　//获取时间的年份
+SELECT MONTH(‘2017-12-25 22:27:45’): 12　//获取时间的月份
+SELECT DAY(‘2017-12-25 22:27:45’)：25　//获取时间的天数
+SELECT HOUR(‘2017-12-25 22:27:45’)：22　//获取时间的小时
+SELECT MINUTE(‘2017-12-25 22:27:45’)：27　//获取时间的分钟
+SELECT SECOND(‘2017-12-25 22:27:45’)：45　//获取时间的秒数
+SELECT DATE_SUB(NOW(),INTERVAL 1 YEAR)　//在目前的时间减去一年，该语句可以进行多种操作，指定时间下减去x年：DATE_SUB(“2017-12-25”,INTERVAL x YEAR),同时可以减去 x month/day/hour/minute/second等
+SELECT ** DATE_ADD**(NOW(),INTERVAL 1 YEAR)　//同上，在目前的时间上加上一年
+SELECT CONCAT(‘2017′,’-12-12′)：2017-12-12　//组装字符串，可以组装成任何时间格式，也可以使用如上语句，例如：SELECT CONCAT(YEAR(NOW()),’-12-12′) ：2017-12-12 ；
+SELECT UNIX_TIMESTAMP(‘2017-12-25’)：1514131200　//字符串转换成时间戳
+SELECT FROM_UNIXTIME(1514131200) ：2017-12-25 00:00:00　//时间戳转化为时间
+...</p></div><footer class=entry-footer><span title='2019-05-09 07:24:38 +0000 UTC'>2019年5月9日</span>&nbsp;·&nbsp;<span>5 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Mysql日期处理" href=https://blog.zdltech.com/posts/mysql%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>生成Kindle可读的mobi和PDF电子书</h2></header><div class=entry-content><p>购买kindle之后，自然欣喜万分，不来自于工具本身，而来自于发现自己能够静下心来阅读长篇和复杂的文字了，可喜可贺。更重要的是，kindle减轻了我眼睛的莫大的压力。但马上就出现几个问题：
+不是所有的电子书都有kindle，最常见的是扫描PDF 大量的论文无法阅读,这和上面的问题一致 网络上很多精彩的博客，新闻，都是没法阅读的 可能有人说，用手机看不就得了？用手机看花边娱乐新闻当然很好，可是当看数学推导时，推送栏上面妹子发来的消息，会直接把你的思路全部打乱。没用过kindle的人，是有些难以体会那种接近于纸张的质感的。OK，既然是程序员，我们就尝试解决这些问题。
+有关kindlegen和HTML kindlegen是亚马逊官方出品的一个电子书生成工具。但它明显就没打算让普通用户使用，命令行界面，几乎没有任何像样的文档。只是在实例样例里给了几个生成电子书的文件。我就因为没有文档兜了大弯，翻遍国外各大网站，才慢慢摸清kindlegen的使用细节。
+可以这么理解,KG是将一组HTML和相关文件，打包成mobi文件的工具。
+最简单的例子，随意编写一个HTML文件，送给KG，会生成对应的mobi。基本有title,h1,h2,正文，kindle渲染就差不多了。如果需要修改样式，可以提供CSS文件。
+但是，这样的做法，没有图片，没有超链接，无法提供目录，如果输入单一的大型HTML文件，kindle的渲染性能就不足了。
+因此，需要生成层级化，多文件形式的html文件夹，然而kg并不能直接识别html文件夹，还是需要一些元数据描述。
+编写元数据文件 要想解决这个问题，就需要编写两个文件,opf和ncx, 他们可以理解为KG的makefile, KG通过这两个文件索引HTML，目录和其他多媒体资源。介绍如下：
+[][1]
+值得注意的是，所有的文件都应该保存在本地，尤其是jpg, html中的图片超链接，需要重定向到本地的jpg文件，如果依然在服务器上，据我所知，kg是不负责渲染下载的。
+资源聚合文件: opf和ncx 由于opf文件非常重要，我们下面就讲解opf的格式：
+![复制代码](https://common.cnblogs.com/images/copycode.gif) &lt;metadata xmlns:dc=&amp;quot;http://purl.org/dc/elements/1.1/&amp;quot; xmlns:opf=&amp;quot;http://www.idpf.org/2007/opf&amp;quot;> &lt;dc:title>电子书标题&lt;/dc:title> &lt;dc:language>en-us&lt;/dc:language> &lt;/metadata> &lt;manifest> &lt;!-- table of contents [mandatory] --> &lt;item id=&amp;quot;tochtml&amp;quot; media-type=&amp;quot;application/xhtml+xml&amp;quot; href=&amp;quot;toc.html&amp;quot;/> &lt;item id=&amp;quot;item0&amp;quot; media-type=&amp;quot;application/xhtml+xml&amp;quot; href=&amp;quot;Artical-1277621753.html&amp;quot;/> ... &lt;!--下面是图片--> &lt;item id=&amp;quot;0.368541311142&amp;quot; media-type=&amp;quot;image/jpg&amp;quot; href=&amp;quot;Images/-1720404282.jpg&amp;quot;/> &lt;/manifest> &lt;spine toc=&amp;quot;desertfire&amp;quot;> &lt;!-- 下面描述了KG生成电子书后文本的顺序 --> &lt;itemref idref=&amp;quot;toc&amp;quot;/> &lt;itemref idref=&amp;quot;tochtml&amp;quot;/> &lt;itemref idref=&amp;quot;item31&amp;quot;/> &lt;/spine> &lt;guide> &lt;reference type=&amp;quot;toc&amp;quot; title=&amp;quot;Table of Contents&amp;quot; href=&amp;quot;toc.html&amp;quot;>&lt;/reference> &lt;reference type=&amp;quot;text&amp;quot; title=&amp;quot;Welcome&amp;quot; href=&amp;quot;toc.html&amp;quot;>&lt;/reference> &lt;/guide> &lt;/package> &amp;#96;&amp;#96;&amp;#96;" data-snippet-id="ext.b091e89925c72be7b07f9caa16092df4" data-snippet-saved="false" data-codota-status="done">&amp;lt;package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="BookId"&amp;gt; &amp;lt;metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf"&amp;gt; &amp;lt;dc:title&amp;gt;电子书标题&amp;lt;/dc:title&amp;gt; &amp;lt;dc:language&amp;gt;en-us&amp;lt;/dc:language&amp;gt; &amp;lt;/metadata&amp;gt; &amp;lt;manifest&amp;gt; &amp;lt;!-- table of contents [mandatory] --&amp;gt; &amp;lt;item id="tochtml" media-type="application/xhtml+xml" href="toc.html"/&amp;gt; &amp;lt;item id="item0" media-type="application/xhtml+xml" href="Artical-1277621753.html"/&amp;gt; ... &amp;lt;!--下面是图片--&amp;gt; &amp;lt;item id="0.368541311142" media-type="image/jpg" href="Images/-1720404282.jpg"/&amp;gt; &amp;lt;/manifest&amp;gt; &amp;lt;spine toc="desertfire"&amp;gt; &amp;lt;!-- 下面描述了KG生成电子书后文本的顺序 --&amp;gt; &amp;lt;itemref idref="toc"/&amp;gt; &amp;lt;itemref idref="tochtml"/&amp;gt; &amp;lt;itemref idref="item31"/&amp;gt; &amp;lt;/spine&amp;gt; &amp;lt;guide&amp;gt; &amp;lt;reference type="toc" title="Table of Contents" href="toc.html"&amp;gt;&amp;lt;/reference&amp;gt; &amp;lt;reference type="text" title="Welcome" href="toc.html"&amp;gt;&amp;lt;/reference&amp;gt; &amp;lt;/guide&amp;gt; &amp;lt;/package&amp;gt; &lt;div class="cnblogs_code_toolbar"> &lt;span class="cnblogs_code_copy">&lt;a title="复制代码">![复制代码](https://common.cnblogs.com/images/copycode.gif)&lt;/a>&lt;/span> &lt;/div> &lt;/div> [![image](https://images2015.cnblogs.com/blog/287060/201603/287060-20160307103012038-1762823801.png)][2] 需要注意的有以下几点： * 所有资源都需要一个id,命名任意，但不能重复 * media-type描述了资源的类型，记住两类基本就够用了，&amp;#8221;application/xhtml+xml&amp;#8221;代表HTML文件，&amp;#8221;image/jpg&amp;#8221;或 &amp;#8220;image/png&amp;#8221;代表图片。 * 其他都可以省略，只是会影响电子书完整性。 由于这两个文件内部其实都是html,所以修改编辑都很容易。 **最终，KG的命令行目标，不是目录HTML,而是OPF文件！**将所有的文件放入一个文件夹后，启动KG命令行，最后KG会在该目录下生成你心仪已久的mobi! ## 编辑HTML和OPF文件 知道其原理后，主要的任务是填充HTML和OPF文件，几页内容还好，如果内容繁多，不论是手工**( ⊙ o ⊙ )**,还是编程字符串拼接，都会变得异常低效。 此时，就需要**模板引擎**出手了，python推荐使用Jinja2, 资料众多，功能强大，性能尚可。生成opf的模板文件，基本就长下面这个样子： &lt;div class="cnblogs_code"> &lt;div class="cnblogs_code_toolbar"> &lt;span class="cnblogs_code_copy">&lt;a title="复制代码">![复制代码](https://common.cnblogs.com/images/copycode.gif)&lt;/a>&lt;/span> &lt;/div> &lt;div class="top-box hide"> &lt;div class="alert-info"> &lt;/div> &lt;/div> {{ title }} en-us {% for item in navigation %} {% endfor %} {% for item in media %} {% endfor %} {% for item in navigation %} {% endfor %} " data-snippet-id="ext.1564f86c79babcc6b8778ebad334ce3f" data-snippet-saved="false" data-codota-status="done">&lt;package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="BookId"> &lt;metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf"> &lt;dc:title>{{ title }}&lt;/dc:title> &lt;dc:language>en-us&lt;/dc:language> &lt;/metadata> &lt;manifest> &lt;!-- table of contents [mandatory] --> &lt;item id="toc" media-type="application/x-dtbncx+xml" href="toc.ncx"/> &lt;item id="tochtml" media-type="application/xhtml+xml" href="toc.html"/> {% for item in navigation %} &lt;item id="{{ item.id }}" media-type="application/xhtml+xml" href="{{ item.href }}"/> {% endfor %} {% for item in media %} &lt;item id="{{ item.id }}" media-type="image/{{ item.format}}" href="{{ item.href}}"/> {% endfor %} &lt;/manifest> &lt;spine toc="{{ title }}"> &lt;!– the spine defines the linear reading order of the book –> &lt;itemref idref=“toc”/>
+&lt;itemref idref=“tochtml”/>
+{% for item in navigation %} &lt;itemref idref="{{ item.id }}"/> {% endfor %} &lt;/spine> &lt;guide> &lt;reference type=“toc” title=“Table of Contents” href=“toc.html”>&lt;/reference> &lt;reference type=“text” title=“Welcome” href=“toc.html”>&lt;/reference> &lt;/guide> &lt;/package>
+...</p></div><footer class=entry-footer><span title='2019-04-23 08:49:11 +0000 UTC'>2019年4月23日</span>&nbsp;·&nbsp;<span>4 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 生成Kindle可读的mobi和PDF电子书" href=https://blog.zdltech.com/posts/%E7%94%9F%E6%88%90kindle%E5%8F%AF%E8%AF%BB%E7%9A%84mobi%E5%92%8Cpdf%E7%94%B5%E5%AD%90%E4%B9%A6/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>pod私有库制作过程</h2></header><div class=entry-content><p>一、创建podspec索引仓库，创建源文件仓库
+在自己私有git分别创建上述两个仓库，如果有则不用创建
+二、将podspec索引仓库添加到本地pod repo
+在终端执行下述命令即可
+pod repo add xxxSpecs 仓库地址
+注：** 1.**其中xxxSpecs为本地资源文件夹名称，建议与仓库名称一致
+2.仓库地址是自己在第一步创建的索引仓库地址
+三、克隆源文件仓库并编写项目源码
+四.在工程目录下创建podspec文件（注：需在同级目录下创建一个LICENSE文件）
+创建podspec文件
+1.移动到源文件工程目录 cd XXX/XXXX/XXXXX
+2.在该目录下执行创建podspec文件命令
+pod spec create [name] 注：[name]就是项目名称
+3.在远程仓库的同级目录下创建LICENSE文件 注：使用MIT模板
+4.在本地仓库进行更新刚才在远程仓库创建的文件
+五、podspec文件每个字段的含义
+Pod::Spec.new do |s|
+s.name = “xxx” 开源库的名称
+s.version = “0.0.17″ 开源库版本
+s.summary = “xxxx” 摘要
+s.description = «-DESC 描述
+天利和工具类，里面具有时间，弹框，视图等处理方法
+DESC
+s.homepage = “http://xxxx/ios/xxxxProduct” 开源库首页
+s.license = “MIT” 开源库协议文件
+# s.license = { :type => “MIT”, :file => “FILE_LICENSE” } ...</p></div><footer class=entry-footer><span title='2019-04-09 02:35:33 +0000 UTC'>2019年4月9日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to pod私有库制作过程" href=https://blog.zdltech.com/posts/pod%E7%A7%81%E6%9C%89%E5%BA%93%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Idea工具常用技巧总结</h2></header><div class=entry-content><p>### 1.无处不在的跳转 注：这里的快捷键是自己定义的，并非大家的都一样，可以通过findAction查找相应的快捷键。 菜单栏选择”帮助/help”→FindAction(ctrl+shift+A)快速搜索想要查找命令。 我这里只演示windows平台使用的快捷键(eclipse版本KeyMap)。
+1.1 项目窗口间的跳转 - 菜单栏选择window →Previous Project Window(ctrl+alt+左方括号) 1.2 文件之间的跳转 - 查看近期浏览文件 findaction(ctrl+shift+A) →输入recent files - Ctrl+E - 查看近期改动文件 recent changed files ⇔ ctrl+shift+e - 修改位置跳转 - 菜单栏&amp;#8221;Navigate&amp;#8221;→last edit location(ctrl+Q) - 反之 next edit location 可以自定义快捷键。 - 浏览位置跳转(光标停留位置) navigate →back(alt+向左箭头) 1.3 项目区与代码编辑区的相应跳转 - 项目区跳到右边代码编辑区 - 按ESC键 - 代码编辑区跳到左边项目区 - Alt+数字1 1.4 书签之间的跳转 - 利用书签跳转 - findaction→bookmarks→toggle bookmark(ctrl+shift+F11) - 带标记书签 bookmarks→toggle bookmarks with Mnemonic(ctrl+alt+shift+F11) - 标签间跳转 用ctrl+作标记的数字(这里有个坑我按小键盘数字没反应，得按大键盘的数字才行) 1.5 收藏夹 - 查看收藏夹 findaction→favorites(alt+2) - 可以看到我们的书签、收藏夹。 - 单独添加到收藏夹（自定义收藏夹） - findaction → add to favorites(Alt+shift+F) - 我们可以光标定位到某个函数、或是某个类添加到自定义的收藏夹中（add to new favorites list) 1.6 插件 - 调插件页面 findaction→输入plugins - 1.神器 emacsIdeas 安装 - browse repositories →emacIdeas→install→restart idea(重启Idea) - 配置emacsIdeas快捷键 settings/keymap/emacIdeas文件夹下AceJumpWord添加对应的快捷键。 - 按下刚配置的快捷键比如我这里shift+alt+K →按下要找的数字→输入任意高亮位置就跳转到对应位置了。 1.7 编辑区分屏 - 垂直分屏 - IntelliJ IDEA 支持对代码进行垂直或是水平分组，在打开的文件Tab上打开鼠标右键菜单，选择对应的split vertically功能即可 - 水平分屏 - 设为split horizontally即可。 1.8 代码格式化★ - 部分代码格式化 - 选中要格式化代码 ctrl+shift+F - 全部 - 直接ctrl+shift+F 2.高速定位代码 2.1 精准搜索 - 类 - 菜单栏 →Navigate →Class(Ctrl+shift+T) 其中include none..勾上就可以关联到Jar包里所依赖的类。 - 文件 - 菜单栏 navigate →file(ctrl+shift+r) - 符号 - 菜单栏 navigate →symbol(ctrl+alt+shift+n) - 字符串 - 菜单栏 edit→find→find in path(ctrl+H) 3.代码小助手 3.1 列操作 - 移动到当前单词尾部 - findaction →输入move caret to next word(ctrl+向右箭头) - 选中到当前单词尾部 （ctrl+shift+向右箭头） - 当前单词设置大小写切换 - edit→toggle case(ctrl+shift+u) - 移动到当前行首 - findaction→输入move caret to line start(Home键) - 移动到当前行尾 - findaction→输入move caret to line end(End键) - 将当前行的操作应用到相似行进行批量操作★ - 菜单栏edit→find→select all occurrences(ctrl+alt+Y) - 格式化下代码 - 菜单栏code→reformat code 3.2 live Template★ - main - findaction→输入live templates→点击右上角“+” - 输入缩写main 简介public static void main - 输入方法体 &lt;div class="top-box hide"> &lt;div class="alert-info"> &lt;/div> &lt;/div> ``` &amp;lt;span class="hljs-function">&amp;lt;span class="hljs-keyword">public&amp;lt;/span> &amp;lt;span class="hljs-keyword">static&amp;lt;/span> &amp;lt;span class="hljs-keyword">void&amp;lt;/span> &amp;lt;span class="hljs-title">main&amp;lt;/span>&amp;lt;span class="hljs-params">(String[] args)&amp;lt;/span>&amp;lt;/span>{ &amp;lt;span class="katex math inline">END&amp;lt;/span> }
+...</p></div><footer class=entry-footer><span title='2019-03-27 03:05:36 +0000 UTC'>2019年3月27日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Idea工具常用技巧总结" href=https://blog.zdltech.com/posts/idea%E5%B7%A5%E5%85%B7%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>SpringBoot消失的Web.xml</h2></header><div class=entry-content><p>Filter 过滤器作为web.xml中重要的一部分，有着相当高的出场率，SpringBoot会默认注册几个Filter
 ApplicationContextHeaderFilter
 CharacterEncodingFilter
 如果添加了Security依赖的话会加入SpringSecurityFilterChain
@@ -117,91 +175,7 @@ mybatis-generator-maven-plugin
 1.3.5
 src/test/resources/generatorConfig.xml
 true
-——————— 参考：https://blog.csdn.net/rchm8519/article/details/81949916</p></div><footer class=entry-footer><span title='2019-01-29 05:36:10 +0000 UTC'>2019年1月29日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Mybatis Generator 无法生成selectByPrimaryKey、deleteByPrimaryKey、updateByPrimaryKey MySQL" href=https://blog.zdltech.com/posts/mybatis-generator-%E6%97%A0%E6%B3%95%E7%94%9F%E6%88%90selectbyprimarykeydeletebyprimarykeyupdatebyprimarykey-mysql/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android6.0运行时权限，拒绝了权限还返回获取成功</h2></header><div class=entry-content><p>如题：禁用、询问的权限，居然还返回权限获取成功
-推荐一个很好的项目：AndPermission
-不用回来感谢了喂！
-这个问题在项目中，一直存在，
-主要是第三方厂商各种改，返回的状态不正常；
-主要解决思路：
-在第三方成功获取权限时，
-再用系统原生的api去判断一下，是否真正获取了权限：
-/**
-系统层的权限判断 @param context 上下文 @param permissions 申请的权限 Manifest.permission.READ_CONTACTS @return 是否有权限 ：其中有一个获取不了就是失败了
-*/
-public static boolean hasPermission(@NonNull Context context, @NonNull List permissions) {
-if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.M) return true;
-for (String permission : permissions) {
-String op = AppOpsManagerCompat.permissionToOp(permission);
-if (TextUtils.isEmpty(op)) continue;
-int result = AppOpsManagerCompat.noteProxyOp(context, op, context.getPackageName());
-if (result == AppOpsManagerCompat.MODE_IGNORED) return false;
-result = ContextCompat.checkSelfPermission(context, permission);
-if (result != PackageManager.PERMISSION_GRANTED) return false;
-}
-return true;
-} ...</p></div><footer class=entry-footer><span title='2019-01-26 11:40:00 +0000 UTC'>2019年1月26日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android6.0运行时权限，拒绝了权限还返回获取成功" href=https://blog.zdltech.com/posts/android6-0%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90%E6%8B%92%E7%BB%9D%E4%BA%86%E6%9D%83%E9%99%90%E8%BF%98%E8%BF%94%E5%9B%9E%E8%8E%B7%E5%8F%96%E6%88%90%E5%8A%9F/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>利用mvn deploy命令上传包 到私服</h2></header><div class=entry-content><p>利用mvn deploy命令上传包
-mvn安装
-apache官方网站可以下载。
-https://maven.apache.org/download.cgi
-在PATH里加入maven的bin的路径
-配置完毕后，在Windows命令提示符下，输入mvn -v测试一下。是否安装成功。
-mvn:deploy在整合或者发布环境下执行，将最终版本的包拷贝到远程的repository，使得其他的开发者或者工程可以共享。
-以将ojdbc14传到nexus中的releases为例
-一 配置settings.xml
-因为nexus是需要登陆操作，当然可以通过配置免登陆，这是后话。
-在settings.xml的
-releases deployment 123456
-snapshots
-deployment
-123456
-当然如果你要上传包去其他仓库，可依照此例设置相应的参数，如
-central admin admin123
-如果进行deploy时返回Return code is: 401错误，则需要进行用户验证或者你已经验证的信息有误。
-如果进行deploy时返回Return code is: 400, ReasonPhrase: Bad Request错误，这里的原因是往往是没有部署到nexus的仓库中切换Durl路径
-二 cmd输入命令 最好进入到jar包的绝对路径
-mvn deploy:deploy-file -DgroupId=zhongjin -DartifactId=API4BDS -Dversion=2.3 -Dpackaging=jar -Dfile=G:\p2p\API4BDS-2.3.jar -Durl=http://192.168.34.35:81/nexus/content/repositories/releases -DrepositoryId=releases
-DgroupId和DartifactId构成了该jar包在pom.xml的坐标，项目就是依靠这两个属性定位。自己起名字也行。
-Dfile表示需要上传的jar包的绝对路径。
-Durl私服上仓库的位置，打开nexus——>repositories菜单，可以看到该路径。
-DrepositoryId服务器的表示id，在nexus的configuration可以看到。
-Dversion表示版本信息，怎样得到一个jar包准确的版本呢？
-解压该包，会发现一个叫MANIFEST.MF的文件，这个文件就有描述该包的版本信息。
-比如Manifest-Version: 1.0可以知道该包的版本了。
-上传成功后，在nexus界面点击3rd party仓库可以看到这包。
-今天deploy项目时，maven报错401，百度了一下，找到以下文章，解决了问题，所以就考了过来。
-源地址是：http://www.netingcn.com/maven-deploy-nexus.html
-首先在Nexus中创建一个自己私有的仓库，步骤为Repositories –> Add –> Hosted Repository，在页面的下半部分输入框中填入Repository ID和Repository Name即可，比如分别填入myrepo和 my repository，点击save就创建完成了。
-...</p></div><footer class=entry-footer><span title='2019-01-09 14:31:56 +0000 UTC'>2019年1月9日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 利用mvn deploy命令上传包 到私服" href=https://blog.zdltech.com/posts/%E5%88%A9%E7%94%A8mvn-deploy%E5%91%BD%E4%BB%A4%E4%B8%8A%E4%BC%A0%E5%8C%85-%E5%88%B0%E7%A7%81%E6%9C%8D/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Xcode 10 beta3 Error: Multiple commands produce</h2></header><div class=entry-content><p>最近开发一直在使用Xcode10 beta版本的，今天升级到Xcode10 beta3，但是在编译项目时编译失败，报错内容: &lt;div class="image-view" data-width="1326" data-height="390"> ![](//upload-images.jianshu.io/upload_images/2135374-e38dfa85c14dbcd3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp) &lt;/div> &lt;/div> &lt;div class="image-caption"> 屏幕快照 2018-07-09 上午10.28.06.png &lt;/div> `error: Multiple commands produce &amp;lt;span class="hljs-string">'/Users/xiaoyuan/Library/Developer/Xcode/DerivedData/Boobuz-gnxeuntgkenwgdgycqnvabqubafh/Build/Products/Debug-iphoneos/Boobuz.app'&amp;lt;/span>: 1) Target &amp;lt;span class="hljs-string">'Boobuz'&amp;lt;/span> has create directory &amp;lt;span class="hljs-built_in">command&amp;lt;/span> with output &amp;lt;span class="hljs-string">'/Users/xiaoyuan/Library/Developer/Xcode/DerivedData/Boobuz-gnxeuntgkenwgdgycqnvabqubafh/Build/Products/Debug-iphoneos/Boobuz.app'&amp;lt;/span> 2) That &amp;lt;span class="hljs-built_in">command&amp;lt;/span> depends on &amp;lt;span class="hljs-built_in">command&amp;lt;/span> &amp;lt;span class="hljs-keyword">in&amp;lt;/span> Target &amp;lt;span class="hljs-string">'Boobuz'&amp;lt;/span>: script phase “[CP] Copy Pods Resources” ` 引用简友[guifu_tang](/u/3b14b90a886f)的一句话原因是Xcode 10 默认使用的build system是New build system，与Xcode9不同导致。 - 第一种方法 不修改build system 分析build error 日志，错误发生在Copy Pods Resources，而且与output有关，应该是使用了cocoapods导致的，尝试删除该项目target-Copy Pods Resources-Output Files，成功解决问题。
-...</p></div><footer class=entry-footer><span title='2019-01-01 14:40:01 +0000 UTC'>2019年1月1日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Xcode 10 beta3 Error: Multiple commands produce" href=https://blog.zdltech.com/posts/xcode-10-beta3-error-multiple-commands-produce/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>命令行打包 war文件</h2></header><div class=entry-content><p>根据自己项目的真实情况需要注意配置jdk环境，如果jdk环境不同可能造成打出的war包不能正常运行。例如 项目使用jdk1.7 打包使用javac必须为jdk1.7中的javac命令，tomcat需要配置执行的jdk环境为1.7。如果电脑使用的和项目使用的是同一个jdk，配置路径可以省略，其他情况不能省略。
-命令行打包 war文件
-echo 准备java文件
-dir *.java/s/b > source.txt
-if exist out\classes (
-echo 清理中…
-rd /S/Q out
-)
-echo 清理中完成
-md out\classes
-md out\webapp
-echo 编译源码
-set JAVA_HOME=D:\Program Files\Java\jdk1.7.0_75
-%JAVA_HOME%\bin\javac -cp .;E:\apache-tomcat-8.5.35\lib*;E:\apache-tomcat-8.5.35\bin*;E:\auto_test\zchfaxgb\src\main\webapp\WEB-INF\lib* -d out\classes -encoding utf-8 @source.txt
-echo 复制webapp目录
-xcopy src\main\webapp out\webapp /s/e/i/y
-echo 创建编译源码路径
-md out\webapp\WEB-INF\classes
-echo 复制classes目录
-xcopy out\classes out\webapp\WEB-INF\classes /s/e/i/y
-echo 复制resources目录
-xcopy src\main\resources out\webapp\WEB-INF\classes /s/e/i/y
-echo 开始打包
-cd out\webapp
-echo 打包中
-jar -cvf zcjf.war *
-move zcjf.war ../../
-echo 打包完成
-pause
-...</p></div><footer class=entry-footer><span title='2018-12-24 05:57:07 +0000 UTC'>2018年12月24日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 命令行打包 war文件" href=https://blog.zdltech.com/posts/%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%89%93%E5%8C%85-war%E6%96%87%E4%BB%B6/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/page/6/>«&nbsp;上一页&nbsp;
+——————— 参考：https://blog.csdn.net/rchm8519/article/details/81949916</p></div><footer class=entry-footer><span title='2019-01-29 05:36:10 +0000 UTC'>2019年1月29日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Mybatis Generator 无法生成selectByPrimaryKey、deleteByPrimaryKey、updateByPrimaryKey MySQL" href=https://blog.zdltech.com/posts/mybatis-generator-%E6%97%A0%E6%B3%95%E7%94%9F%E6%88%90selectbyprimarykeydeletebyprimarykeyupdatebyprimarykey-mysql/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/page/6/>«&nbsp;上一页&nbsp;
 </a><a class=next href=https://blog.zdltech.com/page/8/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>领风沐雨</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &

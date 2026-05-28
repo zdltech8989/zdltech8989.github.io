@@ -1,5 +1,133 @@
 <!doctype html><html lang=zh dir=auto data-theme=auto><head><meta name=generator content="Hugo 0.147.4"><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>领风沐雨</title>
-<meta name=description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/index.xml title=rss><link rel=alternate type=application/json href=https://blog.zdltech.com/index.json title=json><link rel=alternate hreflang=zh href=https://blog.zdltech.com/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="领风沐雨"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="领风沐雨"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"领风沐雨","url":"https://blog.zdltech.com/","description":"领风沐雨 - Android · Java · Web开发 · Linux运维","logo":"https://blog.zdltech.com/favicon.ico","sameAs":["https://github.com/zdltech8989"]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>使用Artifactory搭建本地maven仓库</h2></header><div class=entry-content><p>引言
+<meta name=description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta name=author content="天边的星星"><link rel=canonical href=https://blog.zdltech.com/><link crossorigin=anonymous href=/assets/css/stylesheet.4b72e7725c68fccaac08b7b94b4bf3724ac8531837c6717dbd3e55b5a23b0117.css integrity="sha256-S3Lnclxo/MqsCLe5S0vzckrIUxg3xnF9vT5VtaI7ARc=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.zdltech.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.zdltech.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.zdltech.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.zdltech.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.zdltech.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.zdltech.com/index.xml title=rss><link rel=alternate type=application/json href=https://blog.zdltech.com/index.json title=json><link rel=alternate hreflang=zh href=https://blog.zdltech.com/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://blog.zdltech.com/"><meta property="og:site_name" content="领风沐雨"><meta property="og:title" content="领风沐雨"><meta property="og:description" content="领风沐雨 - Android · Java · Web开发 · Linux运维"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="website"><meta name=twitter:card content="summary"><meta name=twitter:title content="领风沐雨"><meta name=twitter:description content="领风沐雨 - Android · Java · Web开发 · Linux运维"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"领风沐雨","url":"https://blog.zdltech.com/","description":"领风沐雨 - Android · Java · Web开发 · Linux运维","logo":"https://blog.zdltech.com/favicon.ico","sameAs":["https://github.com/zdltech8989"]}</script></head><body class=list id=top><header class=header><nav class=header-nav><div class=logo><a href=https://blog.zdltech.com/ accesskey=h title="领风沐雨 (Alt + H)">领风沐雨</a><div class=logo-switches><button id=theme-toggle class=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://blog.zdltech.com/archives/ title=归档><span>归档</span></a></li><li><a href=https://blog.zdltech.com/tags/ title=标签><span>标签</span></a></li><li><a href=https://blog.zdltech.com/categories/ title=分类><span>分类</span></a></li><li><a href=https://blog.zdltech.com/search/ title="搜索 (Alt + /)" accesskey=/><span>搜索</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android 中的CreatePackageContext()</h2></header><div class=entry-content><p>/**
+* Return a new Context object for the given application name. This
+* Context is the same as what the named application gets when it is
+* launched, containing the same resources and class loader. Each call to
+* this method returns a new instance of a Context object; Context objects
+* are not shared, however they share common state (Resources, ClassLoader,
+* etc) so the Context instance itself is fairly lightweight.
+...</p></div><footer class=entry-footer><span title='2017-04-25 07:25:29 +0000 UTC'>2017年4月25日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android 中的CreatePackageContext()" href=https://blog.zdltech.com/posts/android-%E4%B8%AD%E7%9A%84createpackagecontext/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android动态加载基础 ClassLoader工作机制</h2></header><div class=entry-content><p>类加载器ClassLoader
+早期使用过Eclipse等Java编写的软件的同学可能比较熟悉，Eclipse可以加载许多第三方的插件（或者叫扩展），这就是动态加载。这些插件大多是一些Jar包，而使用插件其实就是动态加载Jar包里的Class进行工作。这其实非常好理解，Java代码都是写在Class里面的，程序运行在虚拟机上时，虚拟机需要把需要的Class加载进来才能创建实例对象并工作，而完成这一个加载工作的角色就是ClassLoader。
+对于Java程序来说，编写程序就是编写类，运行程序也就是运行类（编译得到的class文件），其中起到关键作用的就是类加载器ClassLoader。
+Android的Dalvik/ART虚拟机如同标准JAVA的JVM虚拟机一样，在运行程序时首先需要将对应的类加载到内存中。因此，我们可以利用这一点，在程序运行时手动加载Class，从而达到代码动态加载可执行文件的目的。Android的Dalvik/ART虚拟机虽然与标准Java的JVM虚拟机不一样，ClassLoader具体的加载细节不一样，但是工作机制是类似的，也就是说在Android中同样可以采用类似的动态加载插件的功能，只是在Android应用中动态加载一个插件的工作要比Eclipse加载一个插件复杂许多（这点后面在解释说明）。
+有几个ClassLoader实例？ 动态加载的基础是ClassLoader，从名字也可以看出，ClassLoader就是专门用来处理类加载工作的，所以这货也叫类加载器，而且一个运行中的APP 不仅只有一个类加载器。 其实，在Android系统启动的时候会创建一个Boot类型的ClassLoader实例，用于加载一些系统Framework层级需要的类，我们的Android应用里也需要用到一些系统的类，所以APP启动的时候也会把这个Boot类型的ClassLoader传进来。
+此外，APP也有自己的类，这些类保存在APK的dex文件里面，所以APP启动的时候，也会创建一个自己的ClassLoader实例，用于加载自己dex文件中的类。下面我们在项目里验证看看
+` &amp;lt;span class="hljs-annotation">@Override&amp;lt;/span> &amp;lt;span class="hljs-function">&amp;lt;span class="hljs-keyword">protected&amp;lt;/span> &amp;lt;span class="hljs-keyword">void&amp;lt;/span> &amp;lt;span class="hljs-title">onCreate&amp;lt;/span>&amp;lt;span class="hljs-params">(Bundle savedInstanceState)&amp;lt;/span> &amp;lt;/span>{ &amp;lt;span class="hljs-keyword">super&amp;lt;/span>.onCreate(savedInstanceState); ClassLoader classLoader = getClassLoader(); &amp;lt;span class="hljs-keyword">if&amp;lt;/span> (classLoader != &amp;lt;span class="hljs-keyword">null&amp;lt;/span>){ Log.i(TAG, &amp;lt;span class="hljs-string">"[onCreate] classLoader "&amp;lt;/span> + i + &amp;lt;span class="hljs-string">" : "&amp;lt;/span> + classLoader.toString()); &amp;lt;span class="hljs-keyword">while&amp;lt;/span> (classLoader.getParent()!=&amp;lt;span class="hljs-keyword">null&amp;lt;/span>){ classLoader = classLoader.getParent(); Log.i(TAG,&amp;lt;span class="hljs-string">"[onCreate] classLoader "&amp;lt;/span> + i + &amp;lt;span class="hljs-string">" : "&amp;lt;/span> + classLoader.toString()); } } }` 输出结果为
+...</p></div><footer class=entry-footer><span title='2017-04-25 06:25:27 +0000 UTC'>2017年4月25日</span>&nbsp;·&nbsp;<span>7 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android动态加载基础 ClassLoader工作机制" href=https://blog.zdltech.com/posts/android%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%9F%BA%E7%A1%80-classloader%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>深入浅出ClassLoader ，超详细java中的ClassLoader详解</h2></header><div class=entry-content><p>你真的了解ClassLoader吗？ 这篇文章翻译自zeroturnaround.com的 Do You Really Get Classloaders? ，融入和补充了笔者的一些实践、经验和样例。本文的例子比原文更加具有实际意义，文字内容也更充沛一些，非常感谢作者 Jevgeni Kabanov 能够共享如此优秀的文档。
+1. 为什么你需要了解和敬畏ClassLoader ClassLoader在Java语言中占据了核心地位，Java应用服务器，OSGi，以及大量的网络框架，它们大多数都用到了ClassLoader。如果在使用过程中出现了类加载错误，你能解决它吗？
+我们将从JVM和开发者两个角度讲述ClassLoader，将会选择一些典型的案例，然后演示如何解决它们。NoClassDefFoundError，LinkageError等很多错误都会有特定的表征，我们分析每个例子，然后进行解决。
+2. 进入ClassLoader 每个ClassLoader对象都是一个java.lang.ClassLoader的实例。每个Class对象都被这些ClassLoader对象所加载，通过继承java.lang.ClassLoader可以扩展出自定义ClassLoader，并使用这些自定义的ClassLoader对类进行加载。
+先大体了解一下ClassLoader的API：
+`01` &lt;td class="content"> `package` `java.lang;` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `02` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `03` &lt;/td> &lt;td class="content"> `public` `abstract` `class` `ClassLoader {` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `04` &lt;/td> &lt;td class="content"> ` ``public` `Class loadClass(String name);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `05` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `06` &lt;/td> &lt;td class="content"> ` ``protected` `Class defineClass(``byte``[] b);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `07` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `08` &lt;/td> &lt;td class="content"> ` ``public` `URL getResource(String name);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `09` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `10` &lt;/td> &lt;td class="content"> ` ``public` `Enumeration getResources(String name);` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `11` &lt;/td> &lt;td class="content"> &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt2"> &lt;table> &lt;tr> &lt;td class="number"> `12` &lt;/td> &lt;td class="content"> ` ``public` `ClassLoader getParent();` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> &lt;div class="line alt1"> &lt;table> &lt;tr> &lt;td class="number"> `13` &lt;/td> &lt;td class="content"> `}` &lt;/td> &lt;/tr> &lt;/table> &lt;/div> 最重要的是ClassLoader的&lt;span lang="EN-US">loadClass&lt;/span>方法，它接受一个全类名，然后返回一个Class类型的实例。
+...</p></div><footer class=entry-footer><span title='2017-04-25 05:38:10 +0000 UTC'>2017年4月25日</span>&nbsp;·&nbsp;<span>39 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 深入浅出ClassLoader ，超详细java中的ClassLoader详解" href=https://blog.zdltech.com/posts/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAclassloader/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>资源收藏</h2></header><div class=entry-content><p>Android实现图片相似度
+http://zzimoo.com/similar/
+OpenCV笔记大集锦
+http://blog.csdn.net/langb2014/article/details/51379326
+ThinkPHP5.0完全开发手册
+http://www.kancloud.cn/manual/thinkphp5
+GitHub秘籍（中文版）
+http://www.kancloud.cn/thinkphp/github-tips
+REST API 安全设计指南
+http://www.kancloud.cn/kancloud/rest-api-design-safety
+Atom IDE极速入门
+http://www.kancloud.cn/kinghs/atom
+OHSCE官方教程免费版
+http://www.kancloud.cn/ohsce/ohscebook
+深入浅出ES6
+http://www.kancloud.cn/kancloud/es6-in-depth
+ECMAScript 6入门
+http://www.kancloud.cn/kancloud/ecmascript6-guide
+Sublime Text 全程指南
+http://www.kancloud.cn/digest/sublime-text-complete-guide
+深入浅出React
+http://www.kancloud.cn/kancloud/react-in-depth
+图像处理算法
+http://www.kancloud.cn/digest/imageproebow
+iOS 高级
+http://www.kancloud.cn/digest/data
+Flex 布局教程：语法篇
+http://www.kancloud.cn/digest/flex-grammar
+Android性能优化
+http://www.kancloud.cn/digest/android-performance
+设计模式C++实现
+http://www.kancloud.cn/digest/walker1
+系统架构师技能学习
+http://www.kancloud.cn/digest/archi
+Java工具类专栏
+http://www.kancloud.cn/digest/java-utility-classes
+C++开发人脸性别识别教程
+http://www.kancloud.cn/digest/genderrecogtion
+UiAutomator从入门到原理
+http://www.kancloud.cn/digest/uiautomatorpriciple
+Android NDK开发学习
+http://www.kancloud.cn/digest/zlndk
+React Native学习指南
+http://www.kancloud.cn/digest/rnative
+RabbitMQ Java入门教程
+http://www.kancloud.cn/digest/rabbitmq-for-java
+FFmpeg入门实践与分析
+http://www.kancloud.cn/digest/ffmpegtutorial
+开源物联网系统设计
+http://www.kancloud.cn/digest/bare-minimum-iot-system
+IOS 网络编程
+http://www.kancloud.cn/digest/ios-data
+Android流媒体播放
+http://www.kancloud.cn/digest/rtmp-android
+Cocos2d游戏开发
+http://www.kancloud.cn/digest/cocos2d
+Android核心分析
+http://www.kancloud.cn/digest/androidcore
+OpenCV 应用笔记
+http://www.kancloud.cn/digest/usingopencv
+游戏引擎开发
+http://www.kancloud.cn/digest/game-engine-dev
+电商系统
+http://www.kancloud.cn/digest/b2c-it
+无线局域网开发
+http://www.kancloud.cn/digest/wlan
+android SDK开发
+http://www.kancloud.cn/digest/phoebe
+大数据开源框架
+http://www.kancloud.cn/digest/bigdata-open
+android源码解析
+http://www.kancloud.cn/digest/androidframeworks
+Android Studio详细教程
+http://www.kancloud.cn/stormzhang/android_studio
+iOS开发进阶
+http://www.kancloud.cn/digest/iosdevelopment001
+Android特效专辑
+http://www.kancloud.cn/digest/liuguilin
+Android开发高手进阶
+http://www.kancloud.cn/digest/androidadvanced
+vue
+http://www.kancloud.cn/dingyiming/vue
+JNI/NDK开发指南
+http://www.kancloud.cn/xyang0917/blogjnindk
+《架构师成长之路》漫画连载
+http://www.kancloud.cn/qiniu/architect-growth
+Android（OpenCV）开发
+http://www.kancloud.cn/yanzi1225627/android-opencv
+Android JNI入门
+http://www.kancloud.cn/digest/android-jni
+设计模式与系统架构
+http://www.kancloud.cn/longxuan/my-designpattern
+轻松搞定RabbitMQ
+http://www.kancloud.cn/longxuan/rabbitmq-arron
+android应用安全
+http://www.kancloud.cn/digest/android-safe
+Java线程
+http://www.kancloud.cn/digest/java-thread
+微信硬件平台解决方案
+http://www.kancloud.cn/yueqian_scut/iot-wechat
+Appium之android平台的源码分析
+http://www.kancloud.cn/digest/itfootball-appium
+Gradle学习系列
+http://www.kancloud.cn/digest/itfootball-gradle
+react-native试玩
+http://www.kancloud.cn/digest/doctorqrn
+《机器学习实战》笔记
+http://www.kancloud.cn/digest/machinglearninginact
+...</p></div><footer class=entry-footer><span title='2017-03-22 14:34:40 +0000 UTC'>2017年3月22日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 资源收藏" href=https://blog.zdltech.com/posts/%E8%B5%84%E6%BA%90%E6%94%B6%E8%97%8F/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>使用Artifactory搭建本地maven仓库</h2></header><div class=entry-content><p>引言
 前段日子，公司为了提高产品出产效率，想把公司每个产品各个小功能抽取出来，这样再做一个新产品的时候，重复的功能就可以直接使用之前写好的模块就行了。想法是不错的，但一开始实践起来很麻烦，同事A就将自己的模块做成module，为了图方便，将整个module项目直接发送给同事B和同事C，代码第一次写成以后一般都会有一些小bug的，这样，同事A在自己电脑上修改代码，然后再次修改代码分别传给B和C。B和C需要替换之前的module，重新运行。这相当的麻烦，如果还有同事D,E,F..做起来真是噩梦，可能有有人想问，为什么不用svn或者git，用版本控制工具当然会好非常多，但每次pull其实也比较麻烦。还有另一种方法，使用本地maven仓库，使用过android studio的开发者都应该体会过其中的好处，当需要依赖一个新的模块(或者叫library)时，只需要这样
 填写需要的模块及对应的版本号，同步一下就行了，很方便。本篇文章就教各位如何使用Artifactory来搭建本地仓库，来完成上图的效果
 什么是Artifactory?
@@ -122,132 +250,7 @@ finish();
 }
 }).setCancelable(false).show();
 }
-...</p></div><footer class=entry-footer><span title='2017-02-25 14:24:07 +0000 UTC'>2017年2月25日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android 6.0 – 动态权限管理的解决方案" href=https://blog.zdltech.com/posts/api-23%E4%B9%8B%E6%9D%83%E9%99%90/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Android 中gitWindow可以做的事情</h2></header><div class=entry-content><p>View view = getWindow().getDecorView().findViewById(R.id.activity_main);
-if (view == null) return;
-ViewParent viewParent = view.getParent();
-if (viewParent instanceof FrameLayout) {
-final FrameLayout frameParent = (FrameLayout) viewParent;//整个父布局
-final LinearLayout linearLayout = new LinearLayout(this);//新建一个LinearLayout
-linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-linearLayout.setOrientation(LinearLayout.VERTICAL);
-linearLayout.setBackgroundResource(#88000000);//背景设置灰色透明
-linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-linearLayout.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View v) {
-frameParent.removeView(linearLayout);
-}
-});
-Rect rect = new Rect();
-Point point = new Point();
-nearby.getGlobalVisibleRect(rect, point);//获得nearby这个控件的宽高以及XY坐标 nearby这个控件对应就是需要高亮显示的地方
-ImageView topGuideview = new ImageView(this);
-topGuideview.setLayoutParams(new ViewGroup.LayoutParams(rect.width(), rect.height())); topGuideview.setBackgroundResource(R.drawable.iv_topguide);
-...</p></div><footer class=entry-footer><span title='2017-02-20 03:52:27 +0000 UTC'>2017年2月20日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android 中gitWindow可以做的事情" href=https://blog.zdltech.com/posts/android-%E4%B8%ADgitwindow%E5%8F%AF%E4%BB%A5%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>GetLab安装使用</h2></header><div class=entry-content><p>由于使用总公司的SVN，有些新同事和其他组没有SVN，项目开发中没有版本控制，为了解决这个问题，我给公司搭建了内网git服务器进行版本控制，现在记录下安装配置过程
-第一步：登录官网点击下载，选择适合的操作系统
-例如centos https://about.gitlab.com/downloads/#centos7
-第二步：由于网络问题，我选择下载安装
-下载网址https://packages.gitlab.com/gitlab/gitlab-ce
-运行命令 rpm 安装
-rpm -i gitlab-ce-XXX.rpm
-第三步：配置请求地址和端口
-进入/etc/gitlab/gitlab.rb 下面修改
-1、external_url 表示请求的地址例如external_url ‘http://192.168.0.239’
-2、nginx[‘listen_port’] 表示端口 例如nginx[‘listen_port’] = 8999
-注意：要是有#号别忘记删除，修改gitlab.rb文件需要重新编辑和配置
-第四步：编译和配置（配置并启动gitlab）
-sudo gitlab-ctl reconfigure
-第五步：在浏览器输入地址，第一次是修改密码（对用的账号是root），根据提示修改密码
-第六步：登录OK
-第七步：gitlab仓库地址和备份
-1、gitlab默认参考地址：/var/opt/gitlab/git-data/repositories
-修改/etc/gitlab/gitlab.rb->git_data_dirs(别忘记#去掉)
-2、备份命令：gitlab-rakegitlab:backup:create，
-默然的备份目录为： /var/opt/gitlab/backups
-备份目录的修改
-vi /etc/gitlab/gitlab.rb
-gitlab_rails[‘backup_path’] =’/mnt/gitlab_backups’
-3、恢复备份，需要先停止服务，恢复完成在启动服务
-gitlab-rake gitlab:backup:restore BACKUP=1458213020
-BACKUP后面跟的是备份文件的时间戳，
-比如恢复备份文件 1458213020_gitlab_backup.tar
-第八步：其他
-1、停服务
-gitlab-ctl stop unicorn
-gitlab-ctl stop sidekiq
-2、回复完启动服务
-gitlab-ctl start
-SSH key生成
-详细请参考：
-http://blog.csdn.net/lsyz0021/article/details/52064829
-http://blog.csdn.net/tanzhengyu/article/details/51064380
-安装git，从程序目录打开 “Git Bash”
-键入命令：ssh-keygen -t rsa -C “email@email.com”
-“email@email.com”是github账号
-提醒你输入key的名称，输入如id_rsa
-在C:\Documents and Settings\Administrator\下产生两个文件：id_rsa和id_rsa.pub(mac 在~/.ssh目录下)
-把4中生成的密钥文件复制到C:\Documents and Settings\Administrator.ssh\ 目 录下。
-用记事本打开id_rsa.pub文件，复制内容，在git的网站上到ssh密钥管理页面，添加新公钥，随便取个名字，内容粘贴刚才复制的内容。
-^_^ OK了
-需要注意步骤2中产生的密钥文件在当前用户的根目录，必须把这两个文件放到当前用户目录的“.ssh”目录下才能生效。
-在windows中只能在命令行下输入创建”.”开头的文件夹。命令为 mkdir .ssh
-关注公众号获取更多内容和反馈沟通
-...</p></div><footer class=entry-footer><span title='2017-02-10 09:55:41 +0000 UTC'>2017年2月10日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to GetLab安装使用" href=https://blog.zdltech.com/posts/getlab%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Nginx单IP地址配置多个SSL证书</h2></header><div class=entry-content><p>默认情况下，Nginx一个IP地址仅支持一个SSL证书，需要多个IP地址才能配置多个SSL证书，在公网IP地址有限的情况下，可以使用TLS Server Name Indication extension(SNI, RFC 6066)，它允许浏览器在SSL握手的时候发送请求的server name，也就是 Host，这样 Nginx 就能找到对应server 的SSL配置。
-配置步骤如下：
-1、检查Nginx是否支持TLS
-nginx -V … TLS SNI support enabled … nginx -V
-…
-TLS SNI support enabled
-…
-2、如果出现TLS SNI support disable，就得升级openssl版本，并且重新编译nginx。
-具体步骤如下：
-首先下载openssl（建议下载1.0.1h版本）
-#wget http://www.openssl.org/source/openssl-1.0.1h.tar.gz
-下载Nginx
-#wget http://nginx.org/download/nginx-1.9.9.tar.gz
-解压openssl
-#tar -zxvf openssl-1.0.1h.tar.gz
-解压nginx，并编译
-#tar -zxvf nginx-1.9.9.tar.gz
-#cd nginx-1.9.9
-#make && make install
-#检查Nginx版本信息
-#/usr/local/nginx/sbin/nginx -V
-nginx version: nginx/1.9.9
-built by gcc 4.1.2 20080704 (Red Hat 4.1.2-55)
-built with OpenSSL 1.0.1h 5 Jun 2014
-TLS SNI support enabled
-...</p></div><footer class=entry-footer><span title='2017-01-11 06:31:43 +0000 UTC'>2017年1月11日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Nginx单IP地址配置多个SSL证书" href=https://blog.zdltech.com/posts/nginx%E5%8D%95ip%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE%E5%A4%9A%E4%B8%AAssl%E8%AF%81%E4%B9%A6/></a></article><article class=post-entry><header class=entry-header><h2 class=entry-hint-parent>Socket请求网页</h2></header><div class=entry-content><p>Java Socket现实简单的HTTP服务
-http://jiangzhengjun.iteye.com/blog/512380
-Java socket 访问网页
-http://blog.csdn.net/yilip/article/details/45195713
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
-public class WebpageSocket {
-private static int port = 80;
-private static String hostname = “www.iteye.com”;
-public static void main(String[] args) throws Exception{
-Socket socket = new Socket(hostname, port);
-BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), “utf-8”));
-writer.write(“GET ” + “/ask” + ” HTTP/1.0\r\n”);
-writer.write(“HOST:” + hostname + “\r\n”);
-writer.write(“Accept:*/*\r\n”);
-writer.write(“\r\n”);
-writer.flush();
-BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), “utf-8”));
-String line = null;
-while ((line = reader.readLine()) != null) {
-System.out.println(line);
-}
-reader.close();
-writer.close();
-socket.close();
-}
-}
-...</p></div><footer class=entry-footer><span title='2017-01-04 06:48:45 +0000 UTC'>2017年1月4日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Socket请求网页" href=https://blog.zdltech.com/posts/socket%E8%AF%B7%E6%B1%82%E7%BD%91%E9%A1%B5/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/page/14/>«&nbsp;上一页&nbsp;
+...</p></div><footer class=entry-footer><span title='2017-02-25 14:24:07 +0000 UTC'>2017年2月25日</span>&nbsp;·&nbsp;<span>3 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Android 6.0 – 动态权限管理的解决方案" href=https://blog.zdltech.com/posts/api-23%E4%B9%8B%E6%9D%83%E9%99%90/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.zdltech.com/page/14/>«&nbsp;上一页&nbsp;
 </a><a class=next href=https://blog.zdltech.com/page/16/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>领风沐雨</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &

@@ -31,7 +31,58 @@ Horizon 是什么 Horizon 是一个开源的 AI 新闻雷达工具，核心理�
 抓取内容：热门技术故事
 ✅ 支持 Top N 评论摘要
 💬 Reddit
-...</p></div><footer class=entry-footer><span title='2026-05-28 09:00:00 +0800 +0800'>2026年5月28日</span>&nbsp;·&nbsp;<span>505 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Horizon：让AI帮你读完HN、Reddit、RSS" href=https://blog.zdltech.com/posts/article-1-20260528/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>谷歌 Antigravity 2.0 深度解读：从 AI 编程工具到通用智能体工作平台</h2></header><div class=entry-content><p>2026年5月，谷歌I/O大会重磅发布
+...</p></div><footer class=entry-footer><span title='2026-05-28 09:00:00 +0800 +0800'>2026年5月28日</span>&nbsp;·&nbsp;<span>505 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Horizon：让AI帮你读完HN、Reddit、RSS" href=https://blog.zdltech.com/posts/article-1-20260528/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Open Design：开源免费的全能 AI 设计工具，16种Agent+129套设计系统+31种技能</h2></header><div class=entry-content><p>本地优先 · 完全开源 · Claude Design 的最佳替代方案
+📌 **开源地址：**github.com/nexu-io/open-design（⭐ 40k+ Stars）
+🌐 **官网：**open-design.ai
+📥 **下载：**Releases 页面
+📜 **许可证：**Apache 2.0
+一、Open Design 是什么？ 2026年4月，Anthropic 发布了 Claude Design（基于 Opus 4.7），展示了 LLM 从「写文字」到「出设计稿」的飞跃。它一度爆火——但始终闭源、付费、纯云端、绑定 Anthropic 模型，无法自部署、无法切换 Agent、无法定制。
+**Open Design（OD）**就是开源界的回答：同样的设计循环，同样的 Artifacts-first 理念，零锁定。
+它的核心思路是：不造 Agent，只做连接。你电脑上已经装好的编程 Agent（Claude Code、Codex、Gemini CLI 等），Open Design 会自动检测并将它们转化为设计引擎，配合 31 种可组合技能和 129 套品牌级设计系统，驱动整个设计流程。
+💡 **一句话概括：**告诉 AI「帮我做一个 SaaS 落地页」，它会先弹出问卷锁定需求，再选出视觉方向，然后自动生成带交互效果的完整页面——整个过程 1-3 分钟。
+二、核心能力详解 🤖 16 种 Agent 自动检测 Open Design 不绑定任何单一模型。它会自动扫描你 PATH 中已安装的 Agent CLI，一键切换：
+...</p></div><footer class=entry-footer><span title='2026-05-28 09:00:00 +0800 +0800'>2026年5月28日</span>&nbsp;·&nbsp;<span>505 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to Open Design：开源免费的全能 AI 设计工具，16种Agent+129套设计系统+31种技能" href=https://blog.zdltech.com/posts/article-6-20260528/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>TinyFish：给AI Agent装上「上网能力」的企业级基础设施</h2></header><div class=entry-content><p>在AI Agent飞速发展的今天，大模型越来越聪明，但它们有一个共同的短板——上不了网。无法实时搜索信息、无法浏览网页、无法自动操作网站，这让AI Agent的能力被大大限制。
+TinyFish 就是为了解决这个问题而生的。它提供了一套企业级的 Web API，让任何 AI Agent 都能获得搜索、浏览、提取网页内容甚至自动操作网站的能力。
+一个API Key，四大核心能力 TinyFish 的核心设计理念是「简单集成」。一个 API Key，统一的 credit 池，四个独立的 API 覆盖从搜索到自动化操作的全链路场景。
+1. Search API — 网页搜索 输入查询关键词，返回结构化的搜索结果（标题、摘要、URL），直接可供 LLM 消费或程序化处理。
+核心特性：
+支持地区和语言偏好设置，获取本地化搜索结果 完全免费，不消耗 credits 速率限制：60次/分钟 使用示例（Python）：
+`from tinyfish import TinyFish
+client = TinyFish() response = client.search.query( query=“2024年最佳AI编程工具”, location=“CN”, language=“zh” ) for r in response.results: print(r.title, “→”, r.url)`
+**cURL 调用：** `curl "https://api.search.tinyfish.ai?query=2024年最佳AI编程工具&amp;location=CN&amp;language=zh" \ -H "X-API-Key: $TINYFISH_API_KEY"` 2. Fetch API — 网页内容提取 用真实浏览器渲染网页（包括 JS 动态渲染的 SPA 页面），提取干净的页面内容。单次请求最多支持 10 个 URL，每个 URL 独立处理。
+...</p></div><footer class=entry-footer><span title='2026-05-28 09:00:00 +0800 +0800'>2026年5月28日</span>&nbsp;·&nbsp;<span>506 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to TinyFish：给AI Agent装上「上网能力」的企业级基础设施" href=https://blog.zdltech.com/posts/article-5-20260528/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>别再被 AI 编程工具绑架了——Pi 让 Agent 自己改造自己</h2></header><div class=entry-content><p>当所有 AI 编程工具都在"帮你决定一切"的时候，Pi 走了完全相反的路：给你一个最小核心，剩下的你自己组装。3000+ 社区包、50+ 扩展示例、30+ LLM 供应商——这不是一个产品，这是一个生态。
+🔗 **项目主页：**pi.dev
+📂 **GitHub：**earendil-works/pi
+📜 **开源协议：**MIT
+一、Pi 是什么？ Pi 是一个极简主义的开源 AI 编程 Agent 框架，核心理念只有八个字：“提供原语，而非功能”（Primitives, not features）。
+什么意思？Cursor 帮你内建了 Tab 补全、Windsurf 帮你内建了 Cascade 流程、Copilot 帮你内建了 Chat 面板——Pi 什么都不内建。它只给你四个工具（读、写、编辑、运行命令），然后说：
+“你需要什么功能，自己搭。搭不了？让我帮你搭。”
+这就是 Pi 最特别的地方——它可以自己改造自己。你让 Pi 构建一个子代理系统，它写完代码后 /reload 立刻生效，Pi 就有了子代理能力。
+二、三个独特优势 🎯 优势一：30+ LLM 供应商，想用谁用谁 Pi 支持 Anthropic、OpenAI、Google Gemini、Azure、Bedrock、Mistral、Groq、Cerebras、xAI、DeepSeek、Hugging Face、Kimi、MiniMax、小米 MiMo、OpenRouter、Ollama 等 30+ 供应商。
+认证方式灵活： API Key：export ANTHROPIC_API_KEY=***
+OAuth 订阅：/login 直接登录 Claude Pro/Max、ChatGPT Plus/Pro、GitHub Copilot
+...</p></div><footer class=entry-footer><span title='2026-05-28 09:00:00 +0800 +0800'>2026年5月28日</span>&nbsp;·&nbsp;<span>505 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 别再被 AI 编程工具绑架了——Pi 让 Agent 自己改造自己" href=https://blog.zdltech.com/posts/article-3-20260528/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>别再跪着啃源码了！Understand Anything 让你10分钟看透20万行代码</h2></header><div class=entry-content><p>你有没有过这种经历？
+刚入职一家新公司，领导丢过来一个20万行的代码库说：“这是咱们的核心系统，你先熟悉一下。”
+然后你打开IDE，面对几百个文件夹、几千个文件，完全不知道从哪看起。看哪个文件？谁调谁？这个模块干嘛的？那个接口跟谁对接？
+一整天下来，除了眼睛疼，啥也没看明白。
+更惨的是接手"祖传代码"——前人已离职，文档不存在，注释是乱码，你只能一个函数一个函数地跟踪跳转，像在黑暗的迷宫里摸墙走。
+今天介绍的这款开源工具，就是来终结这种痛苦的。
+一、Understand Anything 是什么？ Understand Anything 是一个 Claude Code 插件，它能用多 Agent 协作的方式，把你的整个代码库变成一个可交互的知识图谱。
+不是简单的文件依赖树，而是一个你能点、能搜、能问的智能知识网络。每个文件、函数、类都是图上的节点，点击就能看到依赖关系、自然语言解释、架构分层。
+GitHub 地址：https://github.com/Lum1104/Understand-Anything
+截至目前：29k+ Star，2400+ Fork，上线不到两个月就冲上 GitHub Trending 榜首，热度可见一斑。
+一句话总结：它不只是展示代码结构，它教你理解代码库。
+二、核心功能拆解 1️⃣ 一键生成代码知识图谱 运行 /understand，工具会启动5个专业 Agent 协作：
+project-scanner：扫描项目，识别语言和框架
+file-analyzer：提取函数、类、依赖关系，构建图谱节点和边
+architecture-analyzer：识别架构分层（API / Service / Data / UI）
+tour-builder：生成架构导览路线
+graph-reviewer：校验图谱完整性和一致性
+最终输出一个 JSON 格式的知识图谱，并可通过 Dashboard 可视化展示。
+支持 26+ 文件类型，不只是代码——Dockerfile、Terraform、SQL、Markdown 都能纳入图谱。
+2️⃣ 交互式 Dashboard 运行 /understand-dashboard，浏览器自动打开一个交互式可视化面板：
+🎨 按架构分层颜色编码（API 层蓝色、Service 层绿色、数据层橙色……）
+...</p></div><footer class=entry-footer><span title='2026-05-28 09:00:00 +0800 +0800'>2026年5月28日</span>&nbsp;·&nbsp;<span>504 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 别再跪着啃源码了！Understand Anything 让你10分钟看透20万行代码" href=https://blog.zdltech.com/posts/article-4-20260528/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>谷歌 Antigravity 2.0 深度解读：从 AI 编程工具到通用智能体工作平台</h2></header><div class=entry-content><p>2026年5月，谷歌I/O大会重磅发布
 📌 官网地址： antigravity.google
 📥 下载地址： antigravity.google/download
 📚 官方教程： Getting Started 教程
@@ -78,73 +129,7 @@ proxy_pass http://zcjfweb;
 # 真实信息
 proxy_set_header Host host; proxy_set_header X-Real-IPremote_addr;
 proxy_set_header X-Forwarded-For proxy_add_x_forwarded_for; client_max_body_size 100M; proxy_read_timeout 30000; proxy_send_timeout 75s; #proxy_redirect off; #proxy_pass_header Set-Cookie; #proxy_hide_header X-Powered-By; #proxy_hide_header X-Mod-Pagespeed; #proxy_ignore_client_abort off; #proxy_cache_valid any 10m; #proxy_connect_timeout 75s; #proxy_read_timeout 75s; #proxy_send_timeout 75s; }
-...</p></div><footer class=entry-footer><span title='2019-03-19 03:42:58 +0000 UTC'>2019年3月19日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 阿里云OSS之Nginx反向代理配置" href=https://blog.zdltech.com/posts/%E9%98%BF%E9%87%8C%E4%BA%91oss%E4%B9%8Bnginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>微信分享链接的缩略图和标题</h2></header><div class=entry-content><p>一、微信内分享 在微信内打开链接后，点右上角【…】选择【发送给朋友】或【分享到朋友圈】，这种分享方式获取缩略图的方法：
-方法一：在页面 body 最上方添加 300*300 像素的 img 如该图片不需要显示，可以用 css 隐藏，但不能直接对 img 设置 display: none;。
-可以在父层 div 上设置 display: none; 或者对 img 设置 position: absolute; visibility: hidden;。
-&lt;img src=&amp;quot;/img/thumbnail.png&amp;quot; alt=&amp;quot;&amp;quot;>&lt;/div> 1 " data-snippet-id="ext.2607b3963245b14ba18790d96be6e596" data-snippet-saved="false" data-codota-status="done">`&amp;lt;div style="display:none;"&amp;gt;&amp;lt;img src="/img/thumbnail.png" alt=""&amp;gt;&amp;lt;/div&amp;gt;` 方法二：通过微信 JS-SDK 的分享接口 这种方法需要一个微信公众号的 app_id，同时需要一个后端服务生成 signature。好处是可以定制分享的标题、缩略图、描述。
-二、从浏览器分享 在浏览器打开链接后，点分享图标，选择【微信】，这种分享方式获取缩略图的方法：
-在页面的 head 部分添加 Open Graph Metadata：
-&lt;meta property=&amp;quot;og:title&amp;quot; content=&amp;quot;页面标题&amp;quot;> &lt;meta property=&amp;quot;og:description&amp;quot; content=&amp;quot;页面描述&amp;quot;> &lt;meta property=&amp;quot;og:image&amp;quot; content=&amp;quot;http://www.example.com/img/thumbnail.png&amp;quot;> &lt;meta property=&amp;quot;og:url&amp;quot; content=&amp;quot;http://www.example.com/&amp;quot;> 1 2 3 4 5 " data-snippet-id="ext.d5f2b073507882789543238b1b2f0a2b" data-snippet-saved="false" data-codota-status="done">`&amp;lt;meta property="og:type" content="website" /&amp;gt; &amp;lt;meta property="og:title" content="页面标题"&amp;gt; &amp;lt;meta property="og:description" content="页面描述"&amp;gt; &amp;lt;meta property="og:image" content="http://www.example.com/img/thumbnail.png"&amp;gt; &amp;lt;meta property="og:url" content="http://www.example.com/"&amp;gt;` 其中 og:image 影响浏览器分享时的图标，需要指定图片的完整路径。
-...</p></div><footer class=entry-footer><span title='2019-03-02 16:22:39 +0000 UTC'>2019年3月2日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 微信分享链接的缩略图和标题" href=https://blog.zdltech.com/posts/%E5%BE%AE%E4%BF%A1%E5%88%86%E4%BA%AB%E9%93%BE%E6%8E%A5%E7%9A%84%E7%BC%A9%E7%95%A5%E5%9B%BE%E5%92%8C%E6%A0%87%E9%A2%98/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>H5自动播放音频</h2></header><div class=entry-content><p>方法一 监听界面元素 监听界面
-//–创建页面监听，等待微信端页面加载完毕 触发音频播放
-document.addEventListener(‘DOMContentLoaded’, function () {
-function audioAutoPlay() {
-var audio = document.getElementById(‘audio’);
-audio.play();
-document.addEventListener(“WeixinJSBridgeReady”, function () {
-audio.play();
-}, false);
-}
-audioAutoPlay();
-});
-//–创建触摸监听，当浏览器打开页面时，触摸屏幕触发事件，进行音频播放
-document.addEventListener(‘touchstart’, function () {
-function audioAutoPlay() {
-var audio = document.getElementById(‘audio’);
-audio.play();
-}
-audioAutoPlay();
-});
-// var firstTouch = true; $(“body”).bind(“touchstart”,function(e) { if ( firstTouch ) { firstTouch = false; document.getElementById(‘audio’).play(); }else{ return; } }); // $(“body”).one(“touchstart”,function() { document.getElementById(‘audio’).play(); });
-...</p></div><footer class=entry-footer><span title='2019-02-28 03:55:59 +0000 UTC'>2019年2月28日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to H5自动播放音频" href=https://blog.zdltech.com/posts/h5%E8%87%AA%E5%8A%A8%E6%92%AD%E6%94%BE%E9%9F%B3%E9%A2%91/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>linux中java执行脚本守护脚本</h2></header><div class=entry-content><p>#/bin/bash
-while true;
-do
-count=`ps -ef | grep test.jar | grep -v grep|wc -l`
-if [ ${count} -lt 1 ]; then
-nohup java -jar xxx.jar >log.out 2>&amp;1 &
-else
-echo “process is running”
-fi
-sleep 3
-done
-Linux Shell脚本：自动读取pid并关闭进程 查询进程信息
-ps -ef|grep elasticsearch
-过滤掉grep进程
-ps -ef|grep elasticsearch|grep -v grep
-提取pid(awk以空格分割，显示第二个变量即为pid)
-ps -ef|grep elasticsearch|grep -v grep|awk ‘{print $2}’
-根据pid kill掉该进程
-完整脚本如下所示</p></div><footer class=entry-footer><span title='2019-02-22 03:41:36 +0000 UTC'>2019年2月22日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to linux中java执行脚本守护脚本" href=https://blog.zdltech.com/posts/linux%E4%B8%ADjava%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC%E5%AE%88%E6%8A%A4%E8%84%9A%E6%9C%AC/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>配置独立sftp账号</h2></header><div class=entry-content><p> 设置用户组和用户、并设置密码 groupadd sftp #创建sftp用户组
-useradd -g sftp -s /bin/false mysftp # 创建mysftp用户
-passwd mysftp #设置mysftp密码
-创建并设置mysftp的主目录 mkdir mydata #创建mydata文件夹
-cd mydata #进入mydata
-mkdir uploads #创建uploads文件夹
-usermod -d /mydata/uploads/ mysftp #设置mysftp的主目录
-配置sshd_config vi /etc/ssh/sshd_config
-#这个要放到最后（至少保证在’UseDNS’ 后面否则可能出现错误）
-# Subsystem sftp /usr/libexec/openssh/sftp-server
-Subsystem sftp internal-sftp
-Match Group sftp
-ChrootDirectory /mydata
-ForceCommand internal-sftp
-AllowTcpForwarding no
-X11Forwarding no
-配置文件权限（至少为755权限） chown root:sftp /mydata
-chmod 755 /mydata
-chown mysftp:sftp /mydata/uploads
-chmod 755 /mydata/uploads
-...</p></div><footer class=entry-footer><span title='2018-12-08 05:31:23 +0000 UTC'>2018年12月8日</span>&nbsp;·&nbsp;<span>1 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 配置独立sftp账号" href=https://blog.zdltech.com/posts/%E9%85%8D%E7%BD%AE%E7%8B%AC%E7%AB%8Bsftp%E8%B4%A6%E5%8F%B7/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://blog.zdltech.com/categories/%E4%BA%92%E8%81%94%E7%BD%91/page/2/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>领风沐雨</a></span> ·
+...</p></div><footer class=entry-footer><span title='2019-03-19 03:42:58 +0000 UTC'>2019年3月19日</span>&nbsp;·&nbsp;<span>2 分钟</span>&nbsp;·&nbsp;<span>天边的星星</span></footer><a class=entry-link aria-label="post link to 阿里云OSS之Nginx反向代理配置" href=https://blog.zdltech.com/posts/%E9%98%BF%E9%87%8C%E4%BA%91oss%E4%B9%8Bnginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://blog.zdltech.com/categories/%E4%BA%92%E8%81%94%E7%BD%91/page/2/>下一页&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2026 <a href=https://blog.zdltech.com/>领风沐雨</a></span> ·
 <span>Powered by
 <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
         <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top id=top-link class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey=g><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
